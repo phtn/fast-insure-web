@@ -15,7 +15,7 @@ const inter = Inter({
 export const metadata = {
   title: "Fast Insure",
   description: "Fastest Growing Insurance Provider",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [{ rel: "icon", url: "/favicon.svg" }],
 };
 
 export default function RootLayout({
