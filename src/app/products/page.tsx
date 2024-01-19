@@ -144,7 +144,7 @@ const data: ProductData[] = [
 
 export default function Products() {
   return (
-    <section className="w-full bg-gradient-to-b from-slate-950 from-10% to-blue-700 py-12 md:py-24 lg:py-32 xl:py-48">
+    <section className="w-full bg-gradient-to-b from-slate-950 from-10% to-blue-600 py-12 md:py-24 lg:py-32 xl:py-48">
       <div className="flex items-center px-4 md:px-10">
         <div className="grid w-full items-center justify-center gap-6">
           <div className="flex flex-col items-center justify-center space-y-8 text-center">

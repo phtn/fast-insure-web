@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { TRPCReactProvider } from "@/trpc/react";
 import { Navbar } from "./_navbar";
 import { Toaster } from "sonner";
+import { Footer } from "./footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({
         <TRPCReactProvider cookies={cookies().toString()}>
           <Navbar />
           {children}
+          <Footer />
         </TRPCReactProvider>
         <Toaster />
       </body>
