@@ -66,7 +66,7 @@ const iLinkData: ILink[] = [
 
 export function Footer() {
   return (
-    <footer className="flex h-[750px] flex-col justify-end bg-gradient-to-t from-orange-50 from-[65%] via-blue-500/90 via-[82.5%] to-blue-600 to-100% ">
+    <footer className="flex h-fit flex-col justify-end bg-orange-50">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-5">
           <div className="col-span-2">
@@ -177,15 +177,9 @@ export function Footer() {
           <p className="text-xs md:text-sm">
             © {new Date().getFullYear()} Fast Insure, Inc. All rights reserved.
           </p>
-          <div className="mt-2">
-            <a className="mx-2 text-xs md:text-sm" href="#">
-              Privacy Policy
-            </a>
-            |
-            <a className="mx-2 text-xs md:text-sm" href="#">
-              Term & Conditions
-            </a>
-          </div>
+          <a className="mx-2 text-xs md:text-sm" href="#">
+            Privacy Policy
+          </a>
         </div>
       </div>
     </footer>

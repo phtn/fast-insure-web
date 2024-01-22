@@ -87,7 +87,7 @@ export default function BrandNav({ className }: TeamSwitcherProps) {
             aria-expanded={open}
             aria-label="Select a team"
             className={cn(
-              "flex w-[200px] items-center justify-between",
+              "flex w-[175px] items-center justify-between md:w-[200px]",
               className,
             )}
           >

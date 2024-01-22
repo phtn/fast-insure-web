@@ -5,7 +5,7 @@ import Link from "next/link";
 import tw from "tailwind-styled-components";
 import { Button } from "./_components/button";
 import { CookieIcon, InfoCircledIcon } from "@radix-ui/react-icons";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { opts } from "@/utils/helpers";
 
 const CookieDough = ({ onClick }: { onClick: () => void }) => (
@@ -38,6 +38,12 @@ const CookieDough = ({ onClick }: { onClick: () => void }) => (
 
 export const Dough = () => {
   const [cookieAccepted, setCookieAccepted] = useState(false);
+
+  useEffect(() => {
+    navigator?.geolocation?.getCurrentPosition(({ coords }) =>
+      console.log(coords),
+    );
+  }, []);
 
   const handleAccept = () => {
     setCookieAccepted(true);
