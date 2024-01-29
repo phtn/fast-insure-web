@@ -1,13 +1,15 @@
-import { MenuIcon } from "lucide-react";
+'use client'
+
+import tw from "tailwind-styled-components";
 import BrandNav from "./brandnav";
 import { MainNav } from "./mainnav";
 import { Mode, Help, MobileMenu } from "./mode";
 import { UserNav } from "./usernav";
-import { Button } from "../_components/button";
+import { motion } from 'framer-motion'
 
 export const Navbar = () => {
   return (
-    <div className="from-33% via-66% absolute w-full border-0 bg-gradient-to-r from-orange-50 via-blue-200 to-orange-50 md:px-16">
+    <Container initial={{ scaleY: 0, height: 0 }} animate={{ scaleY: 1, height: 64 }} transition={{ duration: 0.5, delay: 2.5 }}>
       <div className="flex h-16 items-center justify-between px-4">
         <BrandNav />
         <MainNav className="mx-6 hidden md:flex" />
@@ -20,6 +22,11 @@ export const Navbar = () => {
           <MobileMenu />
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
+
+const Container = tw(motion.div)`
+  from-33% via-66% z-50 absolute w-full border-0 
+  bg-gradient-to-r from-orange-50 via-blue-200 to-orange-50 md:px-16
+`

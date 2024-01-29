@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Coordinates } from "./types";
+import { type Coordinates } from "./types";
 
 export const getCoords = async () => {
   return navigator?.geolocation?.getCurrentPosition((position) => position);

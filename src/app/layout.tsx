@@ -29,8 +29,10 @@ export default function RootLayout({
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider cookies={cookies().toString()}>
           <Navbar />
-          {children}
-          <Footer />
+          <div className={`h-[calc(100vh)] overflow-y-scroll`}>
+            {children}
+            <Footer />
+          </div>
         </TRPCReactProvider>
         <Toaster />
       </body>

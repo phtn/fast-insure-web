@@ -24,7 +24,7 @@ export const Selections = ({ setCoverage }: SetProps) => {
   return (
     <div className="w-full">
       <form className="flex justify-start space-x-2">
-        <div className="w-full md:w-[350px]">
+        <div className="w-full md:w-[375px]">
           <Select
             defaultValue={data[selected]?.value.toString()}
             onValueChange={(value) => {
@@ -32,15 +32,15 @@ export const Selections = ({ setCoverage }: SetProps) => {
               setCoverage(parseInt(value));
             }}
           >
-            <SelectTrigger className="bg-blue-950">
-              <SelectValue className="text-blue-50">
+            <SelectTrigger className="h-[56px] rounded-lg px-6 border-0 bg-slate-900">
+              <SelectValue className="text-blue-50 text-[24px]">
                 {data[selected]?.label}
               </SelectValue>
             </SelectTrigger>
-            <SelectContent className="z-50 bg-blue-50">
+            <SelectContent className="z-50 bg-white rounded-xl border border-blue-400">
               {data.map((item) => (
-                <SelectItem value={item.value.toString()} key={item.value}>
-                  <span className="text-blue-950">{item.label}</span>
+                <SelectItem value={item.value.toString()} key={item.value} className="py-3 font-medium hover:bg-gradient-to-tr from-blue-500 from-80% via-blue-400 to-orange-200 text-blue-950 hover:text-blue-50 rounded-lg cursor-pointer">
+                  {item.label}
                 </SelectItem>
               ))}
             </SelectContent>

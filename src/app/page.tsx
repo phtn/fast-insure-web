@@ -1,15 +1,20 @@
-import Hero from "./hero";
+import { MobileApp } from "./mobile_app";
 import { Splash } from "./splash";
-import { Dough } from "./dough";
-import { Jumbotron } from "./_components/jumbotron";
 import { CTPL } from "./_ctpl";
+import { Hero } from "./hero";
+import { Highlight } from "./highlight";
+import { Affiliate } from "./affiliate";
 
 export default async function Home() {
   return (
     <main>
       <Splash />
-      <CTPL />
       <Hero />
+      <Highlight />
+      <CTPL />
+      <Affiliate />
+      <MobileApp />
     </main>
   );
 }
+

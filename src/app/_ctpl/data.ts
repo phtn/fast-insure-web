@@ -1,9 +1,11 @@
+import { BikeIcon, CarIcon, TruckIcon, type LucideIcon } from "lucide-react";
+
 export interface Packages {
   id: number;
   title: string;
   description: string;
   price: number;
-  icon: string;
+  icon: LucideIcon;
 }
 
 export const brandnew: Packages[] = [
@@ -12,28 +14,28 @@ export const brandnew: Packages[] = [
     title: "Private Cars",
     description: "Including AUVs & Vans",
     price: 1660,
-    icon: "CarIcon",
+    icon: CarIcon,
   },
   {
-    id: 0,
+    id: 1,
     title: "Motorcycles",
     description: "Tricycles & Trailers",
     price: 770,
-    icon: "CarIcon",
+    icon: BikeIcon,
   },
   {
-    id: 0,
+    id: 2,
     title: "Light-Medium Trucks",
     description: "Not over 3,930 Kgs",
     price: 1800,
-    icon: "CarIcon",
+    icon: TruckIcon,
   },
   {
-    id: 0,
+    id: 3,
     title: "Heavy Trucks",
     description: "Not over 3,930 Kgs",
     price: 3490,
-    icon: "CarIcon",
+    icon: TruckIcon,
   },
 ];
 
@@ -43,27 +45,27 @@ export const renewal: Packages[] = [
     title: "Private Cars",
     description: "Including AUVs & Vans",
     price: 610,
-    icon: "CarIcon",
+    icon: CarIcon,
   },
   {
-    id: 0,
+    id: 1,
     title: "Motorcycles",
     description: "Tricycles & Trailers",
     price: 300,
-    icon: "CarIcon",
+    icon: BikeIcon,
   },
   {
-    id: 0,
+    id: 2,
     title: "Light-Medium Trucks",
     description: "Not over 3,930 Kgs",
     price: 660,
-    icon: "CarIcon",
+    icon: TruckIcon,
   },
   {
-    id: 0,
+    id: 3,
     title: "Heavy Trucks",
     description: "Not over 3,930 Kgs",
     price: 1250,
-    icon: "CarIcon",
+    icon: TruckIcon,
   },
 ];

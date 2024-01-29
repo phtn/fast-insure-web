@@ -68,7 +68,7 @@ type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
 >;
 
-interface TeamSwitcherProps extends PopoverTriggerProps {}
+interface TeamSwitcherProps extends PopoverTriggerProps { }
 
 export default function BrandNav({ className }: TeamSwitcherProps) {
   const [open, setOpen] = React.useState(false);
@@ -101,7 +101,7 @@ export default function BrandNav({ className }: TeamSwitcherProps) {
               }}
               className="h-[28px] w-[100px] bg-[url('/logo/fi_logo_v1.svg')] bg-cover bg-center"
             />
-            <ChevronsUpDownIcon className="ml-auto h-5 w-5 shrink-0 text-blue-950" />
+            <ChevronsUpDownIcon className="ml-auto hidden h-5 w-5 shrink-0 text-blue-950" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="mt-4 w-[220px] bg-neutral-50 p-0">

@@ -15,9 +15,14 @@ export const CTPL = () => {
 
   return (
     <QuoteContext.Provider value={state}>
-      <div className="grid pt-[64px] md:grid-cols-2">
-        <Primary setCoverage={setState} />
-        <Secondary />
+      <div className="grid h-fit md:py-14 lg:grid-cols-2 z-50 bg-gradient-to-b from-blue-950 via-blue-900 to-blue-400">
+        <div className={`bg-[url('/bg/flash_v5.svg')] flex items-center bg-cover`}>
+          <Primary setCoverage={setState} />
+        </div>
+
+        <div className={`bg-[url('/bg/flash_v5.svg')] bg-left`}>
+          <Secondary />
+        </div>
       </div>
     </QuoteContext.Provider>
   );
@@ -40,8 +45,8 @@ const Secondary = () => {
     return <>{options.get(selection === 1)}</>;
   }, [selection]);
   return (
-    <div className="w-full bg-orange-50 pb-24 md:py-24">
-      <div className="px-4 md:px-24">
+    <div className="w-full pb-24 md:py-24">
+      <div className="px-4 md:px-6 lg:px-14">
         <ItemOptions />
       </div>
     </div>
@@ -57,7 +62,7 @@ const BrandNew = () => (
 );
 
 const Renewal = () => (
-  <div className="grid h-full grid-cols-2 gap-x-4 gap-y-8 md:gap-8">
+  <div className="grid h-full md:grid-cols-2 gap-x-4 gap-y-8 md:gap-8">
     {renewal.map((item) => (
       <Item key={item.id} {...item} />
     ))}
