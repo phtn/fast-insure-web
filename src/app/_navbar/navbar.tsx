@@ -1,11 +1,12 @@
 'use client'
 
+import { motion } from 'framer-motion';
 import tw from "tailwind-styled-components";
 import BrandNav from "./brandnav";
 import { MainNav } from "./mainnav";
-import { Mode, Help, MobileMenu } from "./mode";
+import { MobileMenu } from "./mobile";
+import { Help, Mode } from "./mode";
 import { UserNav } from "./usernav";
-import { motion } from 'framer-motion'
 
 export const Navbar = () => {
   return (

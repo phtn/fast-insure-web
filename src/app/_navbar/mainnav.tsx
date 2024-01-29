@@ -15,8 +15,8 @@ interface MenuData {
 const data: MenuData[] = [
   { id: 0, title: "Products", description: "All Products", href: "/products" },
   { id: 1, title: "Claims", description: "All Products", href: "#" },
-  { id: 2, title: "Car Loan", description: "All Products", href: "/carloans" },
-  { id: 3, title: "I-cash", description: "All Products", href: "#" },
+  { id: 2, title: "Auto Loan", description: "All Products", href: "/autoloans" },
+  { id: 3, title: "i-Cash", description: "All Products", href: "#" },
 ];
 
 export function MainNav({

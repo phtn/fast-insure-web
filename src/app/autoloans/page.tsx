@@ -4,9 +4,7 @@ import Image from "next/image";
 import { cars } from "./data";
 import { Button } from "../_components/button";
 
-
-
-export default function CarLoan() {
+export default function AutoLoans() {
   return (
     <div className="bg-gradient-to-b from-slate-950 to-blue-700 px-4 pt-24 sm:px-6 lg:px-24">
       <div className="mb-4 flex w-full flex-col items-start justify-start space-y-2">

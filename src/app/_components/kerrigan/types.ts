@@ -12,6 +12,7 @@ export type KerriganProps = {
   data?: KerriganData[];
   listTitle?: string | undefined;
   actionLabel: string
+  href?: string
 };
 
 export type KerriganListProps = {

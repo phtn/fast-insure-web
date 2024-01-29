@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useCallback } from "react";
 import tw from "tailwind-styled-components";
 import type { KerriganListProps, KerriganProps } from "./types";
+import Link from "next/link";
 
 const RaynorList = ({ data, title }: KerriganListProps) => {
   return (
@@ -45,7 +46,8 @@ export const Raynor = ({
   description,
   data,
   listTitle,
-  actionLabel
+  actionLabel,
+  href
 }: KerriganProps) => {
   const List = useCallback(() => {
     const withData = typeof data !== "undefined";
@@ -93,10 +95,12 @@ export const Raynor = ({
                   delay: 3.5,
                   easings: ['easeInOut']
                 }}>
-                <button className="inline-flex h-12 text-[14px] md:text-lg md:w-[350px] group hover:scale-[105%] transition-all duration-500 font-bold animate-shimmer items-center justify-center rounded-lg border border-blue-300 bg-[linear-gradient(110deg,#000103,45%,#93c5fd,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-white focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-                  {actionLabel}
-                  <LayoutGridIcon className="h-5 w-5 ml-6 isolate group-hover:text-blue-300 transition-all duration-300" />
-                </button>
+                <Link href={href ?? `/`}>
+                  <button className="inline-flex h-12 text-[14px] md:text-lg md:w-[350px] group hover:scale-[105%] transition-all duration-500 font-bold animate-shimmer items-center justify-center rounded-lg border border-blue-300 bg-[linear-gradient(110deg,#000103,45%,#93c5fd,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-white focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+                    {actionLabel}
+                    <LayoutGridIcon className="h-5 w-5 ml-6 isolate group-hover:text-blue-300 transition-all duration-300" />
+                  </button>
+                </Link>
               </motion.div>
               <motion.div initial={{ y: 10, scale: 0.5, opacity: 0 }}
                 animate={{ y: 0, scale: 1, opacity: 1 }}

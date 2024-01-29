@@ -87,7 +87,7 @@ export default function BrandNav({ className }: TeamSwitcherProps) {
             aria-expanded={open}
             aria-label="Select a team"
             className={cn(
-              "flex w-[175px] items-center justify-between md:w-[200px]",
+              "flex w-[195px] items-center justify-between md:w-[200px]",
               className,
             )}
           >
@@ -104,7 +104,7 @@ export default function BrandNav({ className }: TeamSwitcherProps) {
             <ChevronsUpDownIcon className="ml-auto hidden h-5 w-5 shrink-0 text-blue-950" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="mt-4 w-[220px] bg-neutral-50 p-0">
+        <PopoverContent className="mt-2 w-[220px] border-blue-300 bg-neutral-50 p-0">
           <Command>
             <CommandList>
               <CommandInput placeholder="Search client..." />
@@ -113,7 +113,6 @@ export default function BrandNav({ className }: TeamSwitcherProps) {
                 <CommandGroup
                   key={group.label}
                   heading={group.label}
-                  className=""
                 >
                   {group.values.map((item) => (
                     <CommandItem
