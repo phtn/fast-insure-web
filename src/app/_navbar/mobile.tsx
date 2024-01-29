@@ -10,7 +10,7 @@ import {
 } from "@@components/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@@components/popover";
 import { motion } from 'framer-motion';
-import { CandyIcon, CarFrontIcon, CircleUserIcon, ClipboardPenLineIcon, DotIcon, LucideIcon, MenuIcon, Wallet2Icon } from 'lucide-react';
+import { CandyIcon, CarFrontIcon, CircleUserIcon, ClipboardPenLineIcon, DotIcon, MenuIcon, Wallet2Icon, type LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Button } from '../_components/button';

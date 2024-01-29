@@ -5,7 +5,7 @@ import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { motion, useInView } from 'framer-motion';
 import { CandyIcon } from "lucide-react";
 import { useRef } from 'react';
-import { ProductData } from "./data";
+import { type ProductData } from "./data";
 
 type ProductItemProps = {
   data: ProductData[]
@@ -16,7 +16,7 @@ export const ProductItems = ({ data }: ProductItemProps) => {
     <div className="mx-auto w-full max-w-full space-y-4">
       <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10">
         {data.map((item) => (
-          <Item {...item} />
+          <Item key={item.id} {...item} />
         ))}
       </div>
     </div>
