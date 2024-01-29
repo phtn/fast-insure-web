@@ -7,14 +7,14 @@ import { Affiliate } from "./affiliate";
 
 export default async function Home() {
   return (
-    <main>
+    <>
       <Splash />
       <Hero />
       <Highlight />
       <CTPL />
       <Affiliate />
       <MobileApp />
-    </main>
+    </>
   );
 }
 

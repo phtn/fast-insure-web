@@ -27,6 +27,6 @@ export const Navbar = () => {
 };
 
 const Container = tw(motion.div)`
-  from-33% via-66% z-50 absolute w-full border-0 
+  from-33% via-66% z-50 absolute w-full border-0 sticky top-0
   bg-gradient-to-r from-orange-50 via-blue-200 to-orange-50 md:px-16
 `

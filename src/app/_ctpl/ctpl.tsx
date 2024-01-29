@@ -15,7 +15,7 @@ export const CTPL = () => {
 
   return (
     <QuoteContext.Provider value={state}>
-      <div className="grid h-fit md:py-14 lg:grid-cols-2 z-50 bg-gradient-to-b from-blue-950 via-blue-900 to-blue-400">
+      <div className="grid md:py-14 h-full lg:grid-cols-2 z-50 bg-gradient-to-b from-blue-950 via-blue-900 to-blue-400">
         <div className={`bg-[url('/bg/flash_v5.svg')] flex items-center bg-cover`}>
           <Primary setCoverage={setState} />
         </div>

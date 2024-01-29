@@ -14,7 +14,7 @@ export const Jumbotron = (props: Props) => {
       <div className="px-8 md:px-24">
         <div className="flex flex-col space-y-4 text-center md:text-left">
           <div className="space-y-6">
-            <h1 className="text-4xl font-bold tracking-tighter text-blue-50 underline decoration-blue-300 underline-offset-[8px] sm:text-4xl md:text-5xl md:underline-offset-[12px] lg:text-6xl/none">
+            <h1 className="text-5xl font-bold tracking-tighter text-blue-50 underline decoration-blue-300 underline-offset-[8px] sm:text-4xl md:text-5xl md:underline-offset-[12px] lg:text-6xl/none">
               {title}
             </h1>
             <p className="mx-auto text-[16px] text-orange-100 font-medium md:text-xl">
