@@ -3,9 +3,10 @@ import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 
-import { TRPCReactProvider } from "@/trpc/react";
-import { Navbar } from "./_navbar";
+import { TRPCProvider } from "@/trpc/provider";
 import { Toaster } from "sonner";
+import { Navbar } from "./_navbar";
+import { AuthProvider } from "./context";
 import { Footer } from "./footer";
 
 const inter = Inter({
@@ -27,14 +28,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${inter.variable}`}>
-        <TRPCReactProvider cookies={cookies().toString()}>
-          <Navbar />
-          <div className={`overflow-y-scroll`}>
-            {children}
-            <Footer />
-          </div>
-        </TRPCReactProvider>
-        <Toaster />
+        <AuthProvider>
+          <TRPCProvider cookies={cookies().toString()}>
+            <Navbar />
+            <div className={`overflow-y-scroll`}>
+              {children}
+              <Footer />
+            </div>
+          </TRPCProvider>
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   );

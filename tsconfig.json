@@ -43,6 +43,12 @@
       "@@libs/*": [
         "./src/libs/*"
       ],
+      "@server/*": [
+        "./src/server/*"
+      ],
+      "@routers/*": [
+        "./src/server/routers/*"
+      ]
     },
   },
   "include": [
@@ -51,8 +57,10 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
+    "**/*.mjs",
     "**/*.js",
     ".next/types/**/*.ts",
+    "src/env.mjs",
   ],
   "exclude": [
     "node_modules"

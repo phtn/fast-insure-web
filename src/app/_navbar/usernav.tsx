@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@@components/dropdown";
 import { User2Icon } from "lucide-react";
+import Link from "next/link";
 
 // const Profile = () => (
 //   <Avatar className="h-8 w-8">
@@ -22,7 +23,7 @@ import { User2Icon } from "lucide-react";
 
 export function UserNav() {
   // const UserOptions = useCallback(() => {
-  //   const options = opts(
+  //   const options = opts(sign in page
   //     <p>yoyp</p>,
   //     <UserCircleIcon className="h-4 w-4 text-blue-950" />,
   //   );
@@ -41,14 +42,16 @@ export function UserNav() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 bg-blue-50" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">Ethan Hunt</p>
-            <p className="text-muted-foreground text-xs leading-none">
-              agent@email.com
-            </p>
-          </div>
-        </DropdownMenuLabel>
+        <Link href='/signin'>
+          <DropdownMenuLabel className="font-normal">
+            <div className="flex flex-col space-y-1">
+              <p className="text-sm font-medium leading-none">Ethan Hunt</p>
+              <p className="text-muted-foreground text-xs leading-none">
+                agent@email.com
+              </p>
+            </div>
+          </DropdownMenuLabel>
+        </Link>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
