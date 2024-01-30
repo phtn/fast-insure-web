@@ -127,3 +127,7 @@ export const getNextElement = <T>(
   setState(nextIndex);
   return nextIndex;
 };
+
+export function toggleState(setState: Dispatch<SetStateAction<boolean>>): void {
+  setState(prevState => !prevState);
+}

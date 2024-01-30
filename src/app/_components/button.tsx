@@ -18,8 +18,8 @@ const buttonVariants = cva(
           "border border-blue-400 hover:border-2 hover:text-blue-200 text-blue-600 transition-all duration-300",
         goldline: "border border-blue-400 hover:border-blue-600 font-bold hover:bg-blue-50 bg-transparent text-blue-500 hover:text-blue-500 transition-all duration-300",
         secondary: "bg-zinc-500 font-bold text-white hover:bg-blue-950",
-        tertiary: "bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white",
-        ghost: "text-blue-500 hover:bg-white hover:text-blue-500",
+        tertiary: "bg-blue-500/10 text-blue-900 hover:bg-blue-600 hover:text-white",
+        ghost: "text-blue-900 hover:bg-white hover:text-blue-600",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

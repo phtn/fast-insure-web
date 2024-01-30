@@ -13,7 +13,7 @@ export const ActiveForm = ({ action, form, loading, onSubmit }: LoginFormProps) 
       <Button
         size='fat'
         type="submit"
-        disabled={isValid}
+        disabled={!isValid}
         variant='submit'
         className="w-full text-lg"
 

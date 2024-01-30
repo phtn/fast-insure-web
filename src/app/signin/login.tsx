@@ -41,8 +41,6 @@ export const Login = ({ action }: { action: string }) => {
     signInWithEmailAndPassword(email, password).then((user) => {
       if (user) {
         onSuccess("Signed in!");
-      } else {
-        onError("Error", "Unable to authenticate.");
       }
     }).catch((err: Error) => {
       console.log(typeof user?.toString()[0])
