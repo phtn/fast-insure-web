@@ -1,6 +1,5 @@
 'use client'
 
-import { onError, onSuccess } from "@/utils/toast";
 import {
   Form,
 } from "@@components/form";
@@ -14,18 +13,9 @@ import { ActiveForm } from "./login-form";
 import {
   loginDefaults,
   loginSchema,
-  type LoginFormProps,
   type LoginSchema,
 } from "./schema";
 
-const LoginForm = (props: LoginFormProps) => {
-  const { action, form, loading, onSubmit } = props;
-  return (
-    <Form {...form}>
-      <ActiveForm action={action} form={form} loading={loading} onSubmit={onSubmit} />
-    </Form>
-  );
-};
 
 export const Login = ({ action }: { action: string }) => {
   const form = useForm<LoginSchema>({
@@ -33,21 +23,32 @@ export const Login = ({ action }: { action: string }) => {
     defaultValues: loginDefaults,
   });
 
-  const [signInWithEmailAndPassword, user, loading] =
+  const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
+
+  const handleSignin = (email: string, password: string) => {
+    signInWithEmailAndPassword(email, password).then(creds => {
+      if (loading) {
+        console.log('Loading')
+      }
+      if (error) {
+        console.log(error.name, error.message)
+      }
+      console.log(creds?.user, user)
+    }).catch(err => {
+      console.log(err)
+    })
+  }
 
   const onSubmit = (values: LoginSchema) => {
     const { email, password } = values;
-    signInWithEmailAndPassword(email, password).then((user) => {
-      if (user) {
-        onSuccess("Signed in!");
-      }
-    }).catch((err: Error) => {
-      console.log(typeof user?.toString()[0])
-      console.log(err.name, err.message)
-      onError(err.name, err.message);
-    });
+    handleSignin(email, password)
   };
 
-  return <LoginForm action={action} form={form} onSubmit={onSubmit} loading={loading} />;
+  return (
+    <Form {...form}>
+      <ActiveForm action={action} form={form} loading={loading} onSubmit={onSubmit} />
+    </Form>
+  )
+
 };

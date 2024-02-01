@@ -12,7 +12,7 @@ export const Item = (props: Packages) => {
 
   return (
     <motion.div ref={ref}
-      animate={{ transform: isInView ? `translateY(0)` : `translateY(50px)`, scale: isInView ? 1 : 0.5, opacity: isInView ? 1 : 0 }}
+      animate={{ transform: isInView ? `translateY(${0})` : `translateY(${50}px)`, scale: isInView ? 1 : 0.5, opacity: isInView ? 1 : 0 }}
       transition={{ duration: 0.5, delay: id * 0.1 }}>
       <Container
         key={id}

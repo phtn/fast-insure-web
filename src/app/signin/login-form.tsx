@@ -1,8 +1,8 @@
-import { Control, ControllerRenderProps } from "react-hook-form";
+import { type Control, type ControllerRenderProps } from "react-hook-form";
 import { Button } from "../_components/button";
 import { FormControl, FormField, FormItem } from "../_components/form";
 import { InputField } from "../_components/input";
-import { type LoginField, type LoginSchema, loginFields, type LoginFormProps } from "./schema";
+import { loginFields, type LoginField, type LoginFormProps, type LoginSchema } from "./schema";
 
 export const ActiveForm = ({ action, form, loading, onSubmit }: LoginFormProps) => {
   const { handleSubmit, control, formState } = form;

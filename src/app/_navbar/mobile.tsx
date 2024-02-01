@@ -20,7 +20,7 @@ type Item = {
   desc: string
   value: string
   icon: LucideIcon
-  href: string
+  href?: string
 }
 
 type GroupItem = {
@@ -70,7 +70,7 @@ const groups: GroupItem[] = [
         desc: "Customize your profile.",
         value: "67890",
         icon: CircleUserIcon,
-        href: '/autoloans'
+        href: '/signin'
       },
     ],
   },
@@ -89,7 +89,7 @@ export const MobileMenu = () => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <motion.div
-          initial={{ x: -150, opacity: 0, skewX: `${85}deg` }}
+          initial={{ x: 150, opacity: 0, skewX: `${-85}deg` }}
           animate={{ x: 0, skewX: `${0}deg`, opacity: 1 }}
           transition={{
             damping: 1,
@@ -112,7 +112,7 @@ export const MobileMenu = () => {
                 key={group.label}
               >
                 {group.values.map((item) => (
-                  <Link key={item.value} href={item.href}>
+                  <Link key={item.value} href={item.href ?? `#`}>
                     <CommandItem
                       key={item.value}
                       onSelect={() => {

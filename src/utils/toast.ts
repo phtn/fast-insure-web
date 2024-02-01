@@ -1,3 +1,4 @@
+import { type AuthError } from "firebase/auth";
 import { toast } from "sonner";
 
 export const onSuccess = (...args: string[]) => {
@@ -23,3 +24,13 @@ export const onWarn = (...args: string[]) => {
     description: args[1],
   });
 };
+
+type OnPromise = [Promise<boolean>, string, AuthError | Error | undefined]
+
+export const onPromise = (...args: OnPromise) => {
+  toast.promise(args[0], {
+    loading: args[1],
+    success: (data) => data,
+    error: args[2]?.message
+  })
+}

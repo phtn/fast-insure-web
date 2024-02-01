@@ -36,7 +36,7 @@ export const Tet = ({ data }: BannerProps) => {
 }
 
 const Item = ({ isInView, viewRef, props }: ItemProps) => (
-  <motion.div ref={viewRef} animate={{ transform: isInView ? "none" : "translateX(-100px)", opacity: isInView ? 1 : 0 }} transition={{ duration: 0.5, delay: props.id * 0, easings: ['easeInOut'] }} className="flex items-center justify-center z-40">
+  <motion.div ref={viewRef} animate={{ transform: isInView ? `translateX(${0})` : `translateX(${-100}px)`, opacity: isInView ? 1 : 0 }} transition={{ duration: 0.5, delay: props.id * 0, easings: ['easeInOut'] }} className="flex items-center justify-center z-40">
     <div className="md:h-full h-[100px] flex items-center md:justify-center justify-end md:w-[200px] w-[150px]">
       <motion.div initial={{ scale: 0 }} animate={{ scale: isInView ? 1 : 0 }} transition={{ duration: 0.3, delay: props.id * 0.3 }} className="flex items-center justify-center bg-gradient-to-br from-blue-500 from-65% to-blue-300/50 rounded-full h-[75px] w-[75px] md:h-[125px] md:w-[125px]">
         <props.icon className="md:h-16 md:w-16 h-10 w-10 text-orange-50" />

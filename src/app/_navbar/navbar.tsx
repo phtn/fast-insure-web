@@ -6,7 +6,7 @@ import BrandNav from "./brandnav";
 import { MainNav } from "./mainnav";
 import { MobileMenu } from "./mobile";
 import { Help, Mode } from "./mode";
-import { UserNav } from "./usernav";
+import { UserMenu } from './usermenu';
 
 export const Navbar = () => {
   return (
@@ -17,7 +17,7 @@ export const Navbar = () => {
         <div className="hidden w-[200px] items-center justify-between md:flex">
           <Help />
           <Mode />
-          <UserNav />
+          <UserMenu />
         </div>
         <div className="md:hidden">
           <MobileMenu />

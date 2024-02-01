@@ -31,7 +31,7 @@ const Item = (props: ProductData) => {
     <motion.div
       ref={ref}
       key={props.id}
-      animate={{ transform: isInView ? `translateY(0)` : `translateY(50px)`, scale: isInView ? 1 : 0.5, opacity: isInView ? 1 : 0 }}
+      animate={{ transform: isInView ? `translateY(${0})` : `translateY(${50}px)`, scale: isInView ? 1 : 0.5, opacity: isInView ? 1 : 0 }}
       transition={{ duration: 0.5, delay: props.id * 0.1 }}>
       <div
         key={props.id}
