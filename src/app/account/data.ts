@@ -6,57 +6,23 @@ export interface AccountItem {
 
 export const accountItems: AccountItem[] = [
   {
-    title: "React Rendezvous",
-    description: "Ethan Byte",
-    cover: "/images/spyder.webp",
-  },
-  {
-    title: "Async Awakenings",
-    description: "Nina Netcode",
-    cover: "/images/spyder.webp",
-  },
-  {
-    title: "The Art of Reusability",
-    description: "Lena Logic",
-    cover: "/images/spyder.webp",
-  },
-  {
-    title: "Stateful Symphony",
-    description: "Beth Binary",
+    title: "Black Widow",
+    description: "Audi R8",
     cover: "/images/spyder.webp",
   },
 ]
 
 export const plugins: AccountItem[] = [
   {
-    title: "Thinking Components",
-    description: "Lena Logic",
-    cover: "/images/spyder.webp",
+    title: "Road-side Assist",
+    description: "Get road-side assistance anywhere.",
+    cover: "/peaks/peaks_v1.svg",
   },
+
   {
-    title: "Functional Fury",
-    description: "Beth Binary",
-    cover: "/images/spyder.webp",
-  },
-  {
-    title: "React Rendezvous",
-    description: "Ethan Byte",
-    cover: "/images/spyder.webp",
-  },
-  {
-    title: "Stateful Symphony",
-    description: "Beth Binary",
-    cover: "/images/spyder.webp",
-  },
-  {
-    title: "Async Awakenings",
-    description: "Nina Netcode",
-    cover: "/images/spyder.webp",
-  },
-  {
-    title: "The Art of Reusability",
-    description: "Lena Logic",
-    cover: "/images/spyder.webp",
+    title: "Towing Service",
+    description: "Towing Service (NCR)",
+    cover: "/peaks/peaks_v4.svg",
   },
 ]
 

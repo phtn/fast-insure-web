@@ -5,7 +5,7 @@ import { useContext, useEffect } from "react"
 import { AuthContext } from "../context"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../_components/tabs"
 import { Button } from "../_components/button"
-import { PlusCircleIcon } from "lucide-react"
+import { PlusCircleIcon, PlusIcon } from "lucide-react"
 import { accountItems, plugins } from "./data"
 import { Separator } from "@radix-ui/react-select"
 import { AccountItem } from "./item"
@@ -25,7 +25,7 @@ export const AccountDashboard = () => {
 
   return (
     <div className="portrait:h-fit h-screen bg-orange-50 px-24 py-12">
-      <Tabs defaultValue="autos" className="h-full space-y-10">
+      <Tabs defaultValue="autos" className="h-full space-y-12">
         <div className="space-between flex items-center">
           <TabsList>
             <TabsTrigger value="autos" className="relative">
@@ -42,26 +42,25 @@ export const AccountDashboard = () => {
           value="autos"
           className="border-none p-0 outline-none"
         >
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <h2 className="text-2xl font-semibold tracking-tight">
-                All Autos
-              </h2>
+          <div className="flex items-center justify-between mb-8">
+            <div className="space-y-2">
+              <div className="flex items-center justify-center space-x-4">
+                <h2 className="text-2xl font-semibold tracking-tight">
+                  All Autos
+                </h2>
+                <Button className="rounded-full h-6 w-6" size='icon'>
+                  <PlusIcon className="h-4 w-4" />
+                </Button>
+
+              </div>
               <p className="text-sm text-muted-foreground">
                 All registered vehicles.
               </p>
             </div>
-            <div className="ml-auto mr-4">
-              <Button>
-                <PlusCircleIcon className="mr-2 h-4 w-4" />
-                Add Coverage
-              </Button>
-            </div>
           </div>
-          <Separator className="my-4" />
           <div className="relative">
             <ScrollArea className="w-full">
-              <div className="flex space-x-4 pb-4">
+              <div className="flex space-x-6 pb-4">
                 {accountItems.map((item) => (
                   <AccountItem
                     key={item.title}
@@ -86,12 +85,12 @@ export const AccountDashboard = () => {
           <Separator className="my-4" />
           <div className="relative">
             <ScrollArea>
-              <div className="flex space-x-4 pb-4">
+              <div className="flex space-x-6 pb-4">
                 {plugins.map((item) => (
                   <AccountItem
                     key={item.title}
                     accountItem={item}
-                    className="w-[150px]"
+                    className="w-[250px]"
                     aspectRatio="square"
                     width={150}
                     height={150}
