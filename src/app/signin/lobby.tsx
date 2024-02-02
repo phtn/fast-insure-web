@@ -1,10 +1,12 @@
 'use client'
 
+import { type AccountType } from "@/server/resource/account"
 import { opts, toggleState } from "@/utils/helpers"
 import { ArrowUpRightIcon, BadgeCheckIcon, ChevronsRightIcon, LogInIcon, ShieldCheckIcon, SparkleIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useCallback, useContext, useEffect, useState, type Dispatch, type FormEvent, type SetStateAction } from "react"
 import tw from "tailwind-styled-components"
+import { type z } from "zod"
 import { Button } from "../_components/button"
 import { XGrid } from "../_components/grid"
 import { AuthContext } from "../context"
@@ -78,17 +80,24 @@ const TopSection = ({ newAccount }: { newAccount: boolean }) => (
 type CardProps = {
   onClick: (e: FormEvent<HTMLButtonElement>) => void
   newAccount?: boolean
+  setAccountType?: Dispatch<SetStateAction<z.infer<typeof AccountType>>>
 }
 
-const SignCards = ({ onClick }: CardProps) => {
+const SignCards = ({ onClick, setAccountType }: CardProps) => {
   return (
     <div className="md:overflow-x-scroll py-2 h-fit w-screen md:w-full">
       <div className="lg:px-24 md:px-12 px-6 md:gap-x-12 gap-x-4 grid grid-cols-2 w-[800px] md:w-full">
         <div className="flex items-center md:w-full w-[calc(100vw-55px)]">
-          <AgentCard onClick={onClick} />
+          <AgentCard onClick={(e) => {
+            onClick(e)
+            setAccountType && setAccountType('AFFILIATE')
+          }} />
         </div>
         <div className="flex items-center w-full">
-          <PersonalCard onClick={onClick} />
+          <PersonalCard onClick={(e) => {
+            onClick(e)
+            setAccountType && setAccountType('PERSONAL')
+          }} />
         </div>
       </div>
     </div>
@@ -96,8 +105,13 @@ const SignCards = ({ onClick }: CardProps) => {
 }
 
 
+type ActiveSignUpProps = {
+  onClick: (e: FormEvent<HTMLButtonElement>) => void
+  newAccount?: boolean
+  accountType: z.infer<typeof AccountType>
+}
 
-const ActiveSignUp = ({ onClick, newAccount }: CardProps) => {
+const ActiveSignUp = ({ onClick, newAccount, accountType }: ActiveSignUpProps) => {
 
   return (
     <div className="px-24 grid md:grid-cols-5 grid-cols-1">
@@ -131,7 +145,7 @@ const ActiveSignUp = ({ onClick, newAccount }: CardProps) => {
             <div><span className="text-zinc-600 pl-1 text-[14px]">Type your email and create a password.</span></div>
 
           </div>
-          <Login action={newAccount ? `Create account` : `Sign in`} />
+          <Login action={newAccount ? `Create account` : `Sign in`} newAccount={newAccount ?? false} accountType={accountType} />
 
           <div className="flex items-end justify-center h-[56px]">
             <div className="flex items-center space-x-2">
@@ -158,14 +172,20 @@ const Hint = () => (
 
 const MidSection = ({ newAccount }: { newAccount: boolean }) => {
   const [active, setActive] = useState(false)
-  const handleToggle = (e: FormEvent<HTMLButtonElement>) => {
+  const [accountType, setAccountType] = useState<z.infer<typeof AccountType>>("PERSONAL")
+
+  const handleSelect = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault()
     toggleState(setActive)
   }
+  const handleToggle = () => {
+    toggleState(setActive)
+  }
+
   const ViewOptions = useCallback(() => {
-    const options = opts(<ActiveSignUp onClick={handleToggle} newAccount={newAccount} />, <SignCards onClick={handleToggle} />)
+    const options = opts(<ActiveSignUp onClick={handleToggle} newAccount={newAccount} accountType={accountType} />, <SignCards setAccountType={setAccountType} onClick={handleSelect} />)
     return <>{options.get(active)}</>
-  }, [active, newAccount])
+  }, [active, newAccount, accountType])
 
   const HintOptions = useCallback(() => {
     const options = opts(<div className="py-[21px]" />, <Hint />)

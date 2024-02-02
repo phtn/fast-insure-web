@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { publicProcedure, router } from "../trcp";
+import { procedure, router } from "../trcp";
 
 
 let post = {
@@ -8,11 +8,11 @@ let post = {
 };
 
 export const defaultRouter = router({
-  connect: publicProcedure.query(() => ({
+  connect: procedure.query(() => ({
     status: "Server connected",
   })),
 
-  create: publicProcedure
+  create: procedure
     .input(z.object({ name: z.string().min(1) }))
     .mutation(async ({ input }) => {
       // simulate a slow db call
@@ -22,7 +22,7 @@ export const defaultRouter = router({
       return post;
     }),
 
-  getLatest: publicProcedure.query(() => {
+  getLatest: procedure.query(() => {
     return post;
   }),
 });

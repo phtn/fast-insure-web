@@ -23,5 +23,5 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
 });
 
 export const router = t.router;
-export const publicProcedure = t.procedure;
+export const procedure = t.procedure;
 export const mergeRouters = t.mergeRouters;

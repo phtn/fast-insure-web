@@ -1,30 +1,58 @@
 'use client'
 
+import { type AccountType } from "@/server/resource/account";
+import { onError, onSuccess } from "@/utils/toast";
 import {
   Form,
 } from "@@components/form";
 import { auth } from "@@libs/db";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useCreateUserWithEmailAndPassword, useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import {
   useForm,
 } from "react-hook-form";
+import { type z } from "zod";
 import { ActiveForm } from "./login-form";
 import {
   loginDefaults,
   loginSchema,
   type LoginSchema,
 } from "./schema";
+import { createUser } from "./serverOnly";
+
+export type UserType = z.infer<typeof AccountType>
+
+type LoginProps = {
+  action: string
+  newAccount: boolean
+  accountType: UserType
+}
 
 
-export const Login = ({ action }: { action: string }) => {
+export const Login = ({ action, newAccount, accountType }: LoginProps) => {
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: loginDefaults,
   });
 
-  const [signInWithEmailAndPassword, user, loading, error] =
+  const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth)
+  const [signInWithEmailAndPassword, _user, loading, error] =
     useSignInWithEmailAndPassword(auth);
+
+  const handleCreateUser = (email: string, password: string) => {
+    createUserWithEmailAndPassword(email, password).then(creds => {
+      if (creds) {
+        createUser({ userId: creds.user.uid, email: creds.user.email!, accountType }).then((res) => {
+          console.log(res)
+          onSuccess('Account created.', creds.user.email!)
+        }).catch((err: Error) => {
+          onError(err.name, err.message)
+        })
+      }
+    }).catch((err: Error) => {
+      onError('Sign up error!', err.message)
+    })
+  }
 
   const handleSignin = (email: string, password: string) => {
     signInWithEmailAndPassword(email, password).then(creds => {
@@ -34,15 +62,21 @@ export const Login = ({ action }: { action: string }) => {
       if (error) {
         console.log(error.name, error.message)
       }
-      console.log(creds?.user, user)
-    }).catch(err => {
-      console.log(err)
+      if (creds) {
+        onSuccess("Login succcessful.")
+      }
+    }).catch((err: Error) => {
+      onError('Login error!', err.message)
     })
   }
 
   const onSubmit = (values: LoginSchema) => {
     const { email, password } = values;
-    handleSignin(email, password)
+    if (newAccount) {
+      handleCreateUser(email, password)
+    } else {
+      handleSignin(email, password)
+    }
   };
 
   return (

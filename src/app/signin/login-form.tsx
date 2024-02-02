@@ -13,7 +13,7 @@ export const ActiveForm = ({ action, form, loading, onSubmit }: LoginFormProps) 
       <Button
         size='fat'
         type="submit"
-        disabled={!isValid}
+        disabled={!isValid || loading}
         variant='submit'
         className="w-full text-lg"
 
@@ -23,7 +23,7 @@ export const ActiveForm = ({ action, form, loading, onSubmit }: LoginFormProps) 
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Fields control={control} fields={loginFields} loading={loading} />
+      <Fields control={control} fields={loginFields} />
       <Submit />
     </form>
   );
@@ -50,15 +50,13 @@ const render = ({ field, item }: RenderProps) => (
 
 type FieldProps = {
   fields: LoginField[];
-  loading: boolean;
   control: Control<LoginSchema>;
 };
 
-const Fields = ({ control, fields, loading }: FieldProps) => {
+const Fields = ({ control, fields }: FieldProps) => {
   return fields.map((item) => (
     <FormField
       key={item.name}
-      disabled={loading}
       control={control}
       name={item.name}
       render={({ field }) => render({ field, item })}
