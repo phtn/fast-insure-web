@@ -1,3 +1,4 @@
+'use server'
 import { tRPC } from "@/trpc/rsc";
 
 export const uploadSingleFile = async (file: File) => {

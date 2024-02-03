@@ -11,31 +11,8 @@ import {
 import { Input } from "@@components/input"
 import { Label } from "@@components/label"
 import { PlaneTakeoff } from "lucide-react"
-import { TabsContent } from "../_components/tabs"
-import { Separator } from "@radix-ui/react-select"
 
-export const Travel = () => {
-  return (
-    <TabsContent
-      value="travel"
-      className="h-full flex-col border-none p-0 data-[state=active]:flex"
-    >
-      <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <h2 className="text-2xl font-semibold tracking-tight">
-            Trip to Jerusalem
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Go wander and get lost on a wild adventure in Gaza.
-          </p>
-        </div>
-      </div>
-      <Separator className="my-4" />
-      <Content />
-    </TabsContent>
-  )
-}
-const Content = () => {
+export const Content = () => {
   return (
     <div className="flex h-[450px] shrink-0 items-center justify-center rounded-md border border-dashed">
       <div className="mx-auto flex max-w-[420px] flex-col items-center justify-center text-center">
@@ -73,5 +50,3 @@ const Content = () => {
     </div>
   )
 }
-
-

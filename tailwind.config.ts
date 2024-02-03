@@ -2,6 +2,7 @@ import { type Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette"
 import svgToDataUri from 'mini-svg-data-uri'
+import tailwindcssAnimate from 'tailwindcss-animate'
 
 
 export default {
@@ -9,6 +10,13 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      colors: {
+        paper: "#F8F8F8",
+        ash: "#D7D7D7",
+        clay: "#6A6A6A",
+        coal: "#3A3A3A",
+        fast: "#172554",
+      },
       backgroundSize: {
         'size-200': '200% 200%'
       },
@@ -20,7 +28,7 @@ export default {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       animation: {
-        shimmer: "shimmer 4s linear infinite"
+        shimmer: "shimmer 5s linear infinite"
       },
       keyframes: {
         shimmer: {
@@ -38,6 +46,7 @@ export default {
 
 
   plugins: [
+    tailwindcssAnimate,
     addVariablesForColors,
     function({ matchUtilities, theme }: any) {
       matchUtilities(

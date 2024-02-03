@@ -3,7 +3,7 @@
 import { Button } from "@@components/button";
 import { opts } from "@@utils/helpers";
 import { motion } from 'framer-motion';
-import { LayoutGridIcon } from "lucide-react";
+import { ArrowUpRightIcon, LayoutGridIcon } from "lucide-react";
 import Image from "next/image";
 import { useCallback } from "react";
 import tw from "tailwind-styled-components";
@@ -96,7 +96,7 @@ export const Raynor = ({
                   easings: ['easeInOut']
                 }}>
                 <Link href={href ?? `/`}>
-                  <button className="inline-flex h-12 text-[14px] md:text-lg md:w-[350px] group hover:scale-[105%] transition-all duration-500 font-bold animate-shimmer items-center justify-center rounded-lg border border-blue-300 bg-[linear-gradient(110deg,#000103,45%,#93c5fd,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-white focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+                  <button className="inline-flex h-[50px] text-[14px] md:text-lg md:w-[350px] group hover:scale-[105%] transition-all duration-[5000] font-bold animate-shimmer items-center justify-center rounded-lg border border-blue-300 bg-[linear-gradient(110deg,#000103,45%,#93c5fd,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-white focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
                     {actionLabel}
                     <LayoutGridIcon className="h-5 w-5 ml-6 isolate group-hover:text-blue-300 transition-all duration-300" />
                   </button>
@@ -109,7 +109,10 @@ export const Raynor = ({
                   delay: 3.6,
                   easings: ['easeInOut']
                 }}>
-                <Button size='lg' variant='outline' className="hidden min-w-[200px] rounded-lg md:flex h-12 hover:scale-[105%] transition-all duration-500">Sign up</Button>
+                <Button size='lg' variant='outline' className="hidden min-w-[200px] space-x-4 md:flex hover:scale-[105%] transition-all duration-500">
+                  <span>Sign up</span>
+                  <ArrowUpRightIcon className="h-4 w-4" />
+                </Button>
               </motion.div>
 
 

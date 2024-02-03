@@ -18,7 +18,7 @@ export const Affiliate = () => {
           Join our Affiliate Program.
         </h4>
         <div className='flex space-x-4'>
-          <button className="inline-flex h-12 text-[16px] md:text-lg w-[250px] md:w-[300px] group hover:scale-[105%] transition-all duration-500 font-bold animate-shimmer items-center justify-center rounded-lg border border-blue-300 bg-[linear-gradient(110deg,#000103,45%,#93c5fd,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-white focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+          <button className="inline-flex h-[50px] text-[16px] md:text-lg w-[250px] md:w-[300px] group hover:scale-[105%] transition-all duration-[4000] font-bold animate-shimmer items-center justify-center rounded-lg border border-blue-300 bg-[linear-gradient(110deg,#000103,45%,#93c5fd,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-white focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
             Sign up today!
             <ArrowUpRightSquare className="h-5 w-5 ml-6 isolate group-hover:text-blue-300 transition-all duration-300" />
           </button>

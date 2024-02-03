@@ -78,4 +78,36 @@ export const InputField = React.forwardRef<HTMLInputElement, InputProps & IconPr
 );
 InputField.displayName = "InputField";
 
+export const InputFile = React.forwardRef<HTMLInputElement, InputProps & IconPrefix>(
+  ({ className, type, ...props }, ref) => {
+    return (
+      <div
+        className={cn(
+          "border-[0.33px] focus-within:ring-ring outline-gray-400/70 outline-dashed shadow-sm flex flex-col h-[200px] items-center justify-center rounded-xl bg-gradient-to-br from-gray-400/20 via-orange-50/30 to-blue-200/30 pl-3 pr-[3px] ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1",
+          className,
+        )}
+      >
+
+        <div className="flex items-center justify-center space-x-4 absolute">
+          <props.icon className="h-[64px] w-[64px] mr-[10px] text-gray-400/90" strokeWidth={1} />
+          <div>
+            <p className="max-w-[15ch] text-md text-gray-500">Select a file or drag and drop here.</p>
+            <span className="text-[12px] text-blue-500 py-1">JPG, PNG or PDF</span>
+          </div>
+        </div>
+
+        <input
+          {...props}
+          type={type}
+          ref={ref}
+          className="w-full py-3 text-[15px] h-[200px] opacity-0 placeholder:text-slate-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        />
+
+
+      </div>
+    );
+  },
+);
+InputFile.displayName = "InputFile";
+
 export { Input };

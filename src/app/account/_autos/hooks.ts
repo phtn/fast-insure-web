@@ -1,38 +1,17 @@
 import { storage } from '@/libs/db';
 import { onError, onSuccess } from "@/utils/toast";
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { type ChangeEvent, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import shortid from "shortid";
 import { createWorker } from "tesseract.js";
 import type Tesseract from "tesseract.js";
 
 
 export const useFileHandler = () => {
-  const [files, setFiles] = useState<FileList | null>(null)
+  const [file, setFile] = useState<File | null>(null)
   const [imageData, setImageData] = useState<string | null>(null)
 
   const removeImage = () => setImageData(null)
-
-  const arrayToFileList = (array: File[]) => {
-
-    const fileList: FileList = Object.create(FileList.prototype);
-    Object.defineProperty(fileList, "length", {
-      value: array.length,
-      writable: false,
-      enumerable: false,
-      configurable: true,
-    });
-
-    array.forEach((file, index) => {
-      Object.defineProperty(fileList, index, {
-        value: file,
-        writable: false,
-        enumerable: true,
-        configurable: true,
-      });
-    });
-    return fileList;
-  };
 
   const getImageData = (file: File | undefined) => {
 
@@ -45,31 +24,23 @@ export const useFileHandler = () => {
   }
 
   const handleFileChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      if (!e.target.files) {
-        return;
-      }
-      if (!files) {
-        setFiles(e.target.files);
-      }
-      if (files) {
-        const fileArray = [...files, ...e.target.files];
-        setFiles(fileArray && arrayToFileList(fileArray));
-        getImageData([...files][0])
+    (e: FileList | null) => {
+
+      getImageData(e?.[0])
+      if (e) {
+        console.log(e)
+        setFile(e[0]!);
       }
     },
-    [files],
+    [],
   );
 
-
-
   const handleFileRemove = () => {
-    const updatedFiles = files && [...files].filter((_, i) => 0 !== i);
-    setFiles(updatedFiles && arrayToFileList(updatedFiles));
+    setFile(null);
     removeImage()
   };
 
-  return { files, handleFileRemove, handleFileChange, imageData }
+  return { file, handleFileRemove, handleFileChange, imageData }
 }
 
 
@@ -81,6 +52,12 @@ export const useFileUploader = (userId: string | undefined, imageData: string | 
   const [ocrResult, setOcrResult] = useState('')
   const [tp, setTP] = useState<Tesseract.Line[]>()
 
+  const Err = (err: Error) => {
+    onError(err.name, err.message)
+  }
+  const Ok = () => {
+    onSuccess('Upload complete.')
+  }
 
   const fileUploader = async (file: File) => {
 
@@ -95,18 +72,17 @@ export const useFileUploader = (userId: string | undefined, imageData: string | 
       setUploadProgress(progress)
     },
       (err) => {
-        err.message
+        onError(err.name, err.message)
       },
-      () => getDownloadURL(uploadTask.snapshot.ref).then(url => {
-        setDownloadURL(url)
-      })
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then(url => {
+          setDownloadURL(url)
+        }).catch((err: Error) => {
+          onError(err.name, err.message)
+        })
+      }
     )
-    const Err = (err: Error) => {
-      onError(err.name, err.message)
-    }
-    const Ok = () => {
-      onSuccess('Upload complete.')
-    }
+
     await uploadTask.then(Ok, Err);
 
   }
@@ -124,9 +100,7 @@ export const useFileUploader = (userId: string | undefined, imageData: string | 
     setOcrResult(result.data.text)
     setTP(result.data.paragraphs[0]?.lines)
     await worker.terminate()
-
   }
-
 
 
   return { fileUploader, uploadProgress, downloadURL, readImage, ocrStatus, ocrResult, ocrProgress, tp }

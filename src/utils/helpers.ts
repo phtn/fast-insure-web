@@ -66,10 +66,7 @@ export const decimal = (
   });
 };
 
-export const extractFileType = (input: string): string | null | undefined => {
-  const match = input.match(/\/(\w+)$/);
-  return match ? match[1] : null;
-};
+
 
 export const transformDate = (dateString: string): string => {
   const date = new Date(dateString);
@@ -107,15 +104,16 @@ export const copyFn: CopyFn = async ({ name, text }) => {
   }
 };
 
-export const limitText = (text: string | number) => {
-  if (typeof text === "number") {
-    const str = text.toString();
-    return str.substring(0, 30);
+export const limitText = (text: string | undefined, chars?: number) => {
+  if (!text) {
+    return ''
   }
-  if (text.length > 45) {
-    return `${text.substring(0, 40)} ...`;
+  if (chars) {
+    return text.substring(0, chars);
+
   }
-  return text.substring(0, 45);
+  return text.substring(0, 25) + `...`;
+
 };
 
 export const getNextElement = <T>(
@@ -130,4 +128,30 @@ export const getNextElement = <T>(
 
 export function toggleState(setState: Dispatch<SetStateAction<boolean>>): void {
   setState(prevState => !prevState);
+}
+
+export const fileType = (file_type: string | undefined): string | null | undefined => {
+  if (!file_type) {
+    return null
+  }
+  const match = file_type.match(/\/(\w+)$/);
+  return match ? match[1] : null;
+};
+
+export function fileSize(bytes: number | undefined): string {
+  const units = ["bytes", "KB", "MB", "GB", "TB"];
+  let unitIndex = 0;
+
+  if (!bytes) {
+    return ''
+  }
+
+  while (bytes >= 1024 && unitIndex < units.length - 1) {
+    bytes /= 1024;
+    unitIndex++;
+  }
+
+  const roundedValue = unitIndex > 1 ? bytes.toFixed(2) : Math.round(bytes);
+
+  return `${roundedValue} ${units[unitIndex]}`;
 }

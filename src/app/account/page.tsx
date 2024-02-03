@@ -1,10 +1,4 @@
-import { AccountDashboard } from "./dashboard"
+import { Autos } from "./_autos/autos"
 
-export default async function Account() {
-
-  return (
-    <>
-      <AccountDashboard />
-    </>
-  )
-}
+const Account = async () => <Autos />
+export default Account

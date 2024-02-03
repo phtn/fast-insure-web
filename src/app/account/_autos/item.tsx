@@ -86,8 +86,8 @@ export function AccountItem({
         </ContextMenuContent>
       </ContextMenu>
       <div className="space-y-1 text-sm">
-        <h3 className="font-medium leading-none">{accountItem.title}</h3>
-        <p className="text-xs text-muted-foreground">{accountItem.description}</p>
+        <h3 className="font-semibold text-coal leading-none">{accountItem.title}</h3>
+        <p className="text-xs text-clay">{accountItem.description}</p>
       </div>
     </div>
   )

@@ -1,3 +1,5 @@
+import { type CheckoutSchema } from "@/server/resource/icash"
+
 export interface AccountItem {
   title: string
   description: string
@@ -18,7 +20,6 @@ export const plugins: AccountItem[] = [
     description: "Get road-side assistance anywhere.",
     cover: "/peaks/peaks_v1.svg",
   },
-
   {
     title: "Towing Service",
     description: "Towing Service (NCR)",
@@ -42,3 +43,16 @@ export const playlists = [
   "Mellow Days",
   "Eminem Essentials",
 ]
+
+// iCASH checkout phone: 227 227 227
+export const payload: CheckoutSchema = {
+  merchantUsername: "fastinsure",
+  merchantPassword: "XodZy9D5KTcYsQL@$aRInahMd$ufR39DsY",
+  merchantCode: "FASTINSURE",
+  merchantRefNo: "FxIy",
+  merchantProductDescription: "CTPL XL",
+  currencyCode: "PHP",
+  amount: "1600.00",
+  successUrl: "https://re-up.ph",
+  errorUrl: "https://re-up.ph"
+}
