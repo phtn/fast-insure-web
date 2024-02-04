@@ -83,7 +83,7 @@ export const InputFile = React.forwardRef<HTMLInputElement, InputProps & IconPre
     return (
       <div
         className={cn(
-          "border-[0.33px] focus-within:ring-ring outline-gray-400/70 outline-dashed shadow-sm flex flex-col h-[200px] items-center justify-center rounded-xl bg-gradient-to-br from-gray-400/20 via-orange-50/30 to-blue-200/30 pl-3 pr-[3px] ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1",
+          "border-[0.33px] focus-within:ring-ring outline-gray-400/70 outline-dashed shadow-sm flex flex-col h-[300px] items-center justify-center rounded-xl bg-gradient-to-br from-gray-400/20 via-orange-50/30 to-blue-200/30 pl-3 pr-[3px] ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1",
           className,
         )}
       >

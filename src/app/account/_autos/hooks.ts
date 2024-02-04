@@ -1,10 +1,10 @@
 import { storage } from '@/libs/db';
+import { type OCR_DE_BASE64_Schema } from '@/server/resource/ocr';
+import { runOCR_DE_BASE64 } from '@/trpc/ocr/ocr';
 import { onError, onSuccess } from "@/utils/toast";
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { useCallback, useState } from "react";
 import shortid from "shortid";
-import { createWorker } from "tesseract.js";
-import type Tesseract from "tesseract.js";
 
 
 export const useFileHandler = () => {
@@ -14,7 +14,6 @@ export const useFileHandler = () => {
   const removeImage = () => setImageData(null)
 
   const getImageData = (file: File | undefined) => {
-
     const reader = new FileReader()
     reader.onloadend = () => {
       const imageDataUri = reader.result
@@ -23,17 +22,12 @@ export const useFileHandler = () => {
     reader.readAsDataURL(file!)
   }
 
-  const handleFileChange = useCallback(
-    (e: FileList | null) => {
-
-      getImageData(e?.[0])
-      if (e) {
-        console.log(e)
-        setFile(e[0]!);
-      }
-    },
-    [],
-  );
+  const handleFileChange = useCallback((e: FileList | null) => {
+    getImageData(e?.[0])
+    if (e) {
+      setFile(e[0]!);
+    }
+  }, []);
 
   const handleFileRemove = () => {
     setFile(null);
@@ -43,14 +37,14 @@ export const useFileHandler = () => {
   return { file, handleFileRemove, handleFileChange, imageData }
 }
 
+type Status = 'Upload File' | 'Uploading' | 'Scanning' | 'Complete'
 
-export const useFileUploader = (userId: string | undefined, imageData: string | null) => {
+export const useFileUploader = (userId: string | undefined) => {
   const [uploadProgress, setUploadProgress] = useState(0)
   const [downloadURL, setDownloadURL] = useState('')
-  const [ocrProgress, setOcrProgress] = useState(0)
-  const [ocrStatus, setOcrStatus] = useState('')
-  const [ocrResult, setOcrResult] = useState('')
-  const [tp, setTP] = useState<Tesseract.Line[]>()
+  const [scanResult, setScanResult] = useState<OCR_DE_BASE64_Schema | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [status, setStatus] = useState<Status>('Upload File')
 
   const Err = (err: Error) => {
     onError(err.name, err.message)
@@ -61,6 +55,9 @@ export const useFileUploader = (userId: string | undefined, imageData: string | 
 
   const fileUploader = async (file: File) => {
 
+    setLoading(true)
+    setStatus('Uploading')
+
     const filename = `${shortid.generate()}_${userId?.substring(0, 8)}`
 
     const storageRef = ref(storage, 'user_uploads/' + filename)
@@ -70,40 +67,33 @@ export const useFileUploader = (userId: string | undefined, imageData: string | 
     uploadTask.on("state_changed", snapshot => {
       const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
       setUploadProgress(progress)
+      if (progress === 100) {
+        setStatus('Scanning')
+      }
     },
-      (err) => {
-        onError(err.name, err.message)
-      },
+      () => Err,
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(url => {
           setDownloadURL(url)
-        }).catch((err: Error) => {
-          onError(err.name, err.message)
-        })
+          runOCR_DE_BASE64({ file_url: url }).then((res: OCR_DE_BASE64_Schema) => {
+            setScanResult(res)
+            console.log(res)
+            setLoading(false)
+            setStatus('Complete')
+            onSuccess('Scan complete.')
+          }).catch(Err)
+        }).catch(Err)
       }
     )
+
 
     await uploadTask.then(Ok, Err);
 
   }
 
-  const readImage = async () => {
-    const worker = await createWorker('eng', 1, {
-      logger: message => {
-        if ('progress' in message) {
-          setOcrProgress(message.progress)
-          setOcrStatus(message.progress == 1 ? 'Complete.' : 'Reading...')
-        }
-      }
-    })
-    const result = await worker.recognize(imageData!)
-    setOcrResult(result.data.text)
-    setTP(result.data.paragraphs[0]?.lines)
-    await worker.terminate()
-  }
 
-
-  return { fileUploader, uploadProgress, downloadURL, readImage, ocrStatus, ocrResult, ocrProgress, tp }
-
+  return { fileUploader, uploadProgress, downloadURL, scanResult, loading, status }
 
 }
+
+

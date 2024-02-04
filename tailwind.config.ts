@@ -16,6 +16,7 @@ export default {
         clay: "#6A6A6A",
         coal: "#3A3A3A",
         fast: "#172554",
+        void: "#0F172A",
       },
       backgroundSize: {
         'size-200': '200% 200%'

@@ -36,22 +36,19 @@ export const Login = ({ action, newAccount, accountType }: LoginProps) => {
   });
 
   const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth)
-  const [signInWithEmailAndPassword, _user, loading, error] =
+  const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
+
+  const Err = (err: Error) => onError(err.name, err.message)
 
   const handleCreateUser = (email: string, password: string) => {
     createUserWithEmailAndPassword(email, password).then(creds => {
       if (creds) {
-        createUser({ userId: creds.user.uid, email: creds.user.email!, accountType }).then((res) => {
-          console.log(res)
-          onSuccess('Account created.', creds.user.email!)
-        }).catch((err: Error) => {
-          onError(err.name, err.message)
-        })
+        createUser({ userId: creds.user.uid, email: creds.user.email!, accountType }).then(() => {
+          onSuccess('Account created.', user?.providerId ?? creds.user.providerId)
+        }).catch(Err)
       }
-    }).catch((err: Error) => {
-      onError('Sign up error!', err.message)
-    })
+    }).catch(Err)
   }
 
   const handleSignin = (email: string, password: string) => {

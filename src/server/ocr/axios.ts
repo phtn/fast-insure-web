@@ -1,6 +1,6 @@
 import axios, { type AxiosRequestConfig } from "axios";
 
-export const ocrAxiosInstance = (file_url: string, config?: AxiosRequestConfig) =>
+export const ocrAxiosInstance = (config?: AxiosRequestConfig) =>
   axios.create({
     ...config,
     headers: {
@@ -12,16 +12,10 @@ export const ocrAxiosInstance = (file_url: string, config?: AxiosRequestConfig) 
       }
     },
     baseURL: "https://api.edenai.run/v2",
-    data: {
-      providers: "microsoft",
-      language: "en",
-      file_url: file_url,
-      fallback_providers: "google",
-    },
   })
 
 export const ocrConfig = {
   method: "POST",
-  url: "/ocr/ocr"
+  url: "https://api.edenai.run/v2/ocr/ocr"
 }
 
