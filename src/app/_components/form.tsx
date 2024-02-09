@@ -26,7 +26,6 @@ const FormFieldContext = createContext<FormFieldContextValue>(
   {} as FormFieldContextValue,
 );
 
-
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
@@ -154,8 +153,7 @@ const FormMessage = forwardRef<
   }
 
   return (
-    <div className=" flex items-center">
-      <ExclamationTriangleIcon className="mr-1 h-3 w-3 text-orange-400" />
+    <div className="flex items-center">
       <p
         ref={ref}
         id={formMessageId}
@@ -164,10 +162,33 @@ const FormMessage = forwardRef<
       >
         {body}
       </p>
+
+      <ExclamationTriangleIcon className="mr-1 h-3 w-3 text-orange-400" />
     </div>
   );
 });
 FormMessage.displayName = "FormMessage";
+
+const FormAlert = forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement> & { index: number }
+>(({ children, index }) => {
+  const { error } = useFormField();
+  const body = error ? String(error?.message) : children;
+
+  if (!body) {
+    return null;
+  }
+
+  return (
+    <div className="flex w-[16px] items-center justify-center">
+      <p className="font-mono text-sm font-semibold text-orange-500">
+        {index + 1}
+      </p>
+    </div>
+  );
+});
+FormAlert.displayName = "FormAlert";
 
 export {
   Form,
@@ -176,5 +197,6 @@ export {
   FormControl,
   FormDescription,
   FormMessage,
+  FormAlert,
   FormField,
 };

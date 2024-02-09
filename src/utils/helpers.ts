@@ -1,3 +1,4 @@
+import type { OCR_DE_FieldSchema } from "@/server/resource/ocr";
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { onError, onSuccess, onWarn } from "./toast";
@@ -66,8 +67,6 @@ export const decimal = (
   });
 };
 
-
-
 export const transformDate = (dateString: string): string => {
   const date = new Date(dateString);
   const options: Intl.DateTimeFormatOptions = {
@@ -106,14 +105,12 @@ export const copyFn: CopyFn = async ({ name, text }) => {
 
 export const limitText = (text: string | undefined, chars?: number) => {
   if (!text) {
-    return ''
+    return "";
   }
   if (chars) {
     return text.substring(0, chars);
-
   }
   return text.substring(0, 25) + `...`;
-
 };
 
 export const getNextElement = <T>(
@@ -126,24 +123,28 @@ export const getNextElement = <T>(
   return nextIndex;
 };
 
-export function toggleState(setState: Dispatch<SetStateAction<boolean>>): void {
-  setState(prevState => !prevState);
-}
+export const toggleState = (
+  setState: Dispatch<SetStateAction<boolean>>,
+): void => {
+  setState((prevState) => !prevState);
+};
 
-export const fileType = (file_type: string | undefined): string | null | undefined => {
+export const fileType = (
+  file_type: string | undefined,
+): string | null | undefined => {
   if (!file_type) {
-    return null
+    return null;
   }
   const match = file_type.match(/\/(\w+)$/);
   return match ? match[1] : null;
 };
 
-export function fileSize(bytes: number | undefined): string {
+export const fileSize = (bytes: number | undefined): string => {
   const units = ["bytes", "KB", "MB", "GB", "TB"];
   let unitIndex = 0;
 
   if (!bytes) {
-    return ''
+    return "";
   }
 
   while (bytes >= 1024 && unitIndex < units.length - 1) {
@@ -154,4 +155,53 @@ export function fileSize(bytes: number | undefined): string {
   const roundedValue = unitIndex > 1 ? bytes.toFixed(2) : Math.round(bytes);
 
   return `${roundedValue} ${units[unitIndex]}`;
-}
+};
+
+export const filterList = <T>(
+  array: T[],
+  predicate: (el: T) => boolean,
+): T[] => {
+  return array?.filter(predicate);
+};
+
+export type KVFields = {
+  key: string;
+  value: string | number;
+};
+
+export const extractKV = (array: OCR_DE_FieldSchema) => {
+  return array?.map(({ key, value }) => ({
+    key: key.toUpperCase().trim(),
+    value,
+  }));
+};
+
+export const filterFields = (
+  array: OCR_DE_FieldSchema,
+  ...args: string[]
+): KVFields[] => {
+  const excludedKeys = new Set(
+    args
+      .concat(
+        "state name",
+        "state code",
+        "country code",
+        "country name",
+        "no",
+        "o",
+        "telephone no",
+      )
+      .map((item) => item.toUpperCase()),
+  );
+  const kv = extractKV(array);
+  const filteredList = filterList(kv, (item) => !excludedKeys.has(item.key));
+  return filteredList;
+};
+
+export const getVehicleDefaults = (array: OCR_DE_FieldSchema) => {
+  const filteredArray: KVFields[] = filterFields(array);
+  const convertedObj = filteredArray.reduce((obj, { key, value }) => {
+    return { ...obj, [key]: value };
+  }, {});
+  return convertedObj;
+};

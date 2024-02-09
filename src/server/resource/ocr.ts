@@ -73,20 +73,24 @@ export const OCR_Data = z.object({
   fallback_providers: Providers.optional()
 })
 
+export const Fields = z.array(z.object({
+  key: z.string(),
+  value: z.string(),
+  bounding_box: z.array(z.object({
+    left: z.number(),
+    top: z.number(),
+    width: z.number(),
+    height: z.number(),
+  })),
+  confidence_score: z.number(),
+
+}))
+
 export const OCR_DE_BASE64_Resource = z.object({
   base64: z.object({
     status: z.string(),
-    fields: z.array(z.object({
-      key: z.string(),
-      value: z.string(),
-      bounding_box: z.array(z.object({
-        left: z.number(),
-        top: z.number(),
-        width: z.number(),
-        height: z.number(),
-      })),
-      confidence_score: z.number()
-    }))
+    fields: Fields,
+    cost: z.number()
   })
 })
 
@@ -96,5 +100,6 @@ export type OCR_GOOG_Schema = z.infer<typeof OCR_GOOG_Response>
 export type OCR_AMZN_Schema = z.infer<typeof OCR_AMZN_Response>
 export type OCR_Data_Schema = z.infer<typeof OCR_Data>
 export type OCR_DE_BASE64_Schema = z.infer<typeof OCR_DE_BASE64_Resource>
+export type OCR_DE_FieldSchema = z.infer<typeof Fields>
 
 export const ocrUrl = `url: "/ocr/ocr"`

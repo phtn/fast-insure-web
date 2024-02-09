@@ -1,10 +1,22 @@
 import * as React from "react";
 
 import { cn } from "@@utils/cn";
-import { AtSignIcon, BanknoteIcon, CoinsIcon, FileSpreadsheetIcon, FileTextIcon, LockKeyholeIcon, type LucideIcon, SmartphoneIcon, SquareUserIcon, UploadCloudIcon, UserCircle2Icon } from "lucide-react";
+import {
+  AtSignIcon,
+  BanknoteIcon,
+  CoinsIcon,
+  FileSpreadsheetIcon,
+  FileTextIcon,
+  LockKeyholeIcon,
+  type LucideIcon,
+  SmartphoneIcon,
+  SquareUserIcon,
+  UploadCloudIcon,
+  UserCircle2Icon,
+} from "lucide-react";
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> { }
+  extends React.InputHTMLAttributes<HTMLInputElement> {}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
@@ -38,8 +50,8 @@ export type IconName =
   | "password";
 
 interface IconPrefix {
-  name: IconName
-  icon: LucideIcon
+  name: IconName;
+  icon: LucideIcon;
 }
 
 export const IconPrefixes: IconPrefix[] = [
@@ -55,59 +67,101 @@ export const IconPrefixes: IconPrefix[] = [
   { name: "password", icon: LockKeyholeIcon },
 ];
 
-export const InputField = React.forwardRef<HTMLInputElement, InputProps & IconPrefix>(
-  ({ className, type, ...props }, ref) => {
-    return (
-      <div
-        className={cn(
-          "border-[0.33px] border-blue-950 focus-within:ring-ring flex h-14 items-center rounded-xl bg-white pl-3 pr-[3px] ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1 dark:bg-indigo-200/20",
-          className,
-        )}
-      >
-        <props.icon className="h-[16px] w-[20px] mr-[10px] dark:text-orange-200/80 text-blue-900" />
+export const InputField = React.forwardRef<
+  HTMLInputElement,
+  InputProps & IconPrefix
+>(({ className, type, ...props }, ref) => {
+  return (
+    <div
+      className={cn(
+        "focus-within:ring-ring flex h-14 items-center rounded-xl border-[0.33px] border-blue-950 bg-white pl-3 pr-[3px] ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1 dark:bg-indigo-200/20",
+        className,
+      )}
+    >
+      <props.icon className="mr-[10px] h-[16px] w-[20px] text-blue-900 dark:text-orange-200/80" />
 
-        <input
-          {...props}
-          type={type}
-          ref={ref}
-          className="w-full rounded bg-transparent py-3 text-[15px] placeholder:text-slate-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-        />
-      </div>
-    );
-  },
-);
+      <input
+        {...props}
+        type={type}
+        ref={ref}
+        className="w-full rounded bg-transparent py-3 text-[15px] placeholder:text-slate-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+      />
+    </div>
+  );
+});
 InputField.displayName = "InputField";
 
-export const InputFile = React.forwardRef<HTMLInputElement, InputProps & IconPrefix>(
-  ({ className, type, ...props }, ref) => {
-    return (
-      <div
-        className={cn(
-          "border-[0.33px] focus-within:ring-ring outline-gray-400/70 outline-dashed shadow-sm flex flex-col h-[300px] items-center justify-center rounded-xl bg-gradient-to-br from-gray-400/20 via-orange-50/30 to-blue-200/30 pl-3 pr-[3px] ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1",
-          className,
-        )}
-      >
+export const InputFieldName = React.forwardRef<
+  HTMLInputElement,
+  InputProps & Omit<IconPrefix, "name"> & { label: string | undefined }
+>(({ className, type, label, ...props }, ref) => {
+  return (
+    <div
+      className={cn(
+        "focus-within:ring-ring flex h-16 items-center rounded-xl border-[0.33px] border-ash bg-white pr-[3px] ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1 dark:bg-indigo-200/20",
+        className,
+      )}
+    >
+      <props.icon className="mx-[16px] h-8 w-8 text-blue-600" strokeWidth={1} />
+      <span className="w-64 text-sm font-medium uppercase leading-none text-coal">
+        {label}
+      </span>
 
-        <div className="flex items-center justify-center space-x-4 absolute">
-          <props.icon className="h-[64px] w-[64px] mr-[10px] text-gray-400/90" strokeWidth={1} />
-          <div>
-            <p className="max-w-[15ch] text-md text-gray-500">Select a file or drag and drop here.</p>
-            <span className="text-[12px] text-blue-500 py-1">JPG, PNG or PDF</span>
+      <input
+        {...props}
+        type={type}
+        ref={ref}
+        className="m-1 w-full rounded-lg border border-ash bg-paper p-3 font-mono text-[18px] uppercase tracking-widest text-blue-500 shadow-inner placeholder:text-slate-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+      />
+    </div>
+  );
+});
+InputFieldName.displayName = "InputFieldName";
+
+export const InputFile = React.forwardRef<
+  HTMLInputElement,
+  InputProps & IconPrefix
+>(({ className, type, ...props }, ref) => {
+  return (
+    <div
+      className={cn(
+        "focus-within:ring-ring flex h-[300px] flex-col items-center justify-end rounded-xl border-[0.33px] bg-gradient-to-br from-gray-400/20 via-orange-50/30 to-blue-200/30 pl-3 pr-[3px] shadow-sm outline-dashed outline-gray-400/70 ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1",
+        className,
+      )}
+    >
+      <div className="absolute flex flex-col items-center justify-center">
+        <div className="flex items-center justify-center">
+          <props.icon
+            className="mr-[16px] h-[48px] w-[48px] text-blue-400"
+            strokeWidth={1}
+          />
+          <div className="text-md">
+            <p className="max-w-[20ch] text-coal">
+              <span className="font-semibold text-coal">Click</span> here to
+              select a file or{" "}
+              <span className="font-semibold text-coal">drag and drop</span> it
+              here.
+            </p>
           </div>
         </div>
+        <div className="flex items-center justify-center space-x-4 pb-2 pt-20">
+          <span className="text-xs text-clay/80">Supported formats:</span>
 
-        <input
-          {...props}
-          type={type}
-          ref={ref}
-          className="w-full py-3 text-[15px] h-[200px] opacity-0 placeholder:text-slate-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-        />
-
-
+          <span className="py-1 text-[12px] text-blue-500">
+            JPG, PNG or PDF
+          </span>
+        </div>
       </div>
-    );
-  },
-);
+
+      <input
+        {...props}
+        type={type}
+        ref={ref}
+        className="h-[200px] w-full py-3 text-[15px] opacity-0 placeholder:text-slate-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+      />
+    </div>
+  );
+});
 InputFile.displayName = "InputFile";
 
 export { Input };

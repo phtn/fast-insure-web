@@ -1,0 +1,53 @@
+{
+  "name": "FastInsure",
+  "icons": [
+    {
+      "src": "./public/icons/icon_easy_512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "theme_color": "#0F172A",
+  "background_color": "#172554",
+  "dir": "ltr",
+  "orientation": "portrait",
+  "description": "FastInsure is the fastest growing fintech in the Philippines.",
+  "categories": [
+    "fintech",
+    "technology",
+    "software",
+    "insurance",
+    "global",
+    "finance",
+    "digital",
+    "web",
+    "ai",
+    "llm",
+    "business",
+    "development",
+    "network"
+  ],
+  "screenshots": [
+    {
+      "src": "./public/screenshots/ss_landing.jpeg",
+      "sizes": "800x600",
+      "platform": "macos",
+      "form_factor": "wide",
+      "label": "blaze on green light"
+    },
+    {
+      "src": "./public/screenshots/ss_ctpl.jpeg",
+      "sizes": "800x600",
+      "platform": "macos",
+      "form_factor": "wide",
+      "label": "get instant quotes"
+    },
+    {
+      "src": "./public/screenshots/ss_add.jpeg",
+      "sizes": "800x600",
+      "platform": "macos",
+      "form_factor": "wide",
+      "label": "add products with ease"
+    }
+  ]
+}

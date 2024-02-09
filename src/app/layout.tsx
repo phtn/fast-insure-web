@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 
+import { GeistMono } from "geist/font/mono";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 
@@ -27,7 +28,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>
+      <link rel="manifest" href={"../../app.webmanifest"} />
+      <body className={`font-sans ${inter.variable} ${GeistMono.variable}`}>
         <AuthProvider>
           <TRPCProvider cookies={cookies().toString()}>
             <Navbar />
