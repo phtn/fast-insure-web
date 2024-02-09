@@ -5,8 +5,8 @@ import { onError, onSuccess } from "@/utils/toast";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useCallback, useEffect, useState } from "react";
 import type { FieldErrors, UseFormWatch } from "react-hook-form";
-import shortid from "shortid";
 import type { VehicleSchema } from "./active-form";
+import { v4 as uuidv4 } from "uuid";
 
 export const useFileHandler = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -64,7 +64,7 @@ export const useFileUploader = (userId: string | undefined) => {
     setLoading(true);
     setStatus("Uploading");
 
-    const filename = `${shortid.generate()}_${userId?.substring(0, 8)}`;
+    const filename = `${uuidv4().substring(0, 8)}_${userId?.substring(0, 8)}`;
 
     const storageRef = ref(storage, "user_uploads/" + filename);
 
@@ -89,7 +89,6 @@ export const useFileUploader = (userId: string | undefined) => {
             runOCR_DE_BASE64({ file_url: url })
               .then((res: OCR_DE_BASE64_Schema) => {
                 setScanResult(res);
-                console.log(res);
                 setLoading(false);
                 setStatus("Complete");
                 onSuccess("Scan complete.");
