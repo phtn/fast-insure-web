@@ -9,6 +9,6 @@ const withPWA = withPWAInit({
   dest: "public",
 });
 /** @type {import("next").NextConfig} */
-const config = withPWA({});
-
-export default config;
+export default withPWA({
+  reactStrictMode: true,
+});

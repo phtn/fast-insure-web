@@ -22,7 +22,7 @@
   "background_color": "#172554",
   "dir": "ltr",
   "orientation": "portrait",
-  "display": "fullscreen",
+  "display": "standalone",
   "start_url": "http://localhost:3000",
   "description": "FastInsure is the fastest growing fintech in the Philippines.",
   "categories": [
@@ -42,21 +42,21 @@
   ],
   "screenshots": [
     {
-      "src": "/screenshots/ss_landing.jpeg",
+      "src": "/screenshots/ss_landing_800.png",
       "sizes": "800x600",
       "platform": "macos",
       "form_factor": "wide",
       "label": "blaze on green light"
     },
     {
-      "src": "/screenshots/ss_ctpl.jpeg",
+      "src": "/screenshots/ss_ctpl_800.png",
       "sizes": "800x600",
       "platform": "macos",
       "form_factor": "wide",
       "label": "get instant quotes"
     },
     {
-      "src": "/screenshots/ss_add.jpeg",
+      "src": "/screenshots/ss_add_800.png",
       "sizes": "800x600",
       "platform": "macos",
       "form_factor": "wide",

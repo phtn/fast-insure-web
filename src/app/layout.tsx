@@ -9,7 +9,7 @@ import { Toaster } from "sonner";
 import { Navbar } from "./_navbar";
 import { AuthProvider } from "./context";
 import { Footer } from "./footer";
-import { Metadata, Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 
 const inter = Inter({
   subsets: ["latin"],
