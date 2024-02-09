@@ -1,6 +1,5 @@
-import { TabsContent } from "@@components/tabs"
-import { Separator } from "@radix-ui/react-select"
-import { Content } from "./content"
+import { TabsContent } from "@@components/tabs";
+import { Content } from "./content";
 
 const Life = async () => {
   return (
@@ -10,18 +9,15 @@ const Life = async () => {
     >
       <div className="flex items-center justify-between">
         <div className="space-y-1">
-          <h2 className="text-2xl font-semibold tracking-tight">
-            Life Plans
-          </h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="text-2xl font-semibold tracking-tight">Life Plans</h2>
+          <p className="text-muted-foreground text-sm">
             Go wander and get lost on a wild adventure in Gaza.
           </p>
         </div>
       </div>
-      <Separator className="my-4" />
       <Content />
     </TabsContent>
-  )
-}
+  );
+};
 
-export default Life 
+export default Life;

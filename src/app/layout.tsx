@@ -9,16 +9,40 @@ import { Toaster } from "sonner";
 import { Navbar } from "./_navbar";
 import { AuthProvider } from "./context";
 import { Footer } from "./footer";
+import { Metadata, Viewport } from "next";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
 });
 
-export const metadata = {
-  title: "Fast Insure",
-  description: "Fastest Growing Insurance Provider",
+const APP_NAME = "Fast Insure";
+const APP_DEFAULT_TITLE = "Fast Insure";
+const APP_TITLE_TEMPLATE = "%s - Fast Insure";
+const APP_DESCRIPTION = "Fastest Growing Fintech in the Philippines";
+
+export const metadata: Metadata = {
+  applicationName: APP_NAME,
+  title: {
+    default: APP_DEFAULT_TITLE,
+    template: APP_TITLE_TEMPLATE,
+  },
+  description: APP_DESCRIPTION,
+  manifest: "/app.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: APP_DEFAULT_TITLE,
+    startupImage: "/icons/icon_metal_512.jpeg",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   icons: [{ rel: "icon", url: "/favicon.svg" }],
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0F172A",
 };
 
 export default function RootLayout({
@@ -28,7 +52,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <link rel="manifest" href={"../../app.webmanifest"} />
       <body className={`font-sans ${inter.variable} ${GeistMono.variable}`}>
         <AuthProvider>
           <TRPCProvider cookies={cookies().toString()}>

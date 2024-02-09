@@ -95,7 +95,7 @@ export const Raynor = ({
                 }}
               >
                 <Link href={href ?? `/`}>
-                  <button className="duration-[4000] group inline-flex h-[50px] animate-shimmer items-center justify-center rounded-lg border border-blue-300 bg-[linear-gradient(110deg,#000103,45%,#93c5fd,55%,#000103)] bg-[length:200%_100%] px-6 text-[14px] font-bold text-white transition-all hover:scale-[105%] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 md:w-[350px] md:text-lg">
+                  <button className="group inline-flex h-[50px] animate-shimmer items-center justify-center rounded-lg border border-blue-300 bg-[linear-gradient(110deg,#000103,45%,#93c5fd,55%,#000103)] bg-[length:200%_100%] px-6 text-[14px] font-bold text-white transition-all duration-4000 hover:scale-[105%] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 md:w-[350px] md:text-lg">
                     {actionLabel}
                     <LayoutGridIcon className="isolate ml-6 h-5 w-5 transition-all duration-300 group-hover:text-blue-300" />
                   </button>

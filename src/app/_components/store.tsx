@@ -23,14 +23,14 @@ export const StoreButton = (props: StoreButtonProps) => {
     <div
       onClick={handleClick}
       className={
-        "flex scale-[95%] cursor-pointer items-center gap-[10px] w-[150px] md:w-fit rounded-[10px] bg-slate-900 border-[0.5px] border-blue-200/50 px-[10px] py-[10px] transition-all duration-300 md:px-[14px] md:hover:scale-[95%]"
+        "flex w-[150px] scale-[95%] cursor-pointer items-center gap-[10px] rounded-[10px] border-[0.5px] border-blue-200/50 bg-slate-900 px-[10px] py-[10px] transition-all duration-300 md:w-fit md:px-[14px] md:hover:scale-[95%]"
       }
     >
       <Image
         src={logo}
         alt={store}
-        width={32}
-        height={10}
+        width={100}
+        height={100}
         className="h-auto w-[16px] md:w-auto"
       />
       <div className="font-outfit flex flex-col items-start">

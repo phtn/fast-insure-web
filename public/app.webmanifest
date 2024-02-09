@@ -1,16 +1,29 @@
 {
   "name": "FastInsure",
+  "short_name": "Fast app",
   "icons": [
     {
-      "src": "./public/icons/icon_easy_512.png",
+      "src": "/icons/icon_easy_512.png",
       "type": "image/png",
       "sizes": "512x512"
+    },
+    {
+      "src": "/icons/icon_light_1024.png",
+      "type": "image/png",
+      "sizes": "1024x1024"
+    },
+    {
+      "src": "/icons/icon_metal_144.svg",
+      "type": "image/svg",
+      "sizes": "144x144"
     }
   ],
   "theme_color": "#0F172A",
   "background_color": "#172554",
   "dir": "ltr",
   "orientation": "portrait",
+  "display": "fullscreen",
+  "start_url": "http://localhost:3000",
   "description": "FastInsure is the fastest growing fintech in the Philippines.",
   "categories": [
     "fintech",
@@ -29,21 +42,21 @@
   ],
   "screenshots": [
     {
-      "src": "./public/screenshots/ss_landing.jpeg",
+      "src": "/screenshots/ss_landing.jpeg",
       "sizes": "800x600",
       "platform": "macos",
       "form_factor": "wide",
       "label": "blaze on green light"
     },
     {
-      "src": "./public/screenshots/ss_ctpl.jpeg",
+      "src": "/screenshots/ss_ctpl.jpeg",
       "sizes": "800x600",
       "platform": "macos",
       "form_factor": "wide",
       "label": "get instant quotes"
     },
     {
-      "src": "./public/screenshots/ss_add.jpeg",
+      "src": "/screenshots/ss_add.jpeg",
       "sizes": "800x600",
       "platform": "macos",
       "form_factor": "wide",
