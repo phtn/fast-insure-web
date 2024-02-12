@@ -1,12 +1,24 @@
 import { storage } from "@/libs/db";
+import { readAllAuto } from "@/reads/autos";
 import type { OCR_DE_BASE64_Schema } from "@/server/resource/ocr";
+import { createAuto } from "@/trpc/autos/create";
 import { runOCR_DE_BASE64 } from "@/trpc/ocr/ocr";
+import { nameGenerator } from "@/utils/helpers";
 import { onError, onSuccess } from "@/utils/toast";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useCallback, useEffect, useState } from "react";
 import type { FieldErrors, UseFormWatch } from "react-hook-form";
-import type { VehicleSchema } from "./active-form";
 import { v4 as uuidv4 } from "uuid";
+import type { VehicleSchema } from "./active-form";
+import { getAllAuto } from "@/trpc/autos/get";
+
+const Err = (err: Error) => {
+  onError(err.name, err.message);
+};
+
+const AuthErr = () => {
+  onError("Unable to authenticate");
+};
 
 export const useFileHandler = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -53,9 +65,6 @@ export const useFileUploader = (userId: string | undefined) => {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<UploadStatus>("Upload File");
 
-  const Err = (err: Error) => {
-    onError(err.name, err.message);
-  };
   const Ok = () => {
     onSuccess("Upload complete.");
   };
@@ -141,4 +150,56 @@ export const useWatcher = ({ errors, watch }: UseWatcherParams) => {
   }, [errors, watch]);
 
   return invalidFields;
+};
+
+type UseAutoAccount = {
+  userId?: string | undefined;
+};
+
+export const useAutoAccount = ({ userId }: UseAutoAccount) => {
+  const [addLoading, setAddLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const Ok = () => {
+    onSuccess("Successful", "1 Vehicle added.");
+  };
+
+  const addAuto = async (auto_data: VehicleSchema) => {
+    setAddLoading(true);
+    const auto_name = nameGenerator();
+    await createAuto({ userId: userId!, auto_data, auto_name })
+      .then((res) => {
+        if (res[0] === 1) {
+          setOpen(false);
+          setAddLoading(false);
+          Ok();
+        }
+        setAddLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  return { open, setOpen, addLoading, addAuto };
+};
+
+export const useGetAutos = ({ userId }: { userId: string | undefined }) => {
+  const [loading, setLoading] = useState(false);
+  const [autos, setAutos] = useState<VehicleSchema[]>([]);
+
+  useEffect(() => {
+    setLoading(true);
+    if (userId) {
+      getAllAuto({ userId }).then((response) => {
+        setAutos(response);
+        setLoading(false);
+      });
+    } else {
+      AuthErr();
+      setLoading(false);
+    }
+  }, []);
+
+  return { autos, loading };
 };

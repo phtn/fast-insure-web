@@ -1,4 +1,4 @@
-import { cn } from '@/utils/cn';
+import { cn } from "@/utils/cn";
 import {
   Command,
   CommandEmpty,
@@ -9,24 +9,35 @@ import {
   CommandSeparator,
 } from "@@components/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@@components/popover";
-import { motion } from 'framer-motion';
-import { CandyIcon, CarFrontIcon, CircleUserIcon, ClipboardPenLineIcon, DotIcon, MenuIcon, Wallet2Icon, type LucideIcon } from 'lucide-react';
-import Link from 'next/link';
-import { useState } from 'react';
-import { Button } from '../_components/button';
+import { motion } from "framer-motion";
+import {
+  CandyIcon,
+  CarFrontIcon,
+  CircleUserIcon,
+  ClipboardPenLineIcon,
+  DotIcon,
+  MenuIcon,
+  Wallet2Icon,
+  type LucideIcon,
+  UserCircleIcon,
+} from "lucide-react";
+import Link from "next/link";
+import { useContext, useState } from "react";
+import { Button } from "../_components/button";
+import { AuthContext } from "../context";
 
 type Item = {
-  label: string
-  desc: string
-  value: string
-  icon: LucideIcon
-  href?: string
-}
+  label: string;
+  desc: string;
+  value: string;
+  icon: LucideIcon;
+  href?: string;
+};
 
 type GroupItem = {
-  label: string
-  values: Item[]
-}
+  label: string;
+  values: Item[];
+};
 
 const groups: GroupItem[] = [
   {
@@ -37,28 +48,28 @@ const groups: GroupItem[] = [
         desc: "17 items",
         value: "0",
         icon: CandyIcon,
-        href: '/products'
+        href: "/products",
       },
       {
         label: "Claims",
         desc: "File a claim",
         value: "1",
         icon: ClipboardPenLineIcon,
-        href: '/products'
+        href: "/products",
       },
       {
         label: "Auto Loans",
         desc: "Get approved today!",
         value: "2",
         icon: CarFrontIcon,
-        href: '/autoloans'
+        href: "/autoloans",
       },
       {
         label: "i-Cash",
         desc: "Earn & Shop online",
         value: "3",
         icon: Wallet2Icon,
-        href: '/autoloans'
+        href: "/autoloans",
       },
     ],
   },
@@ -70,7 +81,7 @@ const groups: GroupItem[] = [
         desc: "Customize your profile.",
         value: "67890",
         icon: CircleUserIcon,
-        href: '/signin'
+        href: "/signin",
       },
     ],
   },
@@ -79,7 +90,8 @@ const groups: GroupItem[] = [
 type Group = (typeof groups)[number]["values"][number];
 
 export const MobileMenu = () => {
-  const [open, setOpen] = useState(false)
+  const user = useContext(AuthContext)?.user;
+  const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<Group | undefined>();
   const handleClick = () => {
     console.log("menu clicked");
@@ -102,15 +114,26 @@ export const MobileMenu = () => {
           </Button>
         </motion.div>
       </PopoverTrigger>
-      <PopoverContent className="mt-3 mr-1 w-[220px] border-blue-100 p-0">
+      <PopoverContent className="mr-1 mt-3 w-[220px] border-blue-100 p-0">
         <Command>
           <CommandList>
+            <Link href="/account">
+              <CommandItem className="py-3">
+                <UserCircleIcon className="mx-1 mr-3 h-[36px] w-[36px] rounded p-[6px] text-blue-500" />
+                <div className="flex flex-col justify-center">
+                  <p className="font-bold text-blue-950">
+                    {user?.displayName ?? `Add Your Name`}
+                  </p>
+                  <p className="text-[11px] font-normal leading-[11px] text-blue-900">
+                    {user?.email}
+                  </p>
+                </div>
+              </CommandItem>
+            </Link>
             <CommandInput placeholder="Search products..." />
             <CommandEmpty>Nothing found.</CommandEmpty>
             {groups.map((group) => (
-              <CommandGroup
-                key={group.label}
-              >
+              <CommandGroup key={group.label}>
                 {group.values.map((item) => (
                   <Link key={item.value} href={item.href ?? `#`}>
                     <CommandItem
@@ -120,24 +143,31 @@ export const MobileMenu = () => {
                         setOpen(false);
                       }}
                       className={cn(
-                        `py-3 font-bold text-sm items-center`,
+                        `items-center py-3 text-sm font-bold`,
                         selectedValue?.value === item.value
                           ? "text-blue-500"
                           : "text-blue-950",
                       )}
                     >
-                      <item.icon className={cn(`mr-4 h-[28px] w-[28px] rounded p-[6px]`, selectedValue?.value === item.value ? "bg-blue-950 text-blue-100"
-                        : "text-zinc-400")} />
-                      <div className='flex flex-col justify-center'>
-                        <p className=''>{item.label}</p>
-                        <p className='text-[11px] leading-[11px] text-zinc-600 font-normal'>{item.desc}</p>
-
+                      <item.icon
+                        className={cn(
+                          `mr-4 h-[28px] w-[28px] rounded p-[6px]`,
+                          selectedValue?.value === item.value
+                            ? "bg-blue-950 text-blue-100"
+                            : "text-zinc-400",
+                        )}
+                      />
+                      <div className="flex flex-col justify-center">
+                        <p className="">{item.label}</p>
+                        <p className="text-[11px] font-normal leading-[11px] text-zinc-600">
+                          {item.desc}
+                        </p>
                       </div>
                       <DotIcon
                         className={cn(
                           "ml-auto h-10 w-10",
                           selectedValue?.value === item.value
-                            ? "text-blue-500 animate-pulse opacity-100"
+                            ? "animate-pulse text-blue-500 opacity-100"
                             : "opacity-0",
                         )}
                       />
@@ -151,7 +181,7 @@ export const MobileMenu = () => {
           <CommandList>
             <CommandGroup>
               <CommandItem
-                className="font-bold tracking-tight text-sm pt-2 pb-1 border-t mx-1"
+                className="mx-1 border-t pb-1 pt-2 text-sm font-bold tracking-tight"
                 onSelect={() => {
                   //
                 }}
@@ -164,5 +194,5 @@ export const MobileMenu = () => {
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 };

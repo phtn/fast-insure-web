@@ -1,13 +1,14 @@
 import { type CheckoutSchema } from "@/server/resource/icash";
 import { type OCR_DE_BASE64_Schema } from "@/server/resource/ocr";
+import { VehicleSchema } from "./active-form";
 
-export interface AccountItem {
-  title: string;
-  description: string;
-  cover: string;
-}
+export type PrimaryAutoInfo = {
+  auto_name: string;
+  make: string;
+  photoURL: string;
+} & VehicleSchema;
 
-export const accountItems: AccountItem[] = [
+export const accountItems: Record<string, string>[] = [
   {
     title: "Black Widow",
     description: "Audi R8",
@@ -15,7 +16,7 @@ export const accountItems: AccountItem[] = [
   },
 ];
 
-export const plugins: AccountItem[] = [
+export const plugins: Record<string, string>[] = [
   {
     title: "Road-side Assist",
     description: "Get road-side assistance anywhere.",

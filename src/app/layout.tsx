@@ -17,8 +17,8 @@ const inter = Inter({
 });
 
 const APP_NAME = "Fast Insure";
-const APP_DEFAULT_TITLE = "Fast Insure";
-const APP_TITLE_TEMPLATE = "%s - Fast Insure";
+const APP_DEFAULT_TITLE = "Lead The Future";
+const APP_TITLE_TEMPLATE = "%s - Lead the Future";
 const APP_DESCRIPTION = "Fastest Growing Fintech in the Philippines";
 
 export const metadata: Metadata = {
@@ -33,12 +33,37 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "default",
     title: APP_DEFAULT_TITLE,
-    startupImage: "/icons/icon_metal_512.jpeg",
+    startupImage: "/icons/fast_easy_512.png",
   },
   formatDetection: {
     telephone: false,
   },
-  icons: [{ rel: "icon", url: "/favicon.svg" }],
+  icons: [
+    {
+      rel: "icon",
+      url: "/icons/fast_easy_16.png",
+      type: "image/png",
+      sizes: "16x16",
+    },
+    {
+      rel: "icon",
+      url: "/icons/fast_easy_32.png",
+      type: "image/png",
+      sizes: "32x32",
+    },
+    {
+      rel: "apple-icon",
+      url: "/icons/fast_easy_180.png",
+      type: "image/png",
+      sizes: "180x180",
+    },
+    {
+      rel: "apple-touch-icon",
+      url: "/icons/fast_easy_180.png",
+      type: "image/png",
+      sizes: "180x180",
+    },
+  ],
 };
 
 export const viewport: Viewport = {

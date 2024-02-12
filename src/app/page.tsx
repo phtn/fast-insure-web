@@ -1,4 +1,4 @@
-import { cookies } from "next/headers"
+import { cookies } from "next/headers";
 import { MobileApp } from "./mobile_app";
 import { Splash } from "./splash";
 import { CTPL } from "./_ctpl";
@@ -15,20 +15,18 @@ async function getCookieData() {
   );
 }
 
-
 export default async function Home() {
   const cookieData = await getCookieData();
-  console.log(cookieData ? typeof cookieData : null)
+  console.log(cookieData ? typeof cookieData : null);
 
   return (
-    <>
+    <main>
       <Splash />
       <Hero />
       <Highlight />
       <CTPL />
       <Affiliate />
       <MobileApp />
-    </>
+    </main>
   );
 }
-

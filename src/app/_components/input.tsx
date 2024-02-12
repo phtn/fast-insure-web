@@ -98,12 +98,16 @@ export const InputFieldName = React.forwardRef<
   return (
     <div
       className={cn(
-        "focus-within:ring-ring flex h-16 items-center rounded-xl border-[0.33px] border-ash bg-white pr-[3px] ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1 dark:bg-indigo-200/20",
+        "focus-within:ring-ring flex h-16 items-center rounded-xl border-[0.0px] border-ash bg-white pr-[3px] ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1 dark:bg-indigo-200/20",
         className,
       )}
     >
-      <props.icon className="mx-[16px] h-8 w-8 text-blue-600" strokeWidth={1} />
-      <span className="w-64 text-sm font-medium uppercase leading-none text-coal">
+      <props.icon
+        className="text-blue-clay mx-[16px] h-8 w-8"
+        strokeWidth={1}
+        fill="#EEE"
+      />
+      <span className="w-64 text-xs font-medium uppercase leading-none text-clay">
         {label}
       </span>
 
@@ -111,7 +115,7 @@ export const InputFieldName = React.forwardRef<
         {...props}
         type={type}
         ref={ref}
-        className="m-1 w-full rounded-lg border border-ash bg-paper p-3 font-mono text-[18px] uppercase tracking-widest text-blue-500 shadow-inner placeholder:text-slate-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="shadow-i-br-lg/80 m-1 w-full rounded-lg border-0 border-ash bg-paper p-3 font-mono text-[15px] uppercase tracking-widest text-zinc-600 placeholder:text-slate-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       />
     </div>
   );
@@ -125,14 +129,14 @@ export const InputFile = React.forwardRef<
   return (
     <div
       className={cn(
-        "focus-within:ring-ring flex h-[300px] flex-col items-center justify-end rounded-xl border-[0.33px] bg-gradient-to-br from-gray-400/20 via-orange-50/30 to-blue-200/30 pl-3 pr-[3px] shadow-sm outline-dashed outline-gray-400/70 ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1",
+        "focus-within:ring-ring flex h-[300px] flex-col items-center justify-end rounded-lg border-[0.33px] bg-white shadow-inner outline-dotted outline-ash ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1",
         className,
       )}
     >
       <div className="absolute flex flex-col items-center justify-center">
         <div className="flex items-center justify-center">
           <props.icon
-            className="mr-[16px] h-[48px] w-[48px] text-blue-400"
+            className="mr-[16px] h-[48px] w-[48px] text-clay"
             strokeWidth={1}
           />
           <div className="text-md">
@@ -144,12 +148,12 @@ export const InputFile = React.forwardRef<
             </p>
           </div>
         </div>
-        <div className="flex items-center justify-center space-x-4 pb-2 pt-20">
-          <span className="text-xs text-clay/80">Supported formats:</span>
-
-          <span className="py-1 text-[12px] text-blue-500">
-            JPG, PNG or PDF
+        <div className="flex items-center justify-center space-x-4 pb-2 pt-24">
+          <span className="text-xs italic text-clay/80">
+            Supported formats:
           </span>
+
+          <span className="py-1 text-[12px] text-clay">JPG, PNG or PDF</span>
         </div>
       </div>
 

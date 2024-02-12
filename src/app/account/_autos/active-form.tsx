@@ -4,10 +4,14 @@ import {
   FormField,
   FormItem,
 } from "@/app/_components/form";
-import { type KVFields } from "@/utils/helpers";
+import { DarkTouch, Touch } from "@/app/_components/touch";
+import { AuthContext } from "@/app/context";
+import { cn } from "@/utils/cn";
+import { filterAutoValues, withSpaces, type KVFields } from "@/utils/helpers";
 import { Button } from "@@components/button";
 import { InputFieldName } from "@@components/input";
 import {
+  BadgeCheckIcon,
   CalendarCheckIcon,
   CarFrontIcon,
   CheckCircleIcon,
@@ -20,15 +24,18 @@ import {
   FuelIcon,
   ListRestartIcon,
   MapPinnedIcon,
-  ShieldCheckIcon,
+  ThumbsDown,
+  ThumbsUp,
   UserIcon,
   WeightIcon,
 } from "lucide-react";
 import {
   useCallback,
+  useContext,
   useEffect,
   useState,
   type Dispatch,
+  type ReactElement,
   type SetStateAction,
 } from "react";
 import { type UseFormReturn } from "react-hook-form";
@@ -40,13 +47,23 @@ export const vehicleResource = z.record(z.string().min(1));
 export type VehicleSchema = z.infer<typeof vehicleResource>;
 type VehicleFormType = UseFormReturn<VehicleSchema>;
 
-type AddVehicleProps = {
+type ActiveFormProps = {
   form: VehicleFormType;
   fields: KVFields[];
   setCount: Dispatch<SetStateAction<number>>;
+  loading: boolean;
+  addAuto: (auto_data: VehicleSchema) => void;
 };
 
-export const ActiveForm = ({ form, fields, setCount }: AddVehicleProps) => {
+export const ActiveForm = ({
+  form,
+  fields,
+  setCount,
+  loading,
+  addAuto,
+}: ActiveFormProps) => {
+  const context = useContext(AuthContext);
+  const userCreds = context?.user;
   const [newForm, setNewForm] = useState(true);
   const { control, handleSubmit, formState, setValue, watch } = form;
   const { errors } = formState;
@@ -62,37 +79,28 @@ export const ActiveForm = ({ form, fields, setCount }: AddVehicleProps) => {
     setCount(count);
   }, [count, setCount]);
 
-  const onSubmit = useCallback((values: VehicleSchema) => {
+  const onSubmit = (values: VehicleSchema) => {
     setNewForm(false);
-    console.log(values);
-  }, []);
+    const filteredPayload = filterAutoValues(values);
+    if (userCreds?.uid) {
+      addAuto(filteredPayload);
+    }
+  };
 
   const Submit = useCallback(() => {
     const label =
       count <= 0 && !newForm ? "Ready to Submit" : "Verify Form Values";
-    const icon =
-      count <= 0 && !newForm ? (
-        <CheckCircleIcon className="text-green-300" />
-      ) : (
-        <ListRestartIcon className="text-blue-300" />
-      );
+    const icon = count <= 0 && !newForm ? CheckCircleIcon : ListRestartIcon;
     return (
-      <Button
-        size="fat"
-        type="submit"
-        disabled={false}
-        variant="submit"
-        className="w-[300px] space-x-4 self-end md:w-[435px] md:space-x-6"
-      >
-        <div>{label}</div>
-        <div>{icon}</div>
-      </Button>
+      <DarkTouch size="lg" type="submit" tail={icon} disabled={loading}>
+        {label}
+      </DarkTouch>
     );
-  }, [count, newForm]);
+  }, [count, newForm, loading]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <section className="w-full rounded-lg border-[0.33px] border-blue-400 bg-white py-2 ">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <section className="w-full rounded-lg border border-ash bg-white py-2 ">
         <div className="my-2 h-[440px] space-y-4 overflow-y-scroll px-4 pt-1">
           {fields.map((item, index) => (
             <FormField
@@ -111,7 +119,7 @@ export const ActiveForm = ({ form, fields, setCount }: AddVehicleProps) => {
 
                       <InputFieldName
                         className="w-full"
-                        label={item?.key}
+                        label={withSpaces(item?.key)}
                         icon={getIcon(item.key)}
                         type={
                           item.key.toLowerCase().includes("telephone")
@@ -128,10 +136,52 @@ export const ActiveForm = ({ form, fields, setCount }: AddVehicleProps) => {
           ))}
         </div>
       </section>
-      <div className="mt-8 flex items-center justify-end">
-        <Submit />
-      </div>
+      <Actions submit={Submit} />
     </form>
+  );
+};
+
+type ActionProps = {
+  submit: () => ReactElement;
+};
+const Actions = (props: ActionProps) => {
+  const [loading, setLoading] = useState(false);
+  const [feedback, setFeedback] = useState<boolean | undefined>();
+  const handleLike = () => {
+    setFeedback(true);
+    setLoading(true);
+  };
+  const handleDislike = () => {
+    setFeedback(false);
+    setLoading(true);
+  };
+
+  return (
+    <div className="flex h-[70px] items-end justify-between">
+      <section className="flex items-center justify-between space-x-2">
+        <div className="flex h-[54.67px] items-center rounded-lg rounded-br-none border-[0.33px] border-ash bg-white px-4 py-2 text-xs font-medium leading-none text-clay">
+          <span>Results OK?</span>
+        </div>
+        <Touch
+          icon={ThumbsUp}
+          size="icon"
+          onClick={handleLike}
+          className={cn(feedback ? `text-blue-600` : ``)}
+          disabled={loading}
+        />
+
+        <Touch
+          icon={ThumbsDown}
+          onClick={handleDislike}
+          className={cn(
+            feedback !== undefined && !feedback ? `text-blue-600` : ``,
+          )}
+          size="icon"
+          disabled={loading}
+        />
+      </section>
+      <props.submit />
+    </div>
   );
 };
 
@@ -158,7 +208,7 @@ const getIcon = (key: string) => {
   } else if (k.includes("contact")) {
     return MapPinnedIcon;
   } else if (k.includes("salvage")) {
-    return ShieldCheckIcon;
+    return BadgeCheckIcon;
   } else if (k.includes("piston")) {
     return EclipseIcon;
   } else {

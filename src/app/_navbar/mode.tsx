@@ -12,7 +12,7 @@ export function Mode() {
   return (
     <div>
       <Button variant={"ghost"} size={"icon"} onClick={handleToggle}>
-        <MoonStarIcon className="h-5 w-5 text-blue-950" />
+        <MoonStarIcon strokeWidth={1.5} className="h-5 w-5 text-blue-950" />
       </Button>
     </div>
   );
@@ -30,5 +30,3 @@ export function Help() {
     </div>
   );
 }
-
-

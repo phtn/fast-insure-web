@@ -1,6 +1,6 @@
-import Image from "next/image"
+import Image from "next/image";
 
-import { cn } from "@/utils/cn"
+import { cn } from "@/utils/cn";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -10,20 +10,21 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger,
-} from "@@components/context-menu"
+} from "@@components/context-menu";
 
-import { type AccountItem, playlists } from "./data"
-import { PlusCircleIcon } from "lucide-react"
+import { type PrimaryAutoInfo, playlists } from "./data";
+import { PlusCircleIcon } from "lucide-react";
+import { VehicleSchema } from "./active-form";
 
 interface AccountItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  accountItem: AccountItem
-  aspectRatio?: "portrait" | "square"
-  width?: number
-  height?: number
+  vehicleItem: PrimaryAutoInfo & VehicleSchema;
+  aspectRatio?: "portrait" | "square";
+  width?: number;
+  height?: number;
 }
 
 export function AccountItem({
-  accountItem,
+  vehicleItem,
   aspectRatio = "portrait",
   width,
   height,
@@ -34,15 +35,15 @@ export function AccountItem({
     <div className={cn("space-y-3", className)} {...props}>
       <ContextMenu>
         <ContextMenuTrigger>
-          <div className="overflow-hidden rounded-md">
+          <div className="overflow-hidden">
             <Image
-              src={accountItem.cover}
-              alt={accountItem.title}
+              src={"/icons/icon_metal_512.png"}
+              alt={"alt"}
               width={width}
               height={height}
               className={cn(
                 "h-auto w-auto object-cover transition-all hover:scale-105",
-                aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
+                aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square",
               )}
             />
           </div>
@@ -86,9 +87,11 @@ export function AccountItem({
         </ContextMenuContent>
       </ContextMenu>
       <div className="space-y-1 text-sm">
-        <h3 className="font-semibold text-coal leading-none">{accountItem.title}</h3>
-        <p className="text-xs text-clay">{accountItem.description}</p>
+        <h3 className="font-semibold leading-none text-coal">
+          {vehicleItem.auto_name}
+        </h3>
+        <p className="text-xs text-clay">{vehicleItem.make}</p>
       </div>
     </div>
-  )
+  );
 }

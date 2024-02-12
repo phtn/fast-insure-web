@@ -1,28 +1,44 @@
 {
-  "name": "FastInsure",
+  "name": "Fast Insure",
   "short_name": "Fast app",
   "icons": [
     {
-      "src": "/icons/icon_easy_512.png",
-      "type": "image/png",
+      "src": "/icons/fast_easy_512.svg",
+      "type": "image/svg",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/fast_dark_512.svg",
+      "type": "image/svg",
       "sizes": "512x512"
     },
     {
-      "src": "/icons/icon_light_1024.png",
-      "type": "image/png",
+      "src": "/icons/fast_easy_1024.svg",
+      "type": "image/svg",
       "sizes": "1024x1024"
     },
     {
-      "src": "/icons/icon_metal_144.svg",
+      "src": "/icons/fast_easy_144.svg",
       "type": "image/svg",
-      "sizes": "144x144"
+      "sizes": "144x144",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/fast_easy_144.png",
+      "type": "image/png",
+      "sizes": "144x144",
+      "purpose": "any"
     }
   ],
   "theme_color": "#0F172A",
   "background_color": "#172554",
+  "id": "/",
+  "scope": "/",
   "dir": "ltr",
   "orientation": "portrait",
   "display": "standalone",
+  "display-override": ["window-controls-overlay"],
   "start_url": "http://localhost:3000",
   "description": "FastInsure is the fastest growing fintech in the Philippines.",
   "categories": [
@@ -61,6 +77,27 @@
       "platform": "macos",
       "form_factor": "wide",
       "label": "add products with ease"
+    },
+    {
+      "src": "/screenshots/ss_landing_mobile.jpg",
+      "sizes": "430x733",
+      "platform": "ios",
+      "form_factor": "narrow",
+      "label": "Mobile Landing"
+    },
+    {
+      "src": "/screenshots/ss_ctpl_mobile.jpg",
+      "sizes": "430x733",
+      "platform": "ios",
+      "form_factor": "narrow",
+      "label": "Mobile Product"
+    },
+    {
+      "src": "/screenshots/ss_features_mobile.jpg",
+      "sizes": "430x733",
+      "platform": "ios",
+      "form_factor": "narrow",
+      "label": "Mobile Features"
     }
   ]
 }

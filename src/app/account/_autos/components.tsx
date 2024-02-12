@@ -6,6 +6,8 @@ import {
   DialogTitle,
 } from "@/app/_components/dialog";
 import { InputFile } from "@/app/_components/input";
+import { Meter } from "@/app/_components/meter";
+import { Touch } from "@/app/_components/touch";
 import { type OCR_DE_BASE64_Schema } from "@/server/resource/ocr";
 import { fileSize, fileType, limitText } from "@/utils/helpers";
 import {
@@ -24,9 +26,11 @@ import { type UploadStatus } from "./hooks";
 
 export const Title = () => (
   <DialogHeader className="my-3 border-b-2 border-ash/50 pb-2">
-    <DialogTitle className="text-fast md:text-2xl">Add New Vehicle</DialogTitle>
+    <DialogTitle className="font-bold tracking-tighter text-coal md:text-2xl">
+      Add New Vehicle
+    </DialogTitle>
     <DialogDescription className="flex items-center space-x-1 text-clay">
-      <InfoIcon className="h-4 w-4 text-blue-400" />
+      <InfoIcon className="h-4 w-4 text-sky-600" fill="#e0f2fe" />
       <span>
         {`Upload your vehicle's Certificate of Registration to autofill the form.`}
       </span>
@@ -54,20 +58,20 @@ type FileInfoProps = {
 };
 
 export const FileInfo = ({ file, removeFile }: FileInfoProps) => (
-  <div className="flex h-[132px] flex-col items-stretch justify-center space-y-3 rounded-lg border border-blue-400 bg-white p-3">
+  <div className="flex h-[149px] flex-col items-stretch justify-center space-y-6 rounded-lg border border-ash bg-white p-3">
     <div className="flex items-center justify-between ">
       <div className="flex items-center space-x-2">
         <div className="flex w-8 items-center justify-center">
-          <FileTextIcon className="text-blue-500" strokeWidth={1} />
+          <FileTextIcon className="text-clay" strokeWidth={1} />
         </div>
         <div className="space-y-[1px] overflow-clip">
           <div className="w-full ">
-            <span className="font-mono text-sm font-medium text-fast">
+            <span className="font-mono text-sm font-medium text-clay">
               {limitText(file?.name, 25)}
             </span>
           </div>
           <div className="flex items-center space-x-4">
-            <span className="font-mono text-[12px] uppercase tracking-tight text-clay">
+            <span className="font-mono text-xs uppercase tracking-tight text-clay">
               {fileType(file?.type)}
             </span>
             <span className="font-mono text-[12px] text-clay">
@@ -83,25 +87,25 @@ export const FileInfo = ({ file, removeFile }: FileInfoProps) => (
           className="hover:bg-paper"
           onClick={removeFile}
         >
-          <XIcon className="text-clay" strokeWidth={1} />
+          <XIcon strokeWidth={1} />
         </Button>
       </div>
     </div>
-    <div className="flex h-[50px] w-full items-center justify-evenly rounded-lg bg-blue-100/50 text-sm">
+    <div className="flex h-[50px] w-full items-center justify-evenly rounded-lg bg-paper text-xs font-medium">
       <div className="flex items-center justify-center space-x-2">
-        <span className="uppercase text-coal">FORMAT</span>
+        <span className="uppercase text-clay">FORMAT</span>
         <CheckCircleIcon
           strokeWidth={1.5}
-          className="h-4 w-4 text-blue-600"
-          fill="#bfdbfe"
+          className="h-4 w-4 text-blue-500"
+          fill="#dbeafe"
         />
       </div>
       <div className="flex items-center justify-center space-x-2">
-        <span className="uppercase text-coal">Ready</span>
+        <span className="uppercase text-clay">Ready</span>
         <CheckCircleIcon
           strokeWidth={1.5}
-          className="h-4 w-4 text-blue-600"
-          fill="#bfdbfe"
+          className="h-4 w-4 text-blue-500"
+          fill="#dbeafe"
         />
       </div>
     </div>
@@ -109,19 +113,17 @@ export const FileInfo = ({ file, removeFile }: FileInfoProps) => (
 );
 
 export const TryBanner = () => (
-  <div className="flex h-[132px] flex-col items-center justify-center space-y-4 rounded-lg border border-blue-400 bg-white px-2">
-    <p className="underline-offset-3 decoration-3 text-xl font-bold text-coal underline decoration-blue-500">
-      Try our Document Scanner.
-    </p>
+  <div className="flex h-[150px] flex-col items-center justify-center space-y-4 rounded-lg border border-ash bg-white px-2">
+    <div className="flex w-full justify-center">
+      <p className="text-lg tracking-tight text-coal ">
+        Try our new <span className="font-bold">Document Scanner</span>.
+      </p>
+    </div>
     <div className="flex items-center justify-center space-x-4">
-      <ShieldCheckIcon
-        className="h-10 w-10 text-fast"
-        fill="#bae6fd"
-        strokeWidth={1.5}
-      />
-      <span className="max-w-[30ch] text-xs text-fast">
-        All data are encrypted in transit and encrypted once more upon reaching
-        the server.{" "}
+      <ShieldCheckIcon className="h-10 w-10 text-clay" strokeWidth={1} />
+      <span className="max-w-[30ch] text-xs text-clay">
+        All data are encrypted in transit and once more upon reaching our
+        server.{" "}
       </span>
     </div>
   </div>
@@ -132,13 +134,13 @@ type ImageViewerProps = {
   imageData: string | null;
 };
 export const ImageViewer = ({ file, imageData }: ImageViewerProps) => (
-  <div className="flex h-[318px] w-full items-center justify-center overflow-scroll rounded-lg border bg-gradient-to-r from-gray-800/80 to-gray-800/60 shadow-inner">
+  <div className="flex h-[300px] w-full items-center justify-center overflow-scroll rounded-lg bg-gradient-to-r from-gray-800/80 to-gray-800/60 shadow-inner">
     <Image
       alt={file?.name ?? ""}
-      className="transition-all duration-500 ease-in-out hover:scale-[250%]"
+      className="h-auto w-auto transition-all duration-500 ease-in-out hover:scale-[250%]"
       src={imageData!}
-      width={200}
-      height={200}
+      width={250}
+      height={250}
     />
   </div>
 );
@@ -151,7 +153,7 @@ export const Dropzone = ({ fileChange }: DropzoneProps) => {
     fileChange(e.target.files);
   };
   return (
-    <div className="h-[318px]">
+    <div className="h-[300px]">
       <InputFile
         onChange={onChange}
         icon={MousePointerSquareDashedIcon}
@@ -179,55 +181,43 @@ export const Actions = ({
   scanResult,
   status,
 }: ActionProps) => (
-  <DialogFooter className="flex h-[70px] items-end border-0 border-clay">
-    <div className="flex h-[56px] w-full flex-col items-center justify-center rounded-xl bg-void">
-      <p className="leading-1 font-mono text-[20px] text-green-500">
-        10{uploadProgress}
-        <span className="ml-[2px] text-[10px] text-ash/80">%</span>
-      </p>
-      <span className="text-[11px] uppercase tracking-wide text-ash">
-        upload
-      </span>
-    </div>
-    <div className="flex h-[56px] w-full flex-col items-center justify-center rounded-xl border border-ash bg-void">
-      <p className="leading-1 font-mono text-[20px] text-blue-400">
-        10{uploadProgress !== 100 ? 0 : scanResult ? `100` : `50`}
-        <span className="ml-[2px] text-[10px] text-ash/80">%</span>
-      </p>
-      <span className="text-[11px] uppercase text-ash">scan</span>
-    </div>
-    <Button
-      variant="outline"
-      size="fat"
+  <DialogFooter className="flex h-[70px] items-end justify-center space-x-4">
+    <section className="flex w-full items-center justify-start space-x-2">
+      <Meter label="upload" unit="%" value={100 + uploadProgress} />
+      <Meter
+        label="scan"
+        unit="%"
+        value={uploadProgress !== 100 ? 0 : scanResult ? `100` : `50`}
+      />
+    </section>
+    <Touch
+      size="lg"
       disabled={!imageData || loading}
       onClick={fileUpload}
-      className="space-x-4 rounded-xl"
+      className="w-full"
+      tail={UploadIcon}
     >
-      <span>{status}</span>
-      <UploadIcon className="h-4 w-4" />
-    </Button>
+      {status}
+    </Touch>
   </DialogFooter>
 );
 
 export const FieldIndex = ({ index }: { index: number }) => (
-  <div className="flex w-[16px] items-center justify-center bg-gradient-to-b from-clay/50 to-blue-300 bg-clip-text font-mono text-sm font-semibold text-transparent">
+  <div className="flex w-[16px] items-center justify-center font-mono text-sm font-semibold text-clay/50">
     {index + 1}
   </div>
 );
 
 export const RequiredFields = ({ count }: { count: number }) => (
   <div className="mx-4 flex items-center justify-center space-x-4">
-    <span className="text-sm text-clay">Required fields:</span>
+    <span className="text-xs font-medium text-clay">Required fields:</span>
     <span className="font-mono font-bold text-orange-500">{count}</span>
-    <span className="text-sm font-medium text-clay">All Fields Good!</span>
   </div>
 );
 
 export const AllFieldsGood = () => (
   <div className="mx-4 flex items-center justify-center space-x-2">
-    <span className="text-sm font-medium text-emerald-500">
-      All Fields Good!
-    </span>
-    <CheckCircleIcon className="h-4 w-4 text-emerald-500" fill="#d1fae5" />
+    <span className="text-xs font-medium text-clay">All Fields Good!</span>
+    <CheckCircleIcon className="h-4 w-4 text-emerald-600" fill="#ecfdf5" />
   </div>
 );

@@ -1,3 +1,4 @@
+import type { VehicleSchema } from "@/app/account/_autos/active-form";
 import type { OCR_DE_FieldSchema } from "@/server/resource/ocr";
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -157,6 +158,48 @@ export const fileSize = (bytes: number | undefined): string => {
   return `${roundedValue} ${units[unitIndex]}`;
 };
 
+export const sharpenKey = (input: string): string => {
+  let modifiedString = input
+    .replace(/\./g, "")
+    .replace(/\/+/g, " ")
+    .replace(/ +/g, " ")
+    .replace(/ +/g, "_")
+    .replace(/'+/g, "")
+    .replace(/\?+/g, "")
+    .replace(/_{2,}/g, "_")
+    .trim()
+    .toLowerCase();
+
+  if (modifiedString.endsWith("no")) {
+    modifiedString = modifiedString.replace(/no$/, "_no");
+  }
+
+  return modifiedString;
+};
+
+export const screenKey = (input: string): string => {
+  let modifiedString = "";
+
+  for (let i = 0; i < input.length; i++) {
+    const currentChar = input[i];
+    const nextChar = input[i + 1];
+
+    if (currentChar === "_" && nextChar === "_") {
+      continue;
+    } else if (currentChar === " ") {
+      if (i === 0 || i === input.length - 1 || nextChar === " ") {
+        continue;
+      } else {
+        modifiedString += "_";
+      }
+    } else {
+      modifiedString += currentChar;
+    }
+  }
+
+  return modifiedString.trim();
+};
+
 export const filterList = <T>(
   array: T[],
   predicate: (el: T) => boolean,
@@ -171,8 +214,8 @@ export type KVFields = {
 
 export const extractKV = (array: OCR_DE_FieldSchema) => {
   return array?.map(({ key, value }) => ({
-    key: key.toUpperCase().trim(),
-    value,
+    key: screenKey(sharpenKey(key)),
+    value: value.toUpperCase(),
   }));
 };
 
@@ -183,15 +226,15 @@ export const filterFields = (
   const excludedKeys = new Set(
     args
       .concat(
-        "state name",
-        "state code",
-        "country code",
-        "country name",
-        "no",
+        "state_name",
+        "state_code",
+        "country_code",
+        "country_name",
+        "_no",
         "o",
-        "telephone no",
+        "telephone_no",
       )
-      .map((item) => item.toUpperCase()),
+      .map((item) => item),
   );
   const kv = extractKV(array);
   const filteredList = filterList(kv, (item) => !excludedKeys.has(item.key));
@@ -204,4 +247,83 @@ export const getVehicleDefaults = (array: OCR_DE_FieldSchema) => {
     return { ...obj, [key]: value };
   }, {});
   return convertedObj;
+};
+
+export const filterAutoValues = (values: VehicleSchema) => {
+  const exclude = new Set(["NO", "O", "TELEPHONE NO"]);
+
+  const filteredValues = {
+    ...Object.fromEntries(
+      Object.entries(values).filter((key) => !exclude.has(key[0])),
+    ),
+  };
+
+  return filteredValues;
+};
+
+export const withSpaces = (input: string): string => {
+  return input.replace(/_/g, " ");
+};
+
+const adj: string[] = [
+  "Magnetic",
+  "Spinning",
+  "Perturbed",
+  "Excited",
+  "Coherent",
+  "Super",
+  "Observant",
+  "Wavelike",
+  "Dual",
+  "Tunneling",
+  "Computing",
+  "Collective",
+  "Orbital",
+  "Proto",
+  "Meta",
+  "Fast",
+  "Sonic",
+  "Blazing",
+  "The Great",
+];
+
+const moons: string[] = [
+  "Moon",
+  "Phobos",
+  "Deimos",
+  "Io",
+  "Europa",
+  "Ganymede",
+  "Callisto",
+  "Mimas",
+  "Enceladus",
+  "Tethys",
+  "Dione",
+  "Rhea",
+  "Titan",
+  "Hyperion",
+  "Iapetus",
+  "Miranda",
+  "Ariel",
+  "Umbriel",
+  "Titania",
+  "Oberon",
+  "Triton",
+  "Nereid",
+  "Charon",
+  "Styx",
+  "Nix",
+  "Kerberos",
+  "Hydra",
+  "Messier",
+  "Eradani",
+  "Attractor",
+  "Hyperspace",
+];
+
+export const nameGenerator = (): string => {
+  const radj = Math.floor(Math.random() * adj.length);
+  const noun = Math.floor(Math.random() * moons.length);
+
+  return `${adj[radj]} ${moons[noun]}`;
 };

@@ -12,12 +12,19 @@ import {
   type VehicleSchema,
 } from "./active-form";
 
-type AutoFormProps = {
+export type AutoFormProps = {
   fields: OCR_DE_FieldSchema | undefined;
   setCount: Dispatch<SetStateAction<number>>;
+  loading: boolean;
+  addAuto: (auto_data: VehicleSchema) => void;
 };
 
-export const AutoForm = ({ fields, setCount }: AutoFormProps) => {
+export const AutoForm = ({
+  fields,
+  setCount,
+  loading,
+  addAuto,
+}: AutoFormProps) => {
   const form = useForm<VehicleSchema>({
     resolver: zodResolver(vehicleResource),
     defaultValues: fields ? getVehicleDefaults(fields) : vehicleDefaults,
@@ -29,6 +36,8 @@ export const AutoForm = ({ fields, setCount }: AutoFormProps) => {
         form={form}
         fields={filterFields(fields!) ?? vehicleFields}
         setCount={setCount}
+        loading={loading}
+        addAuto={addAuto}
       />
     </Form>
   );

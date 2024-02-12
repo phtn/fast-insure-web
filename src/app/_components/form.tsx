@@ -172,7 +172,7 @@ FormMessage.displayName = "FormMessage";
 const FormAlert = forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement> & { index: number }
->(({ children, index }) => {
+>(({ children, index, ...props }, ref) => {
   const { error } = useFormField();
   const body = error ? String(error?.message) : children;
 
@@ -182,7 +182,11 @@ const FormAlert = forwardRef<
 
   return (
     <div className="flex w-[16px] items-center justify-center">
-      <p className="font-mono text-sm font-semibold text-orange-500">
+      <p
+        ref={ref}
+        className="font-mono text-sm font-semibold text-orange-500"
+        {...props}
+      >
         {index + 1}
       </p>
     </div>

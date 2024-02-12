@@ -4,7 +4,7 @@ import { opts } from "@/utils/helpers";
 import { Button } from "@@components/button";
 import { Dialog, DialogContent, DialogTrigger } from "@@components/dialog";
 import { FileInputIcon, PlusIcon, ScanTextIcon } from "lucide-react";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { AuthContext } from "../../context";
 import { AutoForm } from "./auto-form";
 import {
@@ -19,7 +19,7 @@ import {
   TryBanner,
 } from "./components";
 import { staticScanBase64 } from "./data";
-import { useFileHandler, useFileUploader } from "./hooks";
+import { useAutoAccount, useFileHandler, useFileUploader } from "./hooks";
 
 export const AddAuto = () => {
   const [invalidFieldCount, setInvalidFieldCount] = useState(0);
@@ -29,9 +29,9 @@ export const AddAuto = () => {
   const { fileUploader, uploadProgress, scanResult, loading, status } =
     useFileUploader(userCreds?.user?.uid);
 
-  useEffect(() => {
-    console.log(invalidFieldCount);
-  }, [invalidFieldCount]);
+  const { open, setOpen, addAuto, addLoading } = useAutoAccount({
+    userId: userCreds?.user?.uid,
+  });
 
   const handleFileUpload = useCallback(() => {
     if (file) {
@@ -66,7 +66,7 @@ export const AddAuto = () => {
   }, [invalidFieldCount]);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="h-6 w-6 rounded-full" size="icon">
           <PlusIcon className="h-4 w-4" />
@@ -76,7 +76,7 @@ export const AddAuto = () => {
         <Title />
 
         <div className="grid grid-cols-1 gap-y-6 md:grid-cols-3 md:gap-x-6">
-          <div className="space-y-4">
+          <section className="col-span-1 space-y-4">
             <Header title="Upload & Scan" icon={ScanTextIcon} />
             <div className="space-y-6">
               <ImageViewOptions />
@@ -86,26 +86,28 @@ export const AddAuto = () => {
             <Actions
               fileUpload={handleFileUpload}
               imageData={imageData}
-              loading={loading}
+              loading={loading || addLoading}
               uploadProgress={uploadProgress}
               scanResult={scanResult}
               status={status}
             />
-          </div>
+          </section>
 
-          <div className="col-span-2 space-y-4">
+          <section className="col-span-2 space-y-4">
             <div className="flex items-center justify-between">
               <Header title="Vehicle Registration Form" icon={FileInputIcon} />
               <FieldStatusOptions />
             </div>
 
-            <div className="">
+            <div>
               <AutoForm
                 fields={staticScanBase64.base64.fields}
                 setCount={setInvalidFieldCount}
+                loading={addLoading}
+                addAuto={addAuto}
               />
             </div>
-          </div>
+          </section>
         </div>
       </DialogContent>
     </Dialog>

@@ -13,11 +13,7 @@
     "noUncheckedIndexedAccess": true,
     "checkJs": true,
     /* Bundled projects */
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "ES2022"
-    ],
+    "lib": ["dom", "dom.iterable", "ES2022"],
     "noEmit": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
@@ -31,31 +27,15 @@
     /* Path Aliases */
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@@components/*": [
-        "./src/app/_components/*"
-      ],
-      "@@utils/*": [
-        "./src/utils/*"
-      ],
-      "@@libs/*": [
-        "./src/libs/*"
-      ],
-      "@server/*": [
-        "./src/server/*"
-      ],
-      "@procedures/*": [
-        "./src/server/procedures/*"
-      ],
-      "@resource/*": [
-        "./src/server/resource/*"
-      ],
-      "@routers/*": [
-        "./src/server/routers/*"
-      ]
-    },
+      "@/*": ["./src/*"],
+      "@@components/*": ["./src/app/_components/*"],
+      "@@utils/*": ["./src/utils/*"],
+      "@@libs/*": ["./src/libs/*"],
+      "@server/*": ["./src/server/*"],
+      "@procedures/*": ["./src/server/procedures/*"],
+      "@resource/*": ["./src/server/resource/*"],
+      "@routers/*": ["./src/server/routers/*"]
+    }
   },
   "include": [
     ".eslintrc.cjs",
@@ -65,9 +45,7 @@
     "**/*.cjs",
     "**/*.js",
     ".next/types/**/*.ts",
-    "src/env.mjs",
+    "src/env.mjs"
   ],
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"]
 }
