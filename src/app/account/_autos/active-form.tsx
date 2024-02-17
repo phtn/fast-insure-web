@@ -7,8 +7,12 @@ import {
 import { DarkTouch, Touch } from "@/app/_components/touch";
 import { AuthContext } from "@/app/context";
 import { cn } from "@/utils/cn";
-import { filterAutoValues, withSpaces, type KVFields } from "@/utils/helpers";
-import { Button } from "@@components/button";
+import {
+  filterAutoValues,
+  withSpaces,
+  type KVFields,
+  opts,
+} from "@/utils/helpers";
 import { InputFieldName } from "@@components/input";
 import {
   BadgeCheckIcon,
@@ -53,6 +57,7 @@ type ActiveFormProps = {
   setCount: Dispatch<SetStateAction<number>>;
   loading: boolean;
   addAuto: (auto_data: VehicleSchema) => void;
+  downloadURL: string;
 };
 
 export const ActiveForm = ({
@@ -136,13 +141,14 @@ export const ActiveForm = ({
           ))}
         </div>
       </section>
-      <Actions submit={Submit} />
+      <Actions submit={Submit} withFields={fields.length !== 0} />
     </form>
   );
 };
 
 type ActionProps = {
   submit: () => ReactElement;
+  withFields: boolean;
 };
 const Actions = (props: ActionProps) => {
   const [loading, setLoading] = useState(false);
@@ -156,10 +162,10 @@ const Actions = (props: ActionProps) => {
     setLoading(true);
   };
 
-  return (
-    <div className="flex h-[70px] items-end justify-between">
-      <section className="flex items-center justify-between space-x-2">
-        <div className="flex h-[54.67px] items-center rounded-lg rounded-br-none border-[0.33px] border-ash bg-white px-4 py-2 text-xs font-medium leading-none text-clay">
+  const FeedbackOptions = useCallback(() => {
+    const options = opts(
+      <div className="flex items-center justify-between space-x-2">
+        <div className="flex h-[54.67px] items-center rounded-lg rounded-br-none border-[0.33px] border-ash bg-white px-8 py-2 text-xs font-medium leading-none text-coal">
           <span>Results OK?</span>
         </div>
         <Touch
@@ -169,7 +175,6 @@ const Actions = (props: ActionProps) => {
           className={cn(feedback ? `text-blue-600` : ``)}
           disabled={loading}
         />
-
         <Touch
           icon={ThumbsDown}
           onClick={handleDislike}
@@ -179,7 +184,15 @@ const Actions = (props: ActionProps) => {
           size="icon"
           disabled={loading}
         />
-      </section>
+      </div>,
+      <div></div>,
+    );
+    return <>{options.get(props.withFields)}</>;
+  }, [feedback, loading, props.withFields]);
+
+  return (
+    <div className="flex h-[70px] items-end justify-between">
+      <FeedbackOptions />
       <props.submit />
     </div>
   );

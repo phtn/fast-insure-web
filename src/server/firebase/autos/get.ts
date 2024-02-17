@@ -27,10 +27,14 @@ export const getAllAuto = async (params: GetAllAutoSchema) => {
   return getDocs(autosRef)
     .then((snapshot) => {
       const docs = snapshot.docs.map((doc) => {
+        const id = doc.id;
         const data = doc.data() as AutoDataSchema;
-        return data;
+        return { id, ...data };
       });
       return docs;
     })
-    .catch((err) => err);
+    .catch((err: Error) => {
+      console.log(err);
+      return [];
+    });
 };

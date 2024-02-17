@@ -1,6 +1,5 @@
 "use client";
 
-import { AuthContext } from "@/app/context";
 import { Button } from "@@components/button";
 import {
   Dialog,
@@ -14,12 +13,8 @@ import {
 import { Input } from "@@components/input";
 import { Label } from "@@components/label";
 import { PlaneTakeoff } from "lucide-react";
-import { useContext } from "react";
-import { useGetOne } from "./hooks";
 
 export const Content = () => {
-  const userCreds = useContext(AuthContext);
-  const { one, getOne } = useGetOne(userCreds?.user?.uid);
   return (
     <div className="flex h-[450px] shrink-0 items-center justify-center rounded-md border border-dashed">
       <div className="mx-auto flex max-w-[420px] flex-col items-center justify-center text-center">
@@ -52,9 +47,7 @@ export const Content = () => {
                 <Input id="url" placeholder="Versailles" />
               </div>
             </div>
-            <DialogFooter>
-              <Button onClick={() => getOne()}>Send Request</Button>
-            </DialogFooter>
+            <DialogFooter></DialogFooter>
           </DialogContent>
         </Dialog>
       </div>

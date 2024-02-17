@@ -18,7 +18,6 @@ import {
   Title,
   TryBanner,
 } from "./components";
-import { staticScanBase64 } from "./data";
 import { useAutoAccount, useFileHandler, useFileUploader } from "./hooks";
 
 export const AddAuto = () => {
@@ -26,11 +25,18 @@ export const AddAuto = () => {
   const userCreds = useContext(AuthContext);
   const { file, handleFileChange, handleFileRemove, imageData } =
     useFileHandler();
-  const { fileUploader, uploadProgress, scanResult, loading, status } =
-    useFileUploader(userCreds?.user?.uid);
+  const {
+    fileUploader,
+    uploadProgress,
+    scanResult,
+    loading,
+    status,
+    downloadURL,
+  } = useFileUploader(userCreds?.user?.uid);
 
   const { open, setOpen, addAuto, addLoading } = useAutoAccount({
     userId: userCreds?.user?.uid,
+    docURL: downloadURL,
   });
 
   const handleFileUpload = useCallback(() => {
@@ -101,10 +107,11 @@ export const AddAuto = () => {
 
             <div>
               <AutoForm
-                fields={staticScanBase64.base64.fields}
+                fields={scanResult?.base64.fields}
                 setCount={setInvalidFieldCount}
                 loading={addLoading}
                 addAuto={addAuto}
+                downloadURL={downloadURL}
               />
             </div>
           </section>

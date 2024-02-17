@@ -17,6 +17,7 @@ export type AutoFormProps = {
   setCount: Dispatch<SetStateAction<number>>;
   loading: boolean;
   addAuto: (auto_data: VehicleSchema) => void;
+  downloadURL: string;
 };
 
 export const AutoForm = ({
@@ -24,6 +25,7 @@ export const AutoForm = ({
   setCount,
   loading,
   addAuto,
+  downloadURL,
 }: AutoFormProps) => {
   const form = useForm<VehicleSchema>({
     resolver: zodResolver(vehicleResource),
@@ -38,6 +40,7 @@ export const AutoForm = ({
         setCount={setCount}
         loading={loading}
         addAuto={addAuto}
+        downloadURL={downloadURL}
       />
     </Form>
   );

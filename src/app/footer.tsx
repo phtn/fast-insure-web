@@ -66,9 +66,9 @@ const iLinkData: ILink[] = [
 
 export function Footer() {
   return (
-    <footer className="flex flex-col md:pt-[200px] pt-[100px] justify-end bg-orange-50">
-      <div className="container px-4 pt-24">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-5">
+    <footer className="flex w-full flex-col justify-end bg-paper pt-[100px] md:pt-[200px]">
+      <div className="px-4 pt-24">
+        <div className=" container grid grid-cols-1 gap-8 md:grid-cols-5">
           <PostScript />
           <Contact />
           <Menu />
@@ -95,7 +95,7 @@ const PostScript = () => (
         width="60"
       />
     </div>
-    <h2 className="mb-8 max-w-[32ch] text-center md:max-w-[36ch] text-[14px] font-medium text-zinc-500">
+    <h2 className="mb-8 max-w-[32ch] text-center text-[14px] font-medium text-zinc-500 md:max-w-[36ch]">
       Get in-touch with us and explore our range of coverage options and
       discover how we can protect what matters most to you.
     </h2>
@@ -113,7 +113,7 @@ const PostScript = () => (
       </Avatar>
     </div>
   </div>
-)
+);
 
 const Contact = () => (
   <div className="col-span-1 my-6">
@@ -149,13 +149,11 @@ const Contact = () => (
       https://fastinsure.ph
     </p>
   </div>
-)
+);
 
 const Menu = () => (
   <div className="col-span-1 my-6 flex flex-col items-start">
-    <h3 className="mb-4 text-[16px] font-bold text-blue-950">
-      Menu
-    </h3>
+    <h3 className="mb-4 text-[16px] font-bold text-blue-950">Menu</h3>
     <ul className="space-y-3 text-sm text-zinc-700">
       {iLinkData.map((item) => (
         <LinkItem key={item.id}>
@@ -167,10 +165,10 @@ const Menu = () => (
       ))}
     </ul>
   </div>
-)
+);
 
 const Rights = () => (
-  <div className="mt-[75px] flex h-[75px] items-center justify-between border-t border-slate-400/80 text-zinc-500">
+  <div className="mt-[75px] flex h-[75px] w-full items-center justify-between border-t border-slate-400/80 text-zinc-500">
     <p className="text-xs md:text-sm">
       © {new Date().getFullYear()} Fast Insure, Inc. All rights reserved.
     </p>
@@ -178,12 +176,16 @@ const Rights = () => (
       Privacy Policy
     </a>
   </div>
-)
+);
 
 const Social = () => (
-  <div className="flex w-full col-span-2 md:col-span-1 justify-center">
+  <div className="col-span-2 flex w-full justify-center md:col-span-1">
     <div className="flex flex-col items-center">
-      <Button variant='outline' size='lg' className="mb-8 inline-flex rounded-lg w-[250px] items-center">
+      <Button
+        variant="outline"
+        size="lg"
+        className="mb-8 inline-flex w-[250px] items-center rounded-lg"
+      >
         Get a Quote
       </Button>
       <h3 className="mb-4 text-sm font-semibold md:text-base">
@@ -198,17 +200,14 @@ const Social = () => (
       <Input
         placeholder="type your email..."
         type="email"
-        className="w-[250px] bg-zinc-800 text-blue-50 border-0 rounded-lg h-[44px] mb-4"
+        className="mb-4 h-[44px] w-[250px] rounded-lg border-0 bg-zinc-800 text-blue-50"
       />
-      <Button variant='default' size='lg' className="mb-4 w-[250px] rounded-lg">
+      <Button variant="default" size="lg" className="mb-4 w-[250px] rounded-lg">
         Get our Newsletter!
       </Button>
-
     </div>
   </div>
-)
-
-
+);
 
 const ILink = tw(Link)`
   flex items-center transition-all duration-500 ease-in-out 

@@ -1,13 +1,16 @@
 "use server";
 
-import {
+import type {
+  AllAutoSchema,
   GetAllAutoSchema,
-  type GetOneAutoSchema,
+  GetOneAutoSchema,
 } from "@/server/resource/autos";
 import { tRPC } from "../rsc";
 
 export const getAllAuto = async (params: GetAllAutoSchema) => {
-  return await tRPC.getAllAuto.query(params).then((response) => response);
+  return await tRPC.getAllAuto
+    .query(params)
+    .then((response: AllAutoSchema) => response);
 };
 export const getOneAuto = async (params: GetOneAutoSchema) => {
   return await tRPC.getOneAuto.query(params).then((response) => response);

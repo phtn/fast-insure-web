@@ -129,7 +129,7 @@ export const InputFile = React.forwardRef<
   return (
     <div
       className={cn(
-        "focus-within:ring-ring flex h-[300px] flex-col items-center justify-end rounded-lg border-[0.33px] bg-white shadow-inner outline-dotted outline-ash ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1",
+        "focus-within:ring-ring flex h-[300px] flex-col items-center justify-end rounded-lg border border-dashed border-ash bg-white shadow-inner ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1",
         className,
       )}
     >

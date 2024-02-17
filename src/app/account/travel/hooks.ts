@@ -1,4 +1,4 @@
-import { AutoDataSchema } from "@/server/resource/autos";
+import { type AutoDataSchema } from "@/server/resource/autos";
 import { getOneAuto } from "@/trpc/autos/get";
 import { onError, onSuccess } from "@/utils/toast";
 import { useState } from "react";

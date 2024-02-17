@@ -1,5 +1,4 @@
 import { storage } from "@/libs/db";
-import { readAllAuto } from "@/reads/autos";
 import type { OCR_DE_BASE64_Schema } from "@/server/resource/ocr";
 import { createAuto } from "@/trpc/autos/create";
 import { runOCR_DE_BASE64 } from "@/trpc/ocr/ocr";
@@ -154,9 +153,10 @@ export const useWatcher = ({ errors, watch }: UseWatcherParams) => {
 
 type UseAutoAccount = {
   userId?: string | undefined;
+  docURL: string;
 };
 
-export const useAutoAccount = ({ userId }: UseAutoAccount) => {
+export const useAutoAccount = ({ userId, docURL }: UseAutoAccount) => {
   const [addLoading, setAddLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -167,12 +167,16 @@ export const useAutoAccount = ({ userId }: UseAutoAccount) => {
   const addAuto = async (auto_data: VehicleSchema) => {
     setAddLoading(true);
     const auto_name = nameGenerator();
-    await createAuto({ userId: userId!, auto_data, auto_name })
+    await createAuto({ userId: userId!, auto_data, auto_name, doc_url: docURL })
       .then((res) => {
-        if (res[0] === 1) {
+        if (typeof res === "number") {
           setOpen(false);
           setAddLoading(false);
           Ok();
+        } else if (typeof res === "string") {
+          console.log(res);
+        } else {
+          onError(res.name, res.message);
         }
         setAddLoading(false);
       })
@@ -191,15 +195,19 @@ export const useGetAutos = ({ userId }: { userId: string | undefined }) => {
   useEffect(() => {
     setLoading(true);
     if (userId) {
-      getAllAuto({ userId }).then((response) => {
-        setAutos(response);
-        setLoading(false);
-      });
+      getAllAuto({ userId })
+        .then((response) => {
+          setAutos(response);
+          setLoading(false);
+        })
+        .catch((err: Error) => {
+          onError(err.name, err.message);
+        });
     } else {
       AuthErr();
       setLoading(false);
     }
-  }, []);
+  }, [userId]);
 
   return { autos, loading };
 };

@@ -4,6 +4,7 @@ export const CreateAutoResource = z.object({
   userId: z.string(),
   auto_data: z.record(z.string()),
   auto_name: z.string(),
+  doc_url: z.string(),
 });
 
 export const AutoDataResource = z.record(z.string());

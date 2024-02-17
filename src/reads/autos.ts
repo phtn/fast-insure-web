@@ -1,6 +1,6 @@
 "use server";
 import { db } from "@/libs/db";
-import { AutoDataSchema, GetAllAutoSchema } from "@/server/resource/autos";
+import type { AutoDataSchema, GetAllAutoSchema } from "@/server/resource/autos";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 
 type GetAllAutoType = {

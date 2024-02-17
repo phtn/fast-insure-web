@@ -55,7 +55,7 @@ export default {
         "i-tl-li-hv": "inset 20px 20px 60px -30px rgba(125, 125, 125, 0.15)",
         // Case dark
         "i-br-dk": "inset -15px -30px 40px -30px rgba(255, 255, 255, 0.50)",
-        "i-tl-dk-hv": "inset 20px 20px 80px -30px rgba(200, 200, 200, 0.8)",
+        "i-tl-dk-hv": "inset 25px 15px 60px -30px rgba(225, 225, 225, 0.8)",
         // Light
         "i-tl-li": "inset 20px 20px 40px -30px rgba(125, 125, 125, 0.15)",
         "i-br-li-hv": "inset -20px -20px 40px -30px rgba(125, 125, 125, 0.20)",

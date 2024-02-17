@@ -13,19 +13,20 @@ import {
 } from "@@components/context-menu";
 
 import { type PrimaryAutoInfo, playlists } from "./data";
-import { PlusCircleIcon } from "lucide-react";
-import { VehicleSchema } from "./active-form";
+import { ArrowRightIcon, PlusCircleIcon } from "lucide-react";
+import { type VehicleSchema } from "./active-form";
+import { Touch } from "@/app/_components/touch";
 
 interface AccountItemProps extends React.HTMLAttributes<HTMLDivElement> {
   vehicleItem: PrimaryAutoInfo & VehicleSchema;
-  aspectRatio?: "portrait" | "square";
+  aspectRatio?: "landscape" | "square";
   width?: number;
   height?: number;
 }
 
 export function AccountItem({
   vehicleItem,
-  aspectRatio = "portrait",
+  aspectRatio = "landscape",
   width,
   height,
   className,
@@ -43,19 +44,19 @@ export function AccountItem({
               height={height}
               className={cn(
                 "h-auto w-auto object-cover transition-all hover:scale-105",
-                aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square",
+                aspectRatio === "landscape" ? "aspect-[3/4]" : "aspect-square",
               )}
             />
           </div>
         </ContextMenuTrigger>
         <ContextMenuContent className="w-40">
-          <ContextMenuItem>Add to Library</ContextMenuItem>
+          <ContextMenuItem>View details</ContextMenuItem>
           <ContextMenuSub>
-            <ContextMenuSubTrigger>Add to Playlist</ContextMenuSubTrigger>
+            <ContextMenuSubTrigger>Edit</ContextMenuSubTrigger>
             <ContextMenuSubContent className="w-48">
               <ContextMenuItem>
                 <PlusCircleIcon className="mr-2 h-4 w-4" />
-                New Playlist
+                New Image
               </ContextMenuItem>
               <ContextMenuSeparator />
               {playlists.map((playlist) => (
@@ -78,19 +79,28 @@ export function AccountItem({
             </ContextMenuSubContent>
           </ContextMenuSub>
           <ContextMenuSeparator />
-          <ContextMenuItem>Play Next</ContextMenuItem>
-          <ContextMenuItem>Play Later</ContextMenuItem>
-          <ContextMenuItem>Create Station</ContextMenuItem>
+          <ContextMenuItem>One</ContextMenuItem>
+          <ContextMenuItem>Two</ContextMenuItem>
+          <ContextMenuItem>Three</ContextMenuItem>
           <ContextMenuSeparator />
-          <ContextMenuItem>Like</ContextMenuItem>
-          <ContextMenuItem>Share</ContextMenuItem>
+          <ContextMenuItem>Four</ContextMenuItem>
+          <ContextMenuItem>Five</ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
-      <div className="space-y-1 text-sm">
-        <h3 className="font-semibold leading-none text-coal">
-          {vehicleItem.auto_name}
-        </h3>
-        <p className="text-xs text-clay">{vehicleItem.make}</p>
+      <div className="flex items-center justify-between">
+        <div className="space-y-1 text-sm">
+          <h3 className="font-semibold leading-none text-coal">
+            {vehicleItem.auto_name}
+          </h3>
+          <p className="text-xs text-clay">{vehicleItem.make}</p>
+        </div>
+        {vehicleItem.isActive ? (
+          <Touch size="sm">View Status</Touch>
+        ) : (
+          <Touch size="md" tail={ArrowRightIcon} variant="primary">
+            Activate
+          </Touch>
+        )}
       </div>
     </div>
   );

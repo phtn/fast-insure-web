@@ -45,7 +45,7 @@ type HeaderProps = {
 
 export const Header = (props: HeaderProps) => (
   <div className="flex items-center space-x-3 px-2">
-    <props.icon className="h-6 w-6 text-clay" strokeWidth={1} />
+    <props.icon className="h-6 w-6 text-clay" fill="#FFFFFF" strokeWidth={1} />
     <p className="text-lg font-medium tracking-tighter text-coal">
       {props.title}
     </p>
@@ -58,7 +58,7 @@ type FileInfoProps = {
 };
 
 export const FileInfo = ({ file, removeFile }: FileInfoProps) => (
-  <div className="flex h-[149px] flex-col items-stretch justify-center space-y-6 rounded-lg border border-ash bg-white p-3">
+  <div className="flex h-[150px] flex-col items-stretch justify-center space-y-6 rounded-lg border border-ash bg-white p-3">
     <div className="flex items-center justify-between ">
       <div className="flex items-center space-x-2">
         <div className="flex w-8 items-center justify-center">
@@ -134,7 +134,7 @@ type ImageViewerProps = {
   imageData: string | null;
 };
 export const ImageViewer = ({ file, imageData }: ImageViewerProps) => (
-  <div className="flex h-[300px] w-full items-center justify-center overflow-scroll rounded-lg bg-gradient-to-r from-gray-800/80 to-gray-800/60 shadow-inner">
+  <div className="flex h-[300px] w-full items-center justify-center overflow-scroll rounded-lg border bg-gradient-to-r from-gray-800/80 to-gray-800/40 shadow-inner">
     <Image
       alt={file?.name ?? ""}
       className="h-auto w-auto transition-all duration-500 ease-in-out hover:scale-[250%]"

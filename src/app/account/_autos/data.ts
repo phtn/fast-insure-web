@@ -1,11 +1,12 @@
 import { type CheckoutSchema } from "@/server/resource/icash";
 import { type OCR_DE_BASE64_Schema } from "@/server/resource/ocr";
-import { VehicleSchema } from "./active-form";
+import { type VehicleSchema } from "./active-form";
 
 export type PrimaryAutoInfo = {
   auto_name: string;
   make: string;
   photoURL: string;
+  isActive: boolean;
 } & VehicleSchema;
 
 export const accountItems: Record<string, string>[] = [
