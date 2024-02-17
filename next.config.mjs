@@ -13,11 +13,17 @@ const withPWA = withPWAInit({
   cacheOnFrontEndNav: true,
   aggressiveFrontEndNavCaching: true,
   reloadOnOnline: true,
-  // disable: process.env.NODE_ENV === "development",
+  disable: process.env.NODE_ENV === "development",
   workboxOptions: {
     disableDevLogs: true,
   },
 });
 export default withPWA({
   reactStrictMode: true,
+  webpack5: true,
+  webpack: (config) => {
+    config.resolve.fallback = { fs: false };
+    return config;
+  },
+  output: "standalone",
 });
