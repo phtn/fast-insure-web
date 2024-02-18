@@ -12,11 +12,11 @@ const withPWA = withPWAInit({
   cacheOnFrontEndNav: true,
   aggressiveFrontEndNavCaching: true,
   reloadOnOnline: true,
-  disable: process.env.NODE_ENV === "development",
+  disable: true,
   workboxOptions: {
     disableDevLogs: true,
   },
-  register: true,
+  register: false,
 });
 
 /** @type {import("next").NextConfig} */
