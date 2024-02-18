@@ -36,10 +36,8 @@
   "id": "/",
   "scope": "/",
   "dir": "ltr",
-  "orientation": "portrait",
-  "display": "standalone",
-  "display-override": ["window-controls-overlay"],
-  "start_url": "http://localhost:3000",
+  "orientation": "any",
+  "display": "fullscreen",
   "description": "FastInsure is the fastest growing fintech in the Philippines.",
   "categories": [
     "fintech",
