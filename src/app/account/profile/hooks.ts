@@ -7,7 +7,8 @@ export const useUserProfile = () => {
   const userProfile = useContext(AuthContext)?.profile;
   const [profile, setProfile] = useState<DocumentData>({} as ProfileProps);
   const [joinDate, setJoinDate] = useState("");
-  const [address, setAddress] = useState<Address | undefined>();
+  const [address, setAddress] = useState<Address>({} as Address);
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     if (userProfile) {
@@ -15,10 +16,11 @@ export const useUserProfile = () => {
       const { month, year } = getMonthAndYear(
         (profile.createdAt as number) ?? new Date().getTime(),
       );
+      setEmail(userProfile.email as string);
       setJoinDate(`Joined ${month} ${year}`);
-      setAddress(profile.address as Address);
+      setAddress(userProfile.address as Address);
     }
   }, [userProfile, profile]);
 
-  return { profile, joinDate, address };
+  return { profile, joinDate, address, email };
 };

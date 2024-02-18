@@ -26,7 +26,5 @@ const config = {
     config.resolve.fallback = { fs: false };
     return config;
   },
-  output: "standalone",
-  swcMinify: false,
 };
 export default withPWA(config);

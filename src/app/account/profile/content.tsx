@@ -21,7 +21,8 @@ import { useUserProfile } from "./hooks";
 
 export const Content = () => {
   const [visible, setVisible] = useState(false);
-  const { profile, joinDate, address } = useUserProfile();
+  const { profile, joinDate, address, email } = useUserProfile();
+
   const handleCheckout = () => {
     checkoutSession(payload)
       .then((res) => console.log(res.data))
@@ -77,14 +78,14 @@ export const Content = () => {
             c
           </Button>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-1">
             <AtSignIcon className="h-3 w-3 text-clay" />
-            <p className="text-xs text-clay">{profile.email}</p>
+            <p className="text-xs text-coal">{email}</p>
           </div>
           <div className="flex items-center space-x-1">
             <MapPinnedIcon className="h-3 w-3 text-clay" />
-            <p className="text-xs text-clay">{address?.city ?? ""}</p>
+            <p className="text-xs text-clay">{address.city}</p>
           </div>
           <div className="flex items-center space-x-1">
             <CalendarDaysIcon className="h-3 w-3 text-clay" />
