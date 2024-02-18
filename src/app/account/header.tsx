@@ -25,13 +25,14 @@ export const Header = (props: HeaderProps) => {
               fill="rgba(255,255,255, 0.5)"
             />
           ) : null}
-          {icons?.map((item) =>
+          {icons?.map((item, index) =>
             createElement(
               item,
               {
-                strokeWidth: 1,
-                fill: "rgba(255,255,255, 0.5)",
                 className: `text-blue-500`,
+                fill: "rgba(255,255,255, 0.5)",
+                key: `${index}_${item.toString()}`,
+                strokeWidth: 1,
               },
               null,
             ),

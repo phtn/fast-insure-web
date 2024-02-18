@@ -9,7 +9,7 @@ export default async function AccountLayout({
 }) {
   return (
     <div className="h-screen bg-paper bg-gradient-to-r from-paper via-blue-200 to-paper portrait:h-fit">
-      <Tabs defaultValue="travel" className="h-full space-y-8">
+      <Tabs defaultValue="autos" className="h-full space-y-8">
         <Triggers />
         {children}
       </Tabs>

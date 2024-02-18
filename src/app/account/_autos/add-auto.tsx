@@ -26,8 +26,14 @@ export const AddAuto = () => {
     number | undefined
   >(undefined);
   const userCreds = useContext(AuthContext);
-  const { file, handleFileChange, handleFileRemove, imageData } =
-    useFileHandler();
+  const {
+    file,
+    handleFileChange,
+    handleFileRemove,
+    imageData,
+    validFormat,
+    validSize,
+  } = useFileHandler();
   const {
     fileUploader,
     uploadProgress,
@@ -52,11 +58,16 @@ export const AddAuto = () => {
 
   const FileViewOptions = useCallback(() => {
     const options = opts(
-      <FileInfo file={file} removeFile={handleFileRemove} />,
+      <FileInfo
+        file={file}
+        removeFile={handleFileRemove}
+        validFormat={validFormat}
+        validSize={validSize}
+      />,
       <TryBanner />,
     );
     return <>{options.get(imageData !== null)}</>;
-  }, [imageData, file, handleFileRemove]);
+  }, [imageData, file, handleFileRemove, validFormat, validSize]);
 
   const ImageViewOptions = useCallback(() => {
     const options = opts(
@@ -99,6 +110,8 @@ export const AddAuto = () => {
               uploadProgress={uploadProgress}
               scanResult={scanResult}
               status={status}
+              validFormat={validFormat}
+              validSize={validSize}
             />
           </section>
 
@@ -115,6 +128,7 @@ export const AddAuto = () => {
                 loading={addLoading}
                 addAuto={addAuto}
                 downloadURL={downloadURL}
+                withScan={!!scanResult}
               />
             </div>
           </section>

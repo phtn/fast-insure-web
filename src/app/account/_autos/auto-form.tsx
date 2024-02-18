@@ -18,6 +18,7 @@ export type AutoFormProps = {
   loading: boolean;
   addAuto: (auto_data: VehicleSchema) => void;
   downloadURL: string;
+  withScan: boolean;
 };
 
 export const AutoForm = ({
@@ -26,6 +27,7 @@ export const AutoForm = ({
   loading,
   addAuto,
   downloadURL,
+  withScan,
 }: AutoFormProps) => {
   const form = useForm<VehicleSchema>({
     resolver: zodResolver(vehicleResource),
@@ -41,6 +43,7 @@ export const AutoForm = ({
         loading={loading}
         addAuto={addAuto}
         downloadURL={downloadURL}
+        withScan={withScan}
       />
     </Form>
   );

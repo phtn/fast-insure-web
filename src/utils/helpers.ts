@@ -130,14 +130,12 @@ export const toggleState = (
   setState((prevState) => !prevState);
 };
 
-export const fileType = (
-  file_type: string | undefined,
-): string | null | undefined => {
+export const fileType = (file_type: string | undefined): string => {
   if (!file_type) {
-    return null;
+    return "";
   }
   const match = file_type.match(/\/(\w+)$/);
-  return match ? match[1] : null;
+  return match?.[1] ?? "";
 };
 
 export const fileSize = (bytes: number | undefined): string => {

@@ -15,18 +15,22 @@ import {
 import { InputFieldName } from "@@components/input";
 import {
   BadgeCheckIcon,
-  CalendarCheckIcon,
+  CalendarDaysIcon,
   CarFrontIcon,
+  CaravanIcon,
   CheckCircleIcon,
   CircleDollarSignIcon,
-  DiscIcon,
+  CogIcon,
+  CylinderIcon,
   EclipseIcon,
+  FileBadge,
   FileCogIcon,
   FileDigitIcon,
-  FileIcon,
+  FileTypeIcon,
+  FormInputIcon,
   FuelIcon,
-  ListRestartIcon,
   MapPinnedIcon,
+  SplitSquareVerticalIcon,
   UserIcon,
   WeightIcon,
 } from "lucide-react";
@@ -56,6 +60,7 @@ type ActiveFormProps = {
   loading: boolean;
   addAuto: (auto_data: VehicleSchema) => void;
   downloadURL: string;
+  withScan: boolean;
 };
 
 export const ActiveForm = ({
@@ -64,10 +69,10 @@ export const ActiveForm = ({
   setCount,
   loading,
   addAuto,
+  withScan,
 }: ActiveFormProps) => {
   const context = useContext(AuthContext);
   const userCreds = context?.user;
-  const [newForm, setNewForm] = useState(true);
   const { control, handleSubmit, formState, setValue, watch } = form;
   const { errors } = formState;
   const { count } = useWatcher({ errors, watch });
@@ -83,7 +88,6 @@ export const ActiveForm = ({
   }, [count, setCount]);
 
   const onSubmit = (values: VehicleSchema) => {
-    setNewForm(false);
     const filteredPayload = filterAutoValues(values);
     if (userCreds?.uid) {
       addAuto(filteredPayload);
@@ -91,15 +95,17 @@ export const ActiveForm = ({
   };
 
   const Submit = useCallback(() => {
-    const label =
-      count <= 0 && !newForm ? "Ready to Submit" : "Verify Form Values";
-    const icon = count <= 0 && !newForm ? CheckCircleIcon : ListRestartIcon;
     return (
-      <DarkTouch size="lg" type="submit" tail={icon} disabled={loading}>
-        {label}
+      <DarkTouch
+        size="lg"
+        type="submit"
+        tail={CheckCircleIcon}
+        disabled={loading}
+      >
+        Validate & Submit
       </DarkTouch>
     );
-  }, [count, newForm, loading]);
+  }, [loading]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -139,14 +145,14 @@ export const ActiveForm = ({
           ))}
         </div>
       </section>
-      <Actions submit={Submit} withFields={fields.length !== 0} />
+      <Actions submit={Submit} withScan={withScan} />
     </form>
   );
 };
 
 type ActionProps = {
   submit: () => ReactElement;
-  withFields: boolean;
+  withScan: boolean;
 };
 const Actions = (props: ActionProps) => {
   const [loading, setLoading] = useState(false);
@@ -171,10 +177,10 @@ const Actions = (props: ActionProps) => {
         handleDislike={handleDislike}
         loading={loading}
       />,
-      <div></div>,
+      <div />,
     );
-    return <>{options.get(props.withFields)}</>;
-  }, [feedback, loading, props.withFields]);
+    return <>{options.get(props.withScan)}</>;
+  }, [feedback, loading, props.withScan]);
 
   return (
     <div className="flex h-[70px] items-end justify-between">
@@ -186,12 +192,22 @@ const Actions = (props: ActionProps) => {
 
 const getIcon = (key: string) => {
   const k = key.toLowerCase();
-  if (k.includes("no") || k.includes("vin")) {
+  if (k.includes("mv") || k.includes("vin")) {
     return FileCogIcon;
-  } else if (k.includes("cr") || k.includes("o.r.no")) {
+  } else if (k.includes("cr")) {
+    return FileBadge;
+  } else if (k.includes("engine")) {
+    return CogIcon;
+  } else if (k.includes("chassis")) {
+    return SplitSquareVerticalIcon;
+  } else if (k.includes("plate")) {
+    return FormInputIcon;
+  } else if (k.includes("denomination")) {
+    return CaravanIcon;
+  } else if (k.includes("or no")) {
     return FileDigitIcon;
   } else if (k.includes("date") || k.includes("year")) {
-    return CalendarCheckIcon;
+    return CalendarDaysIcon;
   } else if (k.includes("owner")) {
     return UserIcon;
   } else if (k.includes("wt") || k.includes("net")) {
@@ -199,7 +215,7 @@ const getIcon = (key: string) => {
   } else if (k.includes("body") || k.includes("make")) {
     return CarFrontIcon;
   } else if (k.includes("cylinders")) {
-    return DiscIcon;
+    return CylinderIcon;
   } else if (k.includes("fuel")) {
     return FuelIcon;
   } else if (k.includes("amount") || k.includes("amt")) {
@@ -211,7 +227,7 @@ const getIcon = (key: string) => {
   } else if (k.includes("piston")) {
     return EclipseIcon;
   } else {
-    return FileIcon;
+    return FileTypeIcon;
   }
 };
 

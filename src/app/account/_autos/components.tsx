@@ -21,6 +21,8 @@ import {
   type LucideIcon,
   ThumbsUp,
   ThumbsDown,
+  CircleSlash2Icon,
+  AlertCircleIcon,
 } from "lucide-react";
 import Image from "next/image";
 import { type FormEvent, type ChangeEvent, useCallback } from "react";
@@ -58,62 +60,117 @@ export const Header = (props: HeaderProps) => (
 type FileInfoProps = {
   file: File | null;
   removeFile: () => void;
+  validFormat: boolean;
+  validSize: boolean;
 };
 
-export const FileInfo = ({ file, removeFile }: FileInfoProps) => (
-  <div className="flex h-[150px] flex-col items-stretch justify-center space-y-6 rounded-lg border border-ash bg-white p-3">
-    <div className="flex items-center justify-between ">
-      <div className="flex items-center space-x-2">
-        <div className="flex w-8 items-center justify-center">
-          <FileTextIcon className="text-clay" strokeWidth={1} />
+export const FileInfo = ({
+  file,
+  removeFile,
+  validFormat,
+  validSize,
+}: FileInfoProps) => {
+  const FormatChecker = useCallback(() => {
+    const options = opts(
+      <CheckCircleIcon
+        strokeWidth={1.5}
+        className="h-4 w-4 text-blue-500"
+        fill="#dbeafe"
+      />,
+      <CircleSlash2Icon
+        strokeWidth={1.5}
+        className="h-4 w-4 text-red-500"
+        fill="rgba(254, 202, 202, 0.5)"
+      />,
+    );
+    return <>{options.get(validFormat)}</>;
+  }, [validFormat]);
+
+  const SizeChecker = useCallback(() => {
+    const options = opts(
+      <CheckCircleIcon
+        strokeWidth={1.5}
+        className="h-4 w-4 text-blue-500"
+        fill="#dbeafe"
+      />,
+      <CircleSlash2Icon
+        strokeWidth={1.5}
+        className="h-4 w-4 text-red-500"
+        fill="rgba(254, 202, 202, 0.5)"
+      />,
+    );
+    return <>{options.get(validSize)}</>;
+  }, [validSize]);
+
+  const ReadyChecker = () => {
+    const options = opts(
+      <CheckCircleIcon
+        strokeWidth={1.5}
+        className="h-4 w-4 text-blue-500"
+        fill="#dbeafe"
+      />,
+      <AlertCircleIcon
+        strokeWidth={1.5}
+        className="h-4 w-4 text-amber-500"
+        fill="rgba(253, 230, 138, 0.5)"
+      />,
+    );
+    return <>{options.get(validFormat)}</>;
+  };
+
+  return (
+    <div className="flex h-[150px] flex-col items-stretch justify-center space-y-6 rounded-lg border border-ash bg-white p-3">
+      <div className="flex items-center justify-between ">
+        <div className="flex items-center space-x-2">
+          <div className="flex w-8 items-center justify-center">
+            <FileTextIcon className="text-clay" strokeWidth={1} />
+          </div>
+          <div className="space-y-[1px] overflow-clip">
+            <div className="w-full ">
+              <span className="font-mono text-sm font-medium text-clay">
+                {limitText(file?.name, 25)}
+              </span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span className="font-mono text-xs uppercase tracking-tight text-clay">
+                {fileType(file?.type)}
+              </span>
+              <span className="font-mono text-[12px] text-clay">
+                {fileSize(file?.size)}
+              </span>
+            </div>
+          </div>
         </div>
-        <div className="space-y-[1px] overflow-clip">
-          <div className="w-full ">
-            <span className="font-mono text-sm font-medium text-clay">
-              {limitText(file?.name, 25)}
-            </span>
-          </div>
-          <div className="flex items-center space-x-4">
-            <span className="font-mono text-xs uppercase tracking-tight text-clay">
-              {fileType(file?.type)}
-            </span>
-            <span className="font-mono text-[12px] text-clay">
-              {fileSize(file?.size)}
-            </span>
-          </div>
+        <div>
+          <Button
+            variant="casper"
+            size="icon"
+            className="hover:bg-paper"
+            onClick={removeFile}
+          >
+            <XIcon strokeWidth={1} />
+          </Button>
         </div>
       </div>
-      <div>
-        <Button
-          variant="casper"
-          size="icon"
-          className="hover:bg-paper"
-          onClick={removeFile}
-        >
-          <XIcon strokeWidth={1} />
-        </Button>
+      <div className="flex h-[50px] w-full items-center justify-evenly rounded-lg bg-paper text-[10px] font-medium">
+        <div className="flex items-center justify-center space-x-2">
+          <span className="uppercase text-clay">FORMAT</span>
+          <FormatChecker />
+        </div>
+        <div className="flex items-center justify-center space-x-2">
+          <span className="uppercase text-clay">Size</span>
+          <SizeChecker />
+        </div>
+        <div className="flex items-center justify-center space-x-2">
+          <span className="uppercase text-clay">
+            {validFormat ? `Ready` : `Invalid`}
+          </span>
+          <ReadyChecker />
+        </div>
       </div>
     </div>
-    <div className="flex h-[50px] w-full items-center justify-evenly rounded-lg bg-paper text-xs font-medium">
-      <div className="flex items-center justify-center space-x-2">
-        <span className="uppercase text-clay">FORMAT</span>
-        <CheckCircleIcon
-          strokeWidth={1.5}
-          className="h-4 w-4 text-blue-500"
-          fill="#dbeafe"
-        />
-      </div>
-      <div className="flex items-center justify-center space-x-2">
-        <span className="uppercase text-clay">Ready</span>
-        <CheckCircleIcon
-          strokeWidth={1.5}
-          className="h-4 w-4 text-blue-500"
-          fill="#dbeafe"
-        />
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 export const TryBanner = () => (
   <div className="flex h-[150px] flex-col items-center justify-center space-y-4 rounded-lg border border-ash bg-white px-2">
@@ -175,6 +232,8 @@ type ActionProps = {
   uploadProgress: number;
   scanResult: OCR_DE_BASE64_Schema | null;
   status: UploadStatus;
+  validFormat: boolean;
+  validSize: boolean;
 };
 export const Actions = ({
   fileUpload,
@@ -183,10 +242,12 @@ export const Actions = ({
   uploadProgress,
   scanResult,
   status,
+  validFormat,
+  validSize,
 }: ActionProps) => (
   <DialogFooter className="flex h-[70px] items-end justify-center space-x-4">
     <section className="flex w-full items-center justify-start space-x-2">
-      <Meter label="upload" unit="%" value={100 + uploadProgress} />
+      <Meter label="upload" unit="%" value={uploadProgress} />
       <Meter
         label="scan"
         unit="%"
@@ -195,7 +256,7 @@ export const Actions = ({
     </section>
     <Touch
       size="lg"
-      disabled={!imageData || loading}
+      disabled={!imageData || loading || !validFormat || !validSize}
       onClick={fileUpload}
       className="w-full"
       tail={UploadIcon}

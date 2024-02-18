@@ -103,9 +103,9 @@ export const InputFieldName = React.forwardRef<
       )}
     >
       <props.icon
-        className="text-blue-clay mx-[16px] h-8 w-8"
+        className="mx-[16px] h-8 w-8 text-clay"
         strokeWidth={1}
-        fill="#EEE"
+        fill="rgba(238, 238, 238, 0.60)"
       />
       <span className="w-64 text-xs font-medium uppercase leading-none text-clay">
         {label}

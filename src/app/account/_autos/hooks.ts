@@ -2,8 +2,8 @@ import { db, storage } from "@/libs/db";
 import type { OCR_DE_BASE64_Schema } from "@/server/resource/ocr";
 import { createAuto } from "@/trpc/autos/create";
 import { runOCR_DE_BASE64 } from "@/trpc/ocr/ocr";
-import { nameGenerator } from "@/utils/helpers";
-import { onError, onSuccess } from "@/utils/toast";
+import { fileType, nameGenerator } from "@/utils/helpers";
+import { onError, onInfo, onSuccess } from "@/utils/toast";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useCallback, useEffect, useState } from "react";
 import type { FieldErrors, UseFormWatch } from "react-hook-form";
@@ -23,7 +23,29 @@ const AuthErr = () => {
 
 export const useFileHandler = () => {
   const [file, setFile] = useState<File | null>(null);
+  const [validFormat, setValidFormat] = useState(false);
+  const [validSize, setValidSize] = useState(false);
   const [imageData, setImageData] = useState<string | null>(null);
+
+  useEffect(() => {
+    const supportedFormats = ["jpg", "jpeg", "png", "pdf"];
+    if (file) {
+      const format = fileType(file.type);
+      const fileSize = file.size / 1000000;
+
+      const isValidSize = fileSize < 10;
+      setValidSize(isValidSize);
+      if (!isValidSize) {
+        onInfo("Invalid File Size.", `Use files below 10MB.`);
+      }
+
+      const isValidFormat = supportedFormats.includes(format.toLowerCase());
+      setValidFormat(isValidFormat);
+      if (!isValidFormat) {
+        onInfo("Invalid File Format.", `Supported formats: JPG, PNG, or PDF`);
+      }
+    }
+  }, [file]);
 
   const removeImage = () => setImageData(null);
 
@@ -48,7 +70,14 @@ export const useFileHandler = () => {
     removeImage();
   };
 
-  return { file, handleFileRemove, handleFileChange, imageData };
+  return {
+    file,
+    handleFileRemove,
+    handleFileChange,
+    imageData,
+    validFormat,
+    validSize,
+  };
 };
 
 export type UploadStatus =
