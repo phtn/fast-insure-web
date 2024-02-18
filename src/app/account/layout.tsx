@@ -8,8 +8,8 @@ export default async function AccountLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="h-screen bg-paper p-8 md:px-24  md:py-12 portrait:h-fit">
-      <Tabs defaultValue="autos" className="h-full space-y-12">
+    <div className="h-screen bg-paper bg-gradient-to-r from-paper via-blue-200 to-paper portrait:h-fit">
+      <Tabs defaultValue="travel" className="h-full space-y-8">
         <Triggers />
         {children}
       </Tabs>

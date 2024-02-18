@@ -15,3 +15,7 @@ export const getAllAuto = async (params: GetAllAutoSchema) => {
 export const getOneAuto = async (params: GetOneAutoSchema) => {
   return await tRPC.getOneAuto.query(params).then((response) => response);
 };
+
+export const getAutoUpdate = async (params: GetAllAutoSchema) => {
+  return tRPC.getAutoUpdate.subscribe(params, {});
+};

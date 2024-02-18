@@ -1,10 +1,11 @@
 import { createAuto } from "../firebase/autos/create";
-import { getAllAuto, getOneAuto } from "../firebase/autos/get";
+import { getAllAuto, getAutoUpdate, getOneAuto } from "../firebase/autos/get";
 import {
   createAutoProcedure,
   getAllAutoProcedure,
   getOneAutoProcedure,
 } from "../procedures/autos";
+import { type AllAutoSchema } from "../resource/autos";
 import { router } from "../trcp";
 
 export const autoRouter = router({
@@ -16,5 +17,11 @@ export const autoRouter = router({
   }),
   getOneAuto: getOneAutoProcedure.query(async ({ input }) => {
     return await getOneAuto(input);
+  }),
+  getAutoUpdate: getAllAutoProcedure.subscription(async ({ input }) => {
+    let data: AllAutoSchema;
+    return await getAutoUpdate(input, (docs) => {
+      data = docs;
+    }).then(() => console.log(data));
   }),
 });

@@ -4,14 +4,13 @@ import {
   FormField,
   FormItem,
 } from "@/app/_components/form";
-import { DarkTouch, Touch } from "@/app/_components/touch";
+import { DarkTouch } from "@/app/_components/touch";
 import { AuthContext } from "@/app/context";
-import { cn } from "@/utils/cn";
 import {
   filterAutoValues,
+  opts,
   withSpaces,
   type KVFields,
-  opts,
 } from "@/utils/helpers";
 import { InputFieldName } from "@@components/input";
 import {
@@ -28,8 +27,6 @@ import {
   FuelIcon,
   ListRestartIcon,
   MapPinnedIcon,
-  ThumbsDown,
-  ThumbsUp,
   UserIcon,
   WeightIcon,
 } from "lucide-react";
@@ -39,12 +36,13 @@ import {
   useEffect,
   useState,
   type Dispatch,
+  type FormEvent,
   type ReactElement,
   type SetStateAction,
 } from "react";
 import { type UseFormReturn } from "react-hook-form";
 import { z } from "zod";
-import { FieldIndex } from "./components";
+import { FeedbackActions, FieldIndex } from "./components";
 import { useWatcher } from "./hooks";
 
 export const vehicleResource = z.record(z.string().min(1));
@@ -54,7 +52,7 @@ type VehicleFormType = UseFormReturn<VehicleSchema>;
 type ActiveFormProps = {
   form: VehicleFormType;
   fields: KVFields[];
-  setCount: Dispatch<SetStateAction<number>>;
+  setCount: Dispatch<SetStateAction<number | undefined>>;
   loading: boolean;
   addAuto: (auto_data: VehicleSchema) => void;
   downloadURL: string;
@@ -153,38 +151,26 @@ type ActionProps = {
 const Actions = (props: ActionProps) => {
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState<boolean | undefined>();
-  const handleLike = () => {
+
+  const handleLike = (e: FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setFeedback(true);
     setLoading(true);
   };
-  const handleDislike = () => {
+  const handleDislike = (e: FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setFeedback(false);
     setLoading(true);
   };
 
   const FeedbackOptions = useCallback(() => {
     const options = opts(
-      <div className="flex items-center justify-between space-x-2">
-        <div className="flex h-[54.67px] items-center rounded-lg rounded-br-none border-[0.33px] border-ash bg-white px-8 py-2 text-xs font-medium leading-none text-coal">
-          <span>Results OK?</span>
-        </div>
-        <Touch
-          icon={ThumbsUp}
-          size="icon"
-          onClick={handleLike}
-          className={cn(feedback ? `text-blue-600` : ``)}
-          disabled={loading}
-        />
-        <Touch
-          icon={ThumbsDown}
-          onClick={handleDislike}
-          className={cn(
-            feedback !== undefined && !feedback ? `text-blue-600` : ``,
-          )}
-          size="icon"
-          disabled={loading}
-        />
-      </div>,
+      <FeedbackActions
+        feedback={feedback}
+        handleLike={handleLike}
+        handleDislike={handleDislike}
+        loading={loading}
+      />,
       <div></div>,
     );
     return <>{options.get(props.withFields)}</>;
@@ -236,7 +222,6 @@ export const vehicleDefaults = {
   "CHASSIS NO": "",
   "MV FILE NO": "",
   "PLATE NO": "",
-  VIN: "",
   FUEL: "",
   DENOMINATION: "",
   "PISTON DISP": "",
@@ -250,12 +235,9 @@ export const vehicleDefaults = {
   "NET CAPACITY": "",
   "OWNERS NAME": "",
   "CONTACT DETAILS": "",
-  ENCUMBERED: "",
   "OR DATE": "",
   "OR NO": "",
   AMOUNT: "",
-  REGISTRAR: "",
-  OFFICE: "",
   "DOCUMENT TYPE": "",
   "EXPIRATION DATE": "",
   "IS SALVAGE?": "",
@@ -270,7 +252,6 @@ export const vehicleFields = [
   { key: "CHASSIS NO", value: "" },
   { key: "MV FILE NO", value: "" },
   { key: "PLATE NO", value: "" },
-  { key: "VIN", value: "" },
   { key: "FUEL", value: "" },
   { key: "DENOMINATION", value: "" },
   { key: "PISTON DISP", value: "" },
@@ -284,12 +265,9 @@ export const vehicleFields = [
   { key: "NET CAPACITY", value: "" },
   { key: "OWNERS NAME", value: "" },
   { key: "CONTACT DETAILS", value: "" },
-  { key: "ENCUMBERED", value: "" },
   { key: "OR DATE", value: "" },
   { key: "OR NO", value: "" },
   { key: "AMOUNT", value: "" },
-  { key: "REGISTRAR", value: "" },
-  { key: "OFFICE", value: "" },
   { key: "DATE SIGNED", value: "" },
   { key: "DOCUMENT TYPE", value: "" },
   { key: "EXPIRATION DATE", value: "" },

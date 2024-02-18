@@ -1,4 +1,4 @@
-import { storage } from "@/libs/db";
+import { db, storage } from "@/libs/db";
 import type { OCR_DE_BASE64_Schema } from "@/server/resource/ocr";
 import { createAuto } from "@/trpc/autos/create";
 import { runOCR_DE_BASE64 } from "@/trpc/ocr/ocr";
@@ -10,6 +10,8 @@ import type { FieldErrors, UseFormWatch } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import type { VehicleSchema } from "./active-form";
 import { getAllAuto } from "@/trpc/autos/get";
+import { collection, doc } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const Err = (err: Error) => {
   onError(err.name, err.message);
@@ -210,4 +212,24 @@ export const useGetAutos = ({ userId }: { userId: string | undefined }) => {
   }, [userId]);
 
   return { autos, loading };
+};
+
+export const useAutoUpdate = ({ userId }: { userId: string | undefined }) => {
+  const [autos, setAutos] = useState<VehicleSchema[]>([]);
+  if (!userId) {
+    setAutos([]);
+  }
+
+  const autosRef = collection(doc(db, "users", userId!), "autos");
+  const [values, loading, error] = useCollectionData(autosRef, {
+    snapshotListenOptions: { includeMetadataChanges: true },
+  });
+
+  setAutos(values as VehicleSchema[]);
+
+  useEffect(() => {
+    console.log("Hooks Log", autos);
+  }, [autos]);
+
+  return { values, loading, error };
 };

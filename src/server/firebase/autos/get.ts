@@ -4,7 +4,13 @@ import type {
   GetAllAutoSchema,
   GetOneAutoSchema,
 } from "@/server/resource/autos";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+} from "firebase/firestore";
 
 export const getOneAuto = async ({ userId, docId }: GetOneAutoSchema) => {
   const userRef = doc(db, "users", userId);
@@ -37,4 +43,20 @@ export const getAllAuto = async (params: GetAllAutoSchema) => {
       console.log(err);
       return [];
     });
+};
+
+export const getAutoUpdate = async (
+  params: GetAllAutoSchema,
+  callback: (docs: AutoDataSchema[]) => void,
+) => {
+  const userRef = doc(db, "users", params.userId);
+  const autosRef = collection(userRef, "autos");
+
+  return onSnapshot(autosRef, (snapshot) => {
+    const docs = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as AutoDataSchema),
+    }));
+    callback(docs);
+  });
 };

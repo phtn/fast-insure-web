@@ -30,23 +30,6 @@ export const plugins: Record<string, string>[] = [
   },
 ];
 
-export type Playlist = (typeof playlists)[number];
-
-export const playlists = [
-  "Recently Added",
-  "Recently Played",
-  "Top Songs",
-  "Top Albums",
-  "Top descriptions",
-  "Logic Discography",
-  "Bedtime Beats",
-  "Feeling Happy",
-  "I miss Y2K Pop",
-  "Runtober",
-  "Mellow Days",
-  "Eminem Essentials",
-];
-
 // iCASH checkout phone: 227 227 227
 export const payload: CheckoutSchema = {
   merchantUsername: "fastinsure",

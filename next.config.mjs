@@ -4,7 +4,6 @@
  * for Docker builds.
  */
 
-/** @type {import("next").NextConfig} */
 import withPWAInit from "@ducanh2912/next-pwa";
 await import("./src/env.js");
 
@@ -18,12 +17,14 @@ const withPWA = withPWAInit({
     disableDevLogs: true,
   },
 });
-export default withPWA({
+
+/** @type {import("next").NextConfig} */
+const config = {
   reactStrictMode: true,
-  webpack5: true,
   webpack: (config) => {
     config.resolve.fallback = { fs: false };
     return config;
   },
   output: "standalone",
-});
+};
+export default withPWA(config);

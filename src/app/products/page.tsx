@@ -3,7 +3,7 @@ import { ProductItems } from "./items";
 
 export default function Products() {
   return (
-    <section className="w-full bg-gradient-to-b from-slate-950 from-10% to-blue-600 py-24 lg:py-32 xl:py-48">
+    <section className="py-18 w-full bg-gradient-to-b from-slate-950 from-10% to-blue-600 lg:py-24 xl:py-32">
       <div className="flex items-center px-4 md:px-10">
         <div className="grid w-full items-center justify-center gap-6">
           <div className="flex flex-col items-center justify-center space-y-8 text-center">
@@ -22,8 +22,7 @@ const Header = () => (
       All Products.
     </h1>
     <p className="mx-auto w-full text-left text-zinc-300 md:text-xl">
-      You can protect your family and your future, one policy at a
-      time.
+      You can protect your family and your future, one policy at a time.
     </p>
   </div>
-)
+);

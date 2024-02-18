@@ -14,7 +14,7 @@ export const Hero = () => {
         easings: ["easeInOut"],
       }}
     >
-      <section className="group h-[425px] bg-gradient-to-br from-orange-50 from-40% via-blue-400/10 to-orange-50 to-70% bg-size-200 bg-pos-0 pt-[60px] transition-all duration-500 ease-in-out hover:bg-gradient-to-l hover:bg-pos-100 md:h-[calc(100vh-300px)] md:pt-[56px]">
+      <section className="group h-[425px] bg-gradient-to-br from-paper from-40% via-blue-400/10 to-orange-50 to-70% bg-size-200 bg-pos-0 pt-[60px] transition-all duration-500 ease-in-out hover:bg-gradient-to-l hover:bg-pos-100 md:h-[calc(100vh-300px)] md:pt-[56px]">
         <div
           className={`bg-[url('/bg/flash_v4.svg')] bg-no-repeat transition-all duration-700 ease-in-out hover:bg-left md:bg-right`}
         >

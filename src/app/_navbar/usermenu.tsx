@@ -1,4 +1,7 @@
+import { auth } from "@/libs/db";
 import { cn } from "@/utils/cn";
+import { opts } from "@/utils/helpers";
+import { onPromise } from "@/utils/toast";
 import {
   Command,
   CommandEmpty,
@@ -8,26 +11,25 @@ import {
   CommandSeparator,
 } from "@@components/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@@components/popover";
+import { type User } from "firebase/auth";
 import {
+  ArrowUpRightSquareIcon,
   ClipboardPenLineIcon,
   DotIcon,
+  FilesIcon,
+  GiftIcon,
+  HelpCircleIcon,
+  LogInIcon,
+  UserCircle2Icon,
   Wallet2Icon,
   type LucideIcon,
-  UserCircle2Icon,
-  GiftIcon,
-  FilesIcon,
-  HelpCircleIcon,
-  ArrowUpRightSquareIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useContext, useState } from "react";
-import { Button } from "../_components/button";
 import { useSignOut } from "react-firebase-hooks/auth";
-import { auth } from "@/libs/db";
-import { onPromise } from "@/utils/toast";
+import { Button } from "../_components/button";
+import { DarkTouch } from "../_components/touch";
 import { AuthContext } from "../context";
-import { opts } from "@/utils/helpers";
-import { type User } from "firebase/auth";
 
 type Item = {
   label: string;
@@ -44,10 +46,10 @@ type GroupItem = {
 
 const notAuthedGroup: GroupItem[] = [
   {
-    label: "Sign up",
+    label: "New Account",
     values: [
       {
-        label: "Sign up",
+        label: "Create New Account",
         desc: "Register for free!",
         value: "0",
         icon: ArrowUpRightSquareIcon,
@@ -117,26 +119,20 @@ const LogoutOption = ({ onSelect }: SignOptionProps) => (
     <div className="flex w-full items-center justify-between">
       <p className="text-sm font-bold tracking-tight text-blue-950">Logout</p>
       <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 py-1.5 font-mono text-[16px] font-medium text-slate-500 opacity-100">
-        <span className="">⌘</span>
+        <span className="tracking-tight">⌘</span>
         <span className="text-sm">Q</span>
       </kbd>
     </div>
   </CommandItem>
 );
 
-const SignInOption = () => (
+const SignInOption = ({ onClick }: { onClick: () => void }) => (
   <Link href="/signin">
-    <CommandItem className="w-full rounded-md border border-slate-300 bg-slate-200 py-2 pt-2">
-      <div className="flex w-full items-center justify-between">
-        <p className="text-sm font-bold tracking-tight text-blue-950">
-          Sign in
-        </p>
-        <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 py-1.5 font-mono text-[16px] font-medium text-slate-500 opacity-100">
-          <span className="">⌘</span>
-          <span className="text-sm">S</span>
-        </kbd>
-      </div>
-    </CommandItem>
+    <DarkTouch className="w-full" size="md" tail={LogInIcon} onClick={onClick}>
+      <CommandItem className="pointer-events-none flex w-full items-center justify-between">
+        <p className="text-sm font-bold tracking-tight">Sign in</p>
+      </CommandItem>
+    </DarkTouch>
   </Link>
 );
 
@@ -148,13 +144,17 @@ export const UserMenu = () => {
   const [selectedValue, setSelectedValue] = useState<Group | undefined>();
 
   const creds = useContext(AuthContext);
+  const closePopover = () => setOpen(false);
 
   const SignOptions = useCallback(() => {
     const logout = () => {
       onPromise(signOut(), "Logging out...", error);
     };
     const isAuthed = creds?.user !== null;
-    const options = opts(<LogoutOption onSelect={logout} />, <SignInOption />);
+    const options = opts(
+      <LogoutOption onSelect={logout} />,
+      <SignInOption onClick={closePopover} />,
+    );
     return <>{options.get(isAuthed)}</>;
   }, [creds, error, signOut]);
 
@@ -162,7 +162,7 @@ export const UserMenu = () => {
     const handleSelect = (item: Item) => {
       console.log(loading ? "Pending..." : "Complete.");
       setSelectedValue(item);
-      setOpen(false);
+      closePopover();
     };
     const isAuthed = creds?.user !== null;
     const options = opts(
@@ -190,7 +190,7 @@ export const UserMenu = () => {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="mr-1 mt-3 w-[220px] border-blue-100 p-0">
+      <PopoverContent className="mr-1 mt-3 w-[300px] rounded-lg border p-0">
         <Command>
           <MenuOptions />
           <CommandSeparator />
@@ -224,23 +224,26 @@ const NotAuthedContent = ({
                 key={item.value}
                 onSelect={() => onSelect(item)}
                 className={cn(
-                  `items-center py-3 text-sm font-bold`,
+                  `flex items-center py-2 text-sm font-bold`,
                   selectedValue?.value === item.value
-                    ? "text-blue-500"
+                    ? "text-blue-600"
                     : "text-blue-950",
                 )}
               >
-                <item.icon
-                  className={cn(
-                    `mr-4 h-[28px] w-[28px] rounded p-[6px] transition-all duration-300 group-hover:bg-blue-950 group-hover:text-blue-100`,
-                    selectedValue?.value === item.value
-                      ? "bg-blue-950 text-blue-100"
-                      : "text-zinc-600",
-                  )}
-                />
+                <div>
+                  <item.icon
+                    strokeWidth={1}
+                    className={cn(
+                      `mr-4 h-[28px] w-[28px] rounded p-[6px] transition-all duration-300 group-hover:bg-blue-950 group-hover:text-blue-100`,
+                      selectedValue?.value === item.value
+                        ? "bg-blue-950 text-blue-100"
+                        : "bg-ash/30 text-coal",
+                    )}
+                  />
+                </div>
                 <div className="flex flex-col justify-center">
-                  <p className="">{item.label}</p>
-                  <p className="text-[11px] font-normal leading-[11px] text-zinc-600">
+                  <p className="tracking-tight">{item.label}</p>
+                  <p className="text-[11px] font-normal leading-[11px] text-coal">
                     {item.desc}
                   </p>
                 </div>
@@ -274,7 +277,7 @@ const AuthedContent = ({
 }: AuthedContentProps) => {
   return (
     <CommandList>
-      <Link href="/account">
+      <Link href="/account" role="button" aria-label="Account">
         <CommandItem className="py-3">
           <UserCircle2Icon className="mx-1 mr-3 h-[36px] w-[36px] rounded p-[6px] text-blue-500" />
           <div className="flex flex-col justify-center">
@@ -298,7 +301,7 @@ const AuthedContent = ({
                 key={item.value}
                 onSelect={() => onSelect(item)}
                 className={cn(
-                  `items-center py-3 text-sm font-bold`,
+                  `items-center py-2 text-sm font-bold`,
                   selectedValue?.value === item.value
                     ? "text-blue-500"
                     : "text-blue-950",
@@ -309,12 +312,12 @@ const AuthedContent = ({
                     `mr-3 h-[28px] w-[28px] rounded p-[6px] transition-all duration-300 group-hover:bg-blue-950 group-hover:text-blue-100`,
                     selectedValue?.value === item.value
                       ? "bg-blue-950 text-blue-100"
-                      : "text-zinc-500",
+                      : "text-coal",
                   )}
                 />
                 <div className="flex flex-col justify-center">
                   <p className="">{item.label}</p>
-                  <p className="text-[11px] font-normal leading-[11px] text-zinc-600">
+                  <p className="text-[11px] font-normal leading-[11px] text-coal">
                     {item.desc}
                   </p>
                 </div>

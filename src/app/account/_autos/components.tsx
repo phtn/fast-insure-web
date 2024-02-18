@@ -7,9 +7,9 @@ import {
 } from "@/app/_components/dialog";
 import { InputFile } from "@/app/_components/input";
 import { Meter } from "@/app/_components/meter";
-import { Touch } from "@/app/_components/touch";
+import { DarkTouch, Touch } from "@/app/_components/touch";
 import { type OCR_DE_BASE64_Schema } from "@/server/resource/ocr";
-import { fileSize, fileType, limitText } from "@/utils/helpers";
+import { fileSize, fileType, limitText, opts } from "@/utils/helpers";
 import {
   CheckCircleIcon,
   FileTextIcon,
@@ -19,10 +19,13 @@ import {
   UploadIcon,
   XIcon,
   type LucideIcon,
+  ThumbsUp,
+  ThumbsDown,
 } from "lucide-react";
 import Image from "next/image";
-import { type ChangeEvent } from "react";
+import { type FormEvent, type ChangeEvent, useCallback } from "react";
 import { type UploadStatus } from "./hooks";
+import tw from "tailwind-styled-components";
 
 export const Title = () => (
   <DialogHeader className="my-3 border-b-2 border-ash/50 pb-2">
@@ -211,7 +214,9 @@ export const FieldIndex = ({ index }: { index: number }) => (
 export const RequiredFields = ({ count }: { count: number }) => (
   <div className="mx-4 flex items-center justify-center space-x-4">
     <span className="text-xs font-medium text-clay">Required fields:</span>
-    <span className="font-mono font-bold text-orange-500">{count}</span>
+    <span className="font-mono font-bold text-orange-500">
+      {count < 0 ? 0 : count}
+    </span>
   </div>
 );
 
@@ -221,3 +226,58 @@ export const AllFieldsGood = () => (
     <CheckCircleIcon className="h-4 w-4 text-emerald-600" fill="#ecfdf5" />
   </div>
 );
+
+type FeedbackProps = {
+  handleLike: (e: FormEvent<HTMLButtonElement>) => void;
+  handleDislike: (e: FormEvent<HTMLButtonElement>) => void;
+  loading: boolean;
+  feedback: boolean | undefined;
+};
+export const FeedbackActions = (props: FeedbackProps) => {
+  const { handleDislike, handleLike, feedback, loading } = props;
+
+  const MessageOptions = useCallback(() => {
+    const getFeedback = typeof feedback !== "undefined";
+    const options = opts(<AfterFeedback />, <AskFeedback />);
+    return <MessageWrap>{options.get(getFeedback)}</MessageWrap>;
+  }, [feedback]);
+
+  return (
+    <div className="flex items-center justify-between space-x-2">
+      <MessageOptions />
+      <DarkTouch
+        disabled={loading}
+        icon={ThumbsUp}
+        onClick={(e) => handleLike(e)}
+        size="icon"
+        variant={feedback ? `secondary` : `dark`}
+      />
+      <DarkTouch
+        disabled={loading}
+        icon={ThumbsDown}
+        onClick={(e) => handleDislike(e)}
+        size="icon"
+        variant={feedback !== undefined && !feedback ? `secondary` : `dark`}
+      />
+    </div>
+  );
+};
+
+const AfterFeedback = () => (
+  <div className="flex flex-col items-center -space-y-1 text-blue-500">
+    <p className="font-bold tracking-tight">Thanks</p>
+    <p className="text-[11px] font-medium text-clay">for the feedback!</p>
+  </div>
+);
+
+const AskFeedback = () => (
+  <div className="flex flex-col">
+    <p className="font-semibold tracking-tighter text-coal">Results Ok?</p>
+  </div>
+);
+
+const MessageWrap = tw.div`
+  flex h-[56px] w-[150px] items-center justify-center 
+  rounded-lg rounded-br-none border-[1px] border-ash 
+  bg-white
+`;

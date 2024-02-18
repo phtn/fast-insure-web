@@ -10,7 +10,7 @@ const touchDefaultClass = `
   inline-flex items-center justify-center whitespace-nowrap rounded-[8px] 
   focus-visible:outline-none focus-visible:ring-1  
   focus-visible:ring-ring focus-visible:ring-offset-4
-  disabled:pointer-events-none disabled:opacity-50
+  disabled:pointer-events-none disabled:opacity-70
   transition-all duration-300 ring-offset-background
 `;
 const defaultClass = `
@@ -24,9 +24,16 @@ const primaryClass = `
   hover:text-blue-600
 `;
 const darkClass = `
-  bg-void text-blue-300 border-clay/[80%]
+  bg-void text-blue-300 border border-clay/[40%]
   shadow-i-br-dk-hv pointer-events-auto
   hover:text-blue-200 rounded-[8px]
+  m-[1px] 
+`;
+const secondaryClass = `
+  bg-blue-600 text-blue-100 border border-blue-300/[80%]
+  shadow-i-br-dk-hv pointer-events-auto
+  hover:text-white rounded-[8px]
+  m-[1.5px]
 `;
 const destroyClass = `
   bg-white text-red-500/80 border-ash/[30%]
@@ -34,7 +41,7 @@ const destroyClass = `
   hover:text-red-500
 `;
 const ghostClass = `
-  text-clay/80 border-0 
+  text-clay border-0 
   hover:text-blue-500 bg-transparent
 `;
 
@@ -45,13 +52,14 @@ const tv = cva(touchDefaultClass, {
       dark: darkClass,
       destroy: destroyClass,
       primary: primaryClass,
+      secondary: secondaryClass,
       ghost: ghostClass,
     },
     size: {
       sm: "h-[32px] px-[14px]",
       md: "h-[48px] px-[18px]",
       lg: "h-[50px] px-[22px]",
-      icon: "h-[50px] w-[50px]",
+      icon: "h-[52px] w-[52px]",
       default: "h-[42px] px-[16px]",
     },
   },
@@ -114,9 +122,18 @@ export const DarkTouch = forwardRef<
 >(({ asChild, className, size, variant = "dark", children, ...props }, ref) => {
   const Comp = asChild ? Slot : "button";
   return (
-    <DarkCase>
+    <DarkCase
+      className={cn(
+        className,
+        variant === "secondary" ? `border-0 bg-blue-200 pt-0` : ``,
+        size === "icon" ? `m-[0px] h-[56px] w-[56px] ` : ``,
+      )}
+    >
       <Comp
-        className={cn(tv({ variant, size, className }))}
+        className={cn(
+          tv({ variant, size, className }),
+          variant === "secondary" ? `h-[38px]` : ``,
+        )}
         ref={ref}
         {...props}
       >
@@ -133,7 +150,7 @@ DarkTouch.displayName = "DarkTouch";
 
 const DarkCase = tw.div`
   flex items-center justify-center bg-void pt-[1px]
-  rounded-[9px] border-[1.0px] border-void
+  rounded-[9px] border-[0.75px] border-void/[20%]
   shadow-i-tl-dk-hv
   transition-all duration-300 
   drop-shadow-sm

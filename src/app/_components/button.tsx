@@ -13,7 +13,7 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "border border-ash hover:border-blue-500 font-bold hover:bg-blue-500 bg-white text-blue-500 hover:text-blue-50 transition-all duration-300",
+          "border border-ash hover:border-blue-50 font-bold hover:bg-blue-500 bg-white text-blue-500 hover:text-blue-50 transition-all duration-300",
         borderline:
           "border border-blue-400 hover:border-2 hover:text-blue-200 text-blue-600 transition-all duration-300",
         goldline:
@@ -23,8 +23,8 @@ const buttonVariants = cva(
 
         secondary: "bg-zinc-500 font-bold text-white hover:bg-blue-950",
         tertiary:
-          "bg-blue-500/10 text-blue-900 hover:bg-blue-600 hover:text-white",
-        ghost: "text-blue-900 hover:bg-white hover:text-blue-600",
+          "bg-blue-500/10 text-blue-900 hover:bg-blue-500 hover:text-white",
+        ghost: "text-blue-900 hover:text-blue-600",
         casper: "text-clay/50 hover:text-clay",
         link: "text-primary underline-offset-4 hover:underline",
       },

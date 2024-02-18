@@ -1,26 +1,22 @@
-import { TabsContent } from "@@components/tabs"
-import { Content } from "./content"
+import { TabsContent } from "@@components/tabs";
+import { ProtectionContent } from "./content";
+import { Header } from "../header";
+import { BusIcon, PlaneTakeoff, SailboatIcon, ShipIcon } from "lucide-react";
 
 const Travel = async () => {
   return (
     <TabsContent
       value="travel"
-      className="h-full flex-col border-none p-0 data-[state=active]:flex"
+      className="space-y-8 border-none p-0 outline-none"
     >
-      <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <h2 className="text-2xl font-semibold tracking-tight">
-            Trip to Proxima Centauri
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Wander beyond what your dreams can see.
-          </p>
-        </div>
-      </div>
-      <Content />
+      <Header
+        title="Travel Protection"
+        description="Ensure your peace of mind while travelling."
+        icons={[SailboatIcon, BusIcon, ShipIcon, PlaneTakeoff]}
+      />
+      <ProtectionContent />
     </TabsContent>
-  )
-}
+  );
+};
 
-
-export default Travel
+export default Travel;

@@ -1,4 +1,4 @@
-import { Autos } from "./_autos/autos"
+import { Autos } from "./_autos/autos";
 
-const Account = async () => <Autos />
-export default Account
+const Account = async () => <Autos />;
+export default Account;

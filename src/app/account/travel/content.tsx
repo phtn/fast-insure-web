@@ -1,55 +1,49 @@
 "use client";
 
-import { Button } from "@@components/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@@components/dialog";
-import { Input } from "@@components/input";
-import { Label } from "@@components/label";
-import { PlaneTakeoff } from "lucide-react";
+import { DarkTouch } from "@/app/_components/touch";
+import { ArrowRightIcon } from "lucide-react";
 
-export const Content = () => {
+export const ProtectionContent = () => {
   return (
-    <div className="flex h-[450px] shrink-0 items-center justify-center rounded-md border border-dashed">
-      <div className="mx-auto flex max-w-[420px] flex-col items-center justify-center text-center">
-        <PlaneTakeoff className="h-12 w-12 text-blue-600" />
-
-        <h3 className="mt-4 text-lg font-semibold text-blue-950">
-          Travel Deals
-        </h3>
-        <p className="text-muted-foreground mb-4 mt-2 text-sm">
-          No travel packages available.
-        </p>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button size="sm" className="relative">
-              Request Destination
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="border-blue-950 bg-slate-100">
-            <DialogHeader>
-              <DialogTitle className="text-blue-950">
-                Escape Reality
-              </DialogTitle>
-              <DialogDescription className="text-blue-800/90">
-                Type the country or city you want to visit.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="url"></Label>
-                <Input id="url" placeholder="Versailles" />
+    <div className="h-fit px-8 md:px-24">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div className="grid h-[300px] grid-cols-3 overflow-clip rounded-xl bg-white">
+          <div className="flex justify-end">
+            <div className="flex flex-col items-start justify-center bg-gradient-to-br from-sky-400 to-indigo-600 bg-clip-text p-4 text-transparent">
+              <h3 className="text-3xl font-extrabold">Global</h3>
+              <h3 className="text-3xl font-medium tracking-tight">
+                Protection
+              </h3>
+              <div className="mt-4">
+                <DarkTouch size="lg" tail={ArrowRightIcon} className="z-50">
+                  Get Protected
+                </DarkTouch>
               </div>
             </div>
-            <DialogFooter></DialogFooter>
-          </DialogContent>
-        </Dialog>
+          </div>
+          <div
+            className={`col-span-2 bg-[url('/svg/world.svg')] bg-cover transition-all duration-500 hover:scale-[150%]`}
+          ></div>
+        </div>
+
+        <div className="grid h-[300px] grid-cols-3 overflow-clip rounded-xl bg-white">
+          <div className="flex justify-end">
+            <div className="flex flex-col items-start justify-center bg-gradient-to-br from-indigo-500 to-rose-500 bg-clip-text p-4 text-transparent">
+              <h3 className="text-3xl font-extrabold">Domestic</h3>
+              <h3 className="text-3xl font-medium tracking-tight">
+                Protection
+              </h3>
+              <div className="mt-4">
+                <DarkTouch size="lg" tail={ArrowRightIcon} className="z-50">
+                  Get Protected
+                </DarkTouch>
+              </div>
+            </div>
+          </div>
+          <div
+            className={`col-span-2 scale-[110%] bg-[url('/svg/ph.svg')] bg-cover transition-all duration-500 hover:scale-[150%]`}
+          ></div>
+        </div>
       </div>
     </div>
   );

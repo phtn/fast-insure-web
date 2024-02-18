@@ -11,7 +11,12 @@ export function Mode() {
   };
   return (
     <div>
-      <Button variant={"ghost"} size={"icon"} onClick={handleToggle}>
+      <Button
+        aria-label="Dark Mode"
+        variant={"ghost"}
+        size={"icon"}
+        onClick={handleToggle}
+      >
         <MoonStarIcon strokeWidth={1.5} className="h-5 w-5 text-blue-950" />
       </Button>
     </div>
@@ -24,7 +29,12 @@ export function Help() {
   };
   return (
     <div>
-      <Button variant={"ghost"} size={"icon"} onClick={handleClick}>
+      <Button
+        aria-label="Chat"
+        variant={"ghost"}
+        size={"icon"}
+        onClick={handleClick}
+      >
         <ChatBubbleIcon className="h-5 w-5 text-blue-950" />
       </Button>
     </div>

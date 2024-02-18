@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { Button } from "./_components/button";
+import Link from "next/link";
 
 export const Affiliate = () => {
   return (
@@ -44,14 +45,16 @@ export const Affiliate = () => {
           Join our Affiliate Program.
         </h4>
         <div className="flex space-x-4">
-          <button className="group inline-flex h-[50px] w-[250px] animate-shimmer items-center justify-center rounded-lg border border-blue-300 bg-[linear-gradient(110deg,#000103,45%,#93c5fd,55%,#000103)] bg-[length:200%_100%] px-6 text-[16px] font-bold text-white transition-all duration-4000 hover:scale-[105%] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 md:w-[300px] md:text-lg">
-            Sign up today!
-            <ArrowUpRightSquare className="isolate ml-6 h-5 w-5 transition-all duration-300 group-hover:text-blue-300" />
-          </button>
+          <Link href="/signin">
+            <button className="group inline-flex h-[50px] w-[250px] animate-shimmer items-center justify-center rounded-lg border border-blue-300 bg-[linear-gradient(110deg,#000103,45%,#93c5fd,55%,#000103)] bg-[length:200%_100%] px-6 text-[16px] font-bold text-white transition-all duration-4000 hover:scale-[105%] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 md:w-[300px] md:text-lg">
+              Sign up today!
+              <ArrowUpRightSquare className="isolate ml-6 h-5 w-5 transition-all duration-300 group-hover:text-blue-300" />
+            </button>
+          </Link>
           <Button
             size="lg"
             variant="outline"
-            className="hidden h-12 min-w-[200px] rounded-lg transition-all duration-500 hover:scale-[105%] md:flex"
+            className="hidden h-12 min-w-[200px] rounded-lg text-blue-600 transition-all duration-500 hover:scale-[105%] md:flex"
           >
             How it works?
             <ArrowUpRightIcon className="isolate ml-6 h-5 w-5 transition-all duration-300 group-hover:text-blue-300" />

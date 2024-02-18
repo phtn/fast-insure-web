@@ -14,7 +14,7 @@ import {
 
 export type AutoFormProps = {
   fields: OCR_DE_FieldSchema | undefined;
-  setCount: Dispatch<SetStateAction<number>>;
+  setCount: Dispatch<SetStateAction<number | undefined>>;
   loading: boolean;
   addAuto: (auto_data: VehicleSchema) => void;
   downloadURL: string;

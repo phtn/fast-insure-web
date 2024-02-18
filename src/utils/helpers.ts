@@ -327,3 +327,13 @@ export const nameGenerator = (): string => {
 
   return `${adj[radj]} ${moons[noun]}`;
 };
+
+export const getMonthAndYear = (
+  timeInMs: number,
+): { month: string; year: number } => {
+  const date = new Date(timeInMs);
+  const month = date.toLocaleString("en-US", { month: "long" });
+  const year = date.getFullYear();
+
+  return { month, year };
+};

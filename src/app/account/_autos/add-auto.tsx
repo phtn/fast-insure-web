@@ -19,9 +19,12 @@ import {
   TryBanner,
 } from "./components";
 import { useAutoAccount, useFileHandler, useFileUploader } from "./hooks";
+import { staticScanBase64 } from "./data";
 
 export const AddAuto = () => {
-  const [invalidFieldCount, setInvalidFieldCount] = useState(0);
+  const [invalidFieldCount, setInvalidFieldCount] = useState<
+    number | undefined
+  >(undefined);
   const userCreds = useContext(AuthContext);
   const { file, handleFileChange, handleFileRemove, imageData } =
     useFileHandler();
@@ -66,9 +69,9 @@ export const AddAuto = () => {
   const FieldStatusOptions = useCallback(() => {
     const options = opts(
       <AllFieldsGood />,
-      <RequiredFields count={invalidFieldCount} />,
+      <RequiredFields count={invalidFieldCount! ?? 0} />,
     );
-    return <>{options.get(invalidFieldCount <= 0)}</>;
+    return <>{options.get(!!invalidFieldCount && invalidFieldCount <= 0)}</>;
   }, [invalidFieldCount]);
 
   return (
@@ -107,7 +110,7 @@ export const AddAuto = () => {
 
             <div>
               <AutoForm
-                fields={scanResult?.base64.fields}
+                fields={staticScanBase64.base64.fields}
                 setCount={setInvalidFieldCount}
                 loading={addLoading}
                 addAuto={addAuto}

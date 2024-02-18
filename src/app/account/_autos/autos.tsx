@@ -1,19 +1,40 @@
 "use client";
 
-import { useContext, useEffect } from "react";
-import { AuthContext } from "../../context";
-import { redirect } from "next/navigation";
+import { db } from "@/libs/db";
+import { opts } from "@/utils/helpers";
+import { onError } from "@/utils/toast";
 import { TabsContent } from "@@components/tabs";
-import { AddAuto } from "./add-auto";
-import { useGetAutos } from "./hooks";
+import {
+  collection,
+  doc,
+  type DocumentData,
+  type FirestoreDataConverter,
+} from "firebase/firestore";
 import { RefreshCcwIcon } from "lucide-react";
+import { redirect } from "next/navigation";
+import { useCallback, useContext, useEffect } from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { AuthContext } from "../../context";
+import { Header } from "../header";
+import { type VehicleSchema } from "./active-form";
+import { AddAuto } from "./add-auto";
 import { AutoItem } from "./auto-item";
 
 export const Autos = () => {
   const userCreds = useContext(AuthContext);
-  const { loading, autos } = useGetAutos({
-    userId: userCreds?.user?.uid,
+  const autosRef = collection(
+    doc(db, `users/${userCreds?.user?.uid}`),
+    "autos",
+  ).withConverter(AutoDataConverter);
+  const [autos, loading, error] = useCollectionData(autosRef, {
+    snapshotListenOptions: { includeMetadataChanges: true },
   });
+
+  useEffect(() => {
+    if (error) {
+      onError(error.code, error.name);
+    }
+  }, [error]);
 
   useEffect(() => {
     if (!userCreds?.user) {
@@ -21,36 +42,48 @@ export const Autos = () => {
     }
   }, [userCreds?.user]);
 
-  return (
-    <TabsContent value="autos" className="border-none p-0 outline-none">
-      <div className="mb-8 flex items-center justify-between">
-        <div className="space-y-2">
-          <div className="flex items-center space-x-4">
-            <h2 className="text-2xl font-semibold tracking-tight text-fast">
-              All My Autos
-            </h2>
-            <AddAuto />
-          </div>
-          {loading ? (
-            <div className="flex items-center space-x-4">
-              <RefreshCcwIcon className="h-4 w-4 animate-spin text-ash" />
-              <p className="text-sm text-clay">Loading ...</p>
-            </div>
-          ) : (
-            <p className="text-sm text-clay">
-              Registered Autos ({autos.length})
-            </p>
-          )}
-        </div>
-      </div>
+  const DescriptionOptions = useCallback(() => {
+    const options = opts(<Refreshing />, <Counter length={autos?.length} />);
+    return <>{options.get(loading)}</>;
+  }, [loading, autos?.length]);
 
-      <div className="relative">
-        <div className="flex space-x-6 pb-4">
-          {autos.map((item) => (
-            <AutoItem key={item.id} autoItem={item} />
-          ))}
-        </div>
+  return (
+    <TabsContent
+      value="autos"
+      className="space-y-8 border-none p-0 outline-none"
+    >
+      <Header title="All My Autos" description={<DescriptionOptions />}>
+        <AddAuto />
+      </Header>
+
+      <div className="flex space-x-6 pb-4">
+        {autos?.map((item) => <AutoItem key={item.id} autoItem={item} />)}
       </div>
     </TabsContent>
   );
+};
+
+const Refreshing = () => (
+  <div className="flex items-center space-x-4">
+    <RefreshCcwIcon className="h-4 w-4 animate-spin text-ash" />
+    <p className="text-sm text-clay">Refreshing ...</p>
+  </div>
+);
+
+const Counter = ({ length }: { length: number | undefined }) => (
+  <p className="text-sm text-clay">Registered Autos ({length})</p>
+);
+
+const AutoDataConverter: FirestoreDataConverter<VehicleSchema> = {
+  toFirestore(auto: VehicleSchema): DocumentData {
+    return { make: auto.make, isActive: auto.isActive };
+  },
+  fromFirestore(snapshot, options): VehicleSchema {
+    const data = snapshot.data(options) as VehicleSchema;
+    return {
+      id: snapshot.id,
+      name: data.auto_name ?? "",
+      make: data.make ?? "",
+    };
+  },
 };

@@ -1,16 +1,19 @@
 import { TabsContent } from "../../_components/tabs";
-import { Header } from "../header";
 import { Content } from "./content";
 
 const Profile = () => {
   return (
-    <TabsContent
-      value="profile"
-      className="h-full flex-col border-none p-0 data-[state=active]:flex"
-    >
-      <Header title="Account" description="View and Edit settings." />
-      <Content />
-    </TabsContent>
+    <div>
+      <TabsContent
+        value="profile"
+        className="space-y-8 border-none p-0 outline-none"
+      >
+        <div className="h-[25px]" />
+        <Content />
+      </TabsContent>
+
+      <div className="h-[210px] bg-white"></div>
+    </div>
   );
 };
 

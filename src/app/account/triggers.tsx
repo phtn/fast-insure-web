@@ -21,19 +21,22 @@ const tablist: Tablist[] = [
 export const Triggers = () => {
   const pathName = usePathname();
   return (
-    <div className="space-between flex items-center">
-      <TabsList>
+    <div className="flex items-center p-8 md:px-24 md:py-10">
+      <TabsList className="border border-ash bg-ash/80">
         {tablist.map((tab) => (
-          <Link key={tab.id} href={tab.href}>
-            <TabsTrigger value={tab.value} className="relative" asChild>
-              <Touch
-                size="sm"
-                variant={pathName === tab.href ? `default` : `ghost`}
-              >
-                {tab.name}
-              </Touch>
-            </TabsTrigger>
-          </Link>
+          <div className="w-[68px]" key={tab.id}>
+            <Link href={tab.href}>
+              <TabsTrigger value={tab.value} className="relative" asChild>
+                <Touch
+                  className="w-full"
+                  size="sm"
+                  variant={pathName === tab.href ? `default` : `ghost`}
+                >
+                  {tab.name}
+                </Touch>
+              </TabsTrigger>
+            </Link>
+          </div>
         ))}
       </TabsList>
     </div>
