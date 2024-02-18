@@ -16,6 +16,7 @@ const withPWA = withPWAInit({
   workboxOptions: {
     disableDevLogs: true,
   },
+  register: true,
 });
 
 /** @type {import("next").NextConfig} */
@@ -26,5 +27,6 @@ const config = {
     return config;
   },
   output: "standalone",
+  swcMinify: false,
 };
 export default withPWA(config);

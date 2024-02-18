@@ -84,7 +84,7 @@ export const Content = () => {
           </div>
           <div className="flex items-center space-x-1">
             <MapPinnedIcon className="h-3 w-3 text-clay" />
-            <p className="text-xs text-clay">{address.city ?? ""}</p>
+            <p className="text-xs text-clay">{address?.city ?? ""}</p>
           </div>
           <div className="flex items-center space-x-1">
             <CalendarDaysIcon className="h-3 w-3 text-clay" />
