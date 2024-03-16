@@ -1,15 +1,20 @@
 import { DarkTouch } from "@/app/_components/touch";
 import { CheckCircle2Icon, ZapIcon } from "lucide-react";
 import { type VehicleSchema } from "./active-form";
+// import { createCheckoutSession } from "@/server/icash/checkout";
+// import { payload } from "./data";
 
 interface AutoItemProps extends React.HTMLAttributes<HTMLDivElement> {
   autoItem: VehicleSchema;
 }
 
 export const AutoItem = ({ autoItem, ...props }: AutoItemProps) => {
+  const handleActivate = () => {
+    // createCheckoutSession(payload);
+  };
   return (
     <div
-      className="h-[350px] w-[350px] space-y-2 overflow-clip rounded-xl border"
+      className="h-[350px] w-[350px] overflow-clip rounded-xl bg-white drop-shadow"
       {...props}
     >
       <div className="object-fit h-[256px] w-full border-[1px] border-ash/[30%] bg-[url('/icons/fast_blue.svg')] bg-cover bg-center shadow-i-br-li"></div>
@@ -30,7 +35,7 @@ export const AutoItem = ({ autoItem, ...props }: AutoItemProps) => {
             Active
           </DarkTouch>
         ) : (
-          <DarkTouch size="md" tail={ZapIcon}>
+          <DarkTouch size="md" tail={ZapIcon} onClick={handleActivate}>
             Activate
           </DarkTouch>
         )}

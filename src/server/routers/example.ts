@@ -1,6 +1,5 @@
 import { z } from "zod";
-import { procedure, router } from "../trcp";
-
+import { procedure, router } from "../trpc";
 
 let post = {
   id: 1,

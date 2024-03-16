@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 
 import { GeistMono } from "geist/font/mono";
-import { Inter } from "next/font/google";
+import { Inter, Anek_Tamil } from "next/font/google";
 import { cookies } from "next/headers";
 
 import { TRPCProvider } from "@/trpc/provider";
@@ -14,6 +14,12 @@ import type { Metadata, Viewport } from "next";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
+});
+
+const k2d = Anek_Tamil({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
+  subsets: ["latin"],
+  variable: "--font-k2d",
 });
 
 const APP_NAME = "Fast Insure";
@@ -77,7 +83,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable} ${GeistMono.variable}`}>
+      <body
+        className={`font-sans ${inter.variable} ${k2d.variable} ${GeistMono.variable}`}
+      >
         <AuthProvider>
           <TRPCProvider cookies={cookies().toString()}>
             <Navbar />

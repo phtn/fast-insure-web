@@ -2,7 +2,6 @@ import { type AppRouter } from "@/server";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
 
-
 export const transformer = superjson;
 
 function getBaseUrl() {
@@ -12,7 +11,7 @@ function getBaseUrl() {
 }
 
 export function getUrl() {
-  return getBaseUrl() + "/api/trpc";
+  return getBaseUrl() + "/trpc";
 }
 
 /**

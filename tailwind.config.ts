@@ -1,8 +1,52 @@
-import { type Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
-import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
 import svgToDataUri from "mini-svg-data-uri";
 import tailwindcssAnimate from "tailwindcss-animate";
+import { type Config } from "tailwindcss/types/config";
+import plugin from "tailwindcss/plugin";
+
+export type ColorValue = string | Record<string, string> | undefined;
+
+/**
+ * @name flattenColorPalette
+ * @description Flattens a color palette (custom)
+ */
+export function flattenColorPalette(
+  colors: Record<string, ColorValue>,
+): Record<string, string> {
+  const flattenColors: Record<string, string> = {};
+
+  function flatten(colorName: string, colorValue: ColorValue) {
+    if (typeof colorValue === "string") {
+      flattenColors[colorName] = colorValue;
+    } else {
+      for (const key in colorValue) {
+        flatten(`${colorName}-${key}`, colorValue[key]);
+      }
+    }
+  }
+
+  for (const colorName in colors) {
+    flatten(colorName, colors[colorName]);
+  }
+
+  return flattenColors;
+}
+
+interface AddVars {
+  addBase: (styles: Record<string, Record<string, string>>) => void;
+  theme: (path: ColorValue) => Record<string, ColorValue>;
+}
+
+function addVariablesForColors({ addBase, theme }: AddVars) {
+  const allColors = flattenColorPalette(theme("colors"));
+  const newVars = Object.fromEntries(
+    Object.entries(allColors).map(([key, val]) => [`--${key}`, val]),
+  );
+
+  addBase({
+    ":root": newVars,
+  });
+}
 
 export default {
   content: ["./src/**/*.tsx"],
@@ -12,6 +56,8 @@ export default {
       colors: {
         paper: "#F8F8F8",
         ash: "#D7D7D7",
+        opus: "#929292",
+        zap: "#FFFDF8",
         clay: "#6A6A6A",
         coal: "#3A3A3A",
         fast: "#172554",
@@ -26,6 +72,7 @@ export default {
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
+        k2d: ["var(--font-k2d)", "sans-serif"],
         mono: ["var(--font-geist-mono)"],
       },
       animation: {
@@ -70,21 +117,21 @@ export default {
 
   plugins: [
     tailwindcssAnimate,
-    addVariablesForColors,
-    function ({ matchUtilities, theme }: any) {
+    plugin(() => addVariablesForColors),
+    plugin(function ({ matchUtilities, theme }) {
       matchUtilities(
         {
-          "bg-grid": (value: any) => ({
+          "bg-grid": (value: string) => ({
             backgroundImage: `url("${svgToDataUri(
               `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`,
             )}")`,
           }),
-          "bg-grid-small": (value: any) => ({
+          "bg-grid-small": (value: string) => ({
             backgroundImage: `url("${svgToDataUri(
               `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="8" height="8" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`,
             )}")`,
           }),
-          "bg-dot": (value: any) => ({
+          "bg-dot": (value: string) => ({
             backgroundImage: `url("${svgToDataUri(
               `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none"><circle fill="${value}" id="pattern-circle" cx="10" cy="10" r="1.6257413380501518"></circle></svg>`,
             )}")`,
@@ -95,17 +142,6 @@ export default {
           type: "color",
         },
       );
-    },
+    }),
   ],
 } satisfies Config;
-
-function addVariablesForColors({ addBase, theme }: any) {
-  let allColors = flattenColorPalette(theme("colors"));
-  let newVars = Object.fromEntries(
-    Object.entries(allColors).map(([key, val]) => [`--${key}`, val]),
-  );
-
-  addBase({
-    ":root": newVars,
-  });
-}

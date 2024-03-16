@@ -56,8 +56,14 @@ export const Autos = () => {
         <AddAuto />
       </Header>
 
-      <div className="flex space-x-6 pb-4">
-        {autos?.map((item) => <AutoItem key={item.id} autoItem={item} />)}
+      <div className="flex space-x-6 px-24 pb-4">
+        {autos?.map((item) => (
+          <AutoItem
+            className="h-[350px] w-[350px] space-y-2 rounded-lg bg-white drop-shadow"
+            key={item.id}
+            autoItem={item}
+          />
+        ))}
       </div>
     </TabsContent>
   );
@@ -76,7 +82,11 @@ const Counter = ({ length }: { length: number | undefined }) => (
 
 const AutoDataConverter: FirestoreDataConverter<VehicleSchema> = {
   toFirestore(auto: VehicleSchema): DocumentData {
-    return { make: auto.make, isActive: auto.isActive };
+    return {
+      make: auto.make,
+      isActive: auto.isActive,
+      category: auto.vehicle_cat,
+    };
   },
   fromFirestore(snapshot, options): VehicleSchema {
     const data = snapshot.data(options) as VehicleSchema;
@@ -84,6 +94,7 @@ const AutoDataConverter: FirestoreDataConverter<VehicleSchema> = {
       id: snapshot.id,
       name: data.auto_name ?? "",
       make: data.make ?? "",
+      type: data.vehicle_cat ?? "",
     };
   },
 };

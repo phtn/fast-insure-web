@@ -18,7 +18,7 @@ const RaynorList = ({ data, title }: KerriganListProps) => {
         {data?.map((item) => (
           <div
             key={item?.id}
-            className="bg-background overflow-hidden rounded-lg border dark:bg-indigo-100"
+            className="bg-background overflow-hidden rounded-lg dark:bg-indigo-100"
           >
             <Image
               alt={item.src ?? ""}
@@ -51,27 +51,43 @@ export const Raynor = ({
 }: KerriganProps) => {
   const List = useCallback(() => {
     const withData = typeof data !== "undefined";
-
     const options = opts(<RaynorList data={data} title={listTitle} />, <div />);
     return <>{options.get(withData)}</>;
   }, [data, listTitle]);
   return (
     <main>
-      <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
-        <div className="px-4 md:px-6">
-          <div className="flex flex-col items-center justify-center space-y-8 text-center">
-            <div className="flex flex-col items-center space-y-8 md:space-y-6 ">
-              <motion.div
-                initial={{ x: -50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{
-                  duration: 0.5,
-                  delay: 3.3,
-                  easings: ["easeInOut"],
-                }}
-              >
-                <Title>{title}</Title>
-              </motion.div>
+      <section className="flex h-[calc(100vh-128px)] w-full md:w-[1080px]">
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="flex flex-col items-start justify-center pb-[128px]">
+            <div className="flex flex-col items-start justify-start space-y-8 md:space-y-10 ">
+              <div>
+                <motion.div
+                  initial={{ x: -50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 3.3,
+                    easings: ["easeInOut"],
+                  }}
+                  className="flex flex-col items-start justify-start"
+                >
+                  <Title>{title}</Title>
+                </motion.div>
+
+                <motion.div
+                  initial={{ x: -50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 3.4,
+                    easings: ["easeInOut"],
+                  }}
+                  className="flex flex-col items-start justify-start"
+                >
+                  <TitleFeature>Peace of Mind</TitleFeature>
+                </motion.div>
+              </div>
+
               <motion.div
                 initial={{ x: -30, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
@@ -80,45 +96,47 @@ export const Raynor = ({
                   delay: 3.6,
                   easings: ["easeInOut"],
                 }}
+                className="px-[4px]"
               >
                 <Description>{description}</Description>
               </motion.div>
-            </div>
-            <div className="flex w-[calc(100vw-64px)] items-center justify-center space-x-4 md:w-full">
-              <motion.div
-                initial={{ y: 10, scale: 0.5, opacity: 0 }}
-                animate={{ y: 0, scale: 1, opacity: 1 }}
-                transition={{
-                  duration: 0.3,
-                  delay: 3.5,
-                  easings: ["easeInOut"],
-                }}
-              >
-                <Link href={href ?? `/`}>
-                  <button className="group inline-flex h-[50px] animate-shimmer items-center justify-center rounded-lg border border-blue-300 bg-[linear-gradient(110deg,#000103,45%,#93c5fd,55%,#000103)] bg-[length:200%_100%] px-6 text-[14px] font-bold text-white transition-all duration-4000 hover:scale-[105%] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 md:w-[350px] md:text-lg">
-                    {actionLabel}
-                    <LayoutGridIcon className="isolate ml-6 h-5 w-5 transition-all duration-300 group-hover:text-blue-300" />
-                  </button>
-                </Link>
-              </motion.div>
-              <motion.div
-                initial={{ y: 10, scale: 0.5, opacity: 0 }}
-                animate={{ y: 0, scale: 1, opacity: 1 }}
-                transition={{
-                  duration: 0.3,
-                  delay: 3.6,
-                  easings: ["easeInOut"],
-                }}
-              >
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="hidden min-w-[200px] space-x-4 transition-all duration-500 hover:scale-[105%] md:flex"
+
+              <div className="flex w-[calc(100vw-64px)] items-center justify-center space-x-4 md:w-full">
+                <motion.div
+                  initial={{ y: 10, scale: 0.5, opacity: 0 }}
+                  animate={{ y: 0, scale: 1, opacity: 1 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: 3.5,
+                    easings: ["easeInOut"],
+                  }}
                 >
-                  <span>Sign up</span>
-                  <ArrowUpRightIcon className="h-4 w-4" />
-                </Button>
-              </motion.div>
+                  <Link href={href ?? `/`}>
+                    <button className="group inline-flex h-[50px] animate-shimmer items-center justify-center rounded-lg border border-fast bg-[linear-gradient(110deg,#000103,45%,#93c5fd,55%,#000103)] bg-[length:200%_100%] px-6 text-[14px] font-bold text-white transition-all duration-4000 hover:text-zap focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 md:w-[250px]">
+                      {actionLabel}
+                      <LayoutGridIcon className="isolate ml-6 h-5 w-5 transition-all duration-300 group-hover:text-blue-300" />
+                    </button>
+                  </Link>
+                </motion.div>
+                <motion.div
+                  initial={{ y: 10, scale: 0.5, opacity: 0 }}
+                  animate={{ y: 0, scale: 1, opacity: 1 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: 3.6,
+                    easings: ["easeInOut"],
+                  }}
+                >
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="hidden min-w-[200px] space-x-4 transition-all duration-500 md:flex"
+                  >
+                    <span>Sign up</span>
+                    <ArrowUpRightIcon className="h-4 w-4" />
+                  </Button>
+                </motion.div>
+              </div>
             </div>
           </div>
         </div>
@@ -129,11 +147,19 @@ export const Raynor = ({
 };
 
 const Title = tw.h2`
-  text-[2.5rem] leading-[2.5rem] md:text-[2.75rem] md:leading-[2.75rem] max-w-[10ch] md:max-w-[32ch] font-extrabold tracking-tighter 
-  text-transparent bg-clip-text bg-gradient-to-r from-blue-950 from-20% to-blue-400
-  sm:text-4xl md:text-5xl lg:text-6xl/none h-fit py-1 
+  font-k2d font-semibold tracking-tight
+  text-[2.25rem] leading-[2.25rem] md:leading-[2.75rem] max-w-[15ch] md:max-w-[15ch]
+  text-transparent bg-clip-text bg-gradient-to-r from-fast from-20% to-fast
+  sm:text-3xl md:text-6xl h-fit py-1
+`;
+
+const TitleFeature = tw.h2`
+  font-k2d font-semibold tracking-wide
+  text-[2.25rem] leading-[2.25rem] md:leading-[2.75rem] max-w-[15ch] md:max-w-[15ch]
+  text-transparent bg-clip-text bg-gradient-to-r from-blue-500 from-[5%] via-blue-400 to-blue-300
+  sm:text-3xl md:text-6xl h-fit py-1
 `;
 
 const Description = tw.h3`
-  mx-auto max-w-[28ch] py-1 md:max-w-[48ch] text-blue-950 text-[14px] font-medium md:text-xl
+  max-w-[28ch] py-1 md:max-w-[32ch] text-coal text-[14px] md:text-lg
 `;

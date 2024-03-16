@@ -4,7 +4,7 @@ import { opts } from "@/utils/helpers";
 import { Button } from "@@components/button";
 import { Dialog, DialogContent, DialogTrigger } from "@@components/dialog";
 import { FileInputIcon, PlusIcon, ScanTextIcon } from "lucide-react";
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context";
 import { AutoForm } from "./auto-form";
 import {
@@ -42,6 +42,12 @@ export const AddAuto = () => {
     status,
     downloadURL,
   } = useFileUploader(userCreds?.user?.uid);
+
+  useEffect(() => {
+    if (scanResult) {
+      console.log(scanResult.base64.fields);
+    }
+  }, [scanResult]);
 
   const { open, setOpen, addAuto, addLoading } = useAutoAccount({
     userId: userCreds?.user?.uid,

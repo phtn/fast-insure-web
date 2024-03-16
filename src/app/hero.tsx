@@ -1,7 +1,9 @@
 "use client";
 
+import tw from "tailwind-styled-components";
 import { Raynor } from "./_components/kerrigan/raynor";
 import { motion } from "framer-motion";
+import { NotificationBar } from "./notification-bar";
 
 export const Hero = () => {
   return (
@@ -13,19 +15,29 @@ export const Hero = () => {
         delay: 3.4,
         easings: ["easeInOut"],
       }}
+      className="h-[calc(100vh-72px)]"
     >
-      <section className="group h-[425px] bg-gradient-to-br from-paper from-40% via-blue-400/10 to-orange-50 to-70% bg-size-200 bg-pos-0 pt-[60px] transition-all duration-500 ease-in-out hover:bg-gradient-to-l hover:bg-pos-100 md:h-[calc(100vh-300px)] md:pt-[56px]">
-        <div
-          className={`bg-[url('/bg/flash_v4.svg')] bg-no-repeat transition-all duration-700 ease-in-out hover:bg-left md:bg-right`}
-        >
+      <HeroContent>
+        <NotificationContainer>
+          <NotificationBar />
+        </NotificationContainer>
+        <div className="flex w-full justify-center">
           <Raynor
             href={`/products`}
-            title="Fast-track your Peace of Mind."
-            description="Sign up today to get 10% discount on all brandnew vehicles."
+            title="Fast-track your"
+            description="Tech-focused insurance platform for businesses and individuals."
             actionLabel="Browse All Products"
           />
         </div>
-      </section>
+      </HeroContent>
     </motion.div>
   );
 };
+
+const HeroContent = tw.section`
+  h-[calc(100vh-72px)] bg-gradient-to-br from-zap from-40% via-blue-400/30 to-zap to-100%
+  `;
+
+const NotificationContainer = tw.div`
+  flex h-[56px] w-full items-center justify-center
+  `;

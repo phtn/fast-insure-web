@@ -23,6 +23,7 @@ import {
   UserCircle2Icon,
   Wallet2Icon,
   type LucideIcon,
+  LogOutIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useContext, useState } from "react";
@@ -113,15 +114,19 @@ type SignOptionProps = {
 
 const LogoutOption = ({ onSelect }: SignOptionProps) => (
   <CommandItem
-    className="w-full rounded-md border border-slate-300 bg-slate-200 py-2 pt-2"
+    className="group w-full rounded-md px-4 py-4 pt-4 hover:bg-fast"
     onSelect={onSelect}
   >
-    <div className="flex w-full items-center justify-between">
-      <p className="text-sm font-bold tracking-tight text-blue-950">Logout</p>
-      <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 py-1.5 font-mono text-[16px] font-medium text-slate-500 opacity-100">
+    <div className="flex w-full items-center">
+      <p className="font-k2d text-sm font-semibold text-fast group-hover:text-zap">
+        Logout
+      </p>
+      <LogOutIcon className="ml-auto h-5 w-5 text-zap" />
+
+      {/* <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 py-1.5 font-mono text-[16px] font-medium text-slate-500 opacity-100">
         <span className="tracking-tight">⌘</span>
         <span className="text-sm">Q</span>
-      </kbd>
+      </kbd> */}
     </div>
   </CommandItem>
 );
@@ -193,7 +198,8 @@ export const UserMenu = () => {
       <PopoverContent className="mr-1 mt-3 w-[300px] rounded-lg border p-0">
         <Command>
           <MenuOptions />
-          <CommandSeparator />
+
+          <CommandSeparator className="bg-clay/20" />
           <CommandList>
             <CommandGroup>
               <SignOptions />
@@ -278,20 +284,24 @@ const AuthedContent = ({
   return (
     <CommandList>
       <Link href="/account" role="button" aria-label="Account">
-        <CommandItem className="py-3">
-          <UserCircle2Icon className="mx-1 mr-3 h-[36px] w-[36px] rounded p-[6px] text-blue-500" />
+        <CommandItem className="group border-0 py-3">
+          <UserCircle2Icon
+            strokeWidth={1.5}
+            className="transition-color mx-1 mr-3 h-[28px] w-[28px] p-[6px] text-clay/80 duration-300 group-hover:text-blue-400"
+          />
           <div className="flex flex-col justify-center">
             <p className="font-bold text-blue-950">
-              {user?.displayName ?? `Add Your Name`}
+              {user?.displayName ?? `Account`}
             </p>
-            <p className="text-[11px] font-normal leading-[11px] text-blue-900">
+            <p className="text-[11px] font-normal leading-[11px] text-clay/80">
               {user?.email}
             </p>
           </div>
         </CommandItem>
       </Link>
 
-      <CommandSeparator className="bg-blue-500/20" />
+      <CommandSeparator className="bg-clay/20" />
+
       <CommandEmpty>Nothing found.</CommandEmpty>
       {groups.map((group) => (
         <CommandGroup key={group.label}>
@@ -301,23 +311,24 @@ const AuthedContent = ({
                 key={item.value}
                 onSelect={() => onSelect(item)}
                 className={cn(
-                  `items-center py-2 text-sm font-bold`,
+                  `font-k2d transition-color items-center py-2 text-sm font-semibold duration-300 hover:text-blue-500`,
                   selectedValue?.value === item.value
                     ? "text-blue-500"
                     : "text-blue-950",
                 )}
               >
                 <item.icon
+                  strokeWidth={1.5}
                   className={cn(
                     `mr-3 h-[28px] w-[28px] rounded p-[6px] transition-all duration-300 group-hover:bg-blue-950 group-hover:text-blue-100`,
                     selectedValue?.value === item.value
-                      ? "bg-blue-950 text-blue-100"
-                      : "text-coal",
+                      ? "bg-blue-950 text-zap"
+                      : "text-clay/80",
                   )}
                 />
                 <div className="flex flex-col justify-center">
                   <p className="">{item.label}</p>
-                  <p className="text-[11px] font-normal leading-[11px] text-coal">
+                  <p className="text-[11px] font-normal leading-[11px] text-clay/80">
                     {item.desc}
                   </p>
                 </div>

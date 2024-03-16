@@ -3,7 +3,7 @@ import {
   GetAllAutoResource,
   GetOneResource,
 } from "../resource/autos";
-import { procedure } from "../trcp";
+import { procedure } from "../trpc";
 
 export const createAutoProcedure = procedure.input(CreateAutoResource);
 export const getAllAutoProcedure = procedure.input(GetAllAutoResource);

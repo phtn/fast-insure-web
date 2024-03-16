@@ -11,7 +11,7 @@ import { type TRPCErrorResponse } from "@trpc/server/rpc";
 import { cookies } from "next/headers";
 import { cache } from "react";
 
-import { createTRPCContext } from "@/server/trcp";
+import { createTRPCContext } from "@/server/trpc";
 import { transformer } from "./shared";
 import { appRouter, type AppRouter } from "@/server";
 

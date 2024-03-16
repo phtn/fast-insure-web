@@ -43,7 +43,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (snapshot) {
         setProfile(snapshot);
       }
-      console.log(snapshot, user?.uid);
     }
   }, [user?.uid, snapshot]);
 

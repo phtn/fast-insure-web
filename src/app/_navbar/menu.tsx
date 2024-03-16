@@ -15,11 +15,16 @@ interface MenuData {
 const data: MenuData[] = [
   { id: 0, title: "Products", description: "All Products", href: "/products" },
   { id: 1, title: "Claims", description: "All Products", href: "#" },
-  { id: 2, title: "Auto Loan", description: "All Products", href: "/autoloans" },
+  {
+    id: 2,
+    title: "Auto Loan",
+    description: "All Products",
+    href: "/autoloans",
+  },
   { id: 3, title: "i-Cash", description: "All Products", href: "#" },
 ];
 
-export function MainNav({
+export function MenuList({
   className,
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
@@ -43,9 +48,9 @@ export function MainNav({
 }
 
 const Item = tw(Link)`
-  bg-gradient-to-tr from-stone-900 to-zinc-700 bg-clip-text 
-  text-xs uppercase tracking-wider text-transparent transition-colors
-  group
+  bg-gradient-to-tr from-coal to-zinc-500 bg-clip-text
+  text-sm tracking-wider text-transparent transition-colors
+  group font-k2d hover:from-fast hover:to-blue-500
 `;
 
 const Underline = tw.span`

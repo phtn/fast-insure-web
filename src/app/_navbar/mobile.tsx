@@ -1,12 +1,9 @@
 import { cn } from "@/utils/cn";
 import {
   Command,
-  CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
 } from "@@components/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@@components/popover";
 import { motion } from "framer-motion";
@@ -122,7 +119,7 @@ export const MobileMenu = () => {
                 <UserCircleIcon className="mx-1 mr-3 h-[36px] w-[36px] rounded p-[6px] text-blue-500" />
                 <div className="flex flex-col justify-center">
                   <p className="font-bold text-blue-950">
-                    {user?.displayName ?? `Add Your Name`}
+                    {user?.uid ? user.email : "Sign in"}
                   </p>
                   <p className="text-[11px] font-normal leading-[11px] text-blue-900">
                     {user?.email}
@@ -130,8 +127,8 @@ export const MobileMenu = () => {
                 </div>
               </CommandItem>
             </Link>
-            <CommandInput placeholder="Search products..." />
-            <CommandEmpty>Nothing found.</CommandEmpty>
+            {/* <CommandInput placeholder="Search products..." /> */}
+            {/* <CommandEmpty>Nothing found.</CommandEmpty> */}
             {groups.map((group) => (
               <CommandGroup key={group.label}>
                 {group.values.map((item) => (
@@ -177,8 +174,8 @@ export const MobileMenu = () => {
               </CommandGroup>
             ))}
           </CommandList>
-          <CommandSeparator />
-          <CommandList>
+          {/* <CommandSeparator /> */}
+          {/* <CommandList>
             <CommandGroup>
               <CommandItem
                 className="mx-1 border-t pb-1 pt-2 text-sm font-bold tracking-tight"
@@ -190,7 +187,7 @@ export const MobileMenu = () => {
                 Sign in
               </CommandItem>
             </CommandGroup>
-          </CommandList>
+          </CommandList> */}
         </Command>
       </PopoverContent>
     </Popover>

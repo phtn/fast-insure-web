@@ -1,4 +1,4 @@
 import { LimitFile } from "../resource/upload";
-import { procedure } from "../trcp";
+import { procedure } from "../trpc";
 
-export const limitProcedure = procedure.input(LimitFile)
+export const limitProcedure = procedure.input(LimitFile);

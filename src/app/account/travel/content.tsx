@@ -10,7 +10,7 @@ export const ProtectionContent = () => {
         <div className="grid h-[300px] grid-cols-3 overflow-clip rounded-xl bg-white">
           <div className="flex justify-end">
             <div className="flex flex-col items-start justify-center bg-gradient-to-br from-sky-400 to-indigo-600 bg-clip-text p-4 text-transparent">
-              <h3 className="text-3xl font-extrabold">Global</h3>
+              <h3 className="text-3xl font-extrabold">International</h3>
               <h3 className="text-3xl font-medium tracking-tight">
                 Protection
               </h3>

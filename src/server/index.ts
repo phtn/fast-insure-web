@@ -1,4 +1,4 @@
-import { mergeRouters } from "./trcp";
+import { mergeRouters } from "./trpc";
 import { accountRouter } from "./routers/account";
 import { uploadRouter } from "./routers/upload";
 import { iCashRouter } from "./routers/icash";

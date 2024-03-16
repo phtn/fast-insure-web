@@ -1,25 +1,43 @@
-import { type AxiosInstance } from "axios"
-import { type CheckoutResponseSchema, type CheckoutSchema, checkoutUrl as url } from "../resource/icash"
-import { checkoutConfig, createAxiosInstance, } from "./axios"
+import { type AxiosInstance } from "axios";
+import type {
+  CheckoutResponseSchema,
+  CheckoutSchema,
+  PayoutResponseSchema,
+  PayoutSchema,
+} from "../resource/icash";
+import {
+  checkoutConfig,
+  payoutConfig,
+  // authConfig,
+  // bankLookupConfig,
+  createAxiosInstance,
+} from "./axios";
 
 const onCheckout = async (
   values: CheckoutSchema,
-  axiosInstance: AxiosInstance
+  axiosInstance: AxiosInstance,
 ) => {
-
   const { data, status } = await axiosInstance.post<CheckoutResponseSchema>(
-    url,
-    values
-  )
-
-  return { data, status }
-
-}
+    checkoutConfig.url,
+    values,
+  );
+  return { data, status };
+};
 
 export const createCheckoutSession = async (values: CheckoutSchema) => {
+  const axiosInstance = createAxiosInstance(checkoutConfig);
+  return await onCheckout(values, axiosInstance);
+};
 
-  const axiosInstance = createAxiosInstance(checkoutConfig)
+const onPayout = async (values: PayoutSchema, axiosInstance: AxiosInstance) => {
+  const { data, status } = await axiosInstance.post<PayoutResponseSchema>(
+    payoutConfig.url,
+    values,
+  );
+  return { data, status };
+};
 
-  return await onCheckout(values, axiosInstance)
-
-}
+export const createInstapayPayoutSession = async (values: PayoutSchema) => {
+  const axiosInstance = createAxiosInstance(payoutConfig);
+  return await onPayout(values, axiosInstance);
+};

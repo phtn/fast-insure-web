@@ -6,7 +6,7 @@ import {
   getOneAutoProcedure,
 } from "../procedures/autos";
 import { type AllAutoSchema } from "../resource/autos";
-import { router } from "../trcp";
+import { router } from "../trpc";
 
 export const autoRouter = router({
   createAuto: createAutoProcedure.query(async ({ input }) => {

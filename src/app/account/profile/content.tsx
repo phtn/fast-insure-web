@@ -1,8 +1,6 @@
 "use client";
 
-import { checkoutSession } from "@/trpc/icash/checkout";
 import { opts, toggleState } from "@/utils/helpers";
-import { onError } from "@/utils/toast";
 import { Badge } from "@@components/badge";
 import { Button } from "@@components/button";
 import { DarkTouch, Touch } from "@@components/touch";
@@ -16,18 +14,11 @@ import {
   MapPinnedIcon,
 } from "lucide-react";
 import { useCallback, useState } from "react";
-import { payload } from "../_autos/data";
 import { useUserProfile } from "./hooks";
 
 export const Content = () => {
   const [visible, setVisible] = useState(false);
   const { profile, joinDate, address, email } = useUserProfile();
-
-  const handleCheckout = () => {
-    checkoutSession(payload)
-      .then((res) => console.log(res.data))
-      .catch((err: Error) => onError(err.name, err.message));
-  };
 
   const toggleVisible = () => toggleState(setVisible);
 
@@ -69,24 +60,20 @@ export const Content = () => {
               Complete Setup
             </Touch>
           </div>
-          <Button
-            className=""
-            variant="outline"
-            size="sm"
-            onClick={handleCheckout}
-          >
-            c
-          </Button>
+          <Button className="" variant="outline" size="sm"></Button>
         </div>
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-1">
             <AtSignIcon className="h-3 w-3 text-clay" />
             <p className="text-xs text-coal">{email}</p>
           </div>
-          <div className="flex items-center space-x-1">
-            <MapPinnedIcon className="h-3 w-3 text-clay" />
-            <p className="text-xs text-clay">{address.city}</p>
-          </div>
+          {address ? (
+            <div className="flex items-center space-x-1">
+              <MapPinnedIcon className="h-3 w-3 text-clay" />
+              <p className="text-xs text-clay">{address.city}</p>
+            </div>
+          ) : null}
+
           <div className="flex items-center space-x-1">
             <CalendarDaysIcon className="h-3 w-3 text-clay" />
             <p className="text-xs text-clay">{joinDate}</p>
