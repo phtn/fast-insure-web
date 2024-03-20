@@ -6,10 +6,10 @@ import { cookies } from "next/headers";
 
 import { TRPCProvider } from "@/trpc/provider";
 import { Toaster } from "sonner";
-import { Navbar } from "./_navbar";
-import { AuthProvider } from "./context";
-import { Footer } from "./footer";
+import { Navbar } from "./(components)/navbar";
+import { AuthProvider } from "./(context)/context";
 import type { Metadata, Viewport } from "next";
+import { NotificationBar } from "./(components)/notification-bar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -89,13 +89,11 @@ export default function RootLayout({
         <AuthProvider>
           <TRPCProvider cookies={cookies().toString()}>
             <Navbar />
-            <div className={`overflow-y-scroll`}>
-              {children}
-              <Footer />
-            </div>
+            <NotificationBar />
+            <div className={`overflow-y-scroll`}>{children}</div>
           </TRPCProvider>
-          <Toaster />
         </AuthProvider>
+        <Toaster />
       </body>
     </html>
   );

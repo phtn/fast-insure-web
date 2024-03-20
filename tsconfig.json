@@ -28,7 +28,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@@components/*": ["./src/app/_components/*"],
+      "@@ui/*": ["./src/app/(ui)/*"],
       "@@utils/*": ["./src/utils/*"],
       "@@libs/*": ["./src/libs/*"],
       "@server/*": ["./src/server/*"],

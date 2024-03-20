@@ -55,13 +55,16 @@ export default {
     extend: {
       colors: {
         paper: "#F8F8F8",
+        prime: "#3b82f6",
         ash: "#D7D7D7",
         opus: "#929292",
-        zap: "#FFFDF8",
+        zap: "#FDFDFD",
         clay: "#6A6A6A",
         coal: "#3A3A3A",
         fast: "#172554",
         void: "#0F172A",
+        heli: "#6A7384",
+        copper: "#F6F9FC",
       },
       backgroundSize: {
         "size-200": "200% 200%",

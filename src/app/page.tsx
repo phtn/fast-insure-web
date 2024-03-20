@@ -1,10 +1,10 @@
 import { cookies } from "next/headers";
-import { MobileApp } from "./mobile_app";
-import { Splash } from "./splash";
-import { CTPL } from "./_ctpl";
-import { Hero } from "./hero";
-import { Highlight } from "./highlight";
-import { Affiliate } from "./affiliate";
+import { MobileApp } from "./(components)/mobile_app";
+import { Splash } from "./(components)/splash";
+import { CTPL } from "./(components)/ctpl";
+import { Hero } from "./(components)/hero";
+import { Highlight } from "./(components)/highlight";
+import { Affiliate } from "./(components)/affiliate";
 
 async function getCookieData() {
   const cookieData = cookies().getAll();

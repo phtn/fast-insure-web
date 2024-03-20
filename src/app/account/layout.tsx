@@ -1,18 +1,21 @@
-import { type ReactNode } from "react";
-import { Triggers } from "./triggers";
-import { Tabs } from "../_components/tabs";
+"use client";
 
-export default async function AccountLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  return (
-    <div className="h-screen bg-paper bg-gradient-to-r from-paper via-blue-200 to-paper portrait:h-fit">
-      <Tabs defaultValue="autos" className="h-full space-y-8">
-        <Triggers />
-        {children}
-      </Tabs>
-    </div>
-  );
-}
+import { auth } from "@/libs/db";
+import { useAuthState } from "react-firebase-hooks/auth";
+import Sidebar from "./(components)/sidebar";
+
+type AccountLayoutProps = {
+  dashboard: React.ReactNode;
+  signin: React.ReactNode;
+};
+
+const AccountLayout = ({ dashboard, signin }: AccountLayoutProps) => {
+  const [user] = useAuthState(auth);
+  if (user) {
+    return <Sidebar>{dashboard}</Sidebar>;
+  } else {
+    return signin;
+  }
+};
+
+export default AccountLayout;

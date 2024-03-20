@@ -1,4 +1,4 @@
-import { type AuthError } from "firebase/auth";
+import type { AuthError, User } from "firebase/auth";
 import { toast } from "sonner";
 
 export const onSuccess = (...args: string[]) => {
@@ -25,12 +25,39 @@ export const onWarn = (...args: string[]) => {
   });
 };
 
-type OnPromise = [Promise<boolean>, string, AuthError | Error | undefined]
+type OnPromise<T> = [
+  Promise<T>,
+  string,
+  string,
+  string,
+  AuthError | Error | undefined,
+];
 
-export const onPromise = (...args: OnPromise) => {
-  toast.promise(args[0], {
+export const onPromise = <T,>(...args: OnPromise<T>) => {
+  toast.promise<T>(args[0], {
     loading: args[1],
-    success: (data) => data,
-    error: args[2]?.message
-  })
-}
+    success: (data) => {
+      switch (args[2]) {
+        case "signout":
+          return `You're logged out.`;
+        case "signin":
+          return (() => {
+            if (data !== null && typeof data === "object" && "user" in data) {
+              const user = data.user as User;
+              if (
+                (user satisfies User) &&
+                "email" in user &&
+                user.email !== ""
+              ) {
+                return `Signed in as ${user.email}`;
+              }
+            }
+            return `Sign in successful!`;
+          })();
+        default:
+          return args[3];
+      }
+    },
+    error: args[4]?.message,
+  });
+};
