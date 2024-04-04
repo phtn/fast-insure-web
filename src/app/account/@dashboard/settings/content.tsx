@@ -13,7 +13,7 @@ export const SettingsContent = () => {
   };
   return (
     <div className="w-full">
-      <Header title="Account Settings" />
+      <Header title="Settings" />
       <div className="my-[16px]">
         <div className="w-[100px]">
           <DarkTouch onClick={handleSignOut} className="w-full">

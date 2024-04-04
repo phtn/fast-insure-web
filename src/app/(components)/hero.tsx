@@ -14,10 +14,10 @@ export const Hero = () => {
         delay: 3.4,
         easings: ["easeInOut"],
       }}
-      className="h-[calc(100vh-72px)]"
+      className="h-[calc(100vh-72px)] w-full"
     >
       <HeroContent>
-        <div className="flex w-full justify-center">
+        <div className="flex w-full justify-center md:w-[800px] lg:w-[1080px]">
           <Raynor
             href={`/products`}
             title="Fast-track your"
@@ -31,5 +31,5 @@ export const Hero = () => {
 };
 
 const HeroContent = tw.section`
-  h-[calc(100vh-72px)] bg-gradient-to-br from-zap from-40% via-blue-400/30 to-zap to-100%
+  h-[calc(100vh-72px)] flex justify-center w-full bg-gradient-to-br from-zap from-40% via-blue-400/30 to-zap to-100%
   `;

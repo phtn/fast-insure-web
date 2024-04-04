@@ -94,3 +94,94 @@ export const webhookMsg = {
   transactionStatus: "CREDITED",
   transactionDate: "2023-11-13 17:12:25.957",
 };
+
+export const CreateVirtualAccountResource = z.object({
+  merchantCustomerId: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+});
+
+export type CreateVirtualAccountSchema = z.infer<
+  typeof CreateVirtualAccountResource
+>;
+
+export const CreateVirtualAccountResponse = z.object({
+  statusCode: z.string(),
+  statusMessage: z.string(),
+  virtualAccountNo: z.string(),
+});
+
+export type CreateVirtualAccountResponseSchema = z.infer<
+  typeof CreateVirtualAccountResponse
+>;
+
+export const CreateVirtualAccountUrl = "/api/merchant/create-virtual-account";
+
+export const GenerateQRResource = z.object({
+  merchantCode: z.string(),
+  merchantCustomerId: z.string(),
+  merchantTransactionId: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  amount: z.string(),
+});
+
+export type GenerateQRSchema = z.infer<typeof GenerateQRResource>;
+
+export const GenerateQRResponse = z.object({
+  statusCode: z.string(),
+  statusMessage: z.string(),
+  base64Image: z.string(),
+  merchantTransactionId: z.string(),
+  expiredAt: z.string(),
+});
+
+export type GenerateQRResponseSchema = z.infer<typeof GenerateQRResponse>;
+
+export const GenerateQRUrl = "/api/merchant/generate-trans-qr";
+
+export const GenerateQRCodeVirtualAccountResource = z.object({
+  virtualAccountNumber: z.string(),
+  amount: z.string(),
+});
+
+export type GenerateQRCodeVirtualAccountSchema = z.infer<
+  typeof GenerateQRCodeVirtualAccountResource
+>;
+
+export const GenerateQRCodeVirtualAccountResponse = z.object({
+  statusCode: z.string(),
+  statusMessage: z.string(),
+  data: z.object({
+    bash64Image: z.string(),
+  }),
+});
+
+export type GenerateQRCodeVirtualAccountResponseSchema = z.infer<
+  typeof GenerateQRCodeVirtualAccountResponse
+>;
+
+export const GenerateQRCodeVirtualAccountUrl = "/api/merchant/generate-qrcode";
+
+export const GetVirtualAccountResource = z.object({
+  merchantCustomerId: z.string(),
+});
+
+export type GetVirtualAccountSchema = z.infer<typeof GetVirtualAccountResource>;
+
+export const GetVirtualAccountResponse = z.object({
+  statusCode: z.string(),
+  statusMessage: z.string(),
+  virtualAccountNo: z.string(),
+  merchantCustomerId: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  createAt: z.string(),
+});
+
+export type GetVirtualAccountResponseSchema = z.infer<
+  typeof GetVirtualAccountResponse
+>;
+
+export const GetVirtualAccountUrl =
+  "/api/inquire/virtual-account?:merchantCustomerId";

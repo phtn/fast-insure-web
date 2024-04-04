@@ -25,6 +25,7 @@ export const createUserAccount = async (user: NewUserPayload) => {
       isVerified: false,
       isComplete: false,
       premium: false,
+      accountManager: "AP-0000",
       address: {
         lineOne: null,
         lineTwo: null,

@@ -25,9 +25,9 @@ const primaryClass = `
   hover:text-blue-600
 `;
 const darkClass = `
-  bg-void text-blue-300 border border-clay/[40%]
+  bg-void text-blue-200 border border-clay/[40%]
   shadow-i-br-dk-hv pointer-events-auto
-  hover:text-blue-200 rounded-[8px]
+  hover:text-zap rounded-[8px]
   m-[1px]
 `;
 const secondaryClass = `

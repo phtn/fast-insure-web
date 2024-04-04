@@ -94,9 +94,14 @@ export const AddAuto = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="h-6 w-6 rounded-full" size="icon">
-          <PlusIcon className="h-4 w-4" />
-        </Button>
+        <div className="flex cursor-pointer items-center space-x-3">
+          <Button className="h-6 w-6 rounded-full" size="icon">
+            <PlusIcon className="h-4 w-4" />
+          </Button>
+          <p className="font-sans text-sm font-medium tracking-tighter">
+            Add Auto
+          </p>
+        </div>
       </DialogTrigger>
       <DialogContent className="">
         <Title />

@@ -4,10 +4,10 @@ import { cn } from "@/utils/cn";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type HTMLAttributes } from "react";
-import { sidebarNavGroup } from "./sidebar-data";
+import { sidebarAffiliate, sidebarUser } from "./sidebar-data";
 import tw from "tailwind-styled-components";
 
-export const SidebarNav = ({
+export const SidebarAffiliate = ({
   className,
   ...props
 }: HTMLAttributes<HTMLElement>) => {
@@ -21,7 +21,50 @@ export const SidebarNav = ({
       )}
       {...props}
     >
-      {sidebarNavGroup.map((group) => (
+      {sidebarAffiliate.map((group) => (
+        <div
+          key={group.label}
+          className="flex space-x-4 lg:flex-col lg:space-x-0"
+        >
+          {group.values.map((item) => (
+            <Link key={item.value} href={item.href ?? `#`} className="group">
+              <GroupItem>
+                <item.icon
+                  strokeWidth={1.5}
+                  className={cn(
+                    iconClass,
+                    pathname === item.href ? `text-blue-600` : ``,
+                  )}
+                />
+                <GroupItemContent
+                  label={item.label}
+                  link={item.href}
+                  pathname={pathname}
+                />
+              </GroupItem>
+            </Link>
+          ))}
+        </div>
+      ))}
+    </nav>
+  );
+};
+
+export const SidebarUser = ({
+  className,
+  ...props
+}: HTMLAttributes<HTMLElement>) => {
+  const pathname = usePathname();
+
+  return (
+    <nav
+      className={cn(
+        "flex space-x-2 overflow-scroll lg:flex-col lg:space-x-0 lg:space-y-1",
+        className,
+      )}
+      {...props}
+    >
+      {sidebarUser.map((group) => (
         <div
           key={group.label}
           className="flex space-x-4 lg:flex-col lg:space-x-0"
@@ -74,7 +117,7 @@ const GroupItem = tw.div`
   flex rounded-md px-1 py-2
   font-sans font-medium text-sm text-coal
   transition-colors duration-300
-  hover:bg-paper hover:text-blue-500
+  hover:bg-heli/5 hover:text-blue-500
   `;
 
 const iconClass = `

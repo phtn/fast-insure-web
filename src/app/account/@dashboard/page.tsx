@@ -1,4 +1,4 @@
 import { DashboardContent } from "./content";
 
-const DashboardPage = async () => <DashboardContent />;
-export default DashboardPage;
+const AccountPage = async () => <DashboardContent />;
+export default AccountPage;

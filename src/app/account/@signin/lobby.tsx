@@ -113,14 +113,14 @@ const Secondary = (props: SecondaryProps) => {
   const { signinType, accountType, setType } = props;
   const userSignin = signinType === "SIGNIN";
   return (
-    <div className="flex h-fit w-full justify-center place-self-start border-t bg-zap md:h-[calc(100vh-144px)] md:w-[540px] md:pt-[56px]">
-      <div>
-        <div className="w-full border-b pt-[14px] md:h-[calc(100vh-300px)] md:w-[350px]">
+    <div className="flex h-fit w-full justify-start place-self-start bg-zap px-[36px] md:h-[calc(100vh-144px)] md:justify-center md:px-[56px] md:pt-[48px] lg:px-[108px]">
+      <div className="w-full">
+        <div className="w-full max-w-[350px] pt-[14px] md:h-[calc(100vh-300px)]">
           <div className="flex h-[72px] flex-col">
             <h1 className="font-sans text-3xl font-bold tracking-tighter text-fast">
               {userSignin ? `Sign in` : `Create new account`}
             </h1>
-            <p className="bg-gradient-to-r from-clay to-copper bg-clip-text font-medium text-transparent md:text-[16px]">
+            <p className="bg-gradient-to-r from-clay to-copper bg-clip-text font-sans font-medium tracking-tighter text-transparent md:text-[16px]">
               Sign in with email
             </p>
           </div>
@@ -142,7 +142,7 @@ const Secondary = (props: SecondaryProps) => {
           </div>
         </div>
 
-        <div className="flex h-[72px] w-full items-center justify-center border-t border-ash">
+        <div className="flex h-[72px] w-full items-center justify-center border-t-[0.33px] border-ash">
           <div className="flex items-center justify-center space-x-2">
             <p className="text-sm text-heli">
               {userSignin

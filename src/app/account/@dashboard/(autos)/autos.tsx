@@ -3,7 +3,6 @@
 import { db } from "@/libs/db";
 import { opts } from "@/utils/helpers";
 import { onError } from "@/utils/toast";
-import { TabsContent } from "@@ui/tabs";
 import {
   collection,
   doc,
@@ -17,7 +16,7 @@ import { type VehicleSchema } from "./active-form";
 import { AutoItem } from "./auto-item";
 import { AuthContext } from "@/app/(context)/context";
 
-export const Autos = () => {
+export const AutosPage = () => {
   const userCreds = useContext(AuthContext);
   const autosRef = collection(
     doc(db, `users/${userCreds?.user?.uid}`),
@@ -39,33 +38,32 @@ export const Autos = () => {
   }, [loading, autos?.length]);
 
   return (
-    <TabsContent
-      value="autos"
-      className="space-y-8 border-none p-0 outline-none"
-    >
+    <div className="space-y-4 border-none p-0 outline-none">
       <DescriptionOptions />
-      <div className="flex space-x-6 px-24 pb-4">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {autos?.map((item) => (
           <AutoItem
-            className="h-[350px] w-[350px] space-y-2 rounded-lg bg-white drop-shadow"
+            className="space-y-2 overflow-hidden rounded-lg border-[0.33px] border-ash bg-white shadow-sm"
             key={item.id}
             autoItem={item}
           />
         ))}
       </div>
-    </TabsContent>
+    </div>
   );
 };
 
 const Refreshing = () => (
-  <div className="flex items-center space-x-4">
+  <div className="flex items-center space-x-4 font-sans tracking-tight">
     <RefreshCcwIcon className="h-4 w-4 animate-spin text-ash" />
     <p className="text-sm text-clay">Refreshing ...</p>
   </div>
 );
 
 const Counter = ({ length }: { length: number | undefined }) => (
-  <p className="text-sm text-clay">Registered Autos ({length})</p>
+  <p className="font-sans text-sm tracking-tight text-clay">
+    Registered Autos ({length})
+  </p>
 );
 
 const AutoDataConverter: FirestoreDataConverter<VehicleSchema> = {

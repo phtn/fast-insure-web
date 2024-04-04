@@ -2,7 +2,11 @@ import { db, storage } from "@/libs/db";
 import type { OCR_DE_BASE64_Schema } from "@/server/resource/ocr";
 import { createAuto } from "@/trpc/autos/create";
 import { runOCR_DE_BASE64 } from "@/trpc/ocr/ocr";
-import { fileType, nameGenerator } from "@/utils/helpers";
+import {
+  createReferenceNumber,
+  fileType,
+  nameGenerator,
+} from "@/utils/helpers";
 import { onError, onInfo, onSuccess } from "@/utils/toast";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useCallback, useEffect, useState } from "react";
@@ -12,6 +16,8 @@ import type { VehicleSchema } from "./active-form";
 import { getAllAuto } from "@/trpc/autos/get";
 import { collection, doc } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { brandnew, renewal } from "@/app/(components)/ctpl/data";
+import { createIcashCheckout } from "@/trpc/icash/checkout";
 
 const Err = (err: Error) => {
   onError(err.name, err.message);
@@ -261,4 +267,49 @@ export const useAutoUpdate = ({ userId }: { userId: string | undefined }) => {
   }, [autos]);
 
   return { values, loading, error };
+};
+
+type UseCheckout = {
+  userId?: string | undefined;
+  autoItem: VehicleSchema;
+};
+export const useCheckout = ({ autoItem }: UseCheckout) => {
+  const isRenewal = false;
+  const insurancePkg = isRenewal ? renewal : brandnew;
+  const autoType = insurancePkg.filter((item) => item.type === autoItem.type);
+  const amount = String(autoType[0]?.price.toFixed(2));
+
+  /**
+  MerchantCode: FASTINSURE
+  API username: fastinsure
+  API password: XodZy9D5KTcYsQL@$aRInahMd$ufR39DsY
+  phone: 9227227227
+  */
+
+  const [loading, setLoading] = useState(false);
+
+  const handleCheckout = useCallback(() => {
+    setLoading(true);
+    createIcashCheckout({
+      merchantCode: `${process.env.NEXT_PUBLIC_ICASH_MERCHANT_CODE}`,
+      merchantUsername: `${process.env.NEXT_PUBLIC_ICASH_MERCHANT_USER}`,
+      merchantPassword: `${process.env.NEXT_PUBLIC_ICASH_MERCHANT_PASS}`,
+      merchantProductDescription: `CTPL Insurance Policy - (${isRenewal ? "Renewal" : "Brand New"})`,
+      merchantRefNo: createReferenceNumber(),
+      currencyCode: "PHP",
+      amount,
+      successUrl: "https://re-up.ph",
+      errorUrl: "https://re-up.ph",
+    })
+      .then((res) => {
+        console.log(res);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  }, [amount, isRenewal]);
+
+  return { autoType, handleCheckout, loading };
 };

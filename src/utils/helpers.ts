@@ -2,7 +2,7 @@ import type { OCR_DE_FieldSchema } from "@/server/resource/ocr";
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { onError, onSuccess, onWarn } from "./toast";
-import { type VehicleSchema } from "@/app/account/@dashboard/_autos/active-form";
+import { type VehicleSchema } from "@/app/account/@dashboard/(autos)/active-form";
 
 export const degreesToRadians = (degrees: number | string): number => {
   const getRad = (d: number) => (d * Math.PI) / 180;
@@ -35,9 +35,9 @@ export const createReferenceNumber = () => {
   const match = uid.match(regex);
   if (match && match.length > 1) {
     const stringBetweenDashes = match[1];
-    return `FIN-${stringBetweenDashes}`;
+    return `FAST-${stringBetweenDashes}`;
   } else {
-    return `FIN-${uid.substring(0, 13)}`;
+    return `FAST-${uid.substring(0, 13)}`;
   }
 };
 
@@ -115,7 +115,7 @@ export const limitText = (text: string | undefined, chars?: number) => {
   return text.substring(0, 25) + `...`;
 };
 
-export const getNextElement = <T,>(
+export const getNextElement = <T>(
   array: T[],
   currentIndex: number,
   setState: Dispatch<SetStateAction<number>>,
@@ -199,7 +199,7 @@ export const screenKey = (input: string): string => {
   return modifiedString.trim();
 };
 
-export const filterList = <T,>(
+export const filterList = <T>(
   array: T[],
   predicate: (el: T) => boolean,
 ): T[] => {
