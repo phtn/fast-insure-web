@@ -22,6 +22,6 @@ export const autoRouter = router({
     let data: AllAutoSchema;
     return await getAutoUpdate(input, (docs) => {
       data = docs;
-    }).then(() => console.log(data));
+    }).then(() => data);
   }),
 });

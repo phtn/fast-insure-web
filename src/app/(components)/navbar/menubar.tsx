@@ -53,6 +53,7 @@ export function MenuList({
 const Menubar = tw.nav`
   flex h-[46px] items-center justify-between
   relative top-[-23px] left-[-20px] w-[364px]
+  z-50
   `;
 
 const Item = tw(Link)`

@@ -1,4 +1,5 @@
 import { AuthContext } from "@/app/(context)/context";
+import { Hoverdrop } from "@/app/(ui)/hoverboard";
 import { auth } from "@/libs/db";
 import { cn } from "@/utils/cn";
 import { opts } from "@/utils/helpers";
@@ -19,29 +20,30 @@ import {
   ChevronUpIcon,
   DotIcon,
   GiftIcon,
-  HelpCircleIcon,
   LogInIcon,
   LogOutIcon,
   SquircleIcon,
-  UserCircle2Icon,
   type LucideIcon,
+  LifeBuoyIcon,
+  UserCircle,
 } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useState, type HTMLProps } from "react";
 import { useSignOut } from "react-firebase-hooks/auth";
 import tw from "tailwind-styled-components";
 
-type Item = {
+interface ItemVal {
   label: string;
   desc: string;
   value: string;
   icon: LucideIcon;
   href?: string;
-};
+  style?: HTMLProps<HTMLElement>["className"];
+}
 
 type GroupItem = {
   label: string;
-  values: Item[];
+  values: ItemVal[];
 };
 
 const notAuthedGroup: GroupItem[] = [
@@ -54,6 +56,7 @@ const notAuthedGroup: GroupItem[] = [
         value: "0",
         icon: LogInIcon,
         href: "/account",
+        style: "group-hover:fill-sky-400/20",
       },
     ],
   },
@@ -66,6 +69,7 @@ const notAuthedGroup: GroupItem[] = [
         value: "1",
         icon: ArrowUpRightSquareIcon,
         href: "/account",
+        style: "group-hover:fill-indigo-400/30",
       },
     ],
   },
@@ -81,6 +85,7 @@ const groups: GroupItem[] = [
         value: "2",
         icon: GiftIcon,
         href: "/autoloans",
+        style: "group-hover:fill-yellow-300/50 group-hover:stroke-fuchsia-800",
       },
     ],
   },
@@ -89,10 +94,11 @@ const groups: GroupItem[] = [
     values: [
       {
         label: "Support",
-        desc: "Customize your profile.",
-        value: "67890",
-        icon: HelpCircleIcon,
+        desc: "Need help?",
+        value: "3",
+        icon: LifeBuoyIcon,
         href: "#",
+        style: "group-hover:fill-emerald-300/40 group-hover:stroke-emerald-900",
       },
     ],
   },
@@ -110,17 +116,12 @@ export const LogoutOption = () => {
     );
   };
   return (
-    <CommandItem
-      className="group w-full rounded-md px-4 py-4 pt-4 hover:border-coal hover:bg-coal"
-      onSelect={logout}
-    >
-      <div className="flex w-full items-center">
-        <p className="font-sans font-bold text-coal group-hover:text-zap">
-          Logout
-        </p>
-        <LogOutIcon className="ml-auto h-5 w-5 text-zap" />
+    <LogoutItem onSelect={logout}>
+      <div className="flex w-full items-center justify-between">
+        <Label>Logout</Label>
+        <LogOutIcon className="size-4" />
       </div>
-    </CommandItem>
+    </LogoutItem>
   );
 };
 
@@ -140,7 +141,7 @@ export const UserMenu = () => {
   }, [creds]);
 
   const MenuOptions = useCallback(() => {
-    const handleSelect = (item: Item) => () => {
+    const handleSelect = (item: ItemVal) => () => {
       setSelectedValue(item);
       closePopover();
     };
@@ -189,23 +190,28 @@ export const UserMenu = () => {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="mr-1 mt-3 w-[300px] rounded-lg border p-0">
-        <Command>
-          <MenuOptions />
-          <CommandSeparator className="bg-paper" />
-          <CommandList>
-            <CommandGroup>
+      <PopoverContent className="my-2 w-[216px] p-0">
+        <Hoverdrop
+          parentStyle="h-[272px]"
+          pillStyle="lg:h-[56px] lg:group-hover:bg-blue-200/30 mx-2 rounded-lg"
+          snapPoints={[0, 80, 147.5, 214, 280.5, 348, 387, 396]}
+          offset={30}
+        >
+          <Command className="absolute lg:-mt-[54px]">
+            <MenuOptions />
+            <CommandSeparator />
+            <CommandList>
               <SignOptions />
-            </CommandGroup>
-          </CommandList>
-        </Command>
+            </CommandList>
+          </Command>
+        </Hoverdrop>
       </PopoverContent>
     </Popover>
   );
 };
 
 type NotAuthedContentProps = {
-  onSelect: (item: Item) => () => void;
+  onSelect: (item: ItemVal) => () => void;
   selectedValue: Group | undefined;
 };
 
@@ -214,7 +220,7 @@ const NotAuthedContent = ({
   selectedValue,
 }: NotAuthedContentProps) => {
   return (
-    <CommandList className="pt-2">
+    <CommandList>
       {notAuthedGroup.map((group) => (
         <CommandGroup key={group.label}>
           {group.values.map((item) => (
@@ -223,6 +229,7 @@ const NotAuthedContent = ({
                 <item.icon
                   strokeWidth={1}
                   className={cn(
+                    item.style,
                     iconClass,
                     selectedValue?.value === item.value
                       ? "bg-blue-950 text-zap"
@@ -232,7 +239,7 @@ const NotAuthedContent = ({
                 <ItemContent label={item.label} desc={item.desc} />
                 <DotIcon
                   className={cn(
-                    "ml-auto h-10 w-10",
+                    "h-10 w-10",
                     selectedValue?.value === item.value
                       ? "text-blue-500 opacity-100"
                       : "opacity-0",
@@ -249,7 +256,7 @@ const NotAuthedContent = ({
 
 type AuthedContentProps = {
   user: User | null | undefined;
-  onSelect: (item: Item) => () => void;
+  onSelect: (item: ItemVal) => () => void;
   selectedValue: Group | undefined;
 };
 
@@ -260,47 +267,53 @@ export const AuthedContent = ({
 }: AuthedContentProps) => {
   return (
     <CommandList>
-      <div className="m-4">
+      <CommandGroup>
         <Link href="/account" role="button" aria-label="Account">
-          <CommandItem className="my-2">
-            <UserCircle2Icon
-              strokeWidth={1.5}
-              className="mr-3 h-[32px] w-[32px] p-[6px] text-fast transition-colors duration-300"
-            />
-            <div className="flex flex-col justify-center">
-              <p className="font-medium">Account</p>
-              <Subtext>{user?.email}</Subtext>
-            </div>
-          </CommandItem>
+          <Item>
+            <IconContainer>
+              <Sqc strokeWidth={0} />
+              <UserCircle
+                strokeWidth={1}
+                className={cn(
+                  iconClass,
+                  `fill-zap/20 stroke-blue-600 group-hover:fill-sky-400/30 group-hover:stroke-indigo-800`,
+                )}
+              />
+            </IconContainer>
+            <ItemContent label={`Account`} desc={`${user?.email}`} />
+          </Item>
         </Link>
-      </div>
-
-      <CommandSeparator className="bg-paper" />
+      </CommandGroup>
+      <CommandSeparator />
 
       {groups.map((group) => (
         <CommandGroup key={group.label}>
           {group.values.map((item) => (
             <Link key={item.value} href={item.href ?? `#`} className="group">
-              <CommandItem key={item.value} onSelect={onSelect(item)}>
-                <item.icon
-                  strokeWidth={1.5}
-                  className={cn(
-                    iconClass,
-                    selectedValue?.value === item.value
-                      ? "bg-blue-950 text-zap"
-                      : "text-fast",
-                  )}
-                />
+              <Item key={item.value} onSelect={onSelect(item)}>
+                <IconContainer>
+                  <Sqc strokeWidth={0} />
+                  <item.icon
+                    strokeWidth={1}
+                    className={cn(
+                      item.style,
+                      iconClass,
+                      selectedValue?.value === item.value
+                        ? item.style
+                        : "text-blue-600",
+                    )}
+                  />
+                </IconContainer>
                 <ItemContent label={item.label} desc={item.desc} />
                 <DotIcon
                   className={cn(
-                    "ml-auto h-10 w-10",
+                    "h-10 w-10",
                     selectedValue?.value === item.value
                       ? "text-blue-500 opacity-100"
                       : "opacity-0",
                   )}
                 />
-              </CommandItem>
+              </Item>
             </Link>
           ))}
         </CommandGroup>
@@ -314,18 +327,44 @@ type ItemContentProps = {
   desc: string;
 };
 
-export const ItemContent = ({ label }: ItemContentProps) => {
+export const ItemContent = ({ label, desc }: ItemContentProps) => {
   return (
-    <div className="mx-1 flex flex-col justify-center">
-      <p className="text-sm font-medium">{label}</p>
+    <div className="flex flex-col justify-center">
+      <Label>{label}</Label>
+      <Subtext>{desc}</Subtext>
     </div>
   );
 };
 
+const Item = tw(CommandItem)`
+  h-[50px] space-x-2 w-full relative z-50
+  group-hover:text-void
+  `;
+const Label = tw.p`
+  font-sans text-sm font-semibold tracking-tighter
+  `;
 export const Subtext = tw.p`
-  text-xs leading-[14px] text-clay
+  text-[11px] leading-[12px] text-clay w-full
+  overflow-x-scroll whitespace-nowrap
+  `;
+
+const IconContainer = tw.div`
+  size-[46px] flex items-center justify-center
+  `;
+const Sqc = tw(SquircleIcon)`
+  absolute size-[46px] fill-ash/30
+  transition-colors duration-200 ease-in
+  group-hover:fill-ash/80
   `;
 export const iconClass = `
-  ml-1 mr-3 h-[32px] w-[32px] rounded p-[6px]
-  transition-colors duration-300 group-hover:bg-blue-950 group-hover:text-blue-100
+  size-[20px] absolute
+  transition-all duration-200
+  group-hover:scale-[108%]
+  fill-zap/40
+  `;
+const LogoutItem = tw(CommandItem)`
+  relative z-50 h-[50px]
+  mx-2 mb-3.5 mt-2 px-4
+  text-coal hover:text-amber-700
+  transition-colors duration-200 delay-200 ease-out
   `;

@@ -4,6 +4,7 @@ import type {
   GetAllAutoSchema,
   GetOneAutoSchema,
 } from "@/server/resource/autos";
+import { onError } from "@/utils/toast";
 import {
   collection,
   doc,
@@ -40,7 +41,8 @@ export const getAllAuto = async (params: GetAllAutoSchema) => {
       return docs;
     })
     .catch((err: Error) => {
-      console.log(err);
+      // console.log(err);
+      onError(err.message);
       return [];
     });
 };

@@ -7,6 +7,5 @@ import { type Auth } from "firebase/auth";
  */
 export const checkAuth = (auth: Auth) => {
   const currentUser = () => auth.currentUser;
-  console.log("currentUser", currentUser()?.uid);
   return !!currentUser()?.uid ? true : false;
 };

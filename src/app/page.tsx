@@ -17,7 +17,7 @@ async function getCookieData() {
 
 export default async function Home() {
   const cookieData = await getCookieData();
-  console.log(cookieData ? typeof cookieData : null);
+  console.log(cookieData ? `[MAIN] - All systems good.` : null);
 
   return (
     <main>

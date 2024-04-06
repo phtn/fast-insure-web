@@ -89,7 +89,7 @@ const CommandGroup = React.forwardRef<
   <CommandPrimitive.Group
     ref={ref}
     className={cn(
-      "overflow-scroll px-3 py-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-bold [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wider [&_[cmdk-group-heading]]:text-stone-500",
+      "overflow-scroll p-2 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-bold [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wider [&_[cmdk-group-heading]]:text-stone-500",
       className,
     )}
     {...props}
@@ -104,7 +104,7 @@ const CommandSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.Separator
     ref={ref}
-    className={cn("bg-border -mx-1 h-px", className)}
+    className={cn("bg-border -mx-1 h-px bg-paper", className)}
     {...props}
   />
 ));
@@ -117,7 +117,8 @@ const CommandItem = React.forwardRef<
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
-      "group relative flex cursor-pointer select-none items-center rounded-md border border-zap px-2 py-2 font-sans text-sm text-coal outline-none transition-colors duration-300 hover:border-blue-400 hover:bg-blue-50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "group relative flex cursor-pointer select-none items-center rounded-lg px-1 py-2 font-sans text-sm text-coal outline-none transition-colors duration-200 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      //  hover:bg-blue-200/30
       className,
     )}
     {...props}
@@ -132,10 +133,7 @@ const CommandShortcut = ({
 }: React.HTMLAttributes<HTMLSpanElement>) => {
   return (
     <span
-      className={cn(
-        "text-muted-foreground ml-auto text-xs tracking-widest",
-        className,
-      )}
+      className={cn("text-muted-foreground ml-auto text-xs", className)}
       {...props}
     />
   );

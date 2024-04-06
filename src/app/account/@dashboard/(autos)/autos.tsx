@@ -1,5 +1,7 @@
 "use client";
 
+import { AuthContext } from "@/app/(context)/context";
+import { TheTip, TooltipTrigger } from "@/app/(ui)/tooltip";
 import { db } from "@/libs/db";
 import { opts } from "@/utils/helpers";
 import { onError } from "@/utils/toast";
@@ -9,16 +11,13 @@ import {
   type DocumentData,
   type FirestoreDataConverter,
 } from "firebase/firestore";
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon, SquircleIcon } from "lucide-react";
 import { useCallback, useContext } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { type VehicleSchema } from "./active-form";
-import { AutoItem } from "./auto-item";
-import { AuthContext } from "@/app/(context)/context";
 import tw from "tailwind-styled-components";
+import { type VehicleSchema } from "./active-form";
 import { AddAuto } from "./add-auto";
-import { cn } from "@/utils/cn";
-import { TheTip, TooltipTrigger } from "@/app/(ui)/tooltip";
+import { AutoItem } from "./auto-item";
 
 export const AutosPage = () => {
   const userCreds = useContext(AuthContext);
@@ -41,7 +40,7 @@ export const AutosPage = () => {
   return (
     <div className="space-y-4 border-none p-0 outline-none">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-6">
           <Title>Autos</Title>
           <TheTip content="Add new auto">
             <TooltipTrigger>
@@ -70,20 +69,17 @@ export const AutosPage = () => {
 };
 
 const Refreshing = () => (
-  <Cover>
-    <Inner className={cn(`bg-ash/50`)}>
-      <Loader2Icon
-        strokeWidth={1}
-        className="text-slate-600 h-3 w-3 animate-spin"
-      />
-    </Inner>
-  </Cover>
+  <Inner>
+    <Sqc strokeWidth={0} />
+    <Spinner strokeWidth={1} />
+  </Inner>
 );
 
 const Counter = ({ length }: { length: number | undefined }) => (
-  <Cover>
-    <Inner className={cn(`bg-ash/80`)}>{length}</Inner>
-  </Cover>
+  <Inner>
+    <Sqc strokeWidth={0} />
+    <p className="absolute">{length}</p>
+  </Inner>
 );
 
 const AutoDataConverter: FirestoreDataConverter<VehicleSchema> = {
@@ -108,12 +104,13 @@ const AutoDataConverter: FirestoreDataConverter<VehicleSchema> = {
 const Title = tw.p`
   font-sans text-lg font-semibold tracking-tighter
   `;
-
-const Cover = tw.div`
-  rounded-full border-[0.33px] border-zap p-[1px] backdrop-blur-lg
-  flex justify-center bg-gradient-to-br from-blue-100 via-blue-paper to-zap to-100%
+const Spinner = tw(Loader2Icon)`
+  text-fast absolute size-[12px] animate-spin
+  `;
+const Sqc = tw(SquircleIcon)`
+  absolute size-[32px] fill-ash/40
   `;
 const Inner = tw.div`
-  flex h-[18px] w-[18px] items-center justify-center rounded-full border-[0.33px] border-ash/50
-  text-[12px] text-fast
+  flex items-center justify-center
+  text-[12px] text-prime font-semibold
   `;

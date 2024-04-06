@@ -46,8 +46,9 @@ const SplashScreen = ({ x }: { x: number }) => (
 );
 
 const Container = tw(motion.div)`
-  bg-gradient-to-b from-blue-950 from-10% to-blue-700
-  flex h-screen w-screen flex-col items-center justify-center transform-cpu
+  bg-gradient-to-b from-blue-950 from-10% to-blue-700 -mt-[72px]
+  flex h-screen w-screen flex-col items-center justify-center transform-gpu
+  relative z-50
 `;
 
 const Car = tw(motion.div)`
