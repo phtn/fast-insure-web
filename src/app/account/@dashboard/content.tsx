@@ -1,15 +1,14 @@
 "use client";
-import { CarIcon, Link2Icon, PlusIcon, UserPlusIcon } from "lucide-react";
+import { Link2Icon, PlusIcon, UserPlusIcon } from "lucide-react";
 import { Header } from "./(components)/header";
 import { Card } from "./(components)/card";
 import { ConnectGroup } from "./(components)/connect-group";
 import { useConnect } from "./hooks";
 import { AutosPage } from "./(autos)/autos";
-import { AddAuto } from "./(autos)/add-auto";
 
 const AffiliateContent = () => {
   return (
-    <div className="w-full">
+    <div className="w-full ">
       <Header title="Today">
         <ConnectGroup />
       </Header>
@@ -41,10 +40,9 @@ const AffiliateContent = () => {
 const UserContent = () => {
   return (
     <div className="w-full">
-      <Header title="Autos"></Header>
       <AutosPage />
       <div className="my-[16px]">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {/* <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <Card
             title="Add Autos"
             description="Get paid by sharing a link with your clients."
@@ -54,7 +52,7 @@ const UserContent = () => {
             trigger={<AddAuto />}
             actionLabel="Add"
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

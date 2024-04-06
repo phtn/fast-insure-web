@@ -8,7 +8,7 @@ import {
 } from "@/app/(ui)/sheet";
 import { DarkTouch } from "@/app/(ui)/touch";
 import { cn } from "@/utils/cn";
-import { Disc3Icon, MoveRightIcon } from "lucide-react";
+import { ChevronRightIcon, Disc3Icon } from "lucide-react";
 import { useMemo } from "react";
 
 type PaymentOptionsProps = {
@@ -35,10 +35,15 @@ export const PaymentOptions = ({
       <SheetTrigger asChild>
         <DarkTouch
           size="md"
-          tail={loading ? Disc3Icon : MoveRightIcon}
-          tailClass={cn(loading ? `animate-spin` : ``)}
+          tail={loading ? Disc3Icon : ChevronRightIcon}
+          className="group transition-all duration-300 ease-out"
+          tailClass={cn(
+            loading
+              ? `animate-spin`
+              : `h-0 w-0 group-hover:size-5 text-blue-400 transition-all duration-300 ease-out`,
+          )}
         >
-          Get CTPL
+          Get Insurance
         </DarkTouch>
       </SheetTrigger>
       <SheetContent side={"right"} className="overflow-y-scroll bg-zap">

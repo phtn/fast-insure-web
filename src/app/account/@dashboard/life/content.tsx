@@ -1,56 +1,18 @@
-import { Button } from "@@ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@@ui/dialog";
-import { Input } from "@@ui/input";
-import { Label } from "@@ui/label";
-import { PlaneTakeoff } from "lucide-react";
+"use client";
+
+// import { motion } from "framer-motion";
+// import { type MouseEvent, useCallback, useRef, useState } from "react";
+// import tw from "tailwind-styled-components";
 
 export const Content = () => {
-  return (
-    <div className="flex h-[450px] shrink-0 items-center justify-center rounded-md border border-dashed">
-      <div className="mx-auto flex max-w-[420px] flex-col items-center justify-center text-center">
-        <PlaneTakeoff className="h-12 w-12 text-blue-600" />
-
-        <h3 className="mt-4 text-lg font-semibold text-blue-950">
-          Travel Deals
-        </h3>
-        <p className="text-muted-foreground mb-4 mt-2 text-sm">
-          No travel packages available.
-        </p>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button size="sm" className="relative">
-              Request Destination
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="border-blue-950 bg-slate-100">
-            <DialogHeader>
-              <DialogTitle className="text-blue-950">
-                Escape Reality
-              </DialogTitle>
-              <DialogDescription className="text-blue-800/90">
-                Type the country or city you want to visit.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="url"></Label>
-                <Input id="url" placeholder="Versailles" />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button>Send Request</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
-    </div>
-  );
+  return <div className="space-y-4"></div>;
 };
+
+// const Container = tw(motion.div)`
+//   group
+//   h-[216px] w-[216px] rounded-md border border-clay p-[8px]
+//   `;
+// const Pill = tw(motion.div)`
+//   relative h-[100px] w-[100px] rounded-md
+//   group-hover:bg-ash transition-colors duration-200
+//   `;

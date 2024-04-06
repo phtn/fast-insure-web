@@ -10,6 +10,7 @@ import { Navbar } from "./(components)/navbar";
 import { AuthProvider } from "./(context)/context";
 import type { Metadata, Viewport } from "next";
 import { NotificationBar } from "./(components)/notification-bar";
+import { TooltipProvider } from "./(ui)/tooltip";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -86,14 +87,18 @@ export default function RootLayout({
       <body
         className={`font-sans ${inter.variable} ${k2d.variable} ${GeistMono.variable}`}
       >
-        <AuthProvider>
-          <TRPCProvider cookies={cookies().toString()}>
-            <Navbar />
-            <NotificationBar />
-            <div className={`overflow-y-scroll`}>{children}</div>
-          </TRPCProvider>
-        </AuthProvider>
-        <Toaster />
+        <TooltipProvider delayDuration={100}>
+          <AuthProvider>
+            <TRPCProvider cookies={cookies().toString()}>
+              <div className="h-[72px] border-b-[0.33px] border-ash">
+                <Navbar />
+              </div>
+              <NotificationBar />
+              <div className={`overflow-y-scroll`}>{children}</div>
+            </TRPCProvider>
+          </AuthProvider>
+          <Toaster />
+        </TooltipProvider>
       </body>
     </html>
   );

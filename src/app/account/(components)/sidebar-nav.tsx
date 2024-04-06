@@ -16,7 +16,7 @@ export const SidebarAffiliate = ({
   return (
     <nav
       className={cn(
-        "flex space-x-2 overflow-scroll lg:flex-col lg:space-x-0 lg:space-y-1",
+        "flex overflow-scroll lg:flex-col lg:space-x-0 lg:space-y-1",
         className,
       )}
       {...props}
@@ -59,7 +59,7 @@ export const SidebarUser = ({
   return (
     <nav
       className={cn(
-        "flex space-x-2 overflow-scroll lg:flex-col lg:space-x-0 lg:space-y-1",
+        "flex overflow-x-scroll px-2 lg:flex-col lg:space-y-2 portrait:space-x-4",
         className,
       )}
       {...props}
@@ -67,23 +67,25 @@ export const SidebarUser = ({
       {sidebarUser.map((group) => (
         <div
           key={group.label}
-          className="flex space-x-4 lg:flex-col lg:space-x-0"
+          className="flex lg:flex-col lg:space-x-0 portrait:space-x-4"
         >
           {group.values.map((item) => (
-            <Link key={item.value} href={item.href ?? `#`} className="group">
+            <Link key={item.value} href={item.href ?? `#`}>
               <GroupItem>
-                <item.icon
-                  strokeWidth={1.5}
-                  className={cn(
-                    iconClass,
-                    pathname === item.href ? `text-blue-600` : ``,
-                  )}
-                />
-                <GroupItemContent
-                  label={item.label}
-                  link={item.href}
-                  pathname={pathname}
-                />
+                <IconContainer>
+                  <item.icon
+                    strokeWidth={1.5}
+                    className={cn(
+                      iconClass,
+                      pathname === item.href ? `text-blue-500` : ``,
+                    )}
+                  />
+                </IconContainer>
+                <ItemContent
+                  className={cn(pathname === item.href ? `text-blue-500` : ``)}
+                >
+                  <p className="w-full">{item.label}</p>
+                </ItemContent>
               </GroupItem>
             </Link>
           ))}
@@ -104,22 +106,33 @@ const GroupItemContent = ({ label, pathname, link }: GroupItemContentProps) => {
   return (
     <div
       className={cn(
-        "mx-1 flex flex-col justify-center",
-        pathname === link ? `text-blue-600` : ``,
+        "flex h-[46px] w-full items-center",
+        pathname === link ? `text-blue-500` : ``,
       )}
     >
-      <p>{label}</p>
+      {label}
     </div>
   );
 };
 
 const GroupItem = tw.div`
-  flex rounded-md px-1 py-2
-  font-sans font-medium text-sm text-coal
-  transition-colors duration-300
-  hover:bg-heli/5 hover:text-blue-500
+  flex w-full space-x-2 md:space-x-4
+  font-sans font-semibold text-md text-clay tracking-tighter
+  transition-colors duration-200 delay-200 ease-in
+  md:hover:text-blue-500
+  relative z-50
+  `;
+
+const ItemContent = tw.div`
+  flex h-[46px] w-full items-center
+  `;
+
+const IconContainer = tw.div`
+  flex items-center justify-center h-[46px] w-[46px]
   `;
 
 const iconClass = `
-  ml-0 lg:ml-1 mr-0 lg:mr-1 lg:h-[28px] lg:w-[28px] rounded p-[6px] h-[24px] w-[24px]
+  md:size-[20px] size-[18px]
+  group-hover:scale-[120%]
+  transition-transform duration-200 delay-200 ease-out
   `;

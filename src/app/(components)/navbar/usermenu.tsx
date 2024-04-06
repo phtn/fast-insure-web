@@ -1,7 +1,9 @@
+import { AuthContext } from "@/app/(context)/context";
 import { auth } from "@/libs/db";
 import { cn } from "@/utils/cn";
 import { opts } from "@/utils/helpers";
 import { onPromise } from "@/utils/toast";
+import { Button } from "@@ui/button";
 import {
   Command,
   CommandGroup,
@@ -13,21 +15,21 @@ import { Popover, PopoverContent, PopoverTrigger } from "@@ui/popover";
 import { type User } from "firebase/auth";
 import {
   ArrowUpRightSquareIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
   DotIcon,
   GiftIcon,
   HelpCircleIcon,
   LogInIcon,
+  LogOutIcon,
+  SquircleIcon,
   UserCircle2Icon,
   type LucideIcon,
-  LogOutIcon,
-  MenuIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useContext, useState } from "react";
 import { useSignOut } from "react-firebase-hooks/auth";
-import { Button } from "@@ui/button";
 import tw from "tailwind-styled-components";
-import { AuthContext } from "@/app/(context)/context";
 
 type Item = {
   label: string;
@@ -161,14 +163,35 @@ export const UserMenu = () => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant={"ghost"} size={"icon"}>
-          <MenuIcon strokeWidth={1.5} className="h-5 w-5 text-fast" />
+          <div className="flex size-[46px] items-center justify-center overflow-clip">
+            <SquircleIcon
+              strokeWidth={0}
+              className={cn(
+                `absolute size-[46px] fill-ash/20 transition-colors duration-200 ease-in hover:fill-ash/40`,
+                open ? `fill-ash/50` : ``,
+              )}
+            />
+            <ChevronUpIcon
+              strokeWidth={2}
+              className={cn(
+                `pointer-events-none absolute size-[18px] scale-0 transition-transform duration-300 ease-out`,
+                open ? `scale-[100%]` : ``,
+              )}
+            />
+            <ChevronDownIcon
+              strokeWidth={2}
+              className={cn(
+                `pointer-events-none absolute size-[18px] scale-0 transition-transform duration-300 ease-out`,
+                !open ? `scale-[100%]` : ``,
+              )}
+            />
+          </div>
         </Button>
       </PopoverTrigger>
 
       <PopoverContent className="mr-1 mt-3 w-[300px] rounded-lg border p-0">
         <Command>
           <MenuOptions />
-
           <CommandSeparator className="bg-paper" />
           <CommandList>
             <CommandGroup>

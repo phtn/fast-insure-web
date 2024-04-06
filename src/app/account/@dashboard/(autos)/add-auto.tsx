@@ -1,7 +1,6 @@
 "use client";
 
 import { opts } from "@/utils/helpers";
-import { Button } from "@@ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@@ui/dialog";
 import { FileInputIcon, PlusIcon, ScanTextIcon } from "lucide-react";
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -20,6 +19,8 @@ import {
 import { useAutoAccount, useFileHandler, useFileUploader } from "./hooks";
 import { staticScanBase64 } from "./data";
 import { AuthContext } from "@/app/(context)/context";
+import tw from "tailwind-styled-components";
+import { cn } from "@/utils/cn";
 
 export const AddAuto = () => {
   const [invalidFieldCount, setInvalidFieldCount] = useState<
@@ -94,16 +95,11 @@ export const AddAuto = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <div className="flex cursor-pointer items-center space-x-3">
-          <Button className="h-6 w-6 rounded-full" size="icon">
-            <PlusIcon className="h-4 w-4" />
-          </Button>
-          <p className="font-sans text-sm font-medium tracking-tighter">
-            Add Auto
-          </p>
-        </div>
+        <Inner className={cn(`size-[24px]`)}>
+          <PlusIcon strokeWidth={2} className="size-3 text-zap" />
+        </Inner>
       </DialogTrigger>
-      <DialogContent className="">
+      <DialogContent>
         <Title />
 
         <div className="grid grid-cols-1 gap-y-6 md:grid-cols-3 md:gap-x-6">
@@ -148,3 +144,12 @@ export const AddAuto = () => {
     </Dialog>
   );
 };
+
+const Inner = tw.div`
+  h-[20px] w-[20px]
+  flex items-center justify-center
+  rounded-full border-[0.33px] border-clay/40
+  text-[12px] text-blue-100
+  bg-prime hover:bg-fast
+  transition-colors duration-200 ease-out
+  `;

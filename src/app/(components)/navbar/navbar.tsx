@@ -9,12 +9,12 @@ export const Navbar = () => {
   return (
     <Container
       initial={{ scaleY: 0, height: 0, opacity: 0 }}
-      animate={{ scaleY: 1, height: 72, opacity: 1 }}
+      animate={{ scaleY: 1, height: 71.67, opacity: 1 }}
       transition={{ duration: 0.5, delay: 2.5 }}
     >
-      <div className="flex h-[72px] w-full items-center justify-between px-4 md:w-[1080px]">
+      <div className="flex w-full items-center justify-between overflow-y-clip px-4 md:w-[1080px]">
         <BrandNav />
-        <div className="items-center justify-between">
+        <div className="flex items-center justify-between">
           <UserMenu />
         </div>
       </div>
@@ -23,6 +23,6 @@ export const Navbar = () => {
 };
 
 const Container = tw(motion.div)`
-  z-50 absolute w-full border-b-[0.33px] border-ash sticky top-0 md:px-16
+  z-50 absolute w-full sticky top-0 md:px-16
   bg-zap flex justify-center
 `;
