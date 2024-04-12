@@ -38,10 +38,11 @@ export const AutosPage = () => {
   }, [loading, autos?.length]);
 
   return (
-    <div className="space-y-4 border-none p-0 outline-none">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-6">
-          <Title>Autos</Title>
+    <div className="outline-none">
+      <div className="m-2 flex items-center space-x-4 sm:m-8 lg:m-0">
+        <Title>Autos</Title>
+
+        <div className="flex w-[50px] items-center justify-between">
           <TheTip content="Add new auto">
             <TooltipTrigger>
               <AddAuto />
@@ -55,14 +56,16 @@ export const AutosPage = () => {
           </TheTip>
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {autos?.map((item) => (
-          <AutoItem
-            className="space-y-2 overflow-hidden rounded-lg border-[0.33px] border-ash bg-white shadow-sm"
-            key={item.id}
-            autoItem={item}
-          />
-        ))}
+      <div className="m-2 overflow-y-scroll sm:m-8 md:h-[calc(100vh-220px)] lg:m-0 lg:mt-4">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {autos?.map((item) => (
+            <AutoItem
+              className="space-y-2 overflow-hidden rounded-lg border-[0.33px] border-ash bg-white shadow-sm"
+              key={item.id}
+              autoItem={item}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -101,7 +104,7 @@ const AutoDataConverter: FirestoreDataConverter<VehicleSchema> = {
   },
 };
 
-const Title = tw.p`
+export const Title = tw.p`
   font-sans text-lg font-semibold tracking-tighter
   `;
 const Spinner = tw(Loader2Icon)`

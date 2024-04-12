@@ -78,13 +78,13 @@ export const InputField = React.forwardRef<
         className,
       )}
     >
-      <props.icon className="text-heli mr-[10px] h-[16px] w-[16px] dark:text-orange-200/80" />
+      <props.icon className="mr-[10px] h-[16px] w-[16px] text-clay dark:text-orange-200/80" />
 
       <input
         {...props}
         type={type}
         ref={ref}
-        className="h-[44px] w-full rounded-xl bg-transparent px-2 text-[14px] placeholder:text-slate-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="h-[44px] w-full rounded-xl bg-transparent px-2 text-[14px] placeholder:font-sans placeholder:font-medium placeholder:tracking-tighter placeholder:text-clay/50 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       />
     </div>
   );

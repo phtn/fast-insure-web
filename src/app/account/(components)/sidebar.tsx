@@ -28,14 +28,14 @@ export default function Sidebar({ children, isAffiliate }: SidebarProps) {
   return (
     <Container>
       <div className="flex h-[calc(100vh-72px)] w-full flex-col place-items-center">
-        <div className="h-full w-[1080px] bg-zap/10 backdrop-blur-lg md:min-w-[1080px] portrait:w-screen">
+        <div className="h-full w-screen bg-zap/10 backdrop-blur-lg xl:w-[1080px]">
           <div className="h-full items-center md:block">
-            <div className="flex h-full flex-col space-y-0 md:space-x-2 lg:flex-row lg:space-x-6">
+            <div className="flex h-full flex-col md:space-x-2 lg:flex-row lg:space-x-6">
               <SidebarNav>
                 <SidebarOptions />
               </SidebarNav>
               <div className="flex-1 space-y-3 px-4 py-[0px] md:px-0">
-                <div className="hidden items-center text-[12px] tracking-tight text-clay/80 md:flex lg:h-[42px]">
+                <div className="hidden items-center text-[12px] tracking-tight text-clay/80 lg:flex lg:h-[42px]">
                   <Breadcrumb>
                     <BreadcrumbList>
                       <BreadcrumbItem>
@@ -69,7 +69,7 @@ const SidebarNav = ({ children }: SidebarNavProps) => {
     <Aside>
       <Hoverboard
         snapPoints={[47, 102, 148, 194, 286]}
-        parentStyle={`md:h-[248px] md:mx-3`}
+        parentStyle={`lg:h-[248px] lg:mx-3`}
         offset={80}
       >
         {children}
@@ -85,8 +85,9 @@ const Footer = () => (
 );
 
 const Aside = tw.aside`
-  lg:h-full md:border-r-[0.33px] z-50 border-ash lg:w-1/6
-  portrait:border-b-[0.33px] portrait:bg-paper portrait:w-screen
+  lg:h-full lg:w-1/6 lg:bg-zap/0
+  lg:border-r-[0.33px] z-50 border-ash
+  lg:border-b-[0px] md:border-b-[0.33px] bg-paper portrait:w-screen
   `;
 
 const Container = tw.div`

@@ -43,6 +43,7 @@ import { z } from "zod";
 import { FeedbackActions, FieldIndex } from "./components";
 import { useWatcher } from "./hooks";
 import { AuthContext } from "@/app/(context)/context";
+import { cn } from "@/utils/cn";
 
 export const vehicleResource = z.record(z.string().min(1));
 export type VehicleSchema = z.infer<typeof vehicleResource>;
@@ -69,7 +70,7 @@ export const ActiveForm = ({
   const context = useContext(AuthContext);
   const userCreds = context?.user;
   const { control, handleSubmit, formState, setValue, watch } = form;
-  const { errors } = formState;
+  const { errors, isValid } = formState;
 
   const { count } = useWatcher({ errors, watch });
 
@@ -97,11 +98,12 @@ export const ActiveForm = ({
         type="submit"
         tail={CheckCircleIcon}
         disabled={loading}
+        className={cn("text-[14px]", isValid ? "text-blue-300" : "")}
       >
         Validate & Submit
       </DarkTouch>
     );
-  }, [loading]);
+  }, [loading, isValid]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -126,6 +128,7 @@ export const ActiveForm = ({
                         className="w-full"
                         label={withSpaces(item?.key)}
                         icon={getIcon(item.key)}
+                        defaultValue={item.value ?? ""}
                         type={
                           item.key.toLowerCase().includes("telephone")
                             ? "tel"

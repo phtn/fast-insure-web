@@ -4,6 +4,7 @@ import { uploadRouter } from "./routers/upload";
 import { iCashRouter } from "./routers/icash";
 import { ocrRouter } from "./routers/ocr";
 import { autoRouter } from "./routers/autos";
+import { copperRouter } from "./routers/copper";
 
 export const appRouter = mergeRouters(
   accountRouter,
@@ -11,6 +12,7 @@ export const appRouter = mergeRouters(
   iCashRouter,
   ocrRouter,
   autoRouter,
+  copperRouter,
 );
 
 export type AppRouter = typeof appRouter;

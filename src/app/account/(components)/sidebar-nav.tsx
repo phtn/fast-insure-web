@@ -59,7 +59,7 @@ export const SidebarUser = ({
   return (
     <nav
       className={cn(
-        "flex overflow-x-scroll px-2 lg:flex-col lg:space-y-2 portrait:space-x-4",
+        "flex overflow-x-scroll px-2 md:space-x-8 md:px-24 lg:flex-col lg:space-x-0 lg:space-y-2 lg:px-6 portrait:space-x-4",
         className,
       )}
       {...props}
@@ -67,14 +67,14 @@ export const SidebarUser = ({
       {sidebarUser.map((group) => (
         <div
           key={group.label}
-          className="flex lg:flex-col lg:space-x-0 portrait:space-x-4"
+          className="flex md:space-x-8 lg:flex-col lg:space-x-0 portrait:space-x-4"
         >
           {group.values.map((item) => (
             <Link key={item.value} href={item.href ?? `#`}>
               <GroupItem>
                 <IconContainer>
                   <item.icon
-                    strokeWidth={1.5}
+                    strokeWidth={1}
                     className={cn(
                       iconClass,
                       pathname === item.href ? `text-blue-500` : ``,
@@ -116,7 +116,7 @@ const GroupItemContent = ({ label, pathname, link }: GroupItemContentProps) => {
 };
 
 const GroupItem = tw.div`
-  flex w-full space-x-2 md:space-x-4
+  flex w-full space-x-2
   font-sans font-semibold text-md text-clay tracking-tighter
   transition-colors duration-200 delay-200 ease-in
   md:hover:text-blue-500

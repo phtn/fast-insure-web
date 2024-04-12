@@ -6,7 +6,7 @@ import { type LucideIcon } from "lucide-react";
 import tw from "tailwind-styled-components";
 
 const touchDefaultClass = `
-  text-xs font-medium border-[0.33px] cursor-pointer space-x-2
+  text-xs font-semibold tracking-tighter border-[0.33px] cursor-pointer space-x-3
   inline-flex items-center justify-center whitespace-nowrap rounded-[8px]
   focus-visible:outline-none focus-visible:ring-1
   focus-visible:ring-ring focus-visible:ring-offset-4
@@ -16,7 +16,7 @@ const touchDefaultClass = `
 const defaultClass = `
   bg-white text-clay border-ash/[30%]
   hover:shadow-i-br-li-hv shadow-i-tl-li
-  hover:text-blue-400 disabled:hover:text-clay/60
+  hover:text-prime disabled:hover:text-clay/60
 
 `;
 const primaryClass = `
@@ -57,7 +57,7 @@ const tv = cva(touchDefaultClass, {
       ghost: ghostClass,
     },
     size: {
-      sm: "h-[32px] px-[16px] tracking-wide",
+      sm: "h-[32px] px-[16px]",
       md: "h-[48px] px-[18px]",
       lg: "h-[50px] px-[22px]",
       icon: "h-[52px] w-[52px]",
@@ -209,8 +209,12 @@ export const DarkTouch = forwardRef<
           {props.icon ? (
             <props.icon
               strokeWidth={1.5}
-              fill={`${iconFill}`}
-              className={cn(`h-5 w-5`, iconClass)}
+              // fill={`${iconFill}`}
+              className={cn(
+                `h-5 w-5`,
+                iconClass,
+                iconFill ? `${iconFill}` : ``,
+              )}
             />
           ) : null}
 

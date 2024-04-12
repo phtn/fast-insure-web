@@ -8,7 +8,7 @@ import {
   type LoginFormProps,
   type LoginSchema,
 } from "./schema";
-import { ArrowRightIcon, Disc3Icon } from "lucide-react";
+import { ArrowUpRightIcon, Disc3Icon, LogInIcon } from "lucide-react";
 import { useMemo } from "react";
 import { cn } from "@/utils/cn";
 
@@ -26,19 +26,23 @@ export const ActiveForm = ({
     if (loading) {
       return userLogin ? "Signing in..." : "Creating account...";
     } else {
-      return userLogin ? "Sign In" : "Create new account";
+      return userLogin ? "Sign in" : "Create new account";
     }
   }, [loading, signinType]);
 
   const Submit = () => {
+    const userLogin = signinType === "SIGNIN";
     return (
       <DarkTouch
         size="lg"
         type="submit"
-        tail={loading ? Disc3Icon : ArrowRightIcon}
-        tailClass={loading ? "animate-spin" : "animate-none"}
+        tail={loading ? Disc3Icon : userLogin ? LogInIcon : ArrowUpRightIcon}
+        tailClass={loading ? "animate-spin" : "animate-none stroke-width-[1px]"}
         disabled={!isValid || loading}
-        className={cn(`w-full text-[14px]`, loading ? ` text-blue-200` : ``)}
+        className={cn(
+          `h-[60px] w-full text-[16px]`,
+          loading ? ` text-blue-200` : isValid ? `text-zap` : ``,
+        )}
       >
         {submitText}
       </DarkTouch>

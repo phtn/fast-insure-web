@@ -13,11 +13,11 @@ import {
   Header,
   ImageViewer,
   RequiredFields,
-  Title,
+  MainTitle,
   TryBanner,
 } from "./components";
 import { useAutoAccount, useFileHandler, useFileUploader } from "./hooks";
-import { staticScanBase64 } from "./data";
+// import { staticScanBase64 } from "./data";
 import { AuthContext } from "@/app/(context)/context";
 import tw from "tailwind-styled-components";
 import { cn } from "@/utils/cn";
@@ -100,8 +100,7 @@ export const AddAuto = () => {
         </Inner>
       </DialogTrigger>
       <DialogContent>
-        <Title />
-
+        <MainTitle />
         <div className="grid grid-cols-1 gap-y-6 md:grid-cols-3 md:gap-x-6">
           <section className="col-span-1 space-y-4">
             <Header title="Upload & Scan" icon={ScanTextIcon} />
@@ -130,12 +129,12 @@ export const AddAuto = () => {
 
             <div>
               <AutoForm
-                fields={staticScanBase64.base64.fields}
+                fields={scanResult?.base64.fields}
                 setCount={setInvalidFieldCount}
                 loading={addLoading}
                 addAuto={addAuto}
                 downloadURL={downloadURL}
-                withScan={!!scanResult}
+                withScan={!!scanResult?.base64.fields}
               />
             </div>
           </section>

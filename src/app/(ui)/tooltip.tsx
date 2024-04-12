@@ -33,11 +33,11 @@ type TheTipProps = {
   content: string | React.ReactNode;
   children: React.ReactNode;
 };
-export const TheTip = ({ content, children }: TheTipProps) => {
+const TheTip = ({ content, children }: TheTipProps) => {
   return (
     <Tooltip>
       {children}
-      <TooltipContent side="right" sideOffset={-12}>
+      <TooltipContent side="right" sideOffset={4}>
         <div className="rounded-md rounded-bl-none bg-void px-2 py-1 text-xs text-blue-100">
           {content}
         </div>
@@ -46,4 +46,4 @@ export const TheTip = ({ content, children }: TheTipProps) => {
   );
 };
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider, TheTip };

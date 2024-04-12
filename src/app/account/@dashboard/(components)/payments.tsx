@@ -6,9 +6,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/app/(ui)/sheet";
-import { DarkTouch } from "@/app/(ui)/touch";
+import { Touch } from "@/app/(ui)/touch";
 import { cn } from "@/utils/cn";
-import { ChevronRightIcon, Disc3Icon } from "lucide-react";
+import { Disc3Icon } from "lucide-react";
 import { useMemo } from "react";
 
 type PaymentOptionsProps = {
@@ -33,7 +33,17 @@ export const PaymentOptions = ({
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <DarkTouch
+        <Touch
+          // iconClass={}
+          size={"sm"}
+          className="h-[32px]"
+          // onClick={onClick}
+          tail={Disc3Icon}
+          tailClass={loading ? "animate-spin" : "size-0 hidden"}
+        >
+          Checkout
+        </Touch>
+        {/* <DarkTouch
           size="md"
           tail={loading ? Disc3Icon : ChevronRightIcon}
           className="group transition-all duration-300 ease-out"
@@ -44,7 +54,7 @@ export const PaymentOptions = ({
           )}
         >
           Get Insurance
-        </DarkTouch>
+        </DarkTouch> */}
       </SheetTrigger>
       <SheetContent side={"right"} className="overflow-y-scroll bg-zap">
         <SheetHeader>

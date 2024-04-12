@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  CheckCircle2Icon,
-  Circle,
-  DotIcon,
-  MessageSquareDot,
-} from "lucide-react";
+import { CheckCircle2Icon, Circle, DotIcon } from "lucide-react";
 import tw from "tailwind-styled-components";
 import { Login, type UserAccountType } from "./login";
 import { Touch } from "@@ui/touch";
@@ -44,10 +39,10 @@ const Primary = (props: AccountTypeProps) => {
         <div className="flex h-full flex-col items-center">
           <div className="flex w-full flex-col items-center px-[32px] md:h-[calc(100vh-300px)] md:justify-start md:px-0 md:py-[14px]">
             <div className="flex h-[86px] w-full flex-col px-[4x] md:h-[100px] md:w-[350px]">
-              <h1 className="font-sans text-2xl font-bold tracking-tighter text-blue-950 md:text-3xl">
+              <h1 className="font-sans text-2xl font-semibold tracking-tighter text-blue-950 md:text-3xl">
                 Account type
               </h1>
-              <p className="bg-gradient-to-r from-clay to-heli bg-clip-text font-medium text-transparent md:text-[16px]">
+              <p className="bg-gradient-to-r from-clay to-heli bg-clip-text font-medium tracking-tighter text-transparent md:text-[16px]">
                 Select account type
               </p>
             </div>
@@ -83,13 +78,12 @@ const PrimaryContent = ({ accountType, setType }: AccountTypeProps) => {
         </div>
       </Touch>
       <div className="hidden h-[0.33px] w-full bg-ash md:flex" />
-
       <Touch
         icon={!userAccount ? CheckCircle2Icon : Circle}
         iconFill={!userAccount ? "#fafafa" : undefined}
         variant={!userAccount ? "secondary" : "default"}
         className={cn(
-          `w-full text-[14px] md:w-[250px] `,
+          `w-full text-[14px] md:w-[250px]`,
           !userAccount ? "shadow-lg shadow-sky-500/60 " : "",
         )}
         size={"lg"}
@@ -117,7 +111,7 @@ const Secondary = (props: SecondaryProps) => {
       <div className="w-full">
         <div className="w-full max-w-[350px] pt-[14px] md:h-[calc(100vh-300px)]">
           <div className="flex h-[72px] flex-col">
-            <h1 className="font-sans text-3xl font-bold tracking-tighter text-fast">
+            <h1 className="font-sans text-3xl font-semibold tracking-tighter text-fast">
               {userSignin ? `Sign in` : `Create new account`}
             </h1>
             <p className="bg-gradient-to-r from-clay to-copper bg-clip-text font-sans font-medium tracking-tighter text-transparent md:text-[16px]">
@@ -126,30 +120,30 @@ const Secondary = (props: SecondaryProps) => {
           </div>
 
           <Login signinType={signinType} accountType={accountType} />
-          <div className="flex h-[150px] items-center space-x-8">
-            <div className="h-[56px] w-[56px]">
-              <Touch size={"icon"} className="h-[56px] w-[56px]">
+          <div className="flex h-[150px] w-full items-center">
+            <Touch size={"lg"} className="h-[56px]">
+              <div className="flex h-full w-full items-center space-x-3">
+                <p className="h-[18px] bg-gradient-to-r from-clay to-clay/50 bg-clip-text px-1 font-sans text-[16px] font-semibold tracking-tighter text-transparent">
+                  Sign in with Google
+                </p>
                 <div
                   className={`h-[48px] w-[48px] bg-[url('/svg/g_logo.svg')] bg-center bg-no-repeat`}
                 />
-              </Touch>
-            </div>
-            <Touch
-              size={"icon"}
-              icon={MessageSquareDot}
-              className="w-[56px]"
-            ></Touch>
+              </div>
+            </Touch>
           </div>
         </div>
 
-        <div className="flex h-[72px] w-full items-center justify-center border-t-[0.33px] border-ash">
-          <div className="flex items-center justify-center space-x-2">
-            <p className="text-sm text-heli">
+        <div className="h-[0.33px] w-full bg-gradient-to-r from-ash to-zap" />
+        <div className="flex h-[72px] w-full items-center justify-start">
+          <div className="flex items-center justify-between space-x-2">
+            <p className="font-sans text-xs text-heli">
               {userSignin
-                ? "Don't have an account yet?"
+                ? "Don't have an account?"
                 : "Already have an account?"}
             </p>
             <Button
+              className="font-sans text-xs tracking-tight"
               variant="ghost"
               size="sm"
               onClick={() => setType(userSignin ? "SIGNUP" : "SIGNIN")}

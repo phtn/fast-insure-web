@@ -26,6 +26,7 @@ import {
   type LucideIcon,
   LifeBuoyIcon,
   UserCircle,
+  UserPlusIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useContext, useState, type HTMLProps } from "react";
@@ -61,14 +62,27 @@ const notAuthedGroup: GroupItem[] = [
     ],
   },
   {
-    label: "New Account",
+    label: "Register",
     values: [
       {
-        label: "Create New Account",
+        label: "Create Account",
         desc: "Register for free!",
         value: "1",
-        icon: ArrowUpRightSquareIcon,
+        icon: UserPlusIcon,
         href: "/account",
+        style: "group-hover:fill-teal-400/30",
+      },
+    ],
+  },
+  {
+    label: "Products",
+    values: [
+      {
+        label: "View Products",
+        desc: "See all our products",
+        value: "2",
+        icon: ArrowUpRightSquareIcon,
+        href: "/products",
         style: "group-hover:fill-indigo-400/30",
       },
     ],
@@ -134,18 +148,17 @@ export const UserMenu = () => {
   const creds = useContext(AuthContext);
   const closePopover = () => setOpen(false);
 
+  const isAuthed = creds?.user !== null;
   const SignOptions = useCallback(() => {
-    const isAuthed = creds?.user !== null;
     const options = opts(<LogoutOption />, <div />);
     return <>{options.get(isAuthed)}</>;
-  }, [creds]);
+  }, [isAuthed]);
 
   const MenuOptions = useCallback(() => {
     const handleSelect = (item: ItemVal) => () => {
       setSelectedValue(item);
       closePopover();
     };
-    const isAuthed = creds?.user !== null;
     const options = opts(
       <AuthedContent
         onSelect={handleSelect}
@@ -158,7 +171,7 @@ export const UserMenu = () => {
       />,
     );
     return <>{options.get(isAuthed)}</>;
-  }, [creds, selectedValue]);
+  }, [creds, selectedValue, isAuthed]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -190,11 +203,21 @@ export const UserMenu = () => {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="my-2 w-[216px] p-0">
+      <PopoverContent className="my-2 w-[250px] p-0">
         <Hoverdrop
           parentStyle="h-[272px]"
-          pillStyle="lg:h-[56px] lg:group-hover:bg-blue-200/30 mx-2 rounded-lg"
-          snapPoints={[0, 80, 147.5, 214, 280.5, 348, 387, 396]}
+          pillStyle="lg:h-[56px] lg:group-hover:bg-blue-200/30 mx-2 rounded-2xl"
+          snapPoints={[
+            0,
+            80,
+            147.5,
+
+            isAuthed ? 214 : 213,
+            isAuthed ? 280 : 279.5,
+            348,
+            387,
+            396,
+          ]}
           offset={30}
         >
           <Command className="absolute lg:-mt-[54px]">
@@ -225,17 +248,14 @@ const NotAuthedContent = ({
         <CommandGroup key={group.label}>
           {group.values.map((item) => (
             <Link key={item.value} href={item.href ?? `#`}>
-              <CommandItem key={item.value} onSelect={onSelect(item)}>
-                <item.icon
-                  strokeWidth={1}
-                  className={cn(
-                    item.style,
-                    iconClass,
-                    selectedValue?.value === item.value
-                      ? "bg-blue-950 text-zap"
-                      : "text-coal",
-                  )}
-                />
+              <Item key={item.value} onSelect={onSelect(item)}>
+                <IconContainer>
+                  <Sqc strokeWidth={0} />
+                  <item.icon
+                    strokeWidth={1}
+                    className={cn(iconClass, item.style)}
+                  />
+                </IconContainer>
                 <ItemContent label={item.label} desc={item.desc} />
                 <DotIcon
                   className={cn(
@@ -245,7 +265,7 @@ const NotAuthedContent = ({
                       : "opacity-0",
                   )}
                 />
-              </CommandItem>
+              </Item>
             </Link>
           ))}
         </CommandGroup>
@@ -341,7 +361,7 @@ const Item = tw(CommandItem)`
   group-hover:text-void
   `;
 const Label = tw.p`
-  font-sans text-sm font-semibold tracking-tighter
+  font-sans text-sm font-semibold tracking-tighter whitespace-nowrap
   `;
 export const Subtext = tw.p`
   text-[11px] leading-[12px] text-clay w-full
@@ -365,6 +385,6 @@ export const iconClass = `
 const LogoutItem = tw(CommandItem)`
   relative z-50 h-[50px]
   mx-2 mb-3.5 mt-2 px-4
-  text-coal hover:text-amber-700
+  text-coal hover:text-rose-700
   transition-colors duration-200 delay-200 ease-out
   `;

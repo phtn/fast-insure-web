@@ -15,12 +15,17 @@ export const CheckoutResource = z.object({
 export type CheckoutSchema = z.infer<typeof CheckoutResource>;
 export const checkoutUrl = `/api/Merchant/checkout-url`;
 
-export const CheckoutResponse = z.object({
+export const CheckoutDataResponse = z.object({
+  merchantRefNo: z.string(),
   statusCode: z.string(),
   statusMessage: z.string(),
   timestamp: z.string(),
   redirectUrl: z.string(),
 });
+
+export type CheckoutDataResponseSchema = z.infer<typeof CheckoutDataResponse>;
+
+export const CheckoutResponse = z.array(CheckoutDataResponse);
 
 export type CheckoutResponseSchema = z.infer<typeof CheckoutResponse>;
 

@@ -163,7 +163,7 @@ const Container = tw.div`
   `;
 
 const Pill = tw(motion.div)`
-  relative md:h-[46px] rounded-md
+  relative lg:h-[46px] rounded-md
   lg:group-hover:bg-ash/30
   transition-colors duration-300 delay-200 ease-in
   pointer-events-none z-40

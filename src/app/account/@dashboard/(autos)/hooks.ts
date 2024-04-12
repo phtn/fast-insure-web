@@ -1,6 +1,11 @@
 import { db, storage } from "@/libs/db";
+import { type VehicleDataSchema } from "@/server/resource/autos";
+import {} from "@/server/resource/icash";
 import type { OCR_DE_BASE64_Schema } from "@/server/resource/ocr";
 import { createAuto } from "@/trpc/autos/create";
+import { getAllAuto } from "@/trpc/autos/get";
+import { checkoutCopper } from "@/trpc/copper/checkout";
+import { createIcashCheckout } from "@/trpc/icash/checkout";
 import { runOCR_DE_BASE64 } from "@/trpc/ocr/ocr";
 import {
   createReferenceNumber,
@@ -8,16 +13,14 @@ import {
   nameGenerator,
 } from "@/utils/helpers";
 import { onError, onInfo, onSuccess } from "@/utils/toast";
+import { collection, doc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import type { FieldErrors, UseFormWatch } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import type { VehicleSchema } from "./active-form";
-import { getAllAuto } from "@/trpc/autos/get";
-import { collection, doc } from "firebase/firestore";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import { brandnew, renewal } from "@/app/(components)/ctpl/data";
-import { createIcashCheckout } from "@/trpc/icash/checkout";
 
 const Err = (err: Error) => {
   onError(err.name, err.message);
@@ -111,7 +114,7 @@ export const useFileUploader = (userId: string | undefined) => {
 
     const filename = `${uuidv4().substring(0, 8)}_${userId?.substring(0, 8)}`;
 
-    const storageRef = ref(storage, "user_uploads/" + filename);
+    const storageRef = ref(storage, `users/${userId}/ ` + filename);
 
     const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -137,6 +140,7 @@ export const useFileUploader = (userId: string | undefined) => {
                 setLoading(false);
                 setStatus("Complete");
                 onSuccess("Scan complete.");
+                console.log(res.base64.fields);
               })
               .catch(Err);
           })
@@ -271,14 +275,10 @@ export const useAutoUpdate = ({ userId }: { userId: string | undefined }) => {
 
 type UseCheckout = {
   userId?: string | undefined;
-  autoItem: VehicleSchema;
+  vehicle: VehicleDataSchema | null;
+  isRenewal: boolean;
 };
-export const useCheckout = ({ autoItem }: UseCheckout) => {
-  const isRenewal = false;
-  const insurancePkg = isRenewal ? renewal : brandnew;
-  const autoType = insurancePkg.filter((item) => item.type === autoItem.type);
-  const amount = String(autoType[0]?.price.toFixed(2));
-
+export const useCheckout = ({ vehicle, isRenewal }: UseCheckout) => {
   /**
   MerchantCode: FASTINSURE
   API username: fastinsure
@@ -286,30 +286,78 @@ export const useCheckout = ({ autoItem }: UseCheckout) => {
   phone: 9227227227
   */
 
+  const router = useRouter();
+
   const [loading, setLoading] = useState(false);
 
-  const handleCheckout = useCallback(() => {
-    setLoading(true);
-    createIcashCheckout({
-      merchantCode: `${process.env.NEXT_PUBLIC_ICASH_MERCHANT_CODE}`,
-      merchantUsername: `${process.env.NEXT_PUBLIC_ICASH_MERCHANT_USER}`,
-      merchantPassword: `${process.env.NEXT_PUBLIC_ICASH_MERCHANT_PASS}`,
-      merchantProductDescription: `CTPL Insurance Policy - (${isRenewal ? "Renewal" : "Brand New"})`,
-      merchantRefNo: createReferenceNumber(),
-      currencyCode: "PHP",
-      amount,
-      successUrl: "https://re-up.ph",
-      errorUrl: "https://re-up.ph",
-    })
-      .then((res) => {
-        console.log(res);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
+  const handleCheck = useCallback(
+    (amount: string) => () => {
+      console.log({
+        merchantCode: `${process.env.NEXT_PUBLIC_ICASH_MERCHANT_CODE}`,
+        merchantUsername: `${process.env.NEXT_PUBLIC_ICASH_MERCHANT_USER}`,
+        merchantPassword: `${process.env.NEXT_PUBLIC_ICASH_MERCHANT_PASS}`,
+        merchantProductDescription: `CTPL Insurance Policy - (${isRenewal ? "Renewal" : "Brand New"}) - ${vehicle?.vin}`,
+        merchantRefNo: createReferenceNumber(),
+        currencyCode: "PHP",
+        amount,
+        successUrl: "https://re-up.ph",
+        errorUrl: "https://re-up.ph",
       });
-  }, [amount, isRenewal]);
+    },
+    [isRenewal, vehicle?.vin],
+  );
 
-  return { autoType, handleCheckout, loading };
+  const handleCheckout = useCallback(
+    (amount: string) => () => {
+      setLoading(true);
+      createIcashCheckout({
+        merchantCode: `${process.env.NEXT_PUBLIC_ICASH_MERCHANT_CODE}`,
+        merchantUsername: `${process.env.NEXT_PUBLIC_ICASH_MERCHANT_USER}`,
+        merchantPassword: `${process.env.NEXT_PUBLIC_ICASH_MERCHANT_PASS}`,
+        merchantProductDescription: `CTPL Insurance Policy - (${isRenewal ? "Renewal" : "Brand New"}) - ${vehicle?.vin}`,
+        merchantRefNo: createReferenceNumber(),
+        currencyCode: "PHP",
+        amount,
+        successUrl: "https://re-up.ph",
+        errorUrl: "https://re-up.ph",
+      })
+        .then((res) => {
+          setLoading(true);
+          const { data, status } = res;
+          console.log(data?.redirectUrl);
+          if (data && status === 200) {
+            router.push(data.redirectUrl);
+            setLoading(false);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    },
+    [isRenewal, vehicle?.vin, router],
+  );
+
+  const copperData = {
+    submitType: "pay",
+    lineItems: { data: [{ priceData: { currency: "usdc" }, quantity: 1 }] },
+    paymentSetting: { allowSwap: false },
+  };
+
+  const handleCheckoutCrypto = useCallback(
+    (amount: string) => () => {
+      setLoading(true);
+      checkoutCopper(copperData)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    },
+    [isRenewal, vehicle?.vin, router],
+  );
+
+  return { handleCheckout, handleCheckoutCrypto, loading };
 };

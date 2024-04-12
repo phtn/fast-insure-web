@@ -38,7 +38,7 @@ export const AutoForm = ({
     <Form {...form}>
       <ActiveForm
         form={form}
-        fields={filterFields(fields!) ?? vehicleFields}
+        fields={withScan ? filterFields(fields!) : vehicleFields}
         setCount={setCount}
         loading={loading}
         addAuto={addAuto}

@@ -1,5 +1,43 @@
 // import { z } from "zod";
 
+import { z } from "zod";
+
+export const checkoutCopperUrl = "/checkout/sessions";
+
+const checkoutData = {
+  submitType: "pay",
+  lineItems: { data: [{ priceData: { currency: "usdc" }, quantity: 1 }] },
+  paymentSetting: { allowSwap: false },
+};
+
+export const CheckoutCopperResource = z.object({
+  submitType: z.string(),
+  lineItems: z.object({
+    data: z.array(
+      z.object({
+        priceData: z.object({
+          currency: z.union([
+            z.literal("btc"),
+            z.literal("etc"),
+            z.literal("usdc"),
+            z.literal("solana"),
+            z.literal("usdt"),
+            z.literal("matic"),
+          ]),
+        }),
+        quantity: z.number(),
+      }),
+    ),
+    paymentSetting: z.object({
+      allowSwap: z.boolean(),
+    }),
+  }),
+});
+
+export type CheckoutCopperResourceSchema = z.infer<
+  typeof CheckoutCopperResource
+>;
+
 export const checkoutResponse = {
   id: "6bce7b07-825f-454e-bea8-3a2bb04a570b",
   createdAt: "2023-02-22T12:46:11.453Z",
@@ -349,3 +387,56 @@ export const webhookResponse = {
     },
   },
 };
+
+/**
+ *
+ *
+ *
+ *
+ curl --request POST \
+     --url https://api.copperx.dev/api/v1/checkout/sessions \
+     --header 'accept: application/json' \
+     --header 'authorization: Bearer pav1_07xCFkzauWfX0kZTaJdrf1z3gGhXyP66azR2bIWrUSTYWsxs3QTa1oc7gUMbj7Gz \
+     --header 'content-type: application/json' \
+     --data ' {
+  "submitType": "pay",
+  "lineItems": {
+    "data": [
+      {
+        "priceData": {
+          "currency": "usdc"
+        },
+        "quantity": 1
+      }
+    ]
+  },
+  "paymentSetting": {
+    "allowSwap": false
+  }
+}
+'
+
+ curl --request POST \
+     --url https://api.copperx.dev/api/v1/checkout/sessions \
+     --header 'accept: application/json' \
+     --header 'content-type: application/json' \
+     --data '
+{
+  "submitType": "pay",
+  "lineItems": {
+    "data": [
+      {
+        "priceData": {
+          "currency": "usdc"
+        },
+        "quantity": 1
+      }
+    ]
+  },
+  "paymentSetting": {
+    "allowSwap": false
+  }
+}
+'
+ *
+ */

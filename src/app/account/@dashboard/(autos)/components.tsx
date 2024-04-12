@@ -28,14 +28,15 @@ import Image from "next/image";
 import { type FormEvent, type ChangeEvent, useCallback } from "react";
 import { type UploadStatus } from "./hooks";
 import tw from "tailwind-styled-components";
+import { cn } from "@/utils/cn";
 
-export const Title = () => (
+export const MainTitle = () => (
   <DialogHeader className="my-3 border-b-2 border-ash/50 pb-2">
-    <DialogTitle className="font-bold tracking-tighter text-coal md:text-2xl">
+    <DialogTitle className="font-semibold tracking-tighter text-coal md:text-2xl">
       Add New Vehicle
     </DialogTitle>
-    <DialogDescription className="flex items-center space-x-1 text-clay">
-      <InfoIcon className="h-4 w-4 text-sky-600" fill="#e0f2fe" />
+    <DialogDescription className="flex items-center space-x-2 text-clay">
+      <InfoIcon className="size-5 fill-sky-100 text-fast" strokeWidth={1} />
       <span>
         {`Upload your vehicle's Certificate of Registration to autofill the form.`}
       </span>
@@ -50,7 +51,7 @@ type HeaderProps = {
 
 export const Header = (props: HeaderProps) => (
   <div className="flex items-center space-x-3 px-2">
-    <props.icon className="h-6 w-6 text-clay" fill="#FFFFFF" strokeWidth={1} />
+    <props.icon className="size-6 fill-white/80 text-clay" strokeWidth={1} />
     <p className="text-lg font-medium tracking-tighter text-coal">
       {props.title}
     </p>
@@ -73,14 +74,12 @@ export const FileInfo = ({
   const FormatChecker = useCallback(() => {
     const options = opts(
       <CheckCircleIcon
-        strokeWidth={1.5}
-        className="h-4 w-4 text-blue-500"
-        fill="#dbeafe"
+        strokeWidth={1}
+        className="size-4 fill-sky-100 text-fast"
       />,
       <CircleSlash2Icon
-        strokeWidth={1.5}
-        className="h-4 w-4 text-red-500"
-        fill="rgba(254, 202, 202, 0.5)"
+        strokeWidth={1}
+        className="size-4 fill-rose-300/80 text-fast"
       />,
     );
     return <>{options.get(validFormat)}</>;
@@ -89,14 +88,12 @@ export const FileInfo = ({
   const SizeChecker = useCallback(() => {
     const options = opts(
       <CheckCircleIcon
-        strokeWidth={1.5}
-        className="h-4 w-4 text-blue-500"
-        fill="#dbeafe"
+        strokeWidth={1}
+        className="size-4 fill-sky-100 text-fast"
       />,
       <CircleSlash2Icon
-        strokeWidth={1.5}
-        className="h-4 w-4 text-red-500"
-        fill="rgba(254, 202, 202, 0.5)"
+        strokeWidth={1}
+        className="size-4 fill-rose-300/80 text-fast"
       />,
     );
     return <>{options.get(validSize)}</>;
@@ -105,14 +102,12 @@ export const FileInfo = ({
   const ReadyChecker = () => {
     const options = opts(
       <CheckCircleIcon
-        strokeWidth={1.5}
-        className="h-4 w-4 text-blue-500"
-        fill="#dbeafe"
+        strokeWidth={1}
+        className="size-4 fill-sky-100 text-fast"
       />,
       <AlertCircleIcon
-        strokeWidth={1.5}
-        className="h-4 w-4 text-amber-500"
-        fill="rgba(253, 230, 138, 0.5)"
+        strokeWidth={1}
+        className="size-4 fill-amber-300/80 text-fast"
       />,
     );
     return <>{options.get(validFormat)}</>;
@@ -127,15 +122,15 @@ export const FileInfo = ({
           </div>
           <div className="space-y-[1px] overflow-clip">
             <div className="w-full ">
-              <span className="font-mono text-sm font-medium text-clay">
+              <span className="font-mono text-sm text-clay">
                 {limitText(file?.name, 25)}
               </span>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="font-mono text-xs uppercase tracking-tight text-clay">
+              <span className="font-mono text-xs uppercase tracking-tight text-clay/80">
                 {fileType(file?.type)}
               </span>
-              <span className="font-mono text-[12px] text-clay">
+              <span className="font-mono text-[12px] text-clay/80">
                 {fileSize(file?.size)}
               </span>
             </div>
@@ -145,7 +140,7 @@ export const FileInfo = ({
           <Button
             variant="casper"
             size="icon"
-            className="hover:bg-paper"
+            className="text-fast hover:bg-paper"
             onClick={removeFile}
           >
             <XIcon strokeWidth={1} />
@@ -258,8 +253,16 @@ export const Actions = ({
       size="lg"
       disabled={!imageData || loading || !validFormat || !validSize}
       onClick={fileUpload}
-      className="w-full"
+      className={cn(
+        "w-full text-[14px]",
+        imageData && validFormat && validSize
+          ? `border-blue-200/50 text-blue-400`
+          : ``,
+      )}
       tail={UploadIcon}
+      tailClass={cn(
+        imageData && validFormat && validSize ? `stroke-blue-400` : ``,
+      )}
     >
       {status}
     </Touch>
@@ -273,9 +276,14 @@ export const FieldIndex = ({ index }: { index: number }) => (
 );
 
 export const RequiredFields = ({ count }: { count: number }) => (
-  <div className="mx-4 flex items-center justify-center space-x-4">
-    <span className="text-xs font-medium text-clay">Required fields:</span>
-    <span className="font-mono font-bold text-orange-500">
+  <div className="mx-4 flex items-center justify-center space-x-4 rounded-md bg-ash/50 px-2">
+    <span className="text-sm text-clay">Required fields:</span>
+    <span
+      className={cn(
+        "font-mono text-lg font-thin",
+        count > 0 ? `text-orange-600` : `text-emerald-600`,
+      )}
+    >
       {count < 0 ? 0 : count}
     </span>
   </div>
@@ -284,7 +292,7 @@ export const RequiredFields = ({ count }: { count: number }) => (
 export const AllFieldsGood = () => (
   <div className="mx-4 flex items-center justify-center space-x-2">
     <span className="text-xs font-medium text-clay">All Fields Good!</span>
-    <CheckCircleIcon className="h-4 w-4 text-emerald-600" fill="#ecfdf5" />
+    <CheckCircleIcon className="size-4 fill-teal-100/80 text-emerald-600" />
   </div>
 );
 
@@ -307,33 +315,37 @@ export const FeedbackActions = (props: FeedbackProps) => {
     <div className="flex items-center justify-between space-x-2">
       <MessageOptions />
       <DarkTouch
-        disabled={loading}
+        disabled={loading || feedback}
         icon={ThumbsUp}
+        iconFill={feedback ? `fill-blue-300 stroke-blue-300` : ``}
         onClick={(e) => handleLike(e)}
         size="icon"
-        variant={feedback ? `secondary` : `dark`}
+        variant={feedback ? `ghost` : `dark`}
       />
       <DarkTouch
-        disabled={loading}
+        disabled={loading || feedback}
         icon={ThumbsDown}
+        iconFill={feedback ? `fill-blue-300 stroke-blue-300` : ``}
         onClick={(e) => handleDislike(e)}
         size="icon"
-        variant={feedback !== undefined && !feedback ? `secondary` : `dark`}
+        variant={feedback !== undefined && !feedback ? `ghost` : `dark`}
       />
     </div>
   );
 };
 
 const AfterFeedback = () => (
-  <div className="flex flex-col items-center -space-y-1 text-blue-500">
-    <p className="font-bold tracking-tight">Thanks</p>
-    <p className="text-[11px] font-medium text-clay">for the feedback!</p>
+  <div className="flex flex-col items-center -space-y-1 text-blue-400">
+    <p className="text-sm font-semibold tracking-tighter">Thanks</p>
+    <p className="text-[12px] font-medium text-clay">for the feedback!</p>
   </div>
 );
 
 const AskFeedback = () => (
   <div className="flex flex-col">
-    <p className="font-semibold tracking-tighter text-coal">Results Ok?</p>
+    <p className="text-sm font-semibold tracking-tighter text-coal">
+      Rate the results.
+    </p>
   </div>
 );
 

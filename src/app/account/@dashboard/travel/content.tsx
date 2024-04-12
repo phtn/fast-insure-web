@@ -1,48 +1,66 @@
 "use client";
 
-import { DarkTouch } from "@@ui/touch";
-import { ArrowRightIcon } from "lucide-react";
+import { TheTip, TooltipTrigger } from "@/app/(ui)/tooltip";
+import { Disc3Icon, PlusIcon } from "lucide-react";
+import { Title } from "../(autos)/autos";
+import { Card } from "../(components)/card";
+import { useState } from "react";
 
 export const ProtectionContent = () => {
+  const [loading, setLoading] = useState(false);
   return (
-    <div className="h-fit px-8 md:px-24">
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        <div className="grid h-[300px] grid-cols-3 overflow-clip rounded-xl bg-white">
-          <div className="flex justify-end">
-            <div className="flex flex-col items-start justify-center bg-gradient-to-br from-sky-400 to-indigo-600 bg-clip-text p-4 text-transparent">
-              <h3 className="text-3xl font-extrabold">International</h3>
-              <h3 className="text-3xl font-medium tracking-tight">
-                Protection
-              </h3>
-              <div className="mt-4">
-                <DarkTouch size="lg" tail={ArrowRightIcon} className="z-50">
-                  Get Protected
-                </DarkTouch>
-              </div>
-            </div>
-          </div>
-          <div
-            className={`col-span-2 bg-[url('/svg/world.svg')] bg-cover transition-all duration-500 hover:scale-[150%]`}
-          ></div>
-        </div>
+    <div>
+      <div className="flex items-center space-x-6">
+        <TheTip content="Compulsory Third Party Liability">
+          <TooltipTrigger>
+            <Title className="flex items-center space-x-4">
+              <span>Travel Insurance</span>
+              {loading ? (
+                <Disc3Icon
+                  className="size-4 animate-spin text-fast"
+                  strokeWidth={1}
+                />
+              ) : null}
+            </Title>
+          </TooltipTrigger>
+        </TheTip>
+      </div>
 
-        <div className="grid h-[300px] grid-cols-3 overflow-clip rounded-xl bg-white">
-          <div className="flex justify-end">
-            <div className="flex flex-col items-start justify-center bg-gradient-to-br from-indigo-500 to-rose-500 bg-clip-text p-4 text-transparent">
-              <h3 className="text-3xl font-extrabold">Domestic</h3>
-              <h3 className="text-3xl font-medium tracking-tight">
-                Protection
-              </h3>
-              <div className="mt-4">
-                <DarkTouch size="lg" tail={ArrowRightIcon} className="z-50">
-                  Get Protected
-                </DarkTouch>
-              </div>
-            </div>
+      {/* <div className="my-[16px] rounded-lg border border-ash/50 p-4">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div>
+            <p className="font-sans text-sm">Name: {vehicle?.auto_name}</p>
           </div>
-          <div
-            className={`col-span-2 scale-[110%] bg-[url('/svg/ph.svg')] bg-cover transition-all duration-500 hover:scale-[150%]`}
-          ></div>
+          <div>
+            <p className="font-sans text-sm">vin: {vehicle?.vin}</p>
+          </div>
+        </div>
+      </div> */}
+
+      <div className="my-[16px]">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <Card
+            title="International"
+            description="Travelling abroad."
+            onClick={() => console.log("")}
+            onClickCrypto={() => console.log("")}
+            iconStyle=""
+            icon={PlusIcon}
+            actionLabel="Checkout"
+            value={""}
+            loading={false}
+          />
+          <Card
+            title="Domestic"
+            description="Travel within the Philippines"
+            onClick={() => console.log("")}
+            onClickCrypto={() => console.log("")}
+            iconStyle=""
+            icon={PlusIcon}
+            actionLabel="Checkout"
+            value={""}
+            loading={false}
+          />
         </div>
       </div>
     </div>
