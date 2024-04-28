@@ -18,6 +18,7 @@ const AffiliateContent = () => {
             title="Create Payment Link"
             description="Get paid by sharing a link with your clients."
             onClick={() => console.log("create")}
+            onClickCrypto={() => console.log("")}
             icon={Link2Icon}
             iconStyle="-rotate-45"
             actionIcon={PlusIcon}
@@ -27,6 +28,7 @@ const AffiliateContent = () => {
             title="Create Client Account"
             description="Add a new client to your list."
             onClick={() => console.log("create")}
+            onClickCrypto={() => console.log("")}
             icon={UserPlusIcon}
             actionIcon={PlusIcon}
             actionLabel="Create"
