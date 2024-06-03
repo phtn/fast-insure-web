@@ -2,7 +2,7 @@ import type { OCR_DE_FieldSchema } from "@/server/resource/ocr";
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { onError, onSuccess, onWarn } from "./toast";
-import { type VehicleSchema } from "@/app/account/@dashboard/(autos)/active-form";
+import { type VehicleSchema } from "@/app/account/@dashboard/(old)/(autos)/active-form";
 
 export const degreesToRadians = (degrees: number | string): number => {
   const getRad = (d: number) => (d * Math.PI) / 180;
@@ -41,6 +41,37 @@ export const createReferenceNumber = () => {
   }
 };
 
+export const removeLastEqualSign = (str: string) => {
+  const regex = /=+$/;
+  return str.replace(regex, "");
+};
+
+export const hashString = async (...args: string[]): Promise<string> => {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(args.join(""));
+
+  return crypto.subtle.digest("SHA-256", data).then((hash) => {
+    const encoded = btoa(
+      String.fromCharCode.apply(null, Array.from(new Uint8Array(hash))),
+    );
+    const sanitizedHash = encoded
+      .replace(/\+/g, "")
+      .replace(/\//g, "")
+      .replace(/=+$/, "");
+    return removeLastEqualSign(sanitizedHash);
+  });
+};
+
+export const createRefNo = async (
+  ...args: Array<string | undefined>
+): Promise<string> => {
+  if (args.every((arg) => arg !== undefined)) {
+    return `${await hashString(...(args as string[]))}`;
+  } else {
+    return `${await hashString(new Date().getTime().toString(36))}`;
+  }
+};
+
 export const formatMobile = (mobile_number: string) => {
   const regex = /^0|^(63)|\D/g;
   if (mobile_number) {
@@ -69,8 +100,9 @@ export const decimal = (
   });
 };
 
-export const transformDate = (dateString: string): string => {
-  const date = new Date(dateString);
+export const prettyDate = (datestring: string | undefined): string => {
+  if (!datestring) return "";
+  const date = new Date(datestring);
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "long",
@@ -81,6 +113,13 @@ export const transformDate = (dateString: string): string => {
     timeZone: "UTC",
   };
   return date.toLocaleString("en-US", options);
+};
+
+export const getToday = () => {
+  const d = new Date();
+  const datestring = d.toLocaleDateString();
+  const date = prettyDate(datestring).split("at");
+  return date[0];
 };
 
 type CopyFnParams = {
@@ -335,4 +374,35 @@ export const getMonthAndYear = (
   const year = date.getFullYear();
 
   return { month, year };
+};
+
+export const errHandler = (
+  e: Error,
+  setLoading: Dispatch<SetStateAction<boolean>>,
+  ...args: string[]
+) => {
+  setLoading(false);
+  onError(args[0] ?? "Error", e.name);
+  if (args[1] && args[1].toLowerCase() === "log") {
+    console.log(args[0] ?? "Error", e.name, args[2] ?? "");
+  }
+};
+
+export const sanitizeText = (value: string) => {
+  const spaces = value.replaceAll(" ", "_");
+  const commas: string = spaces.replaceAll(",", "");
+  return commas;
+};
+
+type DisplaynameParams = {
+  firstName: string | undefined;
+  middleName: string | undefined;
+  lastName: string | undefined;
+};
+export const formDisplayname = (params: DisplaynameParams) => {
+  const { firstName, middleName, lastName } = params;
+  if (!middleName) {
+    return `${firstName} ${lastName}`;
+  }
+  return `${firstName} ${middleName} ${lastName}`;
 };

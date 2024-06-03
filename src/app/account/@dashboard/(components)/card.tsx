@@ -1,7 +1,7 @@
 import { Touch } from "@/app/(ui)/touch";
 import { cn } from "@/utils/cn";
-import { type LucideIcon, Disc3Icon } from "lucide-react";
-import { type ReactElement } from "react";
+import { type LucideIcon, ArrowRightIcon, LoaderIcon } from "lucide-react";
+import type { ReactNode } from "react";
 import tw from "tailwind-styled-components";
 
 type CardProps = {
@@ -13,61 +13,42 @@ type CardProps = {
   actionIconStyle?: string;
   actionLabel: string;
   onClick: () => void;
-  onClickCrypto: () => void;
-  trigger?: ReactElement;
+  style?: string;
+  extra?: string;
   value?: number | string | undefined;
   loading?: boolean;
+  children?: ReactNode;
 };
 export const Card = (props: CardProps) => {
-  const {
-    title,
-    iconStyle,
-    actionIconStyle,
-    actionLabel,
-    description,
-    onClick,
-    onClickCrypto,
-    value,
-    loading,
-    trigger,
-  } = props;
+  const { loading, onClick } = props;
   return (
-    <CardContainer>
-      <div className="bg-[url('/svg/dots.svg')] bg-cover p-6">
+    <CardContainer className={cn(props.style ?? defaultStyle)}>
+      <div className="p-6">
         <div className="flex items-center justify-between">
-          <props.icon size={24} className={cn("text-prime", iconStyle)} />
-          <p className="rounded-lg bg-ash/30 px-2 py-1 font-sans text-2xl font-thin tracking-tight text-prime">
-            ₱ <span className=" font-semibold">{value}</span>
-          </p>
+          <props.icon size={24} className={cn("", props.iconStyle)} />
+          {props.children}
         </div>
-        <div className="text-md mt-6 font-sans font-semibold tracking-tighter text-coal">
-          {title}
-        </div>
-        <div className="mb-12 text-[14px] font-light text-gray-500">
-          {description}
+        <div className="mb-12 mt-6 h-fit w-fit rounded-xl bg-gradient-to-r from-void/5 to-transparent p-3">
+          <div className="font-sans text-lg font-semibold tracking-tight">
+            {props.title}
+          </div>
+          <div className="text-[14px] font-light opacity-80">
+            {props.description}
+          </div>
         </div>
         <div className="flex h-[40px] items-center space-x-4">
-          {/* <Touch
-            iconClass={actionIconStyle}
-            size={"sm"}
-            className="h-[32px]"
-            onClick={onClick}
-            tail={Disc3Icon}
-            tailClass={loading ? "animate-spin" : "size-0 hidden"}
-          >
-            {actionLabel}
-          </Touch> */}
-          {trigger}
           <Touch
-            iconClass={actionIconStyle}
-            size={"sm"}
-            className="h-[32px]"
-            onClick={onClickCrypto}
-            tail={Disc3Icon}
-            tailClass={loading ? "animate-spin" : "size-0 hidden"}
+            iconClass={props.actionIconStyle}
+            className="h-[36px] rounded-sm"
+            onClick={onClick}
+            tail={loading ? LoaderIcon : ArrowRightIcon}
+            tailClass={cn(loading ? "animate-spin" : "", `text-blue-500`)}
           >
-            {actionLabel} with Crypto
+            {props.actionLabel}
           </Touch>
+          <p className="px-4 font-mono font-medium uppercase tracking-wide">
+            {props.extra}
+          </p>
         </div>
       </div>
     </CardContainer>
@@ -75,7 +56,14 @@ export const Card = (props: CardProps) => {
 };
 
 const CardContainer = tw.div`
-  overflow-clip rounded-lg border-[0.33px] border-ash xl:pr-[2px]
-  from-zap via-white to-sky-100
+  overflow-clip rounded-lg border-[0.33px] border-clay/50 xl:pr-[2px]
+  shadow-md
+  `;
+
+const defaultStyle = `
+  bg-gradient-to-r from-blue-200 to-cyan-200
   bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))]
   `;
+
+//
+//

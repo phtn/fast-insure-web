@@ -17,7 +17,6 @@ const onCreateLink = async (
 
 export const createCheckoutSession = async (
   values: CheckoutCopperResourceSchema,
-  id: string,
 ) => {
   const axiosInstance = createAxiosInstance(checkoutCopperConfig);
 
@@ -25,16 +24,16 @@ export const createCheckoutSession = async (
     return err;
   };
 
-  const Ok = async (response: Record<string, string | undefined>) => {
-    return response.data;
-  };
+  // const Ok = async (response: Record<string, string | undefined>) => {
+  //   return response.data;
+  // };
 
-  return await onCreateLink(values, axiosInstance).then(Ok, Err);
+  return await onCreateLink(values, axiosInstance).then((res) => res, Err);
 };
 
 /**
  * checkout Copper
  */
-export const checkoutCopper = async (params: CheckoutCopperResourceSchema) => {
-  await createCheckoutSession(params, "0-1");
-};
+// export const checkoutCopper = async (params: CheckoutCopperResourceSchema) => {
+//   await createCheckoutSession(params, "0-1");
+// };

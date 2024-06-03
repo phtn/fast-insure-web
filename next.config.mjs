@@ -1,3 +1,4 @@
+import * as dev from "@next-devtools/core/plugin";
 // @ts-check
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
@@ -27,4 +28,6 @@ const config = {
     return config;
   },
 };
-export default withPWA(config);
+
+const { withNextDevtools } = dev;
+export default withNextDevtools(config);

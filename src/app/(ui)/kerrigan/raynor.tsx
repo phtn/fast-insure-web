@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@@ui/button";
 import { motion } from "framer-motion";
 import { ArrowUpRightIcon, LayoutGridIcon } from "lucide-react";
 import tw from "tailwind-styled-components";
@@ -12,6 +11,7 @@ export const Raynor = ({
   description,
   actionLabel,
   href,
+  uid,
 }: KerriganProps) => {
   return (
     <section className="h-[calc(100vh-250px)] w-full px-10 md:h-[calc(100vh-200px)] lg:h-[calc(100vh-72px)] lg:px-10 xl:h-[calc(100vh-150px)]">
@@ -58,7 +58,7 @@ export const Raynor = ({
             <Description>{description}</Description>
           </motion.div>
 
-          <div className="flex w-[calc(100vw-64px)] items-center justify-start space-x-4 md:w-full md:justify-center">
+          <div className="flex w-fit items-center justify-start space-x-4">
             <motion.div
               initial={{ y: 10, scale: 0.5, opacity: 0 }}
               animate={{ y: 0, scale: 1, opacity: 1 }}
@@ -68,31 +68,15 @@ export const Raynor = ({
                 easings: ["easeInOut"],
               }}
             >
-              <Link href={href ?? `/`}>
+              <Link href={href ?? `/account`}>
                 <button className="group inline-flex h-[50px] animate-shimmer items-center justify-center rounded-lg border border-fast bg-[linear-gradient(110deg,#000103,45%,#93c5fd,55%,#000103)] bg-[length:200%_100%] px-6 text-[14px] font-bold text-white transition-all duration-4000 hover:text-zap focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 md:w-[250px]">
                   {actionLabel}
-                  <LayoutGridIcon className="isolate ml-6 hidden h-5 w-5 transition-all duration-300 group-hover:text-blue-300 md:visible" />
+                  {uid ? (
+                    <LayoutGridIcon className={iconStyle} />
+                  ) : (
+                    <ArrowUpRightIcon className={iconStyle} />
+                  )}
                 </button>
-              </Link>
-            </motion.div>
-            <motion.div
-              initial={{ y: 10, scale: 0.5, opacity: 0 }}
-              animate={{ y: 0, scale: 1, opacity: 1 }}
-              transition={{
-                duration: 0.3,
-                delay: 3.6,
-                easings: ["easeInOut"],
-              }}
-            >
-              <Link href={"/account"}>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="hidden min-w-[200px] space-x-4 transition-all duration-500 md:flex"
-                >
-                  <span>Sign up</span>
-                  <ArrowUpRightIcon className="h-4 w-4" />
-                </Button>
               </Link>
             </motion.div>
           </div>
@@ -101,6 +85,8 @@ export const Raynor = ({
     </section>
   );
 };
+
+const iconStyle = `isolate ml-6 h-5 w-5 transition-all duration-300 group-hover:text-blue-300 md:visible`;
 
 const Title = tw.h2`
   font-k2d font-semibold tracking-tight

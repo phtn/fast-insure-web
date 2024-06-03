@@ -8,7 +8,7 @@ import {
   type LoginFormProps,
   type LoginSchema,
 } from "./schema";
-import { ArrowUpRightIcon, Disc3Icon, LogInIcon } from "lucide-react";
+import { ArrowUpRightIcon, Disc3Icon, PenLine } from "lucide-react";
 import { useMemo } from "react";
 import { cn } from "@/utils/cn";
 
@@ -31,17 +31,25 @@ export const ActiveForm = ({
   }, [loading, signinType]);
 
   const Submit = () => {
-    const userLogin = signinType === "SIGNIN";
     return (
       <DarkTouch
         size="lg"
         type="submit"
-        tail={loading ? Disc3Icon : userLogin ? LogInIcon : ArrowUpRightIcon}
-        tailClass={loading ? "animate-spin" : "animate-none stroke-width-[1px]"}
-        disabled={!isValid || loading}
+        tail={loading ? Disc3Icon : !isValid ? PenLine : ArrowUpRightIcon}
+        tailClass={
+          loading
+            ? "animate-spin"
+            : !isValid
+              ? "animate-none stroke-width-[1px]"
+              : "hidden"
+        }
         className={cn(
-          `h-[60px] w-full text-[16px]`,
-          loading ? ` text-blue-200` : isValid ? `text-zap` : ``,
+          `h-[60px] w-full text-[16px] text-gray-400`,
+          loading
+            ? ` text-blue-200`
+            : !isValid
+              ? `text-orange-300`
+              : `text-emerald-400`,
         )}
       >
         {submitText}
@@ -66,6 +74,7 @@ const render = ({ field, item }: RenderProps) => (
   <FormItem className="my-5">
     <FormControl>
       <InputField
+        className="w-[300px]"
         icon={item.icon}
         alt={item.alt}
         placeholder={item.placeholder}

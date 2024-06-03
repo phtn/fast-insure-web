@@ -206,12 +206,11 @@ export const UserMenu = () => {
       <PopoverContent className="my-2 w-[250px] p-0">
         <Hoverdrop
           parentStyle="h-[272px]"
-          pillStyle="lg:h-[56px] lg:group-hover:bg-blue-200/30 mx-2 rounded-2xl"
+          pillStyle="lg:h-[56px] lg:group-hover:bg-ash/30 mx-2 rounded-2xl"
           snapPoints={[
             0,
             80,
             147.5,
-
             isAuthed ? 214 : 213,
             isAuthed ? 280 : 279.5,
             348,
@@ -288,7 +287,7 @@ export const AuthedContent = ({
   return (
     <CommandList>
       <CommandGroup>
-        <Link href="/account" role="button" aria-label="Account">
+        <Link href={`/account`} role="button" aria-label="Account">
           <Item>
             <IconContainer>
               <Sqc strokeWidth={0} />
@@ -374,7 +373,7 @@ const IconContainer = tw.div`
 const Sqc = tw(SquircleIcon)`
   absolute size-[46px] fill-ash/30
   transition-colors duration-200 ease-in
-  group-hover:fill-ash/80
+  group-hover:fill-ash/0
   `;
 export const iconClass = `
   size-[20px] absolute

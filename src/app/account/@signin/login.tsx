@@ -22,10 +22,9 @@ export type UserAccountType = z.infer<typeof AccountType>;
 
 export type LoginProps = {
   signinType: UserSigninType;
-  accountType: UserAccountType;
 };
 
-export const Login = ({ signinType, accountType }: LoginProps) => {
+export const Login = ({ signinType }: LoginProps) => {
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: loginDefaults,
@@ -81,7 +80,7 @@ export const Login = ({ signinType, accountType }: LoginProps) => {
           createUser({
             userId: creds.user.uid,
             email: creds.user.email!,
-            accountType,
+            accountType: "AGENT2",
           })
             .then(() => {
               onSuccess("Account created.", userCreate?.user?.email ?? "");

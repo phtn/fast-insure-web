@@ -13,16 +13,28 @@ type AccountLayoutProps = {
 
 const AccountLayout = ({ dashboard, signin }: AccountLayoutProps) => {
   const [user, loading] = useAuthState(auth);
-  const { getAccoutType } = useConnect();
-  const accountType = getAccoutType();
-  const isAffiliate = accountType === "AFFILIATE";
+  const { accountType, profile } = useConnect();
+
   if (loading) return <Loader />;
 
   if (user) {
-    return <Sidebar isAffiliate={isAffiliate}>{dashboard}</Sidebar>;
+    return (
+      <Sidebar profile={profile} accountType={accountType}>
+        {dashboard}
+      </Sidebar>
+    );
   } else {
     return signin;
   }
 };
 
 export default AccountLayout;
+
+// import { Children, cloneElement, isValidElement } from "react";
+
+// const childrenWithProps = Children.map(children, (child) => {
+//   if (isValidElement(child)) {
+//     return cloneElement(child, profile, ...children);
+//   }
+//   return child;
+// });

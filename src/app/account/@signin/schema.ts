@@ -2,7 +2,7 @@ import { type HTMLInputTypeAttribute } from "react";
 import { type UseFormReturn } from "react-hook-form";
 import { type IconName } from "@@ui/input";
 import { z } from "zod";
-import { AtSignIcon, LockKeyholeIcon, type LucideIcon } from "lucide-react";
+import { LockKeyholeIcon, MailIcon, type LucideIcon } from "lucide-react";
 import { type UserSigninType } from "./hooks";
 
 export const loginSchema = z.object({
@@ -48,7 +48,7 @@ export const loginFields: LoginField[] = [
     inputType: "input",
     type: "email",
     alt: "email",
-    icon: AtSignIcon,
+    icon: MailIcon,
   },
   {
     name: "password",

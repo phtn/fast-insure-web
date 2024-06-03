@@ -11,8 +11,9 @@ export type KerriganProps = {
   description: string;
   data?: KerriganData[];
   listTitle?: string | undefined;
-  actionLabel: string
-  href?: string
+  actionLabel: string;
+  href?: string;
+  uid?: string | undefined;
 };
 
 export type KerriganListProps = {

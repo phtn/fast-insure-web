@@ -13,7 +13,10 @@ import {
   SquareUserIcon,
   UploadCloudIcon,
   UserCircle2Icon,
+  ArrowDownLeftIcon,
 } from "lucide-react";
+import { InputLabel } from "../account/@dashboard/(components)/input-label";
+import tw from "tailwind-styled-components";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
@@ -168,4 +171,159 @@ export const InputFile = React.forwardRef<
 });
 InputFile.displayName = "InputFile";
 
-export { Input };
+const InputLight = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, ...props }, ref) => {
+    return (
+      <input
+        type={type}
+        className={cn(
+          "flex h-10 w-full rounded-md border-[0.33px] border-ash bg-paper/50 px-3 py-2 text-xs ring-sky-400 ring-offset-sky-300 transition-all duration-300 ease-in-out placeholder:text-sky-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:focus-visible:ring-1 md:focus-visible:ring-offset-1",
+          className,
+        )}
+        ref={ref}
+        {...props}
+      />
+    );
+  },
+);
+InputLight.displayName = "InputLight";
+
+export const InputCode = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, ...props }, ref) => (
+    <CodeInput type={type} className={cn(className)} ref={ref} {...props} />
+  ),
+);
+
+const CodeInput = tw.input`
+  flex h-14 w-full px-3 py-2 bg-[#EFEFEF]
+  border-[0.33px] border-ash/30 rounded-full
+  placeholder:text-neutral-400 placeholder:tracking-tight placeholder:lowercase placeholder:font-normal
+  text-[16px] tracking-widest text-center font-medium font-mono
+  transition-all duration-300 ease-in-out uppercase
+  ring-offset-white ring-neutral-100 focus-visible:outline-none
+
+  disabled:cursor-not-allowed disabled:opacity-50 md:focus-visible:ring-1 md:focus-visible:ring-offset-1
+  `;
+InputCode.displayName = "InputCode";
+
+export const ImageFile = React.forwardRef<
+  HTMLInputElement,
+  InputProps & IconPrefix
+>(({ className, type, ...props }, ref) => {
+  return (
+    <div
+      className={cn(
+        "relative flex cursor-pointer flex-col items-center justify-end rounded border portrait:justify-center",
+        className,
+      )}
+    >
+      <div className="absolute flex flex-col items-center justify-center">
+        <div className="flex items-center justify-center">
+          <props.icon className="text-dyan/50 size-7 stroke-[1px] portrait:size-4" />
+        </div>
+        <div className="flex items-center justify-center space-x-4 pb-2 pt-10 portrait:hidden portrait:pb-0">
+          <span className="text-dyan/50 py-1 font-mono text-[12px] portrait:hidden portrait:py-0">
+            Images or PDFs
+          </span>
+        </div>
+      </div>
+
+      <input
+        {...props}
+        type={type}
+        ref={ref}
+        className="flex h-[200px] w-full py-2 text-[15px] opacity-0 placeholder:text-slate-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 portrait:h-[56px] portrait:py-0"
+      />
+    </div>
+  );
+});
+ImageFile.displayName = "ImageFile";
+
+type FieldProps = {
+  icon?: LucideIcon;
+  label?: string;
+  isValid?: boolean;
+};
+
+export const InputFieldPayments = React.forwardRef<
+  HTMLInputElement,
+  InputProps & FieldProps
+>(({ className, type, label, ...props }, ref) => {
+  return (
+    <div
+      className={cn(
+        "flex h-[64px] items-center overflow-clip rounded-[5px]",
+        className,
+      )}
+    >
+      <div className="">
+        {props.icon ? (
+          <props.icon className="text-dyan size-5 w-14" strokeWidth={1.5} />
+        ) : (
+          <div className="text-dyan size-5 w-14" />
+        )}
+      </div>
+      <div className="flex h-full w-full flex-col space-y-0 bg-white/90">
+        <InputLabel label={label} />
+
+        <input
+          {...props}
+          type={type}
+          ref={ref}
+          className="text-dyan flex h-full w-full items-center border-l-[0.33px] border-ash/50 bg-white/90 px-3 pb-1.5 pt-0.5 font-sans text-[16px] tracking-tighter placeholder:text-neutral-500/60 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        />
+      </div>
+    </div>
+  );
+});
+InputFieldPayments.displayName = "InputFieldPayments";
+
+export const InputFieldAmount = React.forwardRef<
+  HTMLInputElement,
+  InputProps &
+    FieldProps & { onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }
+>(({ className, label, onChange, ...props }, ref) => {
+  const withReq = label?.split("@") ?? ["", ""];
+  return (
+    <div
+      className={cn(
+        "flex h-[64px] items-center overflow-clip rounded-[5px]",
+        className,
+      )}
+    >
+      {props.icon ? (
+        <props.icon className="text-dyan size-5 w-14" strokeWidth={1.5} />
+      ) : (
+        <div className="text-dyan size-5 w-14" />
+      )}
+
+      <div className="flex h-full w-full flex-col space-y-0 bg-white/90">
+        <p className="text-dyan/70 flex w-full items-start justify-end whitespace-nowrap border-l-[0.33px] border-ash/50 pl-3 pt-1 font-mono text-[10px] font-normal uppercase tracking-widest">
+          {withReq[0] ?? label}
+          {withReq[1] ? (
+            <span
+              className={cn(
+                withReq[1] ? "mx-2" : "",
+                "flex h-fit items-end whitespace-nowrap rounded-full bg-amber-700/10 font-mono font-normal lowercase tracking-wider text-orange-600/80",
+              )}
+            >
+              <ArrowDownLeftIcon size={14} />
+            </span>
+          ) : null}
+        </p>
+        <input
+          {...props}
+          ref={ref}
+          type="text"
+          placeholder="0.00"
+          onChange={onChange}
+          // className="flex h-full w-full items-center border-l-[0.33px] border-ash/50 bg-white/90 px-3 pb-1.5 pt-0.5 font-sans text-[16px] font-medium tracking-tighter text-dyan placeholder:text-slate-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+          className="text-dyan flex h-full w-full border-l-[0.33px] border-ash/50 px-3 text-right font-sans text-[20px] font-semibold tracking-tight placeholder:text-slate-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        />
+      </div>
+    </div>
+  );
+});
+InputFieldAmount.displayName = "InputFieldAmount";
+
+export { Input, InputLight };

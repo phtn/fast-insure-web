@@ -1,20 +1,18 @@
 import { useCallback, useState } from "react";
-import { type UserAccountType } from "./login";
 
 export type UserSigninType = "SIGNIN" | "SIGNUP";
 
 export const useAccountTypes = () => {
-  const [accountType, setAccount] = useState<UserAccountType>("PERSONAL");
   const [signinType, setSignin] = useState<UserSigninType>("SIGNIN");
 
-  const setAccountType = useCallback(
-    (type: UserAccountType) => {
-      if (type !== accountType) {
-        setAccount((prev) => (prev === "PERSONAL" ? "AFFILIATE" : "PERSONAL"));
-      }
-    },
-    [accountType],
-  );
+  // const setAccountType = useCallback(
+  //   (type: UserAccountType) => {
+  //     if (type !== accountType) {
+  //       setAccount((prev) => (prev === "MANAGER" ? "AGENT" : "MANAGER"));
+  //     }
+  //   },
+  //   [accountType],
+  // );
 
   const setSigninType = useCallback(
     (type: UserSigninType) => {
@@ -25,5 +23,5 @@ export const useAccountTypes = () => {
     [signinType],
   );
 
-  return { accountType, setAccountType, signinType, setSigninType };
+  return { signinType, setSigninType };
 };

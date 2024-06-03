@@ -13,28 +13,34 @@ export const createUserAccount = async (user: NewUserPayload) => {
 
   if (user) {
     const { email, userId, accountType } = user;
+    const datestring = new Date().getTime();
     await setDoc(doc(db, "users", userId), {
       userId,
       email,
       accountType,
       displayName: null,
-      firstName: null,
-      lastName: null,
-      completeName: null,
-      credentials: [],
-      isVerified: false,
-      isComplete: false,
-      premium: false,
-      accountManager: "AP-0000",
-      address: {
-        lineOne: null,
-        lineTwo: null,
-        city: null,
-        state: null,
-        country: null,
+      userData: {
+        id: userId,
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        email,
+        phone: null,
+        address: {
+          line1: null,
+          line2: null,
+          city: null,
+          state: null,
+          country: null,
+          postalCode: null,
+        },
+        updatedAt: new Date(datestring).toISOString(),
       },
-      createdAt: new Date().getTime(),
-      updatedAt: new Date().getTime(),
+      isVerified: false,
+      setupComplete: false,
+      branchCode: "0000",
+      createdAt: new Date(datestring).toISOString(),
+      updatedAt: new Date(datestring).toISOString(),
     }).then(Ok, Err);
   } else {
     return "Unable to read payload.";

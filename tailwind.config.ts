@@ -66,6 +66,7 @@ export default {
         heli: "#6A7384",
         copper: "#F6F9FC",
         copperx: "F1F5F9",
+        ghost: "#F7FAFD",
       },
       backgroundSize: {
         "size-200": "200% 200%",

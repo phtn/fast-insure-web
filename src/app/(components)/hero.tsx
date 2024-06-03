@@ -3,8 +3,11 @@
 import tw from "tailwind-styled-components";
 import { Raynor } from "@@ui/kerrigan/raynor";
 import { motion } from "framer-motion";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/libs/db";
 
 export const Hero = () => {
+  const [creds] = useAuthState(auth);
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -17,12 +20,15 @@ export const Hero = () => {
       className="h-[calc(100vh-72px)] w-full"
     >
       <HeroContent>
-        <div className="flex w-full justify-center md:w-[800px] lg:w-[1080px]">
+        <div className="flex w-full justify-start md:w-[800px] lg:w-[1080px]">
           <Raynor
-            href={`/products`}
+            href={`/account`}
             title="Fast-track your"
-            description="Tech-focused insurance platform for businesses and individuals."
-            actionLabel="Browse All Products"
+            description="Tech-focused insurance services provider for businesses and individuals."
+            uid={creds?.uid}
+            actionLabel={
+              creds?.uid ? "View Dashboard" : "Login to your account"
+            }
           />
         </div>
       </HeroContent>

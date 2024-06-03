@@ -121,35 +121,35 @@ export const eWallets: PaymentMethodData[] = [
   },
 ];
 
-const bankMethods: PaymentMethodData[] = [
-  {
-    id: 0,
-    name: "bpi",
-    link: "bg-[url('/svg/bpi.svg')]",
-    style: " border-ash bg-zap hover:border-prime",
-  },
-  {
-    id: 1,
-    name: "ubp",
-    link: "bg-[url('/svg/ubp.svg')]",
-    style: " border-ash bg-zap hover:border-prime",
-  },
-  {
-    id: 2,
-    name: "chinabank",
-    link: "bg-[url('/svg/chinabank.svg')]",
-    style: " border-ash bg-zap hover:border-prime",
-  },
-  {
-    id: 3,
-    name: "rcbc",
-    link: "bg-[url('/svg/rcbc.svg')]",
-    style: " border-ash bg-zap hover:border-prime",
-  },
-  {
-    id: 4,
-    name: "bdo",
-    link: "bg-[url('/svg/bdo.svg')]",
-    style: " border-ash bg-zap hover:border-prime",
-  },
-];
+// const bankMethods: PaymentMethodData[] = [
+//   {
+//     id: 0,
+//     name: "bpi",
+//     link: "bg-[url('/svg/bpi.svg')]",
+//     style: " border-ash bg-zap hover:border-prime",
+//   },
+//   {
+//     id: 1,
+//     name: "ubp",
+//     link: "bg-[url('/svg/ubp.svg')]",
+//     style: " border-ash bg-zap hover:border-prime",
+//   },
+//   {
+//     id: 2,
+//     name: "chinabank",
+//     link: "bg-[url('/svg/chinabank.svg')]",
+//     style: " border-ash bg-zap hover:border-prime",
+//   },
+//   {
+//     id: 3,
+//     name: "rcbc",
+//     link: "bg-[url('/svg/rcbc.svg')]",
+//     style: " border-ash bg-zap hover:border-prime",
+//   },
+//   {
+//     id: 4,
+//     name: "bdo",
+//     link: "bg-[url('/svg/bdo.svg')]",
+//     style: " border-ash bg-zap hover:border-prime",
+//   },
+// ];

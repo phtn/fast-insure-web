@@ -1,13 +1,17 @@
-import { AuthContext, type ProfileProps } from "@/app/(context)/context";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { AuthContext } from "@/app/(context)/context";
+import { type AccountTypeSchema } from "@/server/resource/account";
+import { useContext, useEffect, useState } from "react";
 
 export const useConnect = () => {
-  const profile = useContext(AuthContext)?.profile as ProfileProps;
+  const profile = useContext(AuthContext)?.profile;
   const userId = profile?.userId ?? "";
 
   const [userCode, setUserCode] = useState<string | null>(null);
   const [group, setGroup] = useState<string | null>(null);
   const [linkedId, setLinkedId] = useState<string | null>(null);
+  const [accountType, setAccountType] = useState<
+    AccountTypeSchema | undefined
+  >();
 
   useEffect(() => {
     if (group) {
@@ -21,11 +25,11 @@ export const useConnect = () => {
     }
   }, [userId]);
 
-  const getAccoutType = useCallback(() => {
-    if (profile) {
-      return profile.accountType;
+  useEffect(() => {
+    if (profile?.accountType) {
+      setAccountType(profile.accountType);
     }
-  }, [profile]);
+  }, [profile?.accountType]);
 
-  return { userCode, setGroup, linkedId, getAccoutType };
+  return { profile, userCode, setGroup, linkedId, accountType };
 };

@@ -4,11 +4,11 @@ import { z } from "zod";
 
 export const checkoutCopperUrl = "/checkout/sessions";
 
-const checkoutData = {
-  submitType: "pay",
-  lineItems: { data: [{ priceData: { currency: "usdc" }, quantity: 1 }] },
-  paymentSetting: { allowSwap: false },
-};
+// export const checkoutData = {
+//   submitType: "pay",
+//   lineItems: { data: [{ priceData: { currency: "usdc" }, quantity: 1 }] },
+//   paymentSetting: { allowSwap: false },
+// };
 
 export const CheckoutCopperResource = z.object({
   submitType: z.string(),
