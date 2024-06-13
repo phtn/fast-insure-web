@@ -2,22 +2,26 @@
 
 import { type ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "./header";
-import { copyFn } from "@/utils/helpers";
+import { charlimit, copyFn } from "@/utils/helpers";
 import Link from "next/link";
-import { FileTextIcon, SettingsIcon } from "lucide-react";
-import { statuses } from "./schema";
+import { FilePenLine, FileTextIcon, SettingsIcon } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { type IDMRequestSchema } from "@/server/resource/idm";
 import { PageLink } from "../../../(components)/table/page-link";
-import { DateTimeCell } from "../../../(components)/table/datetime";
+import { DateTimeCell, dateHeader } from "../../../(components)/table/datetime";
 import { MoreOptions } from "../../../(components)/table/more-options";
+import { statuses } from "../../../(components)/table/request-schemas";
 
 export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
   {
     id: "pagelink",
     accessorKey: "pagelink",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} className="w-full" />
+      <DataTableColumnHeader
+        column={column}
+        className="flex w-full justify-center"
+        element={<FilePenLine className="size-4 text-white/70" />}
+      />
     ),
     cell: ({ row }) => {
       const id: string = row.getValue("id");
@@ -39,7 +43,7 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
       <DataTableColumnHeader
         column={column}
         title="Request Id"
-        className="flex w-fit justify-end"
+        className="flex w-fit justify-end whitespace-nowrap"
       />
     ),
     cell: ({ row }) => {
@@ -75,9 +79,13 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
       const assuredName: string = row.getValue("assuredName");
 
       return (
-        <div className="flex items-center justify-start">
-          <p className={"font-sans text-xs font-medium uppercase"}>
-            {assuredName}
+        <div className="flex w-fit items-center justify-start">
+          <p
+            className={
+              "whitespace-nowrap font-sans text-xs font-medium uppercase"
+            }
+          >
+            {charlimit(assuredName)}
           </p>
         </div>
       );
@@ -94,12 +102,12 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader className="w-fit" column={column} title="Agent" />
     ),
-    cell: (info) => {
-      const agentName = info.getValue() as string;
+    cell: ({ row }) => {
+      const agentName: string = row.getValue("agent");
       return (
         <div className="flex items-center justify-start">
           <p className={"font-sans text-xs font-normal tracking-tight"}>
-            {agentName}
+            {charlimit(agentName)}
           </p>
         </div>
       );
@@ -110,13 +118,7 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
   {
     id: "updatedAt",
     accessorKey: "updatedAt",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        className="flex justify-center"
-        column={column}
-        title="Submitted on"
-      />
-    ),
+    header: dateHeader("Submitted on"),
     cell: ({ row }) => {
       const submitted: string = row.getValue("updatedAt");
 
@@ -176,7 +178,7 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
               "flex h-8 w-fit items-center justify-center space-x-2 rounded-[8px] px-2 font-sans text-xs font-medium tracking-tight",
             )}
           >
-            {status?.icon && <status.icon className="size-4 opacity-70" />}
+            {status?.icon && <status.icon className="size-4" />}
             <p className={cn(status?.color)}>{status?.label}</p>
           </div>
         </Link>
@@ -198,13 +200,8 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
         element={<SettingsIcon className="size-4 text-white/70" />}
       />
     ),
-    cell: ({ row }) => {
-      return (
-        <MoreOptions
-          id={row.getValue("id")}
-          removeItem={() => console.log("removed")}
-        />
-      );
+    cell: () => {
+      return <MoreOptions options={[]} />;
     },
     enableSorting: false,
   },

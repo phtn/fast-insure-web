@@ -70,7 +70,7 @@ export const Raynor = ({
             >
               <Link href={href ?? `/account`}>
                 <button className="group inline-flex h-[50px] animate-shimmer items-center justify-center rounded-lg border border-fast bg-[linear-gradient(110deg,#000103,45%,#93c5fd,55%,#000103)] bg-[length:200%_100%] px-6 text-[14px] font-bold text-white transition-all duration-4000 hover:text-zap focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 md:w-[250px]">
-                  {actionLabel}
+                  <span>{actionLabel}</span>
                   {uid ? (
                     <LayoutGridIcon className={iconStyle} />
                   ) : (
@@ -92,16 +92,16 @@ const Title = tw.h2`
   font-k2d font-semibold tracking-tight
   leading-[2.25rem] md:leading-[2.75rem] max-w-[15ch] md:max-w-[15ch]
   text-transparent bg-clip-text bg-gradient-to-r from-fast from-20% to-fast
-  text-5xl md:text-6xl h-fit py-1
+  text-4xl md:text-6xl h-fit py-1
 `;
 
 const TitleFeature = tw.h2`
   font-k2d font-semibold tracking-wide
   leading-[2.25rem] md:leading-[2.75rem] max-w-[15ch] md:max-w-[15ch]
   text-transparent bg-clip-text bg-gradient-to-r from-blue-500 from-[5%] via-blue-400 to-blue-300
-  text-5xl md:text-6xl h-fit py-1
+  text-4xl md:text-6xl h-fit py-1 portrait:leading-[2.75rem]
 `;
 
 const Description = tw.h3`
-  max-w-[28ch] py-1 md:max-w-[32ch] text-coal text-[14px] md:text-lg
+  max-w-[32ch] py-1 md:max-w-[32ch] text-coal text-[14px] md:text-lg
 `;

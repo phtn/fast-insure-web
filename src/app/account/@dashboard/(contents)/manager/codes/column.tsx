@@ -2,22 +2,22 @@
 
 import { type ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "./header";
-import { copyFn } from "@/utils/helpers";
+import { copyFn, getInitials } from "@/utils/helpers";
 import { SettingsIcon } from "lucide-react";
 import { colorcodes } from "./schema";
 import { cn } from "@/utils/cn";
-import { DateTimeCell } from "../../../(components)/table/datetime";
+import { DateTimeCell, dateHeader } from "../../../(components)/table/datetime";
 import { MoreOptions } from "../../../(components)/table/more-options";
-import { type AgentCodeSchema } from "@/server/resource/account";
+import type { CodeDataSchema } from "@/server/resource/code";
 
-export const columns: ColumnDef<AgentCodeSchema>[] = [
+export const columns: ColumnDef<CodeDataSchema>[] = [
   {
     id: "code",
     accessorKey: "code",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Code"
+        title="Codes"
         className="flex w-fit justify-end"
       />
     ),
@@ -55,23 +55,35 @@ export const columns: ColumnDef<AgentCodeSchema>[] = [
     enableSorting: false,
   },
   {
-    id: "agentAssigned",
-    accessorKey: "agentAssigned",
+    accessorKey: "assignedName",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Assigned to"
+        title="Agent"
         className="flex justify-start"
       />
     ),
     cell: ({ row }) => {
-      const agentAssigned: string = row.getValue("agentAssigned");
+      const agentName: string | undefined = row.getValue("assignedName");
 
       return (
-        <div className="flex items-center justify-start">
-          <p className={"font-sans text-xs text-gray-500"}>
-            {agentAssigned ?? `unassigned`}
+        <div className="flex flex-col items-start justify-center -space-y-1 text-xs">
+          <p
+            className={cn(
+              `max-w-[10ch] whitespace-nowrap portrait:tracking-tight`,
+              agentName
+                ? `font-sans font-medium text-void`
+                : `font-light text-clay`,
+            )}
+          >
+            {agentName ? (
+              <span className="mr-2 rounded bg-fast p-0.5 font-bold uppercase text-zap">
+                {getInitials(agentName)}
+              </span>
+            ) : null}
+            {agentName ?? "unassigned"}
           </p>
+          {/* <p className="text-[9px]">{agentId?.substring(0, 14)}</p> */}
         </div>
       );
     },
@@ -93,9 +105,9 @@ export const columns: ColumnDef<AgentCodeSchema>[] = [
         <div className="flex items-center justify-start">
           <p
             className={cn(
-              "rounded-lg border p-1.5 font-sans text-xs tracking-tight",
+              "rounded-lg border p-1 font-sans text-xs tracking-tight",
               status
-                ? `border-blue-300 font-normal text-blue-400 shadow-sm`
+                ? `border-blue-300 font-normal text-blue-500 shadow-sm`
                 : `text-gray-400`,
             )}
           >
@@ -110,17 +122,21 @@ export const columns: ColumnDef<AgentCodeSchema>[] = [
   {
     id: "createdAt",
     accessorKey: "createdAt",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        className="flex justify-center"
-        column={column}
-        title="Created on"
-      />
-    ),
+    header: dateHeader("Created"),
     cell: ({ row }) => {
       const createdAt: string = row.getValue("createdAt");
-
       return <DateTimeCell date={createdAt} />;
+    },
+    enableSorting: true,
+    enableHiding: true,
+  },
+  {
+    id: "dateAssigned",
+    accessorKey: "dateAssigned",
+    header: dateHeader("Activation"),
+    cell: ({ row }) => {
+      const activation: string = row.getValue("dateAssigned");
+      return <DateTimeCell date={activation} />;
     },
     enableSorting: true,
     enableHiding: true,
@@ -130,7 +146,7 @@ export const columns: ColumnDef<AgentCodeSchema>[] = [
     accessorKey: "createdBy",
     header: ({ column }) => (
       <DataTableColumnHeader
-        className="flex justify-center"
+        className="flex w-fit justify-center"
         column={column}
         title="Created by"
       />
@@ -138,11 +154,11 @@ export const columns: ColumnDef<AgentCodeSchema>[] = [
     cell: (info) => {
       const createdBy = info.getValue() as string;
       return (
-        <div className="flex items-center justify-center">
+        <div className="flex w-fit items-center justify-center">
           <p
             className={"font-mono text-xs font-medium uppercase tracking-wider"}
           >
-            {createdBy.substring(0, 10)}
+            {createdBy.substring(0, 8)}
           </p>
         </div>
       );
@@ -151,20 +167,36 @@ export const columns: ColumnDef<AgentCodeSchema>[] = [
     enableHiding: true,
   },
   {
-    id: "more",
-    accessorKey: "more",
+    id: "id",
+    accessorKey: "id",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        className="flex justify-center"
+        className="flex w-full justify-center"
         element={<SettingsIcon className="size-4 text-white/70" />}
       />
     ),
     cell: ({ row }) => {
+      const id = row.getValue("id");
       return (
         <MoreOptions
-          id={row.getValue("id")}
-          removeItem={() => console.log("removed")}
+          options={[
+            {
+              action: () => console.log(id),
+              label: "Update code",
+              name: "update",
+            },
+            {
+              action: () => console.log(id),
+              label: "Delete code",
+              name: "delete",
+            },
+            {
+              action: () => console.log(id),
+              label: "Deactivate",
+              name: "disable",
+            },
+          ]}
         />
       );
     },

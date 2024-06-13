@@ -17,6 +17,6 @@ export type FieldOptionProps<S extends FieldValues> = {
   item: FieldProps<IDMRequestFormSchema>;
   index: number;
   length: number;
-  field: ControllerRenderProps<S>;
+  field?: ControllerRenderProps<S>;
   isValid?: boolean;
 };

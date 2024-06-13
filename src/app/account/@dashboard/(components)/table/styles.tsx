@@ -68,16 +68,15 @@ export const SpaceX = tw(Cross2Icon)`
 
 export const ActiveOptions = tw(Button)`
   hover:bg-neutral-300/20
-  h-[24px] border-[0.33px] border-transparent px-2 text-xs text-coal/50
-  data-[state=open]:bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))]
+  h-[12px] border-[0.33px] border-transparent px-2 text-xs text-coal/50
   data-[state=open]:backdrop-blur-lg
 
-  data-[state=open]:from-slate-900
-  data-[state=open]:via-zinc-800/80
-  data-[state=open]:to-yellow-500
+  data-[state=open]:bg-ash
 
-  data-[state=open]:rounded-s-full data-[state=open]:border-slate-800
-  data-[state=open]:shadow-inner data-[state=open]:shadow-neutral-700
+  data-[state=open]:rounded-full
+  data-[state=open]:shadow-inner
 
-  data-[state=open]:text-blue-200
+  data-[state=open]:text-coal
+
+  transition-all duration-200
   `;

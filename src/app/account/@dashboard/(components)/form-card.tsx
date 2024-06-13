@@ -16,21 +16,21 @@ type CardProps = {
   route: string;
 };
 
-const skyCardStyle = `from-sky-100/90 via-sky-50/95 to-sky-50 h-full w-full`;
-const blueCardStyle = `from-blue-100/90 via-pink-100/90 to-sky-50 h-full w-full`;
+// const skyCardStyle = `from-sky-100/90 via-sky-50/95 to-sky-50 h-full w-full`;
+const blueCardStyle = `from-teal-200 via-pink-100 to-sky-50 h-full w-full`;
 // const pinkCardStyle = `from-indigo-100/90 via-rose-50 to-sky-50 h-full w-full`;
 const defaultCardStyle = `from-cyan-50/90 via-slate-100 to-sky-50 h-full w-full`;
 const greyCardStyle = `from-slate-100/90 via-gray-100 to-sky-50 h-full w-full`;
 const emeraldCardStyle = `from-teal-100 via-blue-100/90 to-sky-50 h-full w-full`;
-const lightCardStyle = `from-zinc-200 via-white to-sky-50 h-full w-full`;
+const lightCardStyle = `from-pink-300 via-yellow-100/90 to-green-100 h-full w-full`;
 
 export const FormCard = (props: CardProps) => {
   const { title, extra, iconStyle, onClick, loading, children, route } = props;
 
   const themeSelector = useCallback(() => {
-    if (route === "request") {
-      return skyCardStyle;
-    } else if (route === "vehicle") {
+    if (route === "vehicle") {
+      return lightCardStyle;
+    } else if (route === "assured") {
       return emeraldCardStyle;
     } else if (route === "files") {
       return blueCardStyle;
@@ -95,13 +95,13 @@ export const GreyCard = ({ children }: { children: ReactNode }) => (
 const Cape = tw.div`
     bg-void/80 overflow-scroll
     shadow-sm shadow-slate-300
-    rounded-lg portrait:h-fit
+    rounded-lg portrait:rounded-none portrait:h-fit
     transition-all duration-300
     `;
 
 const CardContainer = tw.div`
   overflow-clip xl:pr-[2px]
-  rounded-lg portrait:h-fit
+  portrait:h-fit
   border-clay/50 border-[0.33px]
   bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))]
 

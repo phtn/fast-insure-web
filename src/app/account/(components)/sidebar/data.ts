@@ -122,18 +122,18 @@ export const managerItems: GroupItem[] = [
       },
     ],
   },
-  {
-    label: "Settings",
-    values: [
-      {
-        label: "Settings",
-        desc: "General Settings",
-        value: "0",
-        icon: CogIcon,
-        href: "/account/settings",
-      },
-    ],
-  },
+  // {
+  //   label: "Settings",
+  //   values: [
+  //     {
+  //       label: "Settings",
+  //       desc: "General Settings",
+  //       value: "0",
+  //       icon: CogIcon,
+  //       href: "/account/settings",
+  //     },
+  //   ],
+  // },
 ];
 
 export const agentItems: GroupItem[] = [
@@ -163,18 +163,18 @@ export const agentItems: GroupItem[] = [
       },
     ],
   },
-  {
-    label: "Settings",
-    values: [
-      {
-        label: "Settings",
-        desc: "General Settings",
-        value: "0",
-        icon: CogIcon,
-        href: "/account/settings",
-      },
-    ],
-  },
+  // {
+  //   label: "Settings",
+  //   values: [
+  //     {
+  //       label: "Settings",
+  //       desc: "General Settings",
+  //       value: "0",
+  //       icon: CogIcon,
+  //       href: "/account/settings",
+  //     },
+  //   ],
+  // },
 ];
 
 export const agentTwoNav: GroupItem[] = [
@@ -204,16 +204,16 @@ export const agentTwoNav: GroupItem[] = [
       },
     ],
   },
-  {
-    label: "Settings",
-    values: [
-      {
-        label: "Settings",
-        desc: "General Settings",
-        value: "0",
-        icon: CogIcon,
-        href: "/account/settings",
-      },
-    ],
-  },
+  // {
+  //   label: "Settings",
+  //   values: [
+  //     {
+  //       label: "Settings",
+  //       desc: "General Settings",
+  //       value: "0",
+  //       icon: CogIcon,
+  //       href: "/account/settings",
+  //     },
+  //   ],
+  // },
 ];

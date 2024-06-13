@@ -21,10 +21,13 @@ const tablist: Tablist[] = [
 export const Triggers = () => {
   const pathName = usePathname();
   return (
-    <div className="flex items-center p-8 md:px-24 md:py-10">
-      <TabsList className="border border-ash bg-ash/80">
+    <div className="flex items-center p-8 md:px-24 md:py-10 portrait:px-0 portrait:py-1">
+      <TabsList className="w-full border border-ash">
         {tablist.map((tab) => (
-          <div className="w-[68px]" key={tab.id}>
+          <div
+            className="w-full border border-red-500 portrait:w-[64px]"
+            key={tab.id}
+          >
             <Link href={tab.href}>
               <TabsTrigger value={tab.value} className="relative" asChild>
                 <Touch

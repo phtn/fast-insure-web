@@ -23,21 +23,23 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "ring-offset-background focus:ring-ring text-md flex h-10 w-full items-center justify-between space-x-3 rounded-md bg-zap px-3 py-2 focus:outline-none focus:ring-4 focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+      "focus:ring-ring text-md flex h-10 w-full items-center justify-between space-x-3 rounded-md bg-zap px-3 py-2 focus:outline-none focus:ring-1 focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
       className,
     )}
     {...props}
   >
     {children}
-    <SelectPrimitive.Icon asChild>
-      {caretLoading ? (
-        <LoaderIcon
-          className={cn("size-4 animate-spin stroke-1", caretStyle)}
-        />
-      ) : (
-        <CaretSortIcon className={cn("size-4 opacity-50", caretStyle)} />
-      )}
-    </SelectPrimitive.Icon>
+    <div className="flex h-[64px] w-[24px] items-center justify-center">
+      <SelectPrimitive.Icon asChild>
+        {caretLoading ? (
+          <LoaderIcon
+            className={cn("size-4 animate-spin stroke-1", caretStyle)}
+          />
+        ) : (
+          <CaretSortIcon className={cn("size-4 opacity-50", caretStyle)} />
+        )}
+      </SelectPrimitive.Icon>
+    </div>
   </SelectPrimitive.Trigger>
 ));
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
@@ -54,7 +56,7 @@ const SelectScrollUpButton = React.forwardRef<
     )}
     {...props}
   >
-    <ChevronUp className="h-4 w-4 text-blue-400" />
+    <ChevronUp className="size-4 text-blue-400" />
   </SelectPrimitive.ScrollUpButton>
 ));
 SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName;

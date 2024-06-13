@@ -5,19 +5,22 @@ import { DataTableColumnHeader } from "./header";
 import { copyFn } from "@/utils/helpers";
 import Link from "next/link";
 import { FileTextIcon, SettingsIcon } from "lucide-react";
-import { statuses } from "./schema";
 import { cn } from "@/utils/cn";
 import { type IDMRequestSchema } from "@/server/resource/idm";
 import { PageLink } from "../../../(components)/table/page-link";
 import { DateTimeCell } from "../../../(components)/table/datetime";
 import { MoreOptions } from "../../../(components)/table/more-options";
+import { statuses } from "../../../(components)/table/request-schemas";
 
 export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
   {
     id: "pagelink",
     accessorKey: "pagelink",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} className="w-full" />
+      <DataTableColumnHeader
+        column={column}
+        className="flex w-full justify-center"
+      />
     ),
     cell: ({ row }) => {
       const id: string = row.getValue("id");
@@ -39,7 +42,7 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
       <DataTableColumnHeader
         column={column}
         title="Request Id"
-        className="flex w-fit justify-end"
+        className="flex w-fit justify-end whitespace-nowrap"
       />
     ),
     cell: ({ row }) => {
@@ -198,13 +201,8 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
         element={<SettingsIcon className="size-4 text-white/70" />}
       />
     ),
-    cell: ({ row }) => {
-      return (
-        <MoreOptions
-          id={row.getValue("id")}
-          removeItem={() => console.log("removed")}
-        />
-      );
+    cell: () => {
+      return <MoreOptions options={[]} />;
     },
     enableSorting: false,
   },

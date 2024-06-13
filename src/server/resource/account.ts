@@ -19,7 +19,6 @@ export const AddressResource = z.object({
   country: z.string().or(z.null()).or(z.undefined()),
   postalCode: z.string().or(z.null()).or(z.undefined()),
 });
-
 export type AddressSchema = z.infer<typeof AddressResource>;
 
 export const UserDataResource = z.object({
@@ -36,22 +35,31 @@ export const UserDataResource = z.object({
 export type UserDataSchema = z.infer<typeof UserDataResource>;
 
 export const UserProfileResource = z.object({
-  userId: z.string().or(z.undefined()),
-  email: z.string().email().or(z.undefined()),
-  displayName: z.string().or(z.undefined()),
   accountType: AccountType,
-  x: z.string().or(z.null()).or(z.undefined()),
-  userData: UserDataResource.or(z.undefined()),
+  active: z.boolean().or(z.undefined()),
+  agentCode: z.string().or(z.null()),
+  branchCode: z.string().or(z.undefined()),
+  createdAt: z.string().datetime(),
+  displayName: z.string().or(z.undefined()),
+  email: z.string().email().or(z.undefined()),
   isVerified: z.boolean(),
   setupComplete: z.boolean(),
   setupProgress: z.number(),
-  createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  branchCode: z.string().or(z.undefined()),
-  userCode: z.string().or(z.null()),
+  userId: z.string().or(z.undefined()),
+  userData: UserDataResource.or(z.undefined()),
 });
 
 export type UserProfileSchema = z.infer<typeof UserProfileResource>;
+
+const profileKeySchema = UserProfileResource.keyof();
+
+export const UpdateUserProfileResource = z.object({
+  userId: z.string().or(z.undefined()),
+  payload: z.record(profileKeySchema, z.any()),
+});
+
+export type UpdateUserProfileSchema = z.infer<typeof UpdateUserProfileResource>;
 
 export const CreateAccountResource = z.object({
   userId: z.string().min(1),
@@ -61,9 +69,19 @@ export const CreateAccountResource = z.object({
 
 export type NewUserPayload = z.infer<typeof CreateAccountResource>;
 
-export const AgentCodeResource = z.object({
-  userId: z.string(),
-  code: z.string(),
+export const BranchDataResource = z.object({
+  branchCode: z.string(),
+  branchName: z.string(),
+  id: z.string(),
+  active: z.boolean(),
+  managerData: z.object({
+    id: z.string(),
+    name: z.string(),
+    email: z.string(),
+    phone: z.string().or(z.null()),
+  }),
+  managerName: z.string(),
+  address: AddressResource.or(z.undefined()),
 });
 
-export type AgentCodeSchema = z.infer<typeof AgentCodeResource>;
+export type BranchDataSchema = z.infer<typeof BranchDataResource>;

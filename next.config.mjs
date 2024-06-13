@@ -25,6 +25,7 @@ const config = {
   reactStrictMode: true,
   webpack: (config) => {
     config.resolve.fallback = { fs: false };
+    config.resolve.alias.canvas = false;
     return config;
   },
 };

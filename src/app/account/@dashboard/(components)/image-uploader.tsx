@@ -1,12 +1,12 @@
 import { ref } from "firebase/storage";
-import { useCallback, useMemo, type ChangeEvent } from "react";
+import { useCallback, type ChangeEvent } from "react";
 import { useUploadFile } from "react-firebase-hooks/storage";
 import { LoaderIcon, UploadCloudIcon, UploadIcon, XIcon } from "lucide-react";
 import { ImageFile } from "@/app/(ui)/input";
 import Image from "next/image";
 
 import { Button } from "@/app/(ui)/button";
-import { opts } from "@/utils/helpers";
+import { onCount, opts } from "@/utils/helpers";
 import { cn } from "@/utils/cn";
 import { useFileHandler } from "../(hooks)/file-handler";
 import { storage } from "@/libs/db";
@@ -22,14 +22,15 @@ export const ImageUploader = (props: UploaderProps) => {
   const [uploadFile, uploading, snapshot] = useUploadFile();
   const storageRef = ref(storage, `${dir}/${filename}`);
 
+  ///
+  console.log(onCount());
+  ///
+
   const { file, handleFileChange, handleFileRemove, imageData } =
     useFileHandler();
 
-  const bytes = useMemo(
-    () =>
-      (Number(snapshot?.bytesTransferred) / Number(snapshot?.totalBytes)) * 100,
-    [snapshot],
-  );
+  const bytes =
+    (Number(snapshot?.bytesTransferred) / Number(snapshot?.totalBytes)) * 100;
 
   const ImageOptions = useCallback(() => {
     const upload = async () => {
@@ -65,8 +66,9 @@ export const ImageUploader = (props: UploaderProps) => {
   ]);
 
   return (
-    <div className="flex h-full w-full cursor-pointer">
+    <div className="flex h-[280px] w-full cursor-pointer items-center justify-around space-x-4 rounded-xl bg-ghost bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-zinc-800 via-zinc-800/75 to-yellow-500 px-10 backdrop-blur-lg">
       <ImageOptions />
+      <AcceptedFormats />
     </div>
   );
 };
@@ -79,7 +81,7 @@ export const Dropzone = ({ fileChange }: DropzoneProps) => {
     fileChange(e.target.files);
   };
   return (
-    <div className="rounded-lg bg-white">
+    <div className="h-[360px] w-[400px] rounded-3xl bg-white shadow-xl">
       <ImageFile
         type="file"
         name="upload"
@@ -144,7 +146,7 @@ export const ImageViewer = ({
   }, [uploading]);
   return (
     <div className="w-full space-y-4">
-      <div className="portait:w-[80px] relative flex h-[200px] w-full items-center justify-center overflow-clip rounded-lg border bg-gradient-to-r from-gray-800/80 to-gray-800/40 shadow-inner portrait:h-[64px]">
+      <div className="portait:w-[80px] relative flex h-[360px] w-full items-center justify-center overflow-clip rounded-lg border bg-gradient-to-r from-gray-800/80 to-gray-800/40 shadow-inner portrait:h-[64px]">
         {downloadUrl ? (
           <ImageComp alt={downloadUrl} src={downloadUrl} width={0} height={0} />
         ) : (
@@ -188,5 +190,32 @@ export const ImageViewer = ({
 };
 
 const ImageComp = tw(Image)`
-  absolute h-[200px] w-[200px] transition-all duration-500 ease-in-out hover:scale-[250%] portrait:h-[64px] portrait:w-[80px]
+  absolute h-[200px] w-auto transition-all duration-500 ease-in-out hover:scale-[250%] portrait:h-[64px] portrait:w-[80px]
   `;
+
+const AcceptedFormats = () => (
+  <div className="space-y-6">
+    <div className="grid w-[250px] grid-cols-3 place-items-center gap-1 align-middle">
+      <div className="h-[48px] w-[44px] bg-[url('/images/jpg.png')] bg-cover" />
+      <div className="h-[48px] w-[44px] bg-[url('/images/png.png')] bg-cover" />
+      <div className="h-[48px] w-[44px] bg-[url('/images/svg.png')] bg-cover" />
+    </div>
+    <div className="grid w-[250px] grid-cols-3 place-items-center gap-1 align-middle">
+      <div className="h-[48px] w-[44px] bg-[url('/images/pdf.png')] bg-cover" />
+      <div className="h-[48px] w-[44px] bg-[url('/images/mp4.png')] bg-cover" />
+      <div className="h-[58px] w-[52px] bg-[url('/images/webp.png')] bg-cover" />
+    </div>
+    <div className="flex items-center justify-center text-ghost">
+      <div>
+        <p className="text-center text-sm tracking-tight text-ghost">
+          Supported formats
+        </p>
+        <div className="flex items-start justify-center ">
+          <p className="font-k2d text-[10px] font-light uppercase text-ash/90">
+            jpg, png, svg, webp, pdf & mp4
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+);

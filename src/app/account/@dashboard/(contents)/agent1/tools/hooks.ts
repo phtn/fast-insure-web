@@ -41,7 +41,7 @@ export const useAgentTools = ({ userId }: AgentToolProps) => {
     active: true,
   };
 
-  const handleCTPLRequest = () => {
+  const handleCreateRequest = () => {
     setLoading(true);
 
     createDraftRequest(payload)
@@ -62,9 +62,9 @@ export const useAgentTools = ({ userId }: AgentToolProps) => {
     files: z.array(z.string()).or(z.null()),
   */
 
-  const handleCTPLRequestItem = () => {
+  const handleRequestItemRoute = () => {
     route.push(`/account/request/${userId}`);
   };
 
-  return { handleCTPLRequest, loading, handleCTPLRequestItem };
+  return { handleCreateRequest, loading, handleRequestItemRoute };
 };

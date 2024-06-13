@@ -1,13 +1,22 @@
 "use client";
 
 import { AuthContext } from "@/app/(context)/context";
-import { type AgentCodeSchema } from "@/server/resource/account";
-import type { IDMAgentSchema, IDMRequestSchema } from "@/server/resource/idm";
+import type { UserProfileSchema } from "@/server/resource/account";
+import type { CodeDataSchema } from "@/server/resource/code";
+import type { IDMRequestSchema } from "@/server/resource/idm";
 import { auth, db } from "@@libs/db";
-import { type FirestoreError, collection, doc } from "firebase/firestore";
-import { createContext, useEffect, type ReactNode, useContext } from "react";
+import {
+  type FirestoreError,
+  collection,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+import { createContext, type ReactNode, useContext } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useCollection, useDocumentData } from "react-firebase-hooks/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { type Options } from "react-firebase-hooks/firestore/dist/firestore/types";
+// useDocumentData
 
 export type ListType = "drafts" | "requests";
 
@@ -16,7 +25,6 @@ export type AgentCtxType = {
   numberOfDrafts: number | undefined;
   requests: IDMRequestSchema[] | undefined;
   numberOfRequests: number | undefined;
-  agentData: IDMAgentSchema | undefined;
   loading: boolean;
   error: FirestoreError | undefined;
 };
@@ -26,16 +34,11 @@ export const AgentContextProvider = ({ children }: { children: ReactNode }) => {
   const [user] = useAuthState(auth);
   const agentId = user?.uid;
 
-  useEffect(() => {
-    console.log(user?.uid);
-  }, [user?.uid]);
+  const reqRef = collection(db, `requests`);
+  const queryRef = query(reqRef, orderBy("updatedAt", "desc"));
+  const [values, loading, error] = useCollection(queryRef, options);
 
-  const reqs = collection(db, `requests`);
-  const [query, loading, error] = useCollection(reqs, {
-    snapshotListenOptions: { includeMetadataChanges: true },
-  });
-
-  const snapshot = query?.docs.map((doc) => {
+  const snapshot = values?.docs.map((doc) => {
     return doc.data() as IDMRequestSchema;
   });
   const drafts = snapshot?.filter(
@@ -43,10 +46,10 @@ export const AgentContextProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const numberOfDrafts = drafts?.length;
-  const requests = snapshot?.filter((item) => item.agentId === user?.uid);
+  const requests = snapshot?.filter(
+    (item) => item.agentId === user?.uid && item.status !== "draft",
+  );
   const numberOfRequests = requests?.length;
-  const [values] = useDocumentData(doc(db, `users/${user?.uid}`));
-  const agentData = values as IDMAgentSchema;
 
   return (
     <AgentContext.Provider
@@ -55,7 +58,6 @@ export const AgentContextProvider = ({ children }: { children: ReactNode }) => {
         requests,
         numberOfDrafts,
         numberOfRequests,
-        agentData,
         loading,
         error,
       }}
@@ -66,8 +68,13 @@ export const AgentContextProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export type ManagerCtxType = {
-  codes: AgentCodeSchema[] | undefined;
-  // requests: IDMRequestSchema[] | undefined;
+  codes: CodeDataSchema[] | undefined;
+  requests: IDMRequestSchema[] | undefined;
+  allAgents: UserProfileSchema[] | undefined;
+  fetchingAgents: boolean;
+  agentsError: FirestoreError | undefined;
+  fetchingReqs: boolean;
+  reqError: FirestoreError | undefined;
   loading: boolean;
   error: FirestoreError | undefined;
 };
@@ -76,18 +83,67 @@ export const ManagerContext = createContext<ManagerCtxType | null>(null);
 export const ManagerContextProvider = (props: { children: ReactNode }) => {
   const profile = useContext(AuthContext)?.profile;
 
-  const codeRef = collection(db, `users/${profile?.userId}/codes`);
-  const [query, loading, error] = useCollection(codeRef, {
-    snapshotListenOptions: { includeMetadataChanges: true },
+  //_ CODES
+  const codesRef = collection(db, `users/${profile?.userId}/codes`);
+  const queryCodesRef = query(codesRef, orderBy(`createdAt`, "desc"));
+  const [codesCollection, loading, error] = useCollection(
+    queryCodesRef,
+    options,
+  );
+  const codes = codesCollection?.docs.map((doc) => {
+    const data = doc.data() as CodeDataSchema;
+    return { ...data, id: doc.id };
   });
 
-  const codes = query?.docs.map((doc) => {
-    return doc.data() as AgentCodeSchema;
-  });
+  //_  REQUESTS
+  const reqRef = collection(db, `requests`);
+  const queryReqRef = query(reqRef, orderBy("updatedAt", "desc"));
+  const [reqsCollection, fetchingReqs, reqError] = useCollection(
+    queryReqRef,
+    options,
+  );
+  const requests = reqsCollection?.docs
+    .map((doc) => doc.data() as IDMRequestSchema)
+    .filter(
+      (doc) => doc.branchCode === profile?.branchCode && doc.status !== "draft",
+    );
+
+  //_  AGENTS
+  const agentsRef = collection(db, `users`);
+  const agentsQueryRef = query(
+    agentsRef,
+    where("accountType", "in", ["AGENT1", "AGENT2"]),
+    // orderBy("createdAt", "desc"),
+  );
+  const [agentsCollection, fetchingAgents, agentsError] = useCollection(
+    agentsQueryRef,
+    options,
+  );
+  const allAgents = agentsCollection?.docs
+    .map((doc) => doc.data() as UserProfileSchema)
+    .filter((agent) => agent.branchCode === profile?.branchCode);
+
+  console.log(profile?.branchCode);
 
   return (
-    <ManagerContext.Provider value={{ codes, loading, error }}>
+    <ManagerContext.Provider
+      value={{
+        codes,
+        requests,
+        allAgents,
+        fetchingAgents,
+        agentsError,
+        fetchingReqs,
+        reqError,
+        loading,
+        error,
+      }}
+    >
       {props.children}
     </ManagerContext.Provider>
   );
+};
+
+const options: Options = {
+  snapshotListenOptions: { includeMetadataChanges: true },
 };

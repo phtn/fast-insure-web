@@ -1,33 +1,27 @@
-import { CardFooter } from "@/app/(ui)/card";
-import { Card } from "../../../(components)/card";
-import { PlusIcon, UserPlusIcon } from "lucide-react";
-import { AgentCodes } from "./codes";
+import { AgentCodes, Request } from "./codes";
 import { TabContent } from "../../../(components)/styles";
-import { useTools } from "./hooks";
+import { useManagerTools } from "./hooks";
+import { useAgentTools } from "../../agent1/tools/hooks";
 
 type ToolContentProps = {
   userId: string | undefined;
+  branchCode: string | undefined;
 };
-export const Tools = ({ userId }: ToolContentProps) => {
-  const { agentCode, storingCode, handleGenerate } = useTools({ userId });
+export const Tools = (props: ToolContentProps) => {
+  const { agentCode, storingCode, handleGenerate } = useManagerTools(props);
+  const { handleCreateRequest, loading } = useAgentTools({
+    userId: props.userId,
+  });
   return (
     <TabContent value="tools">
-      <div className="grid grid-cols-1 gap-4 border-0 border-sky-500 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 border-0 border-sky-500 p-2 md:grid-cols-2">
         <AgentCodes
           code={agentCode}
           onClick={handleGenerate}
           storingCode={storingCode}
         />
-        <Card
-          title="Create Client Account"
-          description="Add a new client to your list."
-          onClick={() => console.log("create")}
-          icon={UserPlusIcon}
-          actionIcon={PlusIcon}
-          actionLabel="Create"
-        />
+        <Request onClick={handleCreateRequest} loading={loading} />
       </div>
-      <CardFooter>{/* <Button>Save changes</Button> */}</CardFooter>
     </TabContent>
   );
 };

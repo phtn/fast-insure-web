@@ -59,7 +59,7 @@ export function DataTableColumnHeader<TData, TValue>({
             ) : column.getIsSorted() === "asc" ? (
               <ArrowUp10Icon className="ml-2 size-4 text-indigo-500" />
             ) : (
-              <ListFilterIcon className="ml-2 size-3.5 text-sky-500" />
+              <ListFilterIcon className="ml-2 size-4 text-sky-500" />
             )}{" "}
           </Button>
         </DropdownMenuTrigger>
@@ -69,7 +69,7 @@ export function DataTableColumnHeader<TData, TValue>({
             onClick={() => column.toggleSorting(false)}
             className={column.getIsSorted() === "asc" ? `bg-cyan-700/10` : ``}
           >
-            <ArrowUp10Icon className="mr-2 size-3.5 text-indigo-300" />
+            <ArrowUp10Icon className="mr-2 size-4 text-indigo-300" />
 
             <span className="text-indigo-300">Asc</span>
           </BeachDropItem>
@@ -77,7 +77,7 @@ export function DataTableColumnHeader<TData, TValue>({
             selected={column.getIsSorted() === "desc"}
             onClick={() => column.toggleSorting(true)}
           >
-            <ArrowDown01Icon className="mr-2 size-3.5 text-teal-300" />
+            <ArrowDown01Icon className="mr-2 size-4 text-teal-300" />
             <span className="text-teal-300">Desc</span>
           </BeachDropItem>
           <DropdownMenuSeparator />
@@ -85,7 +85,7 @@ export function DataTableColumnHeader<TData, TValue>({
             selected={column.getIsVisible() === false}
             onClick={() => column.toggleVisibility(false)}
           >
-            <EyeOffIcon className="mr-2 size-3.5 text-zap" />
+            <EyeOffIcon className="mr-2 size-4 text-zap" />
             <span className="text-zap">Hide</span>
           </BeachDropItem>
         </BeachDrop>

@@ -2,7 +2,7 @@ import { type Column } from "@tanstack/react-table";
 import { type LucideIcon } from "lucide-react";
 
 export type Option = {
-  value: string;
+  value: string | boolean;
   label: string;
   icon: LucideIcon;
   color: string;

@@ -1,20 +1,16 @@
 import { type FieldProps } from "../../(components)/form-types";
 import {
-  BlendIcon,
   Building2Icon,
-  BusFrontIcon,
   GlobeIcon,
-  HexagonIcon,
-  LucideCalendar,
   MailIcon,
   MapIcon,
   MapPinnedIcon,
   MilestoneIcon,
   PencilLineIcon,
   PhoneIcon,
-  ShapesIcon,
   SignpostIcon,
-  UserRoundIcon,
+  SquareUserRoundIcon,
+  StickerIcon,
 } from "lucide-react";
 import { type IDMRequestFormSchema } from "@/server/resource/request";
 import { type SelectOptionType } from "../../(components)/select-option";
@@ -23,7 +19,7 @@ export const requestFields: FieldProps<IDMRequestFormSchema>[] = [
   {
     name: "firstName",
     alt: "name",
-    icon: UserRoundIcon,
+    icon: SquareUserRoundIcon,
     label: "First name@required",
     placeholder: "First name",
     type: "text",
@@ -31,7 +27,7 @@ export const requestFields: FieldProps<IDMRequestFormSchema>[] = [
   {
     name: "lastName",
     alt: "name",
-    icon: UserRoundIcon,
+    icon: SquareUserRoundIcon,
     label: "Last name@required",
     placeholder: "Last name",
     type: "text",
@@ -39,7 +35,7 @@ export const requestFields: FieldProps<IDMRequestFormSchema>[] = [
   {
     name: "middleName",
     alt: "middle name",
-    icon: UserRoundIcon,
+    icon: SquareUserRoundIcon,
     label: "Middle Name",
     placeholder: "Middle name",
     type: "text",
@@ -56,7 +52,7 @@ export const requestFields: FieldProps<IDMRequestFormSchema>[] = [
     name: "phone",
     alt: "phone",
     icon: PhoneIcon,
-    label: "Phobe@required",
+    label: "Phone@required",
     placeholder: "Phone number",
     type: "tel",
   },
@@ -111,52 +107,11 @@ export const requestFields: FieldProps<IDMRequestFormSchema>[] = [
     type: "text",
   },
   {
-    name: "policyType",
-    alt: "policy type",
-    icon: UserRoundIcon,
-    label: "Policy type@required",
-    placeholder: "Policy type",
-    type: "text",
-    disabled: true,
-  },
-  {
-    name: "year",
-    alt: "year",
-    icon: LucideCalendar,
-    label: "Year",
-    placeholder: "Year",
-    type: "text",
-  },
-  {
-    name: "make",
-    alt: "remarks",
-    icon: BlendIcon,
-    label: "Make",
-    placeholder: "Make",
-    type: "text",
-  },
-  {
-    name: "model",
-    alt: "model",
-    icon: HexagonIcon,
-    label: "Model",
-    placeholder: "Model",
-    type: "text",
-  },
-  {
-    name: "type",
-    alt: "use-type",
-    icon: BusFrontIcon,
-    label: "Type",
-    placeholder: "Type",
-    type: "text",
-  },
-  {
-    name: "body",
-    alt: "body",
-    icon: ShapesIcon,
-    label: "Body",
-    placeholder: "Body",
+    name: "plateNumber",
+    alt: "plate number",
+    icon: StickerIcon,
+    label: "Plate / Induction Number",
+    placeholder: "Plate / Induction",
     type: "text",
   },
   {
@@ -167,24 +122,66 @@ export const requestFields: FieldProps<IDMRequestFormSchema>[] = [
     placeholder: "Remarks",
     type: "text",
   },
+  // {
+  //   name: "policyType",
+  //   alt: "policy type",
+  //   icon: UserRoundIcon,
+  //   label: "Policy type@required",
+  //   placeholder: "Policy type",
+  //   type: "text",
+  //   disabled: true,
+  // },
 ];
 
 export const requestDefaults: IDMRequestFormSchema = {
+  firstName: "",
+  lastName: "",
+  middleName: "",
+  email: "",
+  phone: "",
+  line1: "",
+  line2: "",
+  city: "",
+  state: "",
+  postalCode: "",
+  plateNumber: "",
+  remarks: "",
   country: "PH",
 };
 
 export const policyTypes: SelectOptionType[] = [
   {
     label: "CTPL",
-    complete: "CTPL - Compulsory Third-Party Liability",
+    complete: "Compulsory Third-Party Liability",
     value: "CTPL",
     disabled: false,
   },
   {
+    label: "CCI",
+    complete: "Comprehensive Car Insurance",
+    value: "CCI",
+    disabled: false,
+  },
+  {
     label: "PA",
-    complete: "PA - Personal Accidents",
+    complete: "Personal Accident",
     value: "PA",
     disabled: true,
+  },
+];
+
+export const plateTypes: SelectOptionType[] = [
+  {
+    label: "Plate Number",
+    complete: "Plate Number",
+    value: "plate",
+    disabled: false,
+  },
+  {
+    label: "Induction Number",
+    complete: "Induction Number",
+    value: "induction",
+    disabled: false,
   },
 ];
 

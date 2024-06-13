@@ -2,7 +2,12 @@ import { fileType } from "@/utils/helpers";
 import { onInfo } from "@/utils/toast";
 import { useEffect, useState } from "react";
 // import { collection, doc } from "firebase/firestore";
-import { getDownloadURL, listAll, ref as storageRef } from "firebase/storage";
+import {
+  type StorageReference,
+  getDownloadURL,
+  listAll,
+  ref as storageRef,
+} from "firebase/storage";
 
 import { storage } from "@/libs/db";
 
@@ -125,34 +130,39 @@ export type UploadStatus =
 //   };
 // };
 
-export const useDownloadUrls = (id: string | undefined) => {
-  const [fetchingURLs] = useState(false);
-  const [downloadURLs, setDownloadURLs] = useState<string[] | undefined>();
+export interface ImageList {
+  name: string;
+  url: string;
+}
 
-  const store = storageRef(storage, `requests/${id}`);
+export const useDownloadURLs = (id: string | undefined) => {
+  const [loading, setLoading] = useState(false);
+  const [imagelist, setImagelist] = useState<ImageList[]>([]);
 
   useEffect(() => {
-    const getDownloadURLs = async () => {
-      const list = await listAll(store);
-      const items = await Promise.all(
-        list?.items.map(async (item) => await getDownloadURL(item)),
-      );
-      setDownloadURLs(items);
-    };
-    getDownloadURLs()
-      .then((res) => res)
-      .catch((e: Error) => {
-        console.log(e.name);
-      });
-  }, [store]);
+    const listRef = storageRef(storage, `requests/${id}`);
 
-  return { downloadURLs, fetchingURLs };
+    listAll(listRef)
+      .then((listResult) => {
+        const urlPromises = listResult.items.map(downloadURL);
+        return Promise.all(urlPromises);
+      })
+      .then((urls) => {
+        setImagelist(urls);
+        setLoading(false);
+      })
+      .catch((e) => {
+        console.error("Error fetching images: ", e);
+        setLoading(false);
+      });
+  }, [id, setImagelist]);
+
+  return { loading, imagelist };
 };
-// const isEqual = (
-//   v1: StorageReference | null | undefined,
-//   v2: StorageReference | null | undefined,
-// ): boolean => {
-//   const bothNull: boolean = !v1 && !v2;
-//   const equal: boolean = !!v1 && !!v2 && v1.fullPath === v2.fullPath;
-//   return bothNull || equal;
-// };
+
+async function downloadURL(itemRef: StorageReference) {
+  return await getDownloadURL(itemRef).then((url) => ({
+    name: itemRef.name,
+    url,
+  }));
+}

@@ -16,6 +16,7 @@ import {
 import tw from "tailwind-styled-components";
 import Image from "next/image";
 import { InputLabel } from "./input-label";
+import { cn } from "@/utils/cn";
 
 type SelectOptionBase = {
   value: string;
@@ -76,25 +77,34 @@ export const SelectOption = <T,>(props: SelectFieldProps<T>) => {
     <Select onValueChange={onChange}>
       <Container>
         <SelectTrigger
-          className="h-full"
+          className="h-full bg-transparent"
           caretLoading={loading}
-          caretStyle="w-16 stroke-1 opacity-100 text-dyan"
+          caretStyle="portrait:w-10 w-12 stroke-1 opacity-100 text-ghost"
         >
-          <props.icon className="text-dyan size-5 w-16" strokeWidth={1.5} />
+          <props.icon
+            className="size-5 w-[40px] text-ghost portrait:w-[44px]"
+            strokeWidth={1.5}
+          />
 
-          <div className="flex h-full w-full flex-col items-start space-y-1 border-l-[0.33px] border-ash/50 bg-white/80">
+          <div className="flex h-[64px] w-full flex-col items-start bg-white">
             <InputLabel label={label} />
-            <div className="text-dyan flex w-full items-center justify-between px-3 text-[15px] font-medium">
-              <SelectValue />
+            <div className="text-dyan flex h-full w-full items-center justify-between px-3 text-[15px] font-medium">
+              <SelectValue className="text-xs" />
             </div>
           </div>
         </SelectTrigger>
       </Container>
       <Content>
         <SelectGroup>
-          {parsedList?.map((option) => (
+          {parsedList?.map((option, i) => (
             <StyledItem
-              defaultValue={parsedList[0]?.value}
+              className={cn(
+                i === 0
+                  ? `text-sky-300`
+                  : option.disabled
+                    ? `text-gray-200`
+                    : `text-cyan-100`,
+              )}
               key={option.value}
               disabled={option.disabled}
               value={option.value}
@@ -111,7 +121,7 @@ export const SelectOption = <T,>(props: SelectFieldProps<T>) => {
 const ItemDisplay = ({ display }: { display: string }) => {
   const split = display.split("@");
   return (
-    <div className="flex w-full items-center space-x-4">
+    <div className="flex w-full items-center space-x-4 portrait:space-x-2">
       {split[2] ? (
         <Image
           width={0}
@@ -122,8 +132,12 @@ const ItemDisplay = ({ display }: { display: string }) => {
           style={{ width: 24, height: "auto" }}
         />
       ) : null}
-      <div className="py-1 text-[16px] font-semibold">{split[0]}</div>
-      <div className="text-[13px] font-light">{split[1]}</div>
+      <div className="py-1 text-[16px] font-semibold portrait:text-[14px]">
+        {split[0]}
+      </div>
+      <div className="text-[13px] font-light portrait:text-[12px]">
+        {split[1]}
+      </div>
     </div>
   );
 };
@@ -135,7 +149,7 @@ const Content = tw(SelectContent)`
   from-slate-800 via-zinc-700/50 to-yello-500 backdrop-blur-lg
   `;
 const StyledItem = tw(SelectItem)`
-  flex h-[60px] px-4 w-full cursor-pointer
+  flex h-[64px] px-4 portrait:px-2 w-full cursor-pointer
   font-sans font-medium tracking-tight text-zap
   transition-colors duration-300 ease-out
   hover:bg-zap/10
@@ -143,29 +157,33 @@ const StyledItem = tw(SelectItem)`
 
 const TopSelect = tw.div`
   flex h-[64px] items-center overflow-clip
-  bg-gray-50
-  border-dyan/50
-  border-[0.33px] border-b-dyan/20
+  bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))]
+  from-slate-900 via-zinc-800/80 to-yellow-500 backdrop-blur-lg
+  border-coal/40
+  border-[0.33px] border-copper/40
   rounded-lg rounded-b-none
   `;
 const MidSelect = tw.div`
   flex h-[64px] items-center overflow-clip
-  bg-gray-50
-  border-[0.33px] border-dyan/50
-  border-b-dyan/20 border-t-0
+  bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))]
+  from-slate-900 via-zinc-800/80 to-yellow-500 backdrop-blur-lg
+  border-[0.33px] border-coal/40
+  border-b-coal/40 border-t-0
   rounded-none
   `;
 const BottomSelect = tw.div`
   flex h-[64px] w-full items-center overflow-clip
-  bg-gray-50 border-[0.33px] border-dyan/50
+  bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))]
+  from-slate-900 via-zinc-800/80 to-yellow-500 backdrop-blur-lg
+  border-[0.33px] border-coal/40
   rounded-lg rounded-t-none
   border-t-0
   `;
 
 const SingleSelect = tw.div`
-  flex h-[64px] items-center overflow-clip
-  bg-gray-50
-  border-dyan/50
-  border-[0.33px]
-  rounded-lg
+  flex h-[64px] overflow-clip
+  bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))]
+  from-slate-900 via-zinc-800/80 to-yellow-500 backdrop-blur-lg
+  border-[0.33px] border-coal/40 rounded-lg
+
   `;

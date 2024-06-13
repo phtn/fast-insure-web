@@ -1,7 +1,11 @@
 import { db } from "@/libs/db";
-import { type NewUserPayload } from "@resource/account";
+import type {
+  NewUserPayload,
+  UpdateUserProfileSchema,
+  UserProfileSchema,
+} from "@resource/account";
 import { type FirebaseError } from "firebase/app";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 
 export const createUserAccount = async (user: NewUserPayload) => {
   const Err = (err: FirebaseError) => {
@@ -14,11 +18,13 @@ export const createUserAccount = async (user: NewUserPayload) => {
   if (user) {
     const { email, userId, accountType } = user;
     const datestring = new Date().getTime();
-    await setDoc(doc(db, "users", userId), {
+    const data: UserProfileSchema = {
       userId,
       email,
       accountType,
-      displayName: null,
+      agentCode: "",
+      branchCode: "X0000X",
+      displayName: undefined,
       userData: {
         id: userId,
         firstName: null,
@@ -38,11 +44,23 @@ export const createUserAccount = async (user: NewUserPayload) => {
       },
       isVerified: false,
       setupComplete: false,
-      branchCode: "0000",
+      setupProgress: 0,
       createdAt: new Date(datestring).toISOString(),
       updatedAt: new Date(datestring).toISOString(),
-    }).then(Ok, Err);
+    };
+    await setDoc(doc(db, "users", userId), data).then(Ok, Err);
   } else {
     return "Unable to read payload.";
   }
+};
+
+export const updateUserProfile = async (params: UpdateUserProfileSchema) => {
+  if (!params.userId) return;
+
+  const docRef = doc(db, `users/${params.userId}`);
+  const datestring = new Date().getTime();
+  await updateDoc(docRef, {
+    ...params.payload,
+    updatedAt: new Date(datestring).toISOString(),
+  });
 };

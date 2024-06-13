@@ -1,22 +1,34 @@
 import { DropdownMenu, DropdownMenuTrigger } from "@/app/(ui)/dropdown";
 import { cn } from "@/utils/cn";
-import { PencilIcon, MoreHorizontalIcon, Trash2Icon } from "lucide-react";
+import {
+  MoreHorizontalIcon,
+  Trash2Icon,
+  PlusIcon,
+  MousePointerSquareIcon,
+  ArrowUpLeftIcon,
+  PencilLineIcon,
+  MinusCircleIcon,
+} from "lucide-react";
 import { ActiveOptions, BeachDrop, BeachDropItem } from "./styles";
-import { useRouter } from "next/navigation";
+
+type OptionName = "create" | "read" | "update" | "delete" | "disable";
+type MoreOption = {
+  name: OptionName;
+  label: string;
+  action: VoidFunction;
+};
 
 type MoreOptionProps = {
+  options: MoreOption[];
   className?: string;
-  removeItem: (id: string | undefined) => void;
-  id: string | undefined;
 };
 export const MoreOptions = (props: MoreOptionProps) => {
-  const route = useRouter();
-  const handleRemoveItem = () => props.removeItem(props.id);
-  const handleRoute = () => {
-    route.push(`/account/request/${props.id}`);
-  };
+  const { options } = props;
+
+  const Icon = (props: { name: OptionName }) => iconSelector(props.name);
+
   return (
-    <div className={cn("flex justify-center", props.className)}>
+    <div className={cn("flex justify-center", props?.className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <ActiveOptions variant="ghost">
@@ -24,29 +36,54 @@ export const MoreOptions = (props: MoreOptionProps) => {
           </ActiveOptions>
         </DropdownMenuTrigger>
         <BeachDrop align={"start"} className={dropContentStyle}>
-          <BeachDropItem selected={false} onClick={handleRoute}>
-            <div className="flex items-center space-x-4 font-medium text-indigo-300">
-              <div className="rounded-[4px] p-0.5">
-                <PencilIcon className="size-3.5 text-white" />
+          {options.map((option) => (
+            <BeachDropItem
+              key={option.name}
+              selected={false}
+              onClick={option.action}
+              className="group "
+            >
+              <div className="flex items-center space-x-4 font-medium tracking-tight">
+                <Icon name={option.name} />
+                <p className={cn(`text-xs`, textColors[option.name])}>
+                  {option.label}
+                </p>
               </div>
-              <span className="">Edit draft</span>
-            </div>
-          </BeachDropItem>
-          <BeachDropItem selected={false} onClick={handleRemoveItem}>
-            <div className="flex items-center space-x-4 font-medium text-rose-300">
-              <div className="rounded-[4px] p-0.5">
-                <Trash2Icon className="size-3.5 text-white" />
-              </div>
-              <span className="">Delete item</span>
-            </div>
-          </BeachDropItem>
+            </BeachDropItem>
+          ))}
         </BeachDrop>
       </DropdownMenu>
     </div>
   );
 };
 
+const textColors = {
+  create: "text-cyan-100",
+  read: "text-cyan-100",
+  update: "text-cyan-100",
+  delete: "text-rose-300",
+  disable: "text-indigo-300",
+};
+
+const iconSelector = (option: OptionName) => {
+  const iconStyle =
+    "size-3.5 stroke-[1.5px] text-ghost scale-[85%] group-hover:scale-100 transition-transform duration-200 ease-out";
+  switch (option) {
+    case "create":
+      return <PlusIcon className={cn(iconStyle)} />;
+    case "read":
+      return <MousePointerSquareIcon className={cn(iconStyle, "")} />;
+    case "update":
+      return <PencilLineIcon className={cn(iconStyle, "")} />;
+    case "delete":
+      return <Trash2Icon className={cn(iconStyle, "")} />;
+    case "disable":
+      return <MinusCircleIcon className={cn(iconStyle, "")} />;
+    default:
+      return <ArrowUpLeftIcon className={cn(iconStyle, "")} />;
+  }
+};
+
 const dropContentStyle = `
-  -mt-[28px] ml-[33.20px] w-fit rounded-tl-none shadow-md
-  data-[state=open]:animate-in data-[state=closed]:animate-out
+  -mt-[22px] ml-[35.20px] portrait:mt-0.5 portrait:ml-0 portrait:mr-[17px] w-fit rounded-md shadow-md
   `;

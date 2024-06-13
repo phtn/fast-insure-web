@@ -13,10 +13,9 @@ import {
 } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
-import { type UserSigninType } from "./hooks";
+import { useProfile, type UserSigninType } from "./hooks";
 import { ActiveForm } from "./login-form";
 import { loginDefaults, loginSchema, type LoginSchema } from "./schema";
-import { createUser } from "./serverOnly";
 
 export type UserAccountType = z.infer<typeof AccountType>;
 
@@ -38,6 +37,8 @@ export const Login = ({ signinType }: LoginProps) => {
   ] = useCreateUserWithEmailAndPassword(auth);
   const [signInWithEmailAndPassword, user, signInLoading, error] =
     useSignInWithEmailAndPassword(auth);
+
+  const { handleCreateAccount } = useProfile();
 
   const Err = (err: Error) => onError(err.name, err.message);
 
@@ -77,7 +78,7 @@ export const Login = ({ signinType }: LoginProps) => {
     createUserWithEmailAndPassword(email, password)
       .then((creds) => {
         if (creds) {
-          createUser({
+          handleCreateAccount({
             userId: creds.user.uid,
             email: creds.user.email!,
             accountType: "AGENT2",
@@ -109,7 +110,13 @@ export const Login = ({ signinType }: LoginProps) => {
       <ActiveForm
         signinType={signinType}
         form={form}
-        loading={signInLoading || createUserLoading}
+        loading={
+          !!signInLoading
+            ? signInLoading
+            : !!createUserLoading
+              ? createUserLoading
+              : false
+        }
         onSubmit={onSubmit}
       />
     </Form>

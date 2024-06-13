@@ -2,9 +2,14 @@
 
 import { auth } from "@/libs/db";
 import { useAuthState } from "react-firebase-hooks/auth";
-import Sidebar from "./(components)/sidebar";
 import { Loader } from "./(components)/loader";
 import { useConnect } from "./@dashboard/hooks";
+import dynamic from "next/dynamic";
+import LoaderMX from "../(components)/loader-mx";
+
+const DynamicSidebar = dynamic(() => import("./(components)/sidebar"), {
+  loading: LoaderMX,
+});
 
 type AccountLayoutProps = {
   dashboard: React.ReactNode;
@@ -19,9 +24,9 @@ const AccountLayout = ({ dashboard, signin }: AccountLayoutProps) => {
 
   if (user) {
     return (
-      <Sidebar profile={profile} accountType={accountType}>
+      <DynamicSidebar profile={profile} accountType={accountType}>
         {dashboard}
-      </Sidebar>
+      </DynamicSidebar>
     );
   } else {
     return signin;
@@ -29,12 +34,3 @@ const AccountLayout = ({ dashboard, signin }: AccountLayoutProps) => {
 };
 
 export default AccountLayout;
-
-// import { Children, cloneElement, isValidElement } from "react";
-
-// const childrenWithProps = Children.map(children, (child) => {
-//   if (isValidElement(child)) {
-//     return cloneElement(child, profile, ...children);
-//   }
-//   return child;
-// });

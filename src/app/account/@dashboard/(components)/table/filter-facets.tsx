@@ -59,16 +59,19 @@ export function DataTableFacetedFilter<TData, TValue>({
             <CommandSeparator className="h-[0.33px] bg-opus/20" />
             <CommandGroup>
               {options?.map((option) => {
-                const isSelected = selectedValues.has(option.value);
+                const isSelected =
+                  typeof option.value === "string"
+                    ? selectedValues.has(option.value)
+                    : option.value;
                 return (
                   <BeachItem
                     selected={isSelected}
-                    key={option.value}
+                    key={option.value.toString()}
                     onSelect={() => {
                       if (isSelected) {
-                        selectedValues.delete(option.value);
+                        // selectedValues.delete(option.value);
                       } else {
-                        selectedValues.add(option.value);
+                        // selectedValues.add(option.value);
                       }
 
                       const filterValues = Array.from(selectedValues);

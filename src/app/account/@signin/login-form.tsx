@@ -9,8 +9,9 @@ import {
   type LoginSchema,
 } from "./schema";
 import { ArrowUpRightIcon, Disc3Icon, PenLine } from "lucide-react";
-import { useMemo } from "react";
+import { useCallback } from "react";
 import { cn } from "@/utils/cn";
+import { opts } from "@/utils/helpers";
 
 export const ActiveForm = ({
   form,
@@ -21,14 +22,20 @@ export const ActiveForm = ({
   const { handleSubmit, control, formState } = form;
   const { isValid } = formState;
 
-  const submitText = useMemo(() => {
-    const userLogin = signinType === "SIGNIN";
-    if (loading) {
-      return userLogin ? "Signing in..." : "Creating account...";
-    } else {
-      return userLogin ? "Sign in" : "Create new account";
-    }
-  }, [loading, signinType]);
+  const SubmitTextOptions = useCallback(() => {
+    const userSigninType = signinType === "SIGNIN";
+    const options = opts(<p>Sign in</p>, <p>Create account</p>);
+    return <>{options.get(userSigninType)}</>;
+  }, [signinType]);
+
+  // const submitText = useMemo(() => {
+  //   const userLogin = signinType === "SIGNIN";
+  //   if (loading) {
+  //     return userLogin ? "Signing in..." : "Creating account...";
+  //   } else {
+  //     return userLogin ? "Sign in" : "Create new account";
+  //   }
+  // }, [loading, signinType]);
 
   const Submit = () => {
     return (
@@ -52,7 +59,7 @@ export const ActiveForm = ({
               : `text-emerald-400`,
         )}
       >
-        {submitText}
+        <SubmitTextOptions />
       </DarkTouch>
     );
   };

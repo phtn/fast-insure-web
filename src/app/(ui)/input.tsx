@@ -14,6 +14,7 @@ import {
   UploadCloudIcon,
   UserCircle2Icon,
   ArrowDownLeftIcon,
+  FolderIcon,
 } from "lucide-react";
 import { InputLabel } from "../account/@dashboard/(components)/input-label";
 import tw from "tailwind-styled-components";
@@ -138,10 +139,7 @@ export const InputFile = React.forwardRef<
     >
       <div className="absolute flex flex-col items-center justify-center">
         <div className="flex items-center justify-center">
-          <props.icon
-            className="mr-[16px] h-[48px] w-[48px] text-clay"
-            strokeWidth={1}
-          />
+          <div className="mr-[16px] h-[48px] w-[48px] bg-[url('/svg/sky-upload.svg')] bg-cover " />
           <div className="text-md">
             <p className="max-w-[20ch] text-coal">
               <span className="font-semibold text-coal">Click</span> here to
@@ -195,12 +193,12 @@ export const InputCode = React.forwardRef<HTMLInputElement, InputProps>(
 );
 
 const CodeInput = tw.input`
-  flex h-14 w-full px-3 py-2 bg-[#EFEFEF]
-  border-[0.33px] border-ash/30 rounded-full
+  flex h-14 w-full px-3 py-2 bg-[#EFEFEF]/50
+  border-[0.33px] border-clay/60 rounded-full
   placeholder:text-neutral-400 placeholder:tracking-tight placeholder:lowercase placeholder:font-normal
   text-[16px] tracking-widest text-center font-medium font-mono
   transition-all duration-300 ease-in-out uppercase
-  ring-offset-white ring-neutral-100 focus-visible:outline-none
+  ring-offset-sky-300 ring-neutral-100 focus-visible:outline-none
 
   disabled:cursor-not-allowed disabled:opacity-50 md:focus-visible:ring-1 md:focus-visible:ring-offset-1
   `;
@@ -213,18 +211,28 @@ export const ImageFile = React.forwardRef<
   return (
     <div
       className={cn(
-        "relative flex cursor-pointer flex-col items-center justify-end rounded border portrait:justify-center",
+        "relative flex cursor-pointer flex-col items-center justify-end border-0 portrait:justify-center",
         className,
       )}
     >
-      <div className="absolute flex flex-col items-center justify-center">
-        <div className="flex items-center justify-center">
-          <props.icon className="text-dyan/50 size-7 stroke-[1px] portrait:size-4" />
-        </div>
-        <div className="flex items-center justify-center space-x-4 pb-2 pt-10 portrait:hidden portrait:pb-0">
-          <span className="text-dyan/50 py-1 font-mono text-[12px] portrait:hidden portrait:py-0">
-            Images or PDFs
-          </span>
+      <div className="absolute top-[0px] flex h-[360px] w-[400px] flex-col items-center justify-center border-[0.33px] border-ash/30">
+        <div className="flex h-[335px] w-[375px] flex-col items-center justify-center rounded-xl border-[1.5px] border-dashed border-ash backdrop-blur-lg">
+          <div className="flex h-[72px] w-[72px] items-center justify-center bg-opacity-0">
+            <video autoPlay loop muted className="bg-transparent object-center">
+              <source src={`/images/upload.mp4`} type="video/mp4" />
+            </video>
+            <div className="size-[64px] bg-[url('/svg/sky-upload.svg')] bg-cover " />
+          </div>
+          <div className="flex flex-col items-center justify-center space-x-2 pt-10 portrait:hidden portrait:pb-0">
+            <span className="py-1 font-k2d text-xl font-medium text-black portrait:hidden portrait:py-0 portrait:text-[12px]">
+              Dropzone
+            </span>
+            <p className="flex items-center space-x-1 text-xs">
+              <span className="px-1">or</span>
+              <span className="text-cyan-600">Browse files</span>
+              <FolderIcon className="size-3.5 fill-cyan-100 stroke-1 text-cyan-600/95" />
+            </p>
+          </div>
         </div>
       </div>
 
@@ -232,7 +240,7 @@ export const ImageFile = React.forwardRef<
         {...props}
         type={type}
         ref={ref}
-        className="flex h-[200px] w-full py-2 text-[15px] opacity-0 placeholder:text-slate-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 portrait:h-[56px] portrait:py-0"
+        className="flex h-[200px] w-full bg-ash py-2 text-[15px] opacity-0 placeholder:text-slate-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 portrait:h-[56px] portrait:py-0"
       />
     </div>
   );
@@ -258,19 +266,21 @@ export const InputFieldPayments = React.forwardRef<
     >
       <div className="">
         {props.icon ? (
-          <props.icon className="text-dyan size-5 w-14" strokeWidth={1.5} />
+          <props.icon
+            className="size-5 w-14 text-neutral-50"
+            strokeWidth={1.5}
+          />
         ) : (
           <div className="text-dyan size-5 w-14" />
         )}
       </div>
-      <div className="flex h-full w-full flex-col space-y-0 bg-white/90">
+      <div className="flex h-full w-full flex-col space-y-0 bg-white">
         <InputLabel label={label} />
-
         <input
           {...props}
           type={type}
           ref={ref}
-          className="text-dyan flex h-full w-full items-center border-l-[0.33px] border-ash/50 bg-white/90 px-3 pb-1.5 pt-0.5 font-sans text-[16px] tracking-tighter placeholder:text-neutral-500/60 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex h-full w-full items-center border-l-[0.33px] border-ash/50 bg-white px-3 pb-1.5 pt-0.5 font-sans text-sm font-medium tracking-tight text-cyan-600 placeholder:text-neutral-500/60 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
         />
       </div>
     </div>

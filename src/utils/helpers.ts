@@ -2,7 +2,7 @@ import type { OCR_DE_FieldSchema } from "@/server/resource/ocr";
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { onError, onSuccess, onWarn } from "./toast";
-import { type VehicleSchema } from "@/app/account/@dashboard/(old)/(autos)/active-form";
+// import { type VehicleSchema } from "@/app/account/@dashboard/(old)/(autos)/active-form";
 
 export const degreesToRadians = (degrees: number | string): number => {
   const getRad = (d: number) => (d * Math.PI) / 180;
@@ -133,25 +133,16 @@ export const copyFn: CopyFn = async ({ name, text }) => {
     onWarn("Clipboard not supported");
     return false;
   }
+  if (!text) return false;
 
   try {
     await navigator.clipboard.writeText(text);
-    onSuccess(`${name ? "Copied: " + name : "Copied."}`, limitText(text));
+    onSuccess(`${name ? "Copied: " + name : "Copied."}`, charlimit(text, 35)!);
     return true;
   } catch (error) {
     onError("Copy failed.");
     return false;
   }
-};
-
-export const limitText = (text: string | undefined, chars?: number) => {
-  if (!text) {
-    return "";
-  }
-  if (chars) {
-    return text.substring(0, chars);
-  }
-  return text.substring(0, 25) + `...`;
 };
 
 export const getNextElement = <T>(
@@ -287,17 +278,17 @@ export const getVehicleDefaults = (array: OCR_DE_FieldSchema) => {
   return convertedObj;
 };
 
-export const filterAutoValues = (values: VehicleSchema) => {
-  const exclude = new Set(["NO", "O", "TELEPHONE NO"]);
+// export const filterAutoValues = (values: VehicleSchema) => {
+//   const exclude = new Set(["NO", "O", "TELEPHONE NO"]);
 
-  const filteredValues = {
-    ...Object.fromEntries(
-      Object.entries(values).filter((key) => !exclude.has(key[0])),
-    ),
-  };
+//   const filteredValues = {
+//     ...Object.fromEntries(
+//       Object.entries(values).filter((key) => !exclude.has(key[0])),
+//     ),
+//   };
 
-  return filteredValues;
-};
+//   return filteredValues;
+// };
 
 export const withSpaces = (input: string): string => {
   return input.replace(/_/g, " ");
@@ -405,4 +396,65 @@ export const formDisplayname = (params: DisplaynameParams) => {
     return `${firstName} ${lastName}`;
   }
   return `${firstName} ${middleName} ${lastName}`;
+};
+
+export const getInitials = (name: string | undefined) => {
+  if (!name) return;
+
+  const words = name.split(" ");
+
+  if (words.length === 1) {
+    return name.slice(0, 2);
+  }
+
+  if (words.length === 2) {
+    return words[0]!.charAt(0) + words[1]!.charAt(0);
+  }
+
+  if (words.length >= 3) {
+    return words[0]!.charAt(0) + words[words.length - 1]!.charAt(0);
+  }
+};
+
+export const basedOnTime = (): string => {
+  const date = new Date();
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  const localDate = new Date(
+    date.toLocaleString("en-US", { timeZone: timezone }),
+  );
+
+  const hours = localDate.getHours();
+
+  if (hours < 12) {
+    return "Good day,";
+  }
+
+  if (hours >= 12 && hours < 17) {
+    return "Good afternoon,";
+  }
+
+  if (hours >= 17 && hours < 20) {
+    return "Good evening,";
+  }
+
+  return "Good evening,";
+};
+
+function counter() {
+  let count = 0;
+
+  return function incrementCounter() {
+    return +(count += 0.01).toFixed(2);
+  };
+}
+
+export const onCount = counter();
+
+export const charlimit = (
+  text: string | undefined,
+  chars?: number,
+): string | undefined => {
+  if (!text) return;
+  return text.substring(0, chars ?? 12);
 };

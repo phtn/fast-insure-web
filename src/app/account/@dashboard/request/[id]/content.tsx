@@ -1,57 +1,63 @@
 "use client";
 
+import { Button } from "@/app/(ui)/button";
+import { Form, FormField, FormItem } from "@/app/(ui)/form";
+import type { PlateTypeSchema } from "@/server/resource/idm";
+import {
+  IDMRequestForm,
+  type IDMRequestFormSchema,
+} from "@/server/resource/request";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   BlocksIcon,
   CarIcon,
   CheckCircleIcon,
+  FileDigitIcon,
   FileTypeIcon,
   FileUpIcon,
   LoaderIcon,
   SaveIcon,
   ScrollTextIcon,
   SendIcon,
+  UploadCloudIcon,
   UserRoundIcon,
 } from "lucide-react";
+import {
+  useContext,
+  type Dispatch,
+  type FormEvent,
+  type SetStateAction,
+  useCallback,
+  useState,
+} from "react";
+import { useForm, useWatch, type UseFormRegister } from "react-hook-form";
 import { FormCard } from "../../(components)/form-card";
 import { Header } from "../../(components)/header";
-import { Form, FormField, FormItem } from "@/app/(ui)/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { ImageUploader } from "../../(components)/image-uploader";
+import { BotText, InputOption } from "../../(components)/input-option";
 import {
+  SelectOption,
+  type SelectOptionType,
+} from "../../(components)/select-option";
+import { AgentContext } from "../../(context)/context";
+import { useDownloadURLs } from "../../(hooks)/file-handler";
+import { useLocator } from "../../(hooks)/locator";
+import { useSubmitRequest } from "../../(hooks)/useRequestService";
+import { useDraftValues } from "../../(hooks)/useDraft";
+import {
+  plateTypes,
   policyTypes,
   requestDefaults,
   requestFields,
   transformer,
 } from "./schema";
-import { BotText, InputOption } from "../../(components)/input-option";
-import { ImageUploader } from "../../(components)/image-uploader";
-import {
-  type ChangeEvent,
-  useState,
-  useEffect,
-  useContext,
-  type FormEvent,
-} from "react";
-import {
-  type IDMRequestFormSchema,
-  IDMRequestForm,
-} from "@/server/resource/request";
-import { useLocator } from "../../(hooks)/locator";
-import { SelectOption } from "../../(components)/select-option";
-import { useSubmitRequest } from "../../(hooks)/submit-request";
-import { useDownloadUrls } from "../../(hooks)/file-handler";
-import Image from "next/image";
-import { cn } from "@/utils/cn";
-import { Button } from "@/app/(ui)/button";
-import { AgentContext } from "../../(context)/context";
+import { opts, toggleState } from "@/utils/helpers";
+import ImageList from "./image-list";
 
-export const RequestPage = (props: { id: string }) => {
-  const [savedValues, setSavedValues] = useState<
-    IDMRequestFormSchema | undefined
-  >();
-  const ctx = useContext(AgentContext);
-  const drafts = ctx?.drafts;
-  const loading = ctx?.loading;
+export const RequestPage = ({ id }: { id: string }) => {
+  const agentCtx = useContext(AgentContext);
+  const drafts = agentCtx?.drafts;
+  const loading = agentCtx?.loading;
 
   const form = useForm<IDMRequestFormSchema>({
     resolver: zodResolver(IDMRequestForm),
@@ -60,102 +66,66 @@ export const RequestPage = (props: { id: string }) => {
     },
   });
 
-  useEffect(() => {
-    if (drafts) {
-      const doc = drafts.find((item) => item.id === props.id);
+  const { reset, watch, control, register, handleSubmit, formState } = form;
+  const { watchAll } = useDraftValues({
+    drafts,
+    id,
+    reset,
+    watch,
+  });
 
-      const assuredData = doc?.assuredData;
-      const vehicleInfo = doc?.vehicleInfo;
+  const postalField = useWatch({ control, name: "postalCode" });
+  useLocator({ reset, postalField });
 
-      if (doc) {
-        setSavedValues({
-          firstName: assuredData?.firstName ?? "",
-          lastName: assuredData?.lastName ?? "",
-          middleName: assuredData?.middleName ?? "",
-          email: assuredData?.email ?? "",
-          phone: assuredData?.phone ?? "",
-          line1: assuredData?.address?.line1 ?? "",
-          line2: assuredData?.address?.line2 ?? "",
-          city: assuredData?.address?.city ?? "",
-          state: assuredData?.address?.state ?? "",
-          country: assuredData?.address?.country ?? "PH",
-          postalCode: assuredData?.address?.postalCode ?? "",
-          policyType: doc.policyType ?? "CTPL",
-          year: vehicleInfo?.year ?? "",
-          make: vehicleInfo?.make ?? "",
-          model: vehicleInfo?.model ?? "",
-          type: vehicleInfo?.type ?? "private",
-          body: vehicleInfo?.body ?? "sedan",
-        });
-      }
-    }
-  }, [drafts, props.id]);
-
-  useEffect(() => {
-    if (savedValues) {
-      form.reset(savedValues);
-    }
-  }, [savedValues, form]);
-
-  const [postalCode, setPostalCode] = useState<string>("");
-  const { getLocation, locationValues } = useLocator();
-  const { policyType, submit, submitLoading, setPolicyType, saveDraft } =
-    useSubmitRequest({
-      id: props.id,
-    });
+  const {
+    policyType,
+    submit,
+    submitLoading,
+    setPolicyType,
+    setPlateType,
+    saveDraft,
+  } = useSubmitRequest({
+    id,
+  });
 
   const onSubmit = (data: IDMRequestFormSchema) => {
     submit(data);
   };
 
-  const watchAll = form.watch();
   const handleSave = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     saveDraft({ ...watchAll });
   };
 
-  useEffect(() => {
-    if (!locationValues) return;
-    form.reset(locationValues);
-  }, [form, locationValues]);
-
-  const handlePostalCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.length === 4) {
-    }
-  };
-
-  const { downloadURLs } = useDownloadUrls(props.id);
-
   const assuredInfo = requestFields.slice(0, 5);
   const assuredAddress = requestFields.slice(5, 9);
   const countryField = requestFields[9];
   const postalCodeField = requestFields[10];
-  const vehicleFieldsA = requestFields.slice(12, 15);
-  const vehicleFieldsB = requestFields.slice(15);
+  // const vehicleFields = requestFields.slice(12, 13);
 
   return (
     <div className="h-[calc(100vh-118px)] overflow-y-scroll">
       <Header title="Request Form" />
       <div className="space-y-4">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <FormCard
               icon={
-                form.formState.isValid
+                formState.isValid
                   ? CheckCircleIcon
                   : loading
                     ? LoaderIcon
                     : UserRoundIcon
               }
-              route={`request`}
+              route={`assured`}
               title={"Assured Info"}
-              extra={props.id}
+              extra={id.substring(0, 12)}
             >
-              <div className="protrait:flex grid grid-cols-2 gap-x-2">
+              <div className="grid grid-cols-2 gap-x-4 portrait:grid-cols-1 portrait:gap-y-4">
                 <div>
                   {assuredInfo.map((item, i) => (
                     <FormField
-                      control={form.control}
+                      control={control}
                       name={item.name}
                       key={item.name}
                       render={({ field }) => (
@@ -174,7 +144,7 @@ export const RequestPage = (props: { id: string }) => {
                 <div>
                   {assuredAddress.map((item, i) => (
                     <FormField
-                      control={form.control}
+                      control={control}
                       name={item.name}
                       key={item.name}
                       render={({ field }) => (
@@ -182,7 +152,7 @@ export const RequestPage = (props: { id: string }) => {
                           <InputOption
                             item={item}
                             index={i}
-                            length={assuredAddress.length + 1}
+                            length={assuredInfo.length}
                             field={field}
                           />
                         </FormItem>
@@ -190,33 +160,10 @@ export const RequestPage = (props: { id: string }) => {
                     />
                   ))}
                   <div className="grid grid-cols-2">
-                    <FormField
-                      name={"country"}
-                      key={"country"}
-                      render={({ field }) => (
-                        <FormItem>
-                          <BotText {...countryField} {...field} />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      name={"postalCode"}
-                      key={"postalCode"}
-                      render={() => (
-                        <FormItem>
-                          <BotText
-                            {...postalCodeField}
-                            value={postalCode}
-                            onChange={(e) => {
-                              setPostalCode(e.target.value);
-                              if (e.target.value.length === 4) {
-                                getLocation(e.target.value);
-                              }
-                              handlePostalCodeChange(e);
-                            }}
-                          />
-                        </FormItem>
-                      )}
+                    <BotText {...register("country")} {...countryField} />
+                    <BotText
+                      {...postalCodeField}
+                      {...form.register("postalCode")}
                     />
                   </div>
                 </div>
@@ -240,89 +187,15 @@ export const RequestPage = (props: { id: string }) => {
               />
             </FormCard>
 
-            {policyType === "CTPL" ? (
-              <FormCard icon={CarIcon} route={"vehicle"} title="Vehicle Info">
-                <div className="protrait:flex grid grid-cols-2 gap-x-2">
-                  <div>
-                    {vehicleFieldsA.map((item, i) => (
-                      <FormField
-                        control={form.control}
-                        name={item.name}
-                        key={item.name}
-                        render={({ field }) => (
-                          <FormItem>
-                            <InputOption
-                              item={item}
-                              index={i}
-                              length={vehicleFieldsA.length}
-                              field={field}
-                            />
-                          </FormItem>
-                        )}
-                      />
-                    ))}
-                  </div>
-
-                  <div>
-                    {vehicleFieldsB.map((item, i) => (
-                      <FormField
-                        control={form.control}
-                        name={item.name}
-                        key={item.name}
-                        render={({ field }) => (
-                          <FormItem>
-                            <InputOption
-                              item={item}
-                              index={i}
-                              length={vehicleFieldsB.length}
-                              field={field}
-                            />
-                          </FormItem>
-                        )}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </FormCard>
+            {policyType === "CTPL" || policyType === "CCI" ? (
+              <PlateTypeSelector
+                register={form.register}
+                plateTypes={plateTypes}
+                setPlateType={setPlateType}
+              />
             ) : null}
 
-            <FormCard
-              title="Documents uploaded"
-              extra={
-                <div className="flex items-center font-light">
-                  (
-                  <div
-                    className={cn(
-                      `font-semibold`,
-                      !downloadURLs ? `animate-spin` : ``,
-                    )}
-                  >
-                    {downloadURLs?.length ?? `-`}
-                  </div>
-                  ) files
-                </div>
-              }
-              route="files"
-              icon={FileUpIcon}
-            >
-              <div className="protrait:flex grid grid-cols-4 gap-3">
-                <ImageUploader
-                  dir={`requests/${props.id}`}
-                  filename={props.id + downloadURLs?.length}
-                />
-                {downloadURLs?.map((item) => (
-                  <Image
-                    key={item}
-                    alt={item}
-                    src={item}
-                    width={0}
-                    height={0}
-                    unoptimized
-                    className="h-[200px] w-auto rounded-md"
-                  />
-                ))}
-              </div>
-            </FormCard>
+            <DocumentUploader id={id} />
 
             <FormCard icon={BlocksIcon} route={`upload`} title="Extras">
               <div className="flex w-[218px] items-center space-x-2 p-2"></div>
@@ -355,6 +228,120 @@ export const RequestPage = (props: { id: string }) => {
           </form>
         </Form>
       </div>
+    </div>
+  );
+};
+
+type PlateTypeSelectorProps = {
+  register: UseFormRegister<IDMRequestFormSchema>;
+  plateTypes: SelectOptionType[] | undefined;
+  setPlateType: Dispatch<SetStateAction<PlateTypeSchema | undefined>>;
+};
+const PlateTypeSelector = (props: PlateTypeSelectorProps) => {
+  return (
+    <FormCard icon={CarIcon} route={"vehicle"} title="Vehicle Info">
+      <div className="grid grid-cols-2 gap-x-2 portrait:grid-cols-1">
+        <div>
+          <SelectOption
+            title={"Plate Type"}
+            label={"Plate Type@required"}
+            icon={FileTypeIcon}
+            onValueChange={props.setPlateType}
+            options={props.plateTypes ?? []}
+            transformer={transformer}
+            loading={false}
+            position="top"
+          />
+          <BotText
+            icon={FileDigitIcon}
+            label="Plate # / Induction@required"
+            placeholder="XYZ0000"
+            {...props.register("plateNumber")}
+          />
+        </div>
+      </div>
+    </FormCard>
+  );
+};
+
+export const DocumentUploader = (props: { id: string | undefined }) => {
+  const { id } = props;
+  const { imagelist, loading } = useDownloadURLs(id);
+  const [viewDropzone, setViewDropzone] = useState(false);
+
+  const ViewOptions = useCallback(() => {
+    const options = opts(
+      <ImageUploader
+        dir={`requests/${id}`}
+        filename={`${id}` + `${imagelist?.length}`}
+      />,
+      <ImageList id={id} imagelist={imagelist} loading={loading} />,
+    );
+    return (
+      <div className="flex h-[400px] w-full items-center justify-center">
+        {options.get(viewDropzone)}
+      </div>
+    );
+  }, [viewDropzone, id, imagelist, loading]);
+
+  const handleViewDropzone = (e: FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    toggleState(setViewDropzone);
+  };
+
+  return (
+    <FormCard
+      title="Documents uploaded"
+      extra={
+        <UploaderExtra
+          filecount={imagelist.length}
+          loading={loading}
+          viewDropzone={handleViewDropzone}
+        />
+      }
+      route="upload"
+      icon={FileUpIcon}
+    >
+      <ViewOptions />
+    </FormCard>
+  );
+};
+
+const UploaderExtra = (props: {
+  filecount: number;
+  loading: boolean;
+  viewDropzone: (e: FormEvent<HTMLButtonElement>) => void;
+}) => {
+  const { filecount, loading, viewDropzone } = props;
+  const FilesLoadingOptions = useCallback(() => {
+    const options = opts(
+      <LoaderIcon className="size-4 animate-spin stroke-[1px]" />,
+      <FileUpIcon className="size-4 stroke-[1px]" />,
+    );
+    return <>{options.get(loading)}</>;
+  }, [loading]);
+
+  return (
+    <div className="flex items-center space-x-2 font-light">
+      <Button
+        size={`sm`}
+        variant={"ghost"}
+        className="flex items-center space-x-2 bg-cyan-600 text-xs tracking-tight text-zap transition-all duration-300 ease-out hover:text-white active:scale-[95%]"
+      >
+        <FilesLoadingOptions />
+        <p>{filecount ?? 0}</p>
+        <p>files</p>
+      </Button>
+
+      <Button
+        size={`sm`}
+        variant={"ghost"}
+        className="flex items-center space-x-2 bg-white font-sans text-xs tracking-tight text-cyan-600 shadow-sm transition-all duration-300 ease-out hover:text-cyan-900 active:scale-[95%]"
+        onClick={viewDropzone}
+      >
+        <p>upload file</p>
+        <UploadCloudIcon className="size-4 stroke-[1.5px]" />
+      </Button>
     </div>
   );
 };

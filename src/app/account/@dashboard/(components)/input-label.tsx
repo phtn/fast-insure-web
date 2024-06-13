@@ -7,7 +7,7 @@ type InputLabelProps = {
 export const InputLabel = ({ label }: InputLabelProps) => {
   const withReq = label?.split("@") ?? ["", ""];
   return (
-    <p className="text-dyan/70 flex w-full items-center whitespace-nowrap border-l-[0.33px] border-ash/50 pl-3 pt-1 font-mono text-[10px] font-medium uppercase tracking-widest text-coal/60">
+    <p className="flex w-full items-center whitespace-nowrap border-l-[0.33px] border-ash/50 pl-3 pt-1 font-mono text-[10px] font-medium uppercase tracking-widest text-coal/60">
       {withReq[0] ?? label}
       {withReq[1] ? (
         <span

@@ -1,35 +1,35 @@
-import { useCallback, useMemo, useState } from "react";
+import type { IDMRequestFormSchema } from "@/server/resource/request";
+import { useEffect } from "react";
+import type { UseFormReset } from "react-hook-form";
 import usePH, { type PlaceProps } from "use-postal-ph";
 
-export const useLocator = () => {
-  const ph = usePH();
-  const [locations, setLocations] = useState<
-    PlaceProps[] | string[] | undefined
-  >();
-  const [location, setLocation] = useState<PlaceProps | undefined>();
-
-  const locationValues = useMemo(
-    () => ({
-      state: location?.region,
-      city: location?.location,
-      line2: location?.municipality,
-    }),
-    [location],
-  );
-
-  const getLocation = useCallback(
-    (postalCode: string) => {
-      if (!postalCode) return;
-      console.log(postalCode);
-
-      const results = ph.fetchDataLists({ post_code: +postalCode, limit: 10 });
-      if (results?.count === 1) {
-        setLocation(results?.data[0]);
-      }
-      setLocations(results?.data);
-    },
-    [ph],
-  );
-
-  return { getLocation, location, locations, locationValues };
+type LocatorHookParams = {
+  reset: UseFormReset<IDMRequestFormSchema>;
+  postalField: string | undefined;
 };
+export const useLocator = (params: LocatorHookParams) => {
+  const { reset, postalField } = params;
+
+  const ph = usePH();
+
+  useEffect(() => {
+    if (postalField && postalField.length >= 4) {
+      const results = ph.fetchDataLists({
+        post_code: +postalField,
+        limit: 10,
+      });
+      console.log(results?.data);
+      // if (results?.count === 1) {
+      //   const locationValues = assignLocationValues(results?.data[0]);
+      //   reset(assignLocationValues(results?.data[0]));
+      // }
+      reset(assignLocationValues(results?.data[0]));
+    }
+  }, [ph, postalField, reset]);
+};
+
+const assignLocationValues = (data: PlaceProps | undefined) => ({
+  city: data?.location,
+  line2: data?.municipality,
+  state: data?.region,
+});

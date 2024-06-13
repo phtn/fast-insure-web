@@ -1,7 +1,7 @@
 import { XGrid } from "@@ui/grid";
 
 export const Welcome = () => (
-  <div className="h-full items-center justify-center sm:flex">
+  <div className="h-full items-center justify-center sm:flex portrait:hidden">
     <div className="h-full w-full overflow-clip">
       <XGrid>
         <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-r from-transparent from-65% to-amber-500/20">

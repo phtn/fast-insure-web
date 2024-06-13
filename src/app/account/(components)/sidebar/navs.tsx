@@ -86,7 +86,7 @@ export const AgentOneNav = ({
                 <ItemContent
                   className={cn(pathname === item.href ? `text-blue-500` : ``)}
                 >
-                  <p className="w-full">{item.label}</p>
+                  <p className="w-full portrait:hidden">{item.label}</p>
                 </ItemContent>
               </GroupItem>
             </Link>

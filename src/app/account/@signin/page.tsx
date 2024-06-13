@@ -1,10 +1,15 @@
 import tw from "tailwind-styled-components";
-import { Lobby } from "./lobby";
+import dynamic from "next/dynamic";
+import LoaderMX from "@/app/(components)/loader-mx";
+
+const DynamicLobby = dynamic(() => import("./lobby"), {
+  loading: LoaderMX,
+});
 
 export default async function SignIn() {
   return (
     <Container>
-      <Lobby />
+      <DynamicLobby />
     </Container>
   );
 }

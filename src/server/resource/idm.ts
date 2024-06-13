@@ -21,6 +21,13 @@ export const Address = z.object({
   country: z.string().or(z.undefined()),
 });
 
+export const PlateTypeResource = z.union([
+  z.literal("plate"),
+  z.literal("induction"),
+]);
+
+export type PlateTypeSchema = z.infer<typeof PlateTypeResource>;
+
 export const VehicleBodyType = z.union([
   z.literal("motorcycle"),
   z.literal("sedan"),
@@ -41,11 +48,17 @@ export const VehicleInfo = z.object({
   year: z.string().or(z.undefined()),
   type: z.union([z.literal("public"), z.literal("private")]).or(z.undefined()),
   body: VehicleBodyType.or(z.undefined()),
+  plateType: PlateTypeResource.or(z.undefined()),
+  plateNumber: z.string().or(z.undefined()),
 });
 
 export type VehicleInfoSchema = z.infer<typeof VehicleInfo>;
 
-export const PolicyType = z.union([z.literal("CTPL"), z.literal("PA")]);
+export const PolicyType = z.union([
+  z.literal("CTPL"),
+  z.literal("CCI"),
+  z.literal("PA"),
+]);
 export type PolicyTypeSchema = z.infer<typeof PolicyType>;
 
 export type AddressSchema = z.infer<typeof Address>;
@@ -161,11 +174,11 @@ export const IDMRequestResource = z.object({
   agentId: z.string().or(z.undefined()),
   agentCode: z.string().or(z.undefined()),
   agentName: z.string().or(z.undefined()),
-  agentBranch: z.string().or(z.undefined()),
+  branchCode: z.string().or(z.undefined()),
   underwriterId: z.string().or(z.undefined()),
   underwriterName: z.string().or(z.undefined()),
   vehicleInfo: VehicleInfo.or(z.undefined()),
-  files: z.array(z.string()).or(z.null()),
+  files: z.array(z.string()).or(z.undefined()),
   active: z.boolean(),
   remarks: z.string().or(z.undefined()),
   updatedAt: z.string().datetime(),

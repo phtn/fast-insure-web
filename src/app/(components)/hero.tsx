@@ -24,7 +24,7 @@ export const Hero = () => {
           <Raynor
             href={`/account`}
             title="Fast-track your"
-            description="Tech-focused insurance services provider for businesses and individuals."
+            description="Technology-driven service provider for businesses and individuals."
             uid={creds?.uid}
             actionLabel={
               creds?.uid ? "View Dashboard" : "Login to your account"
@@ -36,6 +36,6 @@ export const Hero = () => {
   );
 };
 
-const HeroContent = tw.section`
+const HeroContent = tw.div`
   h-[calc(100vh-72px)] flex justify-center w-full bg-gradient-to-br from-zap from-40% via-blue-400/30 to-zap to-100%
   `;

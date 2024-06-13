@@ -6,6 +6,7 @@ import { ocrRouter } from "./routers/ocr";
 import { autoRouter } from "./routers/autos";
 import { copperRouter } from "./routers/copper";
 import { requestRouter } from "./routers/request";
+import { codeRouter } from "./routers/code";
 
 export const appRouter = mergeRouters(
   accountRouter,
@@ -15,6 +16,7 @@ export const appRouter = mergeRouters(
   ocrRouter,
   autoRouter,
   copperRouter,
+  codeRouter,
 );
 
 export type AppRouter = typeof appRouter;

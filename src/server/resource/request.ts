@@ -1,9 +1,9 @@
 import { z } from "zod";
 import {
   IDMAssuredResource,
+  PlateTypeResource,
   PolicyType,
   RequestStatus,
-  VehicleBodyType,
   VehicleInfo,
 } from "./idm";
 
@@ -16,14 +16,16 @@ export const IDMRequestPayload = z.object({
   agentId: z.string().or(z.undefined()),
   agentCode: z.string().or(z.undefined()),
   agentName: z.string().or(z.undefined()),
-  agentBranch: z.string().or(z.undefined()),
+  branchCode: z.string().or(z.undefined()),
   underwriterId: z.string().or(z.undefined()),
   underwriterName: z.string().or(z.undefined()),
-  vehicleInfo: VehicleInfo.or(z.undefined()),
+  plateType: PlateTypeResource.or(z.undefined()),
+  plateNumber: z.string().or(z.undefined()),
   files: z.array(z.string()).or(z.null()),
   status: RequestStatus,
   active: z.boolean(),
   remarks: z.string().or(z.undefined()),
+  vehicleInfo: VehicleInfo.or(z.undefined()),
 });
 
 export type IDMRequestPayloadSchema = z.infer<typeof IDMRequestPayload>;
@@ -42,11 +44,8 @@ export const IDMRequestForm = z.object({
   city: z.string().or(z.undefined()),
   state: z.string().or(z.undefined()),
   country: z.string().or(z.undefined()),
-  year: z.string().or(z.undefined()),
-  make: z.string().or(z.undefined()),
-  model: z.string().or(z.undefined()),
-  type: z.union([z.literal("private"), z.literal("public")]).or(z.undefined()),
-  body: VehicleBodyType.or(z.undefined()),
+  // plateType: PlateTypeResource.or(z.undefined()),
+  plateNumber: z.string().or(z.undefined()),
   remarks: z.string().or(z.undefined()),
 });
 
@@ -75,7 +74,7 @@ export const DraftResponse = z.object({
   assuredId: z.string().or(z.undefined()),
   assuredName: z.string().or(z.undefined()),
   createdAt: z.string().datetime(),
-  files: z.array(z.string().or(z.null())).or(z.undefined()),
+  files: z.array(z.string()).or(z.undefined()),
   id: z.string(),
   policyType: PolicyType.or(z.undefined()),
   remarks: z.string().or(z.undefined()),

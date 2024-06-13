@@ -1,5 +1,5 @@
 import { cn } from "@/utils/cn";
-import { getToday } from "@/utils/helpers";
+import { basedOnTime } from "@/utils/helpers";
 import type { ReactNode } from "react";
 
 type HeaderProps = {
@@ -16,25 +16,31 @@ type HeaderProps = {
 export const Header = (props: HeaderProps) => {
   const { title, description, children, extra } = props;
   return (
-    <div>
-      <div className="flex items-start justify-between">
-        <div>
-          <div className="flex items-center space-x-3">
-            <h2 className="font-k2d text-2xl font-semibold text-coal">
-              {title}
-            </h2>
+    <div className="flex items-center justify-center py-2">
+      <div className="flex h-full w-full items-center justify-between portrait:px-2">
+        <div className="flex w-full items-start space-x-3 whitespace-nowrap portrait:space-x-1.5">
+          <div
+            className={cn(
+              `flex size-5 items-center justify-center border-[2px] border-zap text-[10px] shadow-md`,
+              !extra ? `hidden` : `rounded-full font-semibold`,
+              extra === "MANAGER"
+                ? `bg-cyan-500 text-zap`
+                : `bg-slate-200 text-slate-600`,
+            )}
+          >
+            {extra?.substring(0, 1)}
+          </div>
+          <div className=" portrait:text-xs">
+            <p className="text-[10px] font-light">{basedOnTime()}</p>
             <p
               className={cn(
-                !extra ? `hidden` : `rounded-lg px-2 py-1 text-sm font-bold`,
-                extra === "MANAGER"
-                  ? `bg-amber-100 text-amber-700`
-                  : `bg-slate-100 text-slate-500`,
+                "font-k2d font-semibold text-coal/80",
+                title.length <= 2 ? `uppercase` : `capitalize`,
               )}
             >
-              {extra?.substring(0, 1)}
+              {title}
             </p>
           </div>
-          <p className="font-mono text-xs text-heli">{getToday()}</p>
         </div>
         {children}
       </div>

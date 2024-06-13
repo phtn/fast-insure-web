@@ -22,9 +22,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/app/(ui)/table";
-import { CogIcon, MessageSquareTextIcon } from "lucide-react";
-import { Button } from "@/app/(ui)/button";
+import { CogIcon } from "lucide-react";
 import { DataTablePagination } from "../../../(components)/table/pagination";
+import { EmptyTable } from "../../../(components)/table/empty-table";
 // import {
 //   useCustomerController,
 //   useFetchCustomer,
@@ -82,7 +82,7 @@ export function DataTable<TData, TValue>({
       {/* <div className="flex h-[56px] w-screen items-start space-x-4 overflow-x-scroll pt-1 md:w-full portrait:hidden">
         <DataTableToolbar table={table} />
       </div> */}
-      <div className="h-[450px] overflow-scroll rounded-[4px] border bg-white font-mono text-xs font-light text-clay shadow-md">
+      <div className="h-[calc(100vh-280px)] overflow-scroll rounded-[4px] border bg-white font-mono text-xs font-light text-clay shadow-md">
         <Table>
           <TableHeader className="sticky bg-neutral-800 font-medium tracking-tight">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -113,7 +113,6 @@ export function DataTable<TData, TValue>({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  // onClick={handleDelete(row.getValue("id"))}
                   className="border-b-[0.33px] border-fast/15 hover:bg-ash/30 "
                   key={row.getValue("id")}
                   data-state={row.getIsSelected() && "selected"}
@@ -123,10 +122,10 @@ export function DataTable<TData, TValue>({
                       key={cell.id}
                       className="bg-gradient-to-r from-zinc-900/80 to-sky-950/80 bg-clip-text font-light text-transparent "
                     >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
+                      {flexRender(cell.column.columnDef.cell, {
+                        ...cell.getContext(),
+                        editDraftRoute: "yoyo",
+                      })}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -151,18 +150,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="font-jet h-24 text-center"
                 >
-                  <div className="flex items-center justify-center space-x-4 text-xs">
-                    <span>{loading}</span>
-                    <MessageSquareTextIcon className="h-6 w-6 stroke-[1px] text-opus" />
-                    <p>No records.</p>
-                    <Button
-                      variant={"ghost"}
-                      size="sm"
-                      className="text-xs text-indigo-500 hover:bg-indigo-600/10 hover:text-indigo-500"
-                    >
-                      Create Request
-                    </Button>
-                  </div>
+                  <EmptyTable loading={loading} />
                 </TableCell>
               </TableRow>
             )}

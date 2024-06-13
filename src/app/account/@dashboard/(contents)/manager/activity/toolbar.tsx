@@ -7,8 +7,8 @@ import { Button } from "@@ui/button";
 import { DataTableViewOptions } from "./views";
 import { InputLight } from "@/app/(ui)/input";
 import { DataTableFacetedFilter } from "../../../(components)/table/filter-facets";
-import { statuses } from "./schema";
 import { SpaceX } from "../../../(components)/table/styles";
+import { statuses } from "../../../(components)/table/request-schemas";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -30,7 +30,7 @@ export function DataTableToolbar<TData>({
           onChange={(event) =>
             table.getColumn("customer")?.setFilterValue(event.target.value)
           }
-          className="bg-ghost font-jet h-10 w-[200px] font-light"
+          className="font-jet h-10 w-[200px] bg-ghost font-light"
         />
         {table.getColumn("currency") && (
           <DataTableFacetedFilter

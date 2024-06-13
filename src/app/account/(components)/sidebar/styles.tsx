@@ -7,8 +7,9 @@ export const Container = tw.div`
 
 export const Aside = tw.aside`
   lg:h-full lg:w-1/6 lg:bg-zap/0
-  lg:border-r-[0.33px] z-50 border-ash
-  lg:border-b-[0px] md:border-b-[0.33px] bg-paper portrait:w-screen
+  lg:border-r-[0.33px] z-50 border-ash bg-ghost
+  lg:border-b-[0px] md:border-b-[0.33px] portrait:bg-gradient-to-br portrait:from-paper portrait:to-stone-400/50 portrait:w-screen
+  border-b-[0.33px] bg-paper
   `;
 
 export const ContentWrap = tw.div`
@@ -17,6 +18,7 @@ export const ContentWrap = tw.div`
 
 export const BodyWrap = tw.div`
   flex-1 space-y-3 px-4 py-[0px] md:px-0
+  portrait:p-0 portrait:space-y-0
   `;
 
 export const GreetWrap = tw.div`
@@ -34,7 +36,7 @@ export const GroupContainer = tw.div`
   `;
 
 export const GroupItem = tw.div`
-  flex w-full space-x-2
+  flex w-full space-x-2 portrait:space-x-0
   font-sans font-medium text-clay tracking-tighter
   transition-colors duration-200 delay-200 ease-in
   hover:text-blue-500

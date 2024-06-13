@@ -22,9 +22,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/app/(ui)/table";
-import { CogIcon, MessageSquareTextIcon } from "lucide-react";
-import { Button } from "@/app/(ui)/button";
+import { CogIcon } from "lucide-react";
 import { DataTablePagination } from "../../../(components)/table/pagination";
+import { EmptyTable } from "../../../(components)/table/empty-table";
 // import {
 //   useCustomerController,
 //   useFetchCustomer,
@@ -82,7 +82,7 @@ export function DataTable<TData, TValue>({
       {/* <div className="flex h-[56px] w-screen items-start space-x-4 overflow-x-scroll pt-1 md:w-full portrait:hidden">
         <DataTableToolbar table={table} />
       </div> */}
-      <div className="h-[450px] overflow-scroll rounded-[4px] border bg-white font-mono text-xs font-light text-clay shadow-md">
+      <div className="h-[calc(100vh-280px)] overflow-scroll rounded-[4px] border bg-white font-mono text-xs font-light text-clay shadow-md portrait:h-[calc(100vh-300px)]">
         <Table>
           <TableHeader className="sticky bg-neutral-800 font-medium tracking-tight">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -151,18 +151,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="font-jet h-24 text-center"
                 >
-                  <div className="flex items-center justify-center space-x-4 text-xs">
-                    <span>{loading}</span>
-                    <MessageSquareTextIcon className="h-6 w-6 stroke-[1px] text-opus" />
-                    <p>No recent activity.</p>
-                    <Button
-                      variant={"ghost"}
-                      size="sm"
-                      className="text-xs text-indigo-500 hover:bg-indigo-600/10 hover:text-indigo-500"
-                    >
-                      Create Request
-                    </Button>
-                  </div>
+                  <EmptyTable loading={loading} />
                 </TableCell>
               </TableRow>
             )}

@@ -24,7 +24,8 @@ const buttonVariants = cva(
         secondary: "bg-zinc-500 font-bold text-white hover:bg-blue-950",
         tertiary:
           "bg-blue-500/10 text-blue-900 hover:bg-blue-500 hover:text-white",
-        ghost: "text-blue-600 hover:text-blue-600",
+        ghost:
+          "text-blue-600 hover:text-blue-600 active:scale-[85%] transition-all duration-200 ease-out",
         casper: "text-clay/50 hover:text-clay",
         link: "text-primary underline-offset-4 hover:underline",
       },

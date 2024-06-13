@@ -11,12 +11,8 @@ import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { auth } from "@@libs/db";
 import { onError, onPromise } from "@/utils/toast";
 import { type FormEvent } from "react";
-// type AccountTypeProps = {
-//   accountType: UserAccountType;
-//   setType: (type: UserAccountType) => void;
-// };
 
-export const Lobby = () => {
+const Lobby = () => {
   const { signinType, setSigninType } = useAccountTypes();
   const [signInWithGoogle, googleCreds, loading, googleError] =
     useSignInWithGoogle(auth);
@@ -64,7 +60,6 @@ export const Lobby = () => {
   return (
     <div className="border-b-[0.0px] border-ash">
       <LobbyContainer>
-        {/* <Primary accountType={accountType} setType={setAccountType} /> */}
         <Secondary
           setType={setSigninType}
           signinType={signinType}
@@ -78,67 +73,6 @@ export const Lobby = () => {
     </div>
   );
 };
-
-// const Primary = (props: AccountTypeProps) => {
-//   return (
-//     <div className="flex h-full w-full from-sky-300 via-rose-50 to-lime-400 md:justify-end md:bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))]">
-//       <div className="h-full w-full pt-[28px] md:h-[calc(100vh-144px)] md:w-[540px] md:place-self-end md:pt-[56px]">
-//         <div className="flex h-full flex-col items-center">
-//           <div className="flex w-full flex-col items-center px-[32px] md:h-[calc(100vh-300px)] md:justify-start md:px-0 md:py-[14px]">
-//             <div className="flex h-[86px] w-full flex-col px-[4x] md:h-[100px] md:w-[350px]">
-//               <h1 className="font-sans text-2xl font-semibold tracking-tighter text-blue-950 md:text-3xl">
-//                 Account type
-//               </h1>
-//               <p className="bg-gradient-to-r from-coal/80 to-heli bg-clip-text font-medium tracking-tighter text-transparent md:text-[16px]">
-//                 Select account type
-//               </p>
-//             </div>
-
-//             <div className="flex w-full justify-center rounded-xl bg-white/20 shadow-sm backdrop-blur-md md:w-[350px] md:border-[1px]">
-//               {/* <PrimaryContent {...props} /> */}
-//             </div>
-//           </div>
-//           <div className="h-[28px] w-full border-0 border-ash md:h-[72px]"></div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// const PrimaryContent = ({ accountType, setType }: AccountTypeProps) => {
-//   const manager = accountType === "MANAGER";
-//   return (
-//     <div className="flex h-[150px] w-full flex-col justify-evenly space-y-6 md:h-[250px] md:w-[250px] md:justify-center md:py-[36px]">
-//       <Touch
-//         icon={manager ? CheckCircle2Icon : Circle}
-//         iconFill={manager ? "#fafafa" : undefined}
-//         className={cn(
-//           `w-full text-[14px] md:w-[250px] `,
-//           manager ? "shadow-lg shadow-sky-300/60 " : "",
-//         )}
-//         size={"lg"}
-//         variant={manager ? "secondary" : "default"}
-//         onClick={() => setType("MANAGER")}
-//       >
-//         <div className="flex w-[150px] justify-start pl-3">Manager Account</div>
-//       </Touch>
-//       <div className="hidden h-[0.33px] w-full md:flex" />
-//       <Touch
-//         icon={!manager ? CheckCircle2Icon : Circle}
-//         iconFill={!manager ? "#fafafa" : undefined}
-//         variant={!manager ? "secondary" : "default"}
-//         className={cn(
-//           `w-full text-[14px] md:w-[250px]`,
-//           !manager ? "shadow-lg shadow-sky-500/60 " : "",
-//         )}
-//         size={"lg"}
-//         onClick={() => setType("AGENT")}
-//       >
-//         <div className="flex w-[150px] justify-start pl-3">Agent Account</div>
-//       </Touch>
-//     </div>
-//   );
-// };
 
 type SecondaryProps = {
   signinType: "SIGNIN" | "SIGNUP";
@@ -225,3 +159,5 @@ const TermsFooter = () => {
 const LobbyContainer = tw.div`
  grid grid-cols-1 md:grid-cols-2
 `;
+
+export default Lobby;
