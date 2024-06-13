@@ -24,7 +24,7 @@ export const createUserAccount = async (user: NewUserPayload) => {
       accountType,
       agentCode: "",
       branchCode: "X0000X",
-      displayName: undefined,
+      displayName: "",
       userData: {
         id: userId,
         firstName: null,
