@@ -40,6 +40,7 @@ export const ActiveForm = ({
   const Submit = () => {
     return (
       <DarkTouch
+        disabled={!isValid}
         size="lg"
         type="submit"
         tail={loading ? Disc3Icon : !isValid ? PenLine : ArrowUpRightIcon}

@@ -96,7 +96,12 @@ const Secondary = (props: SecondaryProps) => {
           <Login signinType={signinType} />
           <div className="flex justify-center py-4 text-xs text-heli">or</div>
           <div className="flex w-full items-center">
-            <Touch onClick={sign} size={"lg"} className="h-[56px] w-[300px]">
+            <Touch
+              onClick={sign}
+              size={"lg"}
+              className="h-[56px] w-[300px]"
+              disabled
+            >
               <div className="flex h-full w-full items-center space-x-3">
                 <p className="h-[18px] bg-gradient-to-r from-clay to-clay/70 bg-clip-text px-1 font-sans text-[16px] font-semibold tracking-tighter text-transparent">
                   Sign in with Google
@@ -136,15 +141,17 @@ const TermsFooter = () => {
   return (
     <div className="flex w-full justify-center border-t-[0.33px] border-ash bg-zap">
       <div className="flex h-[72px] w-full items-center justify-center text-[12px] font-light text-heli md:w-[1080px]">
-        <div className="flex w-full items-center justify-start border-r-[1px] border-ash">
+        <div className="flex w-full items-center justify-start border-r-[1px] border-ash/30">
           <div className="flex w-fit items-center justify-end tracking-tighter">
-            <span className="pr-2 font-medium">
+            <span className="pr-2 font-medium portrait:px-2 portrait:text-[10px]">
               FastInsure Technologies, Inc.
             </span>{" "}
-            All rights reserved {new Date().getFullYear()}
+            <span className="portrait:hidden">
+              All rights reserved {new Date().getFullYear()}
+            </span>
           </div>
         </div>
-        <div className="flex w-full items-center justify-end">
+        <div className="flex w-full items-center justify-end tracking-tight portrait:text-[10px]">
           <div className="flex w-[150px] items-center justify-start space-x-2">
             <div>Privacy</div>
             <DotIcon className="text-ash" />

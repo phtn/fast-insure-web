@@ -17,11 +17,11 @@ export default function Products() {
 }
 
 const Header = () => (
-  <div className="mb-4 flex w-full flex-col items-start justify-start space-y-2 md:px-10">
-    <h1 className="bg-gradient-to-r from-orange-100 to-sky-200 bg-clip-text text-3xl font-bold tracking-tighter text-transparent sm:text-3xl xl:text-4xl/none">
+  <div className="mb-4 flex w-full flex-col items-start justify-start space-y-2 md:px-10 portrait:mt-10">
+    <h1 className="bg-gradient-to-r from-orange-100 to-sky-200 bg-clip-text text-3xl font-bold tracking-tighter text-transparent xl:text-4xl/none portrait:text-2xl portrait:leading-none">
       All Products.
     </h1>
-    <p className="mx-auto w-full text-left text-zinc-300">
+    <p className="mx-auto w-full text-left text-zinc-300 portrait:text-sm">
       You can protect your family and your future, one policy at a time.
     </p>
   </div>
