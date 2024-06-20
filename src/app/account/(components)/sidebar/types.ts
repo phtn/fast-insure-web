@@ -19,7 +19,7 @@ export interface GroupItemValue {
   label: string;
   desc: string;
   value: string;
-  icon: LucideIcon;
+  icon?: LucideIcon;
   href: string;
 }
 

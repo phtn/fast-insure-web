@@ -32,8 +32,8 @@ export const Selections = ({ setCoverage }: SetProps) => {
               setCoverage(parseInt(value));
             }}
           >
-            <SelectTrigger className="h-[56px] rounded-lg border-0 bg-slate-900 px-6">
-              <SelectValue className="text-[24px] text-blue-50">
+            <SelectTrigger className="h-[56px] rounded-lg border-0 px-6 active:text-white">
+              <SelectValue className="text-[24px]">
                 {data[selected]?.label}
               </SelectValue>
             </SelectTrigger>

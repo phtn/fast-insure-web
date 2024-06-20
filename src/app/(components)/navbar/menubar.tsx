@@ -17,11 +17,11 @@ const data: MenuData[] = [
   { id: 0, title: "Products", description: "All Products", href: "/products" },
   {
     id: 2,
-    title: "Auto Loans",
-    description: "All Products",
-    href: "/autoloans",
+    title: "Affiliates",
+    description: "Affiliate program",
+    href: "#",
   },
-  { id: 3, title: "Business", description: "All Products", href: "#" },
+  { id: 3, title: "", description: "All Products", href: "#" },
 ];
 
 export function MenuList({

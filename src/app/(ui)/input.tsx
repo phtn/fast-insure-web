@@ -20,7 +20,7 @@ import { InputLabel } from "../account/@dashboard/(components)/input-label";
 import tw from "tailwind-styled-components";
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+  extends React.InputHTMLAttributes<HTMLInputElement> { }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
@@ -288,10 +288,45 @@ export const InputFieldPayments = React.forwardRef<
 });
 InputFieldPayments.displayName = "InputFieldPayments";
 
+export const InputFieldMain = React.forwardRef<
+  HTMLInputElement,
+  InputProps & FieldProps
+>(({ className, type, label, ...props }, ref) => {
+  return (
+    <div
+      className={cn(
+        "flex h-[64px] items-center overflow-clip rounded-[5px]",
+        className,
+      )}
+    >
+      <div className="">
+        {props.icon ? (
+          <props.icon
+            className="size-5 w-14 text-neutral-50"
+            strokeWidth={1.5}
+          />
+        ) : (
+          <div className="text-dyan size-5 w-14" />
+        )}
+      </div>
+      <div className="flex h-full w-full flex-col space-y-0 bg-white">
+        <InputLabel label={label} />
+        <input
+          {...props}
+          type={type}
+          ref={ref}
+          className="flex h-full w-full items-center border-l-[0.33px] border-ash/50 bg-white px-3 pb-1.5 pt-0.5 font-sans text-sm font-medium tracking-tight text-cyan-600 placeholder:text-neutral-500/60 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        />
+      </div>
+    </div>
+  );
+});
+InputFieldMain.displayName = "InputFieldMail";
+
 export const InputFieldAmount = React.forwardRef<
   HTMLInputElement,
   InputProps &
-    FieldProps & { onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }
+  FieldProps & { onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }
 >(({ className, label, onChange, ...props }, ref) => {
   const withReq = label?.split("@") ?? ["", ""];
   return (

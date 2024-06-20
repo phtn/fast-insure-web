@@ -94,11 +94,11 @@ const groups: GroupItem[] = [
     label: "Menu",
     values: [
       {
-        label: "Gifts",
-        desc: "Claim your gifts.",
+        label: "Fast Coins (570pts)",
+        desc: ".",
         value: "2",
         icon: GiftIcon,
-        href: "/autoloans",
+        href: "/#",
         style: "group-hover:fill-yellow-300/50 group-hover:stroke-fuchsia-800",
       },
     ],

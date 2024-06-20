@@ -34,15 +34,17 @@ export const SidebarNav = ({
             <Link key={item.value} href={item.href}>
               <GroupItem>
                 <IconContainer>
-                  <item.icon
-                    strokeWidth={1}
-                    className={cn(
-                      iconClass,
-                      pathname === item.href
-                        ? `fill-cyan-300/10 text-blue-600`
-                        : ``,
-                    )}
-                  />
+                  {item?.icon ? (
+                    <item.icon
+                      strokeWidth={1}
+                      className={cn(
+                        iconClass,
+                        pathname === item.href
+                          ? `fill-cyan-300/10 text-blue-600`
+                          : ``,
+                      )}
+                    />
+                  ) : null}
                 </IconContainer>
                 <ItemContent
                   className={cn(pathname === item.href ? activeStyle : ``)}
@@ -75,13 +77,15 @@ export const AgentOneNav = ({
             <Link key={item.value} href={item.href ?? `#`}>
               <GroupItem>
                 <IconContainer>
-                  <item.icon
-                    strokeWidth={1}
-                    className={cn(
-                      iconClass,
-                      pathname === item.href ? `text-blue-500` : ``,
-                    )}
-                  />
+                  {item?.icon ? (
+                    <item.icon
+                      strokeWidth={1}
+                      className={cn(
+                        iconClass,
+                        pathname === item.href ? `text-blue-500` : ``,
+                      )}
+                    />
+                  ) : null}
                 </IconContainer>
                 <ItemContent
                   className={cn(pathname === item.href ? `text-blue-500` : ``)}

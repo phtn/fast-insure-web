@@ -30,16 +30,17 @@ import { useUpdateService } from "../../(hooks)/useUpdateService";
 const AgentContent = (props: { profile: UserProfileSchema | undefined }) => {
   const { profile } = props;
   const PageOptions = useCallback(() => {
-    const setupComplete = profile?.setupComplete;
+    const setupComplete = !!profile?.setupComplete;
     const options = opts(
-      <WithCode profile={profile} />,
       <SetupInit
         setupComplete={setupComplete}
         userId={profile?.userId}
         displayName={profile?.displayName}
       />,
+
+      <WithCode profile={profile} />,
     );
-    return <>{options.get(!!setupComplete)}</>;
+    return <>{options.get(!setupComplete)}</>;
   }, [profile]);
   return (
     <AgentContextProvider>
@@ -54,12 +55,12 @@ const SetupInit = (props: {
   setupComplete: boolean | undefined;
 }) => {
   const CardOptions = useCallback(() => {
-    const setupReady = typeof props.setupComplete !== "undefined";
+    const setupReady = !!props.setupComplete;
     const options = opts(
       <ActivationCard userId={props.userId} agentName={props?.displayName} />,
       <ActivationLoading />,
     );
-    return <>{options.get(setupReady)}</>;
+    return <>{options.get(!setupReady)}</>;
   }, [props.setupComplete, props.userId, props.displayName]);
 
   return (

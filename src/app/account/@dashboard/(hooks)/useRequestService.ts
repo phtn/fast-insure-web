@@ -140,6 +140,8 @@ export const useSubmitRequest = (params: SubmitRequestHookParams) => {
         remarks,
       },
     };
+
+    console.log(assuredData);
     updateDraftRequest(draftPayload)
       .then(() => {
         onSuccess("Draf saved successfully.", "success");

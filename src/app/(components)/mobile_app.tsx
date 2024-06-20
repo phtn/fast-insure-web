@@ -34,7 +34,7 @@ const Secondary = () => {
   return (
     <div className="hidden w-full items-center justify-center md:flex">
       <div
-        className={`relative flex h-[800px] w-full items-center justify-start bg-[url('/images/handheld_v2.png')] bg-contain bg-no-repeat`}
+        className={`relative flex h-[800px] w-full items-center justify-start bg-[url('/images/handheld_v3.png')] bg-contain bg-no-repeat`}
       >
         <div className="flex h-[800px] w-full bg-gradient-to-b from-transparent from-85% to-paper"></div>
       </div>

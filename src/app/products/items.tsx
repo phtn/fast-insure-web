@@ -12,7 +12,7 @@ type ProductItemProps = {
 };
 export const ProductItems = ({ data }: ProductItemProps) => {
   return (
-    <div className="mx-auto w-full max-w-full space-y-4">
+    <div className="mx-auto w-full max-w-full md:px-10">
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
         {data.map((item) => (
           <Item key={item.id} {...item} />
@@ -45,19 +45,19 @@ const Item = (props: ProductData) => {
       >
         <div
           className={cn(
-            "h-[240px] rounded-[13px] border-t border-blue-50 bg-gradient-to-b from-blue-600 to-orange-50 p-6",
+            "h-[240px] rounded-[13px] border-t border-blue-50 bg-gradient-to-b from-blue-100 to-orange-50 p-6",
           )}
         >
           <div className="flex h-[135px] items-start justify-between">
-            <h2 className="text-xl font-bold text-blue-100 md:text-xl">
+            <h2 className="text-xl font-bold text-fast md:text-xl">
               {props.title}
             </h2>
             <CandyIcon className="mb-2 h-8 w-8 text-blue-100" />
           </div>
           <div className="flex h-[80px] items-center justify-between">
-            <InfoCircledIcon className="h-5 w-5 text-coal" strokeWidth={1} />
+            <InfoCircledIcon className="size-5 text-clay/80" strokeWidth={1} />
             <p className="text-xl font-light tracking-wide text-blue-950">
-              ₱10,000
+              {/* ₱10,000 */}
             </p>
           </div>
         </div>
