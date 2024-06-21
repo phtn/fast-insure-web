@@ -1,25 +1,21 @@
-import {
-  CircleSlash2Icon,
-  CircleSlashIcon,
-  ClockIcon,
-  FilePenLineIcon,
-} from "lucide-react";
+import { ClockIcon } from "@heroicons/react/24/solid";
+import { CircleSlash2Icon, CircleSlashIcon, FileTextIcon } from "lucide-react";
 import { type Option } from "./types";
 
 export const statuses: Option[] = [
   {
     value: "draft",
     label: "draft",
-    icon: FilePenLineIcon,
+    icon: FileTextIcon,
     color: "text-gray-500",
-    cell: "border-[0.33px] border-gray-500 bg-gray-100 text-gray-500 fill-gray-100/20",
+    cell: "bg-gray-100 text-gray-500",
   },
   {
     value: "submitted",
     label: "submitted",
     icon: ClockIcon,
-    color: "text-sky-600",
-    cell: "border border-sky-500 shadow-sm bg-sky-100/40 text-sky-600",
+    color: "text-sky-700",
+    cell: "shadow-sm shadow-gray-300  bg-sky-100 text-sky-600",
   },
   {
     value: "received",

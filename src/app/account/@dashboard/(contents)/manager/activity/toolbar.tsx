@@ -23,16 +23,16 @@ export function DataTableToolbar<TData>({
     <div className="flex w-full items-center justify-between pr-4">
       <div className="flex flex-1 items-center space-x-2 px-2 text-opus md:space-x-4 md:pr-0">
         <InputLight
-          placeholder="filter customer"
+          placeholder="filter by name"
           value={
             (table.getColumn("customer")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
             table.getColumn("customer")?.setFilterValue(event.target.value)
           }
-          className="font-jet h-10 w-[200px] bg-ghost font-light"
+          className="font-jet h-10 w-[230px] font-light"
         />
-        {table.getColumn("currency") && (
+        {table.getColumn("status") && (
           <DataTableFacetedFilter
             column={table.getColumn("status")}
             title="Status"

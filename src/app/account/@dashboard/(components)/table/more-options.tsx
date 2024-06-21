@@ -35,13 +35,13 @@ export const MoreOptions = (props: MoreOptionProps) => {
             <MoreHorizontalIcon className="size-4" />
           </ActiveOptions>
         </DropdownMenuTrigger>
-        <BeachDrop align={"start"} className={dropContentStyle}>
+        <BeachDrop align={"end"} className={dropContentStyle}>
           {options.map((option) => (
             <BeachDropItem
               key={option.name}
               selected={false}
               onClick={option.action}
-              className="group "
+              className="group"
             >
               <div className="flex items-center space-x-4 font-medium tracking-tight">
                 <Icon name={option.name} />
@@ -60,7 +60,7 @@ export const MoreOptions = (props: MoreOptionProps) => {
 const textColors = {
   create: "text-cyan-100",
   read: "text-cyan-100",
-  update: "text-cyan-100",
+  update: "text-amber-100",
   delete: "text-rose-300",
   disable: "text-indigo-300",
 };
@@ -85,6 +85,6 @@ const iconSelector = (option: OptionName) => {
 };
 
 const dropContentStyle = `
-   portrait:mt-0.5 portrait:ml-0 portrait:mr-[17px] w-fit rounded-md shadow-md
+   portrait:mt-0.5 px-0 portrait:ml-0 portrait:mr-[17px] py-1 w-fit rounded-md shadow-md
   `;
 //-mt-[22px] ml-[35.20px]

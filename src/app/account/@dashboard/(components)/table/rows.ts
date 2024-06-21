@@ -1,10 +1,15 @@
+"use client";
 import { cn } from "@/utils/cn";
 
 export const defaultStyle =
-  "animate-fade-down duration-75 border-b-[0.33px] border-slate-400 border-dashed hover:bg-ash/20";
+  "animate-fade-down duration-75 border-b-[0.33px] border-slate-400 border-dashed hover:bg-ash/30";
 
 export const rowStyle = (index: number) => {
-  return cn(defaultStyle, delays[index], "ease-linear");
+  return cn(
+    "animate-fade-down duration-75 border-b-[0.33px] border-slate-400 border-dashed hover:bg-ash/30",
+    delays[index],
+    "ease-linear",
+  );
 };
 
 export const delays = [

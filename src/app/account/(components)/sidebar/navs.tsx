@@ -32,14 +32,16 @@ export const SidebarNav = ({
         <GroupContainer key={group.label} className="">
           {group.values.map((item) => (
             <Link key={item.value} href={item.href}>
-              <GroupItem>
+              <GroupItem
+                className={cn(pathname === item.href ? `bg-[#dadada]` : ``)}
+              >
                 <IconContainer>
                   {item?.icon ? (
                     <item.icon
                       strokeWidth={1}
                       className={cn(
                         iconClass,
-                        pathname === item.href ? `fill-cyan-500` : ``,
+                        pathname === item.href ? `text-cyan-600` : ``,
                       )}
                     />
                   ) : null}
@@ -73,7 +75,9 @@ export const AgentOneNav = ({
         >
           {group.values.map((item) => (
             <Link key={item.value} href={item.href ?? `#`}>
-              <GroupItem>
+              <GroupItem
+                className={cn(pathname === item.href ? `bg-gray-100` : ``)}
+              >
                 <IconContainer>
                   {item?.icon ? (
                     <item.icon

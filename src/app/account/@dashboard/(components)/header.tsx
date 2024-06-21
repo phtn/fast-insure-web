@@ -1,6 +1,4 @@
-import { cn } from "@/utils/cn";
-import { basedOnTime } from "@/utils/helpers";
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 type HeaderProps = {
   title: string;
@@ -14,11 +12,18 @@ type HeaderProps = {
  * @description Dashboard header component
  */
 export const Header = (props: HeaderProps) => {
-  const { title, description, children, extra } = props;
+  const { description, children } = props;
   return (
-    <div className="flex items-center justify-center py-2">
-      <div className="flex h-full w-full items-center justify-between portrait:px-2">
-        <div className="flex w-full items-start space-x-3 whitespace-nowrap portrait:space-x-1.5">
+    <div className="flex items-end justify-center px-3">
+      <div className="flex h-full w-full items-end justify-between portrait:px-2">
+        {children}
+      </div>
+      {description}
+    </div>
+  );
+};
+{
+  /* <div className="flex w-full items-start space-x-3 whitespace-nowrap portrait:space-x-1.5">
           <div
             className={cn(
               `flex size-5 items-center justify-center border-[2px] border-zap text-[10px] shadow-md`,
@@ -41,11 +46,5 @@ export const Header = (props: HeaderProps) => {
               {title}
             </p>
           </div>
-        </div>
-        {children}
-      </div>
-      {description}
-      <div className="my-2 h-[0px] bg-ash" />
-    </div>
-  );
-};
+        </div> */
+}

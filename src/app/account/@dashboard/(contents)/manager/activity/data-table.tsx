@@ -28,6 +28,7 @@ import {
   LoadingTable,
 } from "../../../(components)/table/empty-table";
 import { rowStyle } from "../../../(components)/table/rows";
+import { DataTableToolbar } from "./toolbar";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -77,24 +78,24 @@ export function DataTable<TData, TValue>({
   // };
 
   return (
-    <div>
-      {/* <div className="flex h-[56px] w-screen items-start space-x-4 overflow-x-scroll pt-1 md:w-full portrait:hidden">
+    <div className="border-[0.33px] border-ash bg-white font-mono text-xs font-light portrait:h-[calc(100vh-250px)] portrait:border-0">
+      <div className="flex h-[64px] w-screen items-center space-x-4 overflow-x-scroll md:w-full portrait:hidden">
         <DataTableToolbar table={table} />
-      </div> */}
-      <div className="h-[calc(100vh-244px)] overflow-scroll rounded-[4px] border bg-white font-mono text-xs font-light text-clay shadow-md portrait:h-[calc(100vh-300px)] portrait:border-0">
+      </div>
+      <div className="h-[calc(100vh-246px)] border-t-[0.33px] border-slate-400/60">
         <Table>
-          <TableHeader className="sticky bg-neutral-800 font-medium tracking-tight">
+          <TableHeader className="sticky border-b-[0.33px] border-slate-600 bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-cyan-200/40  via-orange-50 font-medium tracking-tight shadow-sm shadow-stone-200">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
                 key={headerGroup.id}
-                className="border-b-[0.33px] border-ash"
+                className="border-b-[0.33px] border-slate-400/60"
               >
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
                       key={header.id}
                       colSpan={header.colSpan}
-                      className=""
+                      className="border-r-[0.33px] border-slate-300"
                     >
                       {header.isPlaceholder
                         ? null
@@ -119,7 +120,7 @@ export function DataTable<TData, TValue>({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className="border-x-[0.33px] border-dashed border-gray-300 bg-gradient-to-r from-zinc-900/80 to-sky-950/80 bg-clip-text font-light text-transparent "
+                      className="border-r-[0.33px] border-dashed border-gray-300 bg-gradient-to-r from-zinc-900/80 to-sky-950/80 bg-clip-text font-light text-transparent "
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -155,3 +156,21 @@ export function DataTable<TData, TValue>({
     </div>
   );
 }
+
+export const delays = [
+  "animate-delay-75",
+  "animate-delay-100",
+  "animate-delay-[250ms]",
+  "animate-delay-150",
+  "animate-delay-200",
+  "animate-delay-[250ms]",
+  "animate-delay-300",
+  "animate-delay-[250ms]",
+  "animate-delay-500",
+  "animate-delay-[250ms]",
+  "animate-delay-700",
+  "animate-delay-[250ms]",
+  "animate-delay-1000",
+  "animate-delay-[250ms]",
+  "animate-delay-2000",
+];

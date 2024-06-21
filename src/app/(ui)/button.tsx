@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@@utils/cn";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-gray-500 transition-all focus-visible:outline-none focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center font-sans justify-center whitespace-nowrap rounded-md text-xs ring-offset-gray-500 transition-all focus-visible:outline-none focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -13,7 +13,7 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "border border-blue-400 hover:border-blue-50 font-bold hover:bg-blue-500 bg-white text-blue-500 hover:text-blue-50 transition-color duration-300",
+          "border-[0.33px] border-gray-400 hover:border-gray-500 font-normal hover:bg-amber-100/60 bg-white text-gray-500 hover:text-cyan-950 transition-color duration-300",
         borderline:
           "border border-blue-400 hover:border-2 hover:text-blue-200 text-blue-600 transition-all duration-300",
         goldline:

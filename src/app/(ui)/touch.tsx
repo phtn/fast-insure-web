@@ -133,7 +133,7 @@ export const Touch = forwardRef<
                   : "#aaa"
               }
               fill={`${iconFill ?? "rgba(0, 0, 0, 0.0)"}`}
-              className={cn(`h-5 w-5 text-ash`, iconClass)}
+              className={cn(`size-5`, iconClass)}
             />
           ) : null}
 
@@ -146,10 +146,10 @@ export const Touch = forwardRef<
                   ? variant === "secondary"
                     ? "#3b82f6"
                     : "white"
-                  : "#D7D7D7"
+                  : "#bbb"
               }
               fill={`${tailFill ?? "rgba(0, 0, 0, 0.0)"}`}
-              className={cn(`h-5 w-5`, tailClass)}
+              className={cn(`size-5 text-cyan-600`, tailClass)}
             />
           ) : null}
         </Comp>
@@ -210,11 +210,7 @@ export const DarkTouch = forwardRef<
             <props.icon
               strokeWidth={1.5}
               // fill={`${iconFill}`}
-              className={cn(
-                `h-5 w-5`,
-                iconClass,
-                iconFill ? `${iconFill}` : ``,
-              )}
+              className={cn(`size-5`, iconClass, iconFill ? `${iconFill}` : ``)}
             />
           ) : null}
 
@@ -223,7 +219,7 @@ export const DarkTouch = forwardRef<
             <props.tail
               strokeWidth={1.5}
               fill={`${tailFill}`}
-              className={cn(`h-5 w-5`, tailClass)}
+              className={cn(`size-5`, tailClass)}
             />
           ) : null}
         </Comp>

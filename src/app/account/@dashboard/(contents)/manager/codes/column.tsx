@@ -37,12 +37,12 @@ export const columns: ColumnDef<CodeDataSchema>[] = [
       return (
         <div
           onClick={handleCopy}
-          className="group flex w-fit items-center justify-center font-k2d text-[16px] font-semibold"
+          className="group flex w-fit items-center justify-center font-k2d text-[16px] font-semibold blur-[3px]"
         >
           <p className={cn(`rounded`, color?.cell)}>
             <span
               className={cn(
-                "cursor-pointer p-0.5 uppercase tracking-wider",
+                "cursor-pointer p-0.5 uppercase tracking-wider text-black",
                 color?.color,
               )}
             >
@@ -183,18 +183,18 @@ export const columns: ColumnDef<CodeDataSchema>[] = [
           options={[
             {
               action: () => console.log(id),
-              label: "Update code",
+              label: "Copy",
               name: "update",
             },
             {
               action: () => console.log(id),
-              label: "Delete code",
-              name: "delete",
+              label: "Disable",
+              name: "disable",
             },
             {
               action: () => console.log(id),
-              label: "Deactivate",
-              name: "disable",
+              label: "Revoke",
+              name: "delete",
             },
           ]}
         />

@@ -1,6 +1,6 @@
 import { prettyDate } from "@/utils/helpers";
 import type { CellContext, HeaderContext } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "./col-header";
+import { DataTableColumnHeader } from "./table-headers";
 
 export const DateTimeCell = ({ date }: { date: string | undefined }) => {
   const timestamp = prettyDate(date);

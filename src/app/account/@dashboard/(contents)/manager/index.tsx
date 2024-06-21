@@ -30,7 +30,7 @@ const ManagerContent = (props: { profile: UserProfileSchema | undefined }) => {
 
 const Triggers = () => {
   return (
-    <div className="flex w-full items-center space-x-2 portrait:h-[36px] portrait:space-x-0">
+    <div className="flex w-[calc(100vw/4)] items-end space-x-2 portrait:h-[36px] portrait:space-x-0">
       <TabList>
         <Trigger value="activity">Activity</Trigger>
         <Trigger value="codes">Codes</Trigger>

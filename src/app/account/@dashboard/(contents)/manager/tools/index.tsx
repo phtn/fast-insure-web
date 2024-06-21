@@ -18,7 +18,7 @@ export const Tools = (props: ToolContentProps) => {
   });
   return (
     <TabContent value="tools">
-      <div className="grid grid-cols-1 gap-4 border-0 border-sky-500 p-2 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 border-0 border-sky-500 p-2 md:grid-cols-3">
         <AgentCodes
           code={agentCode}
           onClick={handleGenerate}

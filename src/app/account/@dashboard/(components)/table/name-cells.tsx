@@ -3,7 +3,7 @@ import { cn } from "@/utils/cn";
 import { charlimit, copyFn } from "@/utils/helpers";
 import type { CellContext, HeaderContext } from "@tanstack/react-table";
 import Link from "next/link";
-import { DataTableColumnHeader } from "./col-header";
+import { DataTableColumnHeader } from "./table-headers";
 import type { Option } from "./types";
 
 /* eslint-disable react/display-name */
@@ -23,7 +23,7 @@ export const nameCell =
     <div className="flex items-center justify-start">
       <p
         className={
-          "font-sans text-xs font-normal uppercase tracking-tight text-cyan-950/80"
+          "font-sans text-[13px] font-medium uppercase tracking-tight text-coal"
         }
       >
         {charlimit(String(row.getValue(prop)), 16)}
@@ -76,16 +76,16 @@ export const statusCell =
         <div
           className={cn(
             status?.cell,
-            "grid h-9 w-full grid-cols-4 gap-x-2 rounded-[8px] font-sans text-xs font-medium tracking-tight",
+            "grid h-9 w-full grid-cols-4 gap-x-1 rounded-[8px] font-sans text-xs",
           )}
         >
           <div className="col-span-1 flex items-center px-2">
-            {status?.icon && <status.icon className="size-4" />}
+            {status?.icon && <status.icon className="size-5 stroke-1" />}
           </div>
           <div
             className={cn(
               status?.color,
-              `col-span-3 flex w-full items-center justify-start`,
+              `col-span-3 flex w-full items-center justify-start uppercase`,
             )}
           >
             {status?.label}

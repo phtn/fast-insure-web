@@ -33,7 +33,7 @@ export function DataTableColumnHeader<TData, TValue>({
     return (
       <div
         className={cn(
-          "bg-gradient-to-r from-neutral-300 to-cyan-100/80 bg-clip-text font-sans text-xs font-semibold tracking-tight text-transparent",
+          "font-jet text-xs font-semibold tracking-tight text-slate-950",
           className,
         )}
       >
@@ -49,9 +49,9 @@ export function DataTableColumnHeader<TData, TValue>({
           <Button
             variant="ghost"
             size="sm"
-            className="my-1.5 h-8 px-1 text-xs hover:bg-neutral-300/20"
+            className="my-1.5 -mr-2.5 h-8 px-2 text-xs hover:bg-neutral-400/20"
           >
-            <span className="bg-gradient-to-r from-neutral-300 to-cyan-100/80 bg-clip-text font-sans text-xs font-semibold tracking-tight text-transparent">
+            <span className="font-sans text-xs font-semibold tracking-tight text-slate-950">
               {title}
             </span>
             {column.getIsSorted() === "desc" ? (

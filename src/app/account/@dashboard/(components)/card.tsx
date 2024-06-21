@@ -1,5 +1,6 @@
 import { Touch } from "@/app/(ui)/touch";
 import { cn } from "@/utils/cn";
+import { type AcademicCapIcon } from "@heroicons/react/24/solid";
 import { type LucideIcon, ArrowRightIcon, LoaderIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import tw from "tailwind-styled-components";
@@ -7,7 +8,7 @@ import tw from "tailwind-styled-components";
 type CardProps = {
   title: string;
   description: string;
-  icon: LucideIcon;
+  icon: LucideIcon | typeof AcademicCapIcon;
   iconStyle?: string;
   actionIcon?: LucideIcon;
   actionIconStyle?: string;
@@ -23,12 +24,11 @@ export const Card = (props: CardProps) => {
   const { loading, onClick } = props;
   return (
     <CardContainer className={cn(props.style ?? defaultStyle)}>
-      <div className="px-2 py-6">
-        <div className="mb-4 flex h-full items-center space-x-2 rounded-xl bg-gradient-to-r from-void/5 to-transparent pl-3">
+      <div className="px-3 py-6">
+        <div className="mb-4 flex h-full items-center space-x-2 rounded-xl bg-gradient-to-r from-void/[5%] from-20% to-transparent pl-3">
           <div className="mr-1 flex h-full items-center justify-center border-r-[0.33px] border-ghost/20 px-2">
             <props.icon
               size={36}
-              fill="#fafafa36"
               className={cn(
                 "",
                 props.iconStyle,
@@ -42,16 +42,14 @@ export const Card = (props: CardProps) => {
             <div className="font-sans text-lg font-semibold tracking-tight">
               {props.title}
             </div>
-            <div className="text-[14px] font-light opacity-80">
-              {props.description}
-            </div>
+            <div className="text-[12px] font-light">{props.description}</div>
           </div>
         </div>
 
         <div className="flex h-[40px] items-center space-x-4 p-4">
           <Touch
-            iconClass={props.actionIconStyle}
-            className="h-[36px]"
+            iconClass={cn(props.actionIconStyle, `text-cyan-600`)}
+            className="h-[40px] tracking-normal text-cyan-600"
             onClick={onClick}
             tail={loading ? LoaderIcon : ArrowRightIcon}
             tailClass={cn(loading ? "animate-spin" : "", `text-blue-500`)}
@@ -68,8 +66,8 @@ export const Card = (props: CardProps) => {
 };
 
 const CardContainer = tw.div`
-  overflow-clip rounded-lg border-[0.33px] border-clay/50 xl:pr-[2px]
-  shadow-md
+  rounded-xl border-4 border-zap/50
+  shadow-lg hover:scale-[101%] transition-transform duration-300 ease-out
   `;
 
 const defaultStyle = `

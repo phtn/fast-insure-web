@@ -3,22 +3,11 @@ import { opts } from "@/utils/helpers";
 import { Hoverboard } from "@/app/(ui)/hoverboard";
 import { SidebarNav } from "./navs";
 import { managerItems, agentItems } from "./data";
-import type { NavProps, SidebarProps } from "./types";
-import {
-  Aside,
-  BodyWrap,
-  Container,
-  ContentWrap,
-  GreetWrap,
-  Inner,
-} from "./styles";
+import type { GroupItem, NavProps, SidebarProps } from "./types";
+import { Aside, BodyWrap, Container, ContentWrap, Inner } from "./styles";
 import Image from "next/image";
 
-export default function Sidebar({
-  children,
-  accountType,
-  profile,
-}: SidebarProps) {
+export default function Sidebar({ children, accountType }: SidebarProps) {
   const AgentOptions = useCallback(() => {
     const isAgentOne = !!accountType && accountType === "AGENT1";
     const options = opts(
@@ -28,25 +17,20 @@ export default function Sidebar({
     return <>{options.get(isAgentOne)}</>;
   }, [accountType]);
 
-  const AccountOptions = useCallback(() => {
+  const NavOptions = useCallback(() => {
     const isManager = !!accountType && accountType === "MANAGER";
     const options = opts(
-      <SidebarNav groupitems={managerItems} />,
+      <ManagerNav groupItems={managerItems} />,
       <AgentOptions />,
     );
-    return <>{options.get(isManager)}</>;
+    return <Nav>{options.get(isManager)}</Nav>;
   }, [accountType, AgentOptions]);
 
   return (
     <AccountPage>
       <ContentWrap>
-        <Nav>
-          <AccountOptions />
-        </Nav>
-        <BodyWrap>
-          <GreetWrap>Hello, {profile?.displayName}</GreetWrap>
-          {children}
-        </BodyWrap>
+        <NavOptions />
+        <BodyWrap>{children}</BodyWrap>
       </ContentWrap>
     </AccountPage>
   );
@@ -65,13 +49,22 @@ const AccountPage = (props: { children: ReactNode }) => {
   );
 };
 
+const ManagerNav = (props: { groupItems: GroupItem[] }) => {
+  return (
+    <div className="space-y-4">
+      <SidebarNav groupitems={props.groupItems} />
+    </div>
+  );
+};
+
 const Nav = ({ children }: NavProps) => {
   return (
     <Aside>
+      <div className="m-3.5 h-[100px] rounded-lg bg-white shadow-md"></div>
       <Hoverboard
         snapPoints={[37, 86.5, 140, 194, 286]}
-        parentStyle={`lg:h-[248px] lg:mx-2`}
-        offset={80}
+        parentStyle={`lg:h-[248px] border lg:mx-4`}
+        offset={200}
       >
         {children}
       </Hoverboard>

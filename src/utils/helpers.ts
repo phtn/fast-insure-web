@@ -2,6 +2,10 @@ import type { OCR_DE_FieldSchema } from "@/server/resource/ocr";
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { onError, onSuccess, onWarn } from "./toast";
+import pkg from "../../package.json";
+export const getVersion = () => {
+  return pkg.version;
+};
 // import { type VehicleSchema } from "@/app/account/@dashboard/(old)/(autos)/active-form";
 
 export const degreesToRadians = (degrees: number | string): number => {

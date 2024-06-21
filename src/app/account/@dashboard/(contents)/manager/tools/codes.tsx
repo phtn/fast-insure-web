@@ -1,11 +1,7 @@
 import { cn } from "@/utils/cn";
-import {
-  FileDigitIcon,
-  FileSymlinkIcon,
-  LoaderIcon,
-  PlusIcon,
-} from "lucide-react";
+import { FileDigitIcon, LoaderIcon, PlusIcon } from "lucide-react";
 import { Card } from "../../../(components)/card";
+import { DocumentIcon } from "@heroicons/react/24/solid";
 
 type AgentCodeProps = {
   onClick: () => void;
@@ -22,7 +18,7 @@ export const AgentCodes = (props: AgentCodeProps) => {
       iconStyle={cn(props.storingCode ? `animate-spin stroke-1` : ``)}
       actionIcon={PlusIcon}
       actionLabel="Generate"
-      style="bg-gradient-to-r from-red-300 to-orange-300 text-white"
+      style="bg-gradient-to-r from-red-400 to-orange-300 text-white"
       extra={props.code?.substring(0, 6)}
       loading={props.storingCode}
     />
@@ -38,16 +34,16 @@ export const Request = (props: RequestProps) => {
   return (
     <Card
       title="Requests"
-      description={`Create & submit a request.`}
+      description={`Create & submit requests.`}
       onClick={props.onClick}
-      icon={props.loading ? LoaderIcon : FileSymlinkIcon}
+      icon={props.loading ? LoaderIcon : DocumentIcon}
       iconStyle={cn(
         props.loading ? `animate-spin stroke-1` : ``,
-        `stroke-[1.5px]`,
+        `stroke-[1.5px] size-6`,
       )}
       actionIcon={PlusIcon}
-      actionLabel="Create"
-      style="bg-gradient-to-r from-indigo-500 to-cyan-400 text-white"
+      actionLabel="Create Request"
+      style="rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-400 text-white"
       loading={props.loading}
     />
   );

@@ -22,11 +22,10 @@ export function DataTableViewOptions<TData>({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          size="sm"
-          variant={"ghost"}
-          className="ml-auto hidden space-x-4 border-[0.33px] border-ash bg-paper/50 text-xs xl:flex"
+          variant={"outline"}
+          className="flex h-[36px] items-center space-x-1.5 rounded-md px-2 text-xs"
         >
-          <Settings2 className="size-4" />
+          <Settings2 className="size-4 stroke-1 text-gray-500" />
           <p>View</p>
         </Button>
       </DropdownMenuTrigger>

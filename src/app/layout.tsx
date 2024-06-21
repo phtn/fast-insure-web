@@ -6,12 +6,10 @@ import { cookies } from "next/headers";
 
 import { TRPCProvider } from "@/trpc/provider";
 import { Toaster } from "sonner";
-import { Navbar } from "./(components)/navbar";
 import { AuthProvider } from "./(context)/context";
 import type { Metadata, Viewport } from "next";
-import { NotificationBar } from "./(components)/notification-bar";
 import { TooltipProvider } from "./(ui)/tooltip";
-import { NextDevtoolsProvider } from "@next-devtools/core";
+import BrandNav from "./(components)/navbar/brandnav";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -88,20 +86,16 @@ export default function RootLayout({
       <body
         className={`font-sans ${inter.variable} ${k2d.variable} ${GeistMono.variable}`}
       >
-        <NextDevtoolsProvider>
-          <TooltipProvider delayDuration={100}>
-            <AuthProvider>
-              <TRPCProvider cookies={cookies().toString()}>
-                <div className="h-[72px] bg-gradient-to-t from-fast via-blue-800 via-60% to-blue-700">
-                  <Navbar />
-                </div>
-                <NotificationBar />
-                <div className={``}>{children}</div>
-              </TRPCProvider>
-            </AuthProvider>
-            <Toaster />
-          </TooltipProvider>
-        </NextDevtoolsProvider>
+        <TooltipProvider delayDuration={100}>
+          <AuthProvider>
+            <TRPCProvider cookies={cookies().toString()}>
+              <BrandNav />
+              {/* <NotificationBar /> */}
+              <div className={``}>{children}</div>
+            </TRPCProvider>
+          </AuthProvider>
+          <Toaster />
+        </TooltipProvider>
       </body>
     </html>
   );

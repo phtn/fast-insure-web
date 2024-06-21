@@ -12,11 +12,12 @@ import { Checkbox } from "@/app/(ui)/checkbox";
 import { Touch } from "@/app/(ui)/touch";
 import { cn } from "@/utils/cn";
 import { type Column } from "@tanstack/react-table";
-import { CheckIcon, MessageCirclePlusIcon } from "lucide-react";
+import { CheckIcon, MessageCirclePlusIcon, PlusCircleIcon } from "lucide-react";
 import Image from "next/image";
 import * as React from "react";
 import { Beach, BeachItem, SpaceX } from "./styles";
 import type { DataTableFacetedFilterProps, ImageOption } from "./types";
+import { Button } from "@/app/(ui)/button";
 
 export function DataTableFacetedFilter<TData, TValue>({
   column,
@@ -29,14 +30,13 @@ export function DataTableFacetedFilter<TData, TValue>({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Touch
-          icon={MessageCirclePlusIcon}
-          size="sm"
-          variant={"primary"}
-          className="hover:text-sky-600"
+        <Button
+          variant={"outline"}
+          className="flex h-[36px] items-center space-x-1.5 rounded-md px-2 text-xs"
         >
-          {title}
-        </Touch>
+          <PlusCircleIcon className="size-4 stroke-1 text-gray-500" />
+          <p>{title}</p>
+        </Button>
       </PopoverTrigger>
       <Beach
         className={cn(
