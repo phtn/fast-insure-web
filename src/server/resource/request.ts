@@ -8,10 +8,10 @@ import {
 } from "./idm";
 
 export const IDMRequestPayload = z.object({
-  id: z.string(),
-  policyType: PolicyType,
-  assuredId: z.string(),
-  assuredName: z.string(),
+  id: z.string().or(z.undefined()),
+  policyType: PolicyType.or(z.undefined()),
+  assuredId: z.string().or(z.undefined()),
+  assuredName: z.string().or(z.undefined()),
   assuredData: IDMAssuredResource.or(z.undefined()),
   agentId: z.string().or(z.undefined()),
   agentCode: z.string().or(z.undefined()),
@@ -73,6 +73,7 @@ export const DraftResponse = z.object({
   assuredData: IDMAssuredResource.or(z.undefined()),
   assuredId: z.string().or(z.undefined()),
   assuredName: z.string().or(z.undefined()),
+  branchCode: z.string().or(z.undefined()),
   createdAt: z.string().datetime(),
   files: z.array(z.string()).or(z.undefined()),
   id: z.string(),

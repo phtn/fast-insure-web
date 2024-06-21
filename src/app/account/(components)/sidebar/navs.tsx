@@ -39,9 +39,7 @@ export const SidebarNav = ({
                       strokeWidth={1}
                       className={cn(
                         iconClass,
-                        pathname === item.href
-                          ? `fill-cyan-300/10 text-blue-600`
-                          : ``,
+                        pathname === item.href ? `fill-cyan-500` : ``,
                       )}
                     />
                   ) : null}
@@ -71,7 +69,7 @@ export const AgentOneNav = ({
       {props.groupitems.map((group) => (
         <div
           key={group.label}
-          className="flex md:space-x-8 lg:flex-col lg:space-x-0 portrait:space-x-4"
+          className="flex md:space-x-4 lg:flex-col lg:space-x-0 portrait:space-x-4"
         >
           {group.values.map((item) => (
             <Link key={item.value} href={item.href ?? `#`}>
@@ -82,13 +80,13 @@ export const AgentOneNav = ({
                       strokeWidth={1}
                       className={cn(
                         iconClass,
-                        pathname === item.href ? `text-blue-500` : ``,
+                        pathname === item.href ? `text-cyan-400` : ``,
                       )}
                     />
                   ) : null}
                 </IconContainer>
                 <ItemContent
-                  className={cn(pathname === item.href ? `text-blue-500` : ``)}
+                  className={cn(pathname === item.href ? `text-cyan-500` : ``)}
                 >
                   <p className="w-full portrait:hidden">{item.label}</p>
                 </ItemContent>

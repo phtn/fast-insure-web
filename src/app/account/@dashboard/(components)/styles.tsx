@@ -15,7 +15,7 @@ const Trigger = tw(TabsTrigger)`
   `;
 
 const TabContent = tw(TabsContent)`
-  h-[550px]
+  h-[calc(100vh-244px)]
   `;
 
 const TabCard = tw(Card)`

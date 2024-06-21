@@ -6,14 +6,12 @@ import {
   CarIcon,
   SproutIcon,
   PlaneTakeoffIcon,
-  MousePointerSquareIcon,
-  UsersRoundIcon,
   FileBarChart2Icon,
   MonitorCheckIcon,
-  // ShieldQuestionIcon,
-  // LifeBuoyIcon,
 } from "lucide-react";
 import { type GroupItem } from "./types";
+
+import { Squares2X2Icon, UsersIcon } from "@heroicons/react/24/solid";
 
 export const affiliateItems: GroupItem[] = [
   {
@@ -105,14 +103,14 @@ export const managerItems: GroupItem[] = [
         label: "Overview",
         desc: "Managers Dashboard",
         value: "0",
-        icon: MousePointerSquareIcon,
+        icon: Squares2X2Icon,
         href: `/account`,
       },
       {
         label: "Agents",
         desc: "List of all agents",
         value: "1",
-        icon: UsersRoundIcon,
+        icon: UsersIcon,
         href: "/account/agents",
       },
       {

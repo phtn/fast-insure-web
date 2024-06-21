@@ -96,7 +96,7 @@ export default function RootLayout({
                   <Navbar />
                 </div>
                 <NotificationBar />
-                <div className={`overflow-y-scroll`}>{children}</div>
+                <div className={``}>{children}</div>
               </TRPCProvider>
             </AuthProvider>
             <Toaster />

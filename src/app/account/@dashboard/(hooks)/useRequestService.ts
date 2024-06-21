@@ -1,4 +1,5 @@
 import { AuthContext } from "@/app/(context)/context";
+import type { UserProfileSchema } from "@/server/resource/account";
 import type {
   IDMAssuredSchema,
   PlateTypeSchema,
@@ -21,7 +22,8 @@ type SubmitRequestHookParams = {
 export const useSubmitRequest = (params: SubmitRequestHookParams) => {
   const route = useRouter();
   const { id } = params;
-  const profile = useContext(AuthContext)?.profile;
+  const ctx = useContext(AuthContext);
+  const profile: UserProfileSchema | undefined = ctx?.profile;
   const [policyType, setPolicyType] = useState<PolicyTypeSchema | undefined>();
   const [plateType, setPlateType] = useState<PlateTypeSchema | undefined>();
   const [assuredId, setAssuredId] = useState<string | undefined>();
@@ -36,9 +38,13 @@ export const useSubmitRequest = (params: SubmitRequestHookParams) => {
       .catch((e: Error) => e);
   }, []);
 
+  const checker = !!id || !!policyType || !!assuredId || !!profile;
+
+  // console.log(id, policyType, assuredId, profile, !!checker);
+
   const submit = (data: IDMRequestFormSchema) => {
     setLoading(true);
-    if (!id || !policyType || !assuredId || !profile) return;
+    if (!checker) return;
 
     const assuredData: IDMAssuredSchema = {
       id: assuredId,
@@ -75,11 +81,11 @@ export const useSubmitRequest = (params: SubmitRequestHookParams) => {
       assuredId,
       assuredName,
       assuredData: assuredData,
-      agentId: profile.userId,
-      agentName: profile?.displayName,
+      agentId: profile?.userId,
+      agentName: profile?.displayName ?? profile?.email,
       branchCode: profile?.branchCode,
-      underwriterId: "obFUDTdGgdO8xUIN2WKkQwuO8ZJ3",
-      underwriterName: "Rachel McAdams",
+      underwriterId: String(process.env.NEXT_PUBLIC_UNDERWRITER_ID),
+      underwriterName: String(process.env.NEXT_PUBLIC_UNDERWRITER_NAME),
       vehicleInfo,
       files: [],
       status: "submitted",
@@ -93,46 +99,41 @@ export const useSubmitRequest = (params: SubmitRequestHookParams) => {
         setLoading(false);
         route.push(`/account`);
       })
-      .catch((e: Error) => errHandler(e, setLoading));
+      .catch(errHandler(setLoading));
   };
 
   const saveDraft = (data: IDMRequestFormSchema | undefined) => {
     if (!data) return;
-    const {
-      firstName,
-      lastName,
-      middleName,
-      email,
-      phone,
-      line1,
-      line2,
-      city,
-      state,
-      country,
-      postalCode,
-    } = data;
+
     const assuredData = {
-      firstName,
-      lastName,
-      middleName,
-      email,
-      phone,
+      firstName: data?.firstName,
+      lastName: data?.lastName,
+      middleName: data?.middleName,
+      email: data?.email,
+      phone: data?.phone,
       address: {
-        line1,
-        line2,
-        city,
-        state,
-        country,
-        postalCode,
+        line1: data?.line1,
+        line2: data?.line2,
+        city: data?.city,
+        state: data?.state,
+        country: data?.country ?? "PH",
+        postalCode: data?.postalCode,
       },
     };
     const { plateNumber } = data;
     const vehicleInfo = { plateNumber, plateType };
     const { remarks } = data;
+
     const draftPayload: UpdateRequestSchema = {
       id,
       payload: {
-        assuredName: formDisplayname({ firstName, middleName, lastName }),
+        agentName: profile?.displayName ?? profile?.email,
+        assuredName: formDisplayname({
+          firstName: data.firstName,
+          middleName: data.middleName,
+          lastName: data.lastName,
+        }),
+        branchCode: profile?.branchCode,
         assuredData,
         vehicleInfo,
         active: true,
@@ -141,12 +142,11 @@ export const useSubmitRequest = (params: SubmitRequestHookParams) => {
       },
     };
 
-    console.log(assuredData);
     updateDraftRequest(draftPayload)
       .then(() => {
-        onSuccess("Draf saved successfully.", "success");
+        onSuccess("Draft saved successfully.", "success");
       })
-      .catch((e: Error) => errHandler(e, setLoading));
+      .catch(errHandler(setLoading));
   };
 
   return {

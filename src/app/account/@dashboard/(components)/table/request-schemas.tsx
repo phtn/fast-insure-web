@@ -18,8 +18,8 @@ export const statuses: Option[] = [
     value: "submitted",
     label: "submitted",
     icon: ClockIcon,
-    color: "text-sky-500",
-    cell: "border-[0.33px] border-sky-500 bg-sky-100/40 text-sky-500",
+    color: "text-sky-600",
+    cell: "border border-sky-500 shadow-sm bg-sky-100/40 text-sky-600",
   },
   {
     value: "received",

@@ -133,21 +133,21 @@ export const requestFields: FieldProps<IDMRequestFormSchema>[] = [
   // },
 ];
 
-export const requestDefaults: IDMRequestFormSchema = {
-  firstName: "",
-  lastName: "",
-  middleName: "",
-  email: "",
-  phone: "",
-  line1: "",
-  line2: "",
-  city: "",
-  state: "",
-  postalCode: "",
-  plateNumber: "",
-  remarks: "",
-  country: "PH",
-};
+// export const requestDefaults: IDMRequestFormSchema = {
+//   firstName: "",
+//   lastName: "",
+//   middleName: "",
+//   email: "",
+//   phone: "",
+//   line1: "",
+//   line2: "",
+//   city: "",
+//   state: "",
+//   postalCode: "",
+//   plateNumber: "",
+//   remarks: "",
+//   country: "PH",
+// };
 
 export const policyTypes: SelectOptionType[] = [
   {

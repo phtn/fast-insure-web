@@ -8,9 +8,13 @@ type ToolContentProps = {
   branchCode: string | undefined;
 };
 export const Tools = (props: ToolContentProps) => {
-  const { agentCode, storingCode, handleGenerate } = useManagerTools(props);
+  const { userId, branchCode } = props;
+  const { agentCode, storingCode, handleGenerate } = useManagerTools({
+    userId,
+    branchCode,
+  });
   const { handleCreateRequest, loading } = useAgentTools({
-    userId: props.userId,
+    userId,
   });
   return (
     <TabContent value="tools">

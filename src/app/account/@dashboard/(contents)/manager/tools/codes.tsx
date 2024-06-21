@@ -22,7 +22,7 @@ export const AgentCodes = (props: AgentCodeProps) => {
       iconStyle={cn(props.storingCode ? `animate-spin stroke-1` : ``)}
       actionIcon={PlusIcon}
       actionLabel="Generate"
-      style="bg-gradient-to-r from-red-500 to-orange-500 text-white"
+      style="bg-gradient-to-r from-red-300 to-orange-300 text-white"
       extra={props.code?.substring(0, 6)}
       loading={props.storingCode}
     />

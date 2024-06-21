@@ -85,5 +85,6 @@ const iconSelector = (option: OptionName) => {
 };
 
 const dropContentStyle = `
-  -mt-[22px] ml-[35.20px] portrait:mt-0.5 portrait:ml-0 portrait:mr-[17px] w-fit rounded-md shadow-md
+   portrait:mt-0.5 portrait:ml-0 portrait:mr-[17px] w-fit rounded-md shadow-md
   `;
+//-mt-[22px] ml-[35.20px]

@@ -18,7 +18,7 @@ const Lobby = () => {
     useSignInWithGoogle(auth);
 
   const handleSigninWithGoogle = (e: FormEvent<HTMLButtonElement>) => {
-    console.log(loading);
+    console.log(typeof loading);
     e.preventDefault();
     const signinPromise = new Promise((resolve) => {
       return resolve(

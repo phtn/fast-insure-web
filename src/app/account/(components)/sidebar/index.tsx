@@ -4,7 +4,15 @@ import { Hoverboard } from "@/app/(ui)/hoverboard";
 import { SidebarNav } from "./navs";
 import { managerItems, agentItems } from "./data";
 import type { NavProps, SidebarProps } from "./types";
-import { Aside, BodyWrap, Container, ContentWrap, GreetWrap } from "./styles";
+import {
+  Aside,
+  BodyWrap,
+  Container,
+  ContentWrap,
+  GreetWrap,
+  Inner,
+} from "./styles";
+import Image from "next/image";
 
 export default function Sidebar({
   children,
@@ -47,12 +55,12 @@ export default function Sidebar({
 const AccountPage = (props: { children: ReactNode }) => {
   return (
     <Container>
-      <div className="flex h-[calc(100vh-72px)] w-full flex-col place-items-center">
-        <div className="h-full w-screen bg-zap/10 backdrop-blur-lg xl:w-[1080px]">
+      <Inner>
+        <div className="h-full w-screen bg-zap/10 backdrop-blur-lg">
           <div className="h-full items-center md:block">{props.children}</div>
         </div>
         <Footer />
-      </div>
+      </Inner>
     </Container>
   );
 };
@@ -62,7 +70,7 @@ const Nav = ({ children }: NavProps) => {
     <Aside>
       <Hoverboard
         snapPoints={[37, 86.5, 140, 194, 286]}
-        parentStyle={`lg:h-[248px] lg:mx-3`}
+        parentStyle={`lg:h-[248px] lg:mx-2`}
         offset={80}
       >
         {children}
@@ -73,6 +81,16 @@ const Nav = ({ children }: NavProps) => {
 
 const Footer = () => (
   <div className="flex h-[36px] w-screen items-center justify-between border-t-[0.33px] border-ash px-4 text-xs text-clay">
-    <div>Fast Insure Technologies, Inc. &copy; {new Date().getFullYear()}</div>
+    {/* <div>Fast Insure Technologies, Inc. &copy; {new Date().getFullYear()}</div> */}
+    <div className="flex items-center space-x-2 text-[10px]">
+      <Image
+        alt={`fast tech logo`}
+        src={`/logo/fast_tech.svg`}
+        width={0}
+        height={0}
+        className="h-[8px] w-auto"
+      />
+      <p>&copy; {new Date().getFullYear()}</p>
+    </div>
   </div>
 );

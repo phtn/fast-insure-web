@@ -3,6 +3,7 @@ import svgToDataUri from "mini-svg-data-uri";
 import tailwindcssAnimate from "tailwindcss-animate";
 import { type Config } from "tailwindcss/types/config";
 import plugin from "tailwindcss/plugin";
+import twa from "tailwindcss-animated";
 
 export type ColorValue = string | Record<string, string> | undefined;
 
@@ -148,5 +149,6 @@ export default {
         },
       );
     }),
+    require("tailwindcss-animated"),
   ],
 } satisfies Config;

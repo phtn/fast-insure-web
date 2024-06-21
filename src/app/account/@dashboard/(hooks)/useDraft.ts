@@ -2,7 +2,7 @@ import type {
   DraftResponseSchema,
   IDMRequestFormSchema,
 } from "@/server/resource/request";
-import { useCallback, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import type { UseFormReset, UseFormWatch } from "react-hook-form";
 
 type DraftValuesParams = {
@@ -20,9 +20,9 @@ export const useDraftValues = (params: DraftValuesParams) => {
       const doc = drafts?.find((item) => item.id === id);
       const assuredData = doc?.assuredData;
 
-      if (doc) {
+      if (assuredData) {
         return {
-          firstName: assuredData?.firstName ?? "",
+          firstName: assuredData.firstName ?? "",
           lastName: assuredData?.lastName ?? "",
           middleName: assuredData?.middleName ?? "",
           email: assuredData?.email ?? "",
@@ -41,20 +41,11 @@ export const useDraftValues = (params: DraftValuesParams) => {
     }
   }, [drafts, id]);
 
-  const fetchSavedValues = useCallback(() => {
+  useEffect(() => {
     if (savedValues) {
       reset(savedValues);
     }
-  }, [reset, savedValues]);
-
-  useEffect(() => {
-    const fetchDraftValues = () => {
-      if (savedValues) {
-        reset(savedValues);
-      }
-    };
-    fetchDraftValues();
   }, [savedValues, reset]);
 
-  return { watchAll, fetchSavedValues };
+  return { watchAll, savedValues };
 };

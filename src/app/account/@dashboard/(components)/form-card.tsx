@@ -1,4 +1,5 @@
 import { cn } from "@/utils/cn";
+import { type AcademicCapIcon } from "@heroicons/react/24/solid";
 import { type LucideIcon, Disc3Icon } from "lucide-react";
 import { useCallback, type ReactElement, type ReactNode } from "react";
 import tw from "tailwind-styled-components";
@@ -7,7 +8,7 @@ type CardProps = {
   title?: string;
   description?: string;
   extra?: string | ReactElement;
-  icon: LucideIcon;
+  icon: LucideIcon | typeof AcademicCapIcon;
   iconStyle?: string;
   actionIcon?: LucideIcon;
   onClick?: () => void;
@@ -46,18 +47,14 @@ export const FormCard = (props: CardProps) => {
       <CardContainer className={themeSelector()}>
         <div className="space-y-4 p-3">
           <div className="flex w-full items-center justify-between">
-            <div className="flex items-center space-x-3 portrait:space-x-2">
+            <div className="flex items-center space-x-3 whitespace-nowrap portrait:space-x-2">
               {loading ? (
                 <Disc3Icon
                   strokeWidth={1.5}
                   className="animate-spin stroke-1 text-void/80"
                 />
               ) : (
-                <props.icon
-                  size={18}
-                  strokeWidth={1.5}
-                  className={cn("stroke-1 text-void", iconStyle)}
-                />
+                <props.icon className={cn("text-void", iconStyle)} />
               )}
               <div className="font-sans text-[16px] font-medium tracking-tighter text-coal">
                 {title}

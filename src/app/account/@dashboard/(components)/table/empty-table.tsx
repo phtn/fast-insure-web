@@ -1,5 +1,14 @@
 import { Button } from "@/app/(ui)/button";
-import { InboxIcon } from "lucide-react";
+import { FocusIcon, InboxIcon } from "lucide-react";
+
+export const LoadingTable = () => (
+  <div className="flex items-center justify-center space-x-4 portrait:justify-start portrait:px-4">
+    <span className="animate-pulse font-semibold text-cyan-700">
+      Updating table
+    </span>
+    <FocusIcon className="text-dyan/50 size-4 animate-spin stroke-[1px]" />
+  </div>
+);
 
 export const EmptyTable = (props: { loading: boolean }) => (
   <div className="flex flex-col items-center justify-center space-x-4 space-y-8 text-xs portrait:w-[calc(100vw-36px)] portrait:space-x-2 portrait:space-y-6">

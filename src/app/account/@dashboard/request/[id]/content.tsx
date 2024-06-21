@@ -14,7 +14,6 @@ import {
   CheckCircleIcon,
   FileDigitIcon,
   FileTypeIcon,
-  FileUpIcon,
   LoaderIcon,
   SaveIcon,
   ScrollTextIcon,
@@ -44,15 +43,10 @@ import { useDownloadURLs } from "../../(hooks)/file-handler";
 import { useLocator } from "../../(hooks)/locator";
 import { useSubmitRequest } from "../../(hooks)/useRequestService";
 import { useDraftValues } from "../../(hooks)/useDraft";
-import {
-  plateTypes,
-  policyTypes,
-  requestDefaults,
-  requestFields,
-  transformer,
-} from "./schema";
+import { plateTypes, policyTypes, requestFields, transformer } from "./schema";
 import { opts, toggleState } from "@/utils/helpers";
 import ImageList from "./image-list";
+import { ArrowUpOnSquareStackIcon, PhotoIcon } from "@heroicons/react/24/solid";
 
 export const RequestPage = ({ id }: { id: string }) => {
   const agentCtx = useContext(AgentContext);
@@ -61,13 +55,10 @@ export const RequestPage = ({ id }: { id: string }) => {
 
   const form = useForm<IDMRequestFormSchema>({
     resolver: zodResolver(IDMRequestForm),
-    defaultValues: {
-      ...requestDefaults,
-    },
   });
 
   const { reset, watch, control, register, handleSubmit, formState } = form;
-  const { watchAll } = useDraftValues({
+  const { watchAll, savedValues } = useDraftValues({
     drafts,
     id,
     reset,
@@ -94,7 +85,8 @@ export const RequestPage = ({ id }: { id: string }) => {
 
   const handleSave = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    saveDraft({ ...watchAll });
+    saveDraft(watchAll);
+    reset(savedValues);
   };
 
   const assuredInfo = requestFields.slice(0, 5);
@@ -207,6 +199,7 @@ export const RequestPage = ({ id }: { id: string }) => {
               <Button
                 variant={`default`}
                 className="flex items-center space-x-2 bg-indigo-400 px-4"
+                // type="submit"
                 onClick={handleSave}
               >
                 <div>Save as draft</div>
@@ -291,7 +284,8 @@ export const DocumentUploader = (props: { id: string | undefined }) => {
 
   return (
     <FormCard
-      title="Documents uploaded"
+      title="File Uploader"
+      iconStyle="text-black size-5"
       extra={
         <UploaderExtra
           filecount={imagelist.length}
@@ -300,7 +294,7 @@ export const DocumentUploader = (props: { id: string | undefined }) => {
         />
       }
       route="upload"
-      icon={FileUpIcon}
+      icon={ArrowUpOnSquareStackIcon}
     >
       <ViewOptions />
     </FormCard>
@@ -316,7 +310,7 @@ const UploaderExtra = (props: {
   const FilesLoadingOptions = useCallback(() => {
     const options = opts(
       <LoaderIcon className="size-4 animate-spin stroke-[1px]" />,
-      <FileUpIcon className="size-4 stroke-[1px]" />,
+      <PhotoIcon className="size-4" />,
     );
     return <>{options.get(loading)}</>;
   }, [loading]);
@@ -327,6 +321,7 @@ const UploaderExtra = (props: {
         size={`sm`}
         variant={"ghost"}
         className="flex items-center space-x-2 bg-cyan-600 text-xs tracking-tight text-zap transition-all duration-300 ease-out hover:text-white active:scale-[95%]"
+        onClick={(e: FormEvent<HTMLButtonElement>) => e.preventDefault()}
       >
         <FilesLoadingOptions />
         <p>{filecount ?? 0}</p>

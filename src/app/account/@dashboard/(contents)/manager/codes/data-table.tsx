@@ -25,10 +25,7 @@ import {
 import { CogIcon } from "lucide-react";
 import { DataTablePagination } from "../../../(components)/table/pagination";
 import { EmptyTable } from "../../../(components)/table/empty-table";
-// import {
-//   useCustomerController,
-//   useFetchCustomer,
-// } from "../../(hooks)/customer";
+import { rowStyle } from "../../../(components)/table/rows";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -71,12 +68,6 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  // const { handleDeleteCustomer } = useCustomerController();
-  // const { handleFindAllCustomers } = useFetchCustomer();
-  //   await handleDeleteCustomer(id);
-  //   return handleFindAllCustomers();
-  // };
-
   return (
     <div>
       {/* <div className="flex h-[56px] w-screen items-start space-x-4 overflow-x-scroll pt-1 md:w-full portrait:hidden">
@@ -118,10 +109,9 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row, i) => (
                 <TableRow
-                  // onClick={handleDelete(row.getValue("id"))}
-                  className="border-b-[0.33px] border-fast/15 hover:bg-ash/30 "
+                  className={rowStyle(i)}
                   key={row.getValue("id")}
                   data-state={row.getIsSelected() && "selected"}
                 >

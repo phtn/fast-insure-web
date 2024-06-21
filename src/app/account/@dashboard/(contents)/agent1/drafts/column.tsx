@@ -2,10 +2,9 @@
 
 import { type ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "./header";
-import Link from "next/link";
 import { FilePenLineIcon, PencilLineIcon, SettingsIcon } from "lucide-react";
 import { cn } from "@/utils/cn";
-import { PageLink } from "../../../(components)/table/page-link";
+import { pagelinkCell } from "../../../(components)/table/page-link";
 import { DateTimeCell } from "../../../(components)/table/datetime";
 import { MoreOptions } from "../../../(components)/table/more-options";
 import { type IDMRequestSchema } from "@/server/resource/idm";
@@ -22,16 +21,7 @@ export const columns: ColumnDef<IDMRequestSchema>[] = [
         element={<PencilLineIcon className="size-4 text-ghost/70" />}
       />
     ),
-    cell: ({ row }) => {
-      const id: string = row.getValue("id");
-      return (
-        <Link href={`/account/request/${id}`} className="group">
-          <PageLink page="request" id={id}>
-            <FilePenLineIcon className={"size-4 stroke-1 text-sky-700"} />
-          </PageLink>
-        </Link>
-      );
-    },
+    cell: pagelinkCell({ icon: FilePenLineIcon, page: "requests" }),
     enableSorting: false,
   },
   {

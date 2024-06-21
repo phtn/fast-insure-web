@@ -7,7 +7,7 @@ import Link from "next/link";
 import { FileTextIcon, SettingsIcon } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { type IDMRequestSchema } from "@/server/resource/idm";
-import { PageLink } from "../../../(components)/table/page-link";
+import { pagelinkCell } from "../../../(components)/table/page-link";
 import { DateTimeCell } from "../../../(components)/table/datetime";
 import { MoreOptions } from "../../../(components)/table/more-options";
 import { statuses } from "../../../(components)/table/request-schemas";
@@ -22,16 +22,7 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
         className="flex w-full justify-center"
       />
     ),
-    cell: ({ row }) => {
-      const id: string = row.getValue("id");
-      return (
-        <Link href={`/account/ctpl/${id}`} className="group">
-          <PageLink page="ctpl" id={id}>
-            <FileTextIcon className={"size-4 stroke-1 text-sky-600"} />
-          </PageLink>
-        </Link>
-      );
-    },
+    cell: pagelinkCell({ icon: FileTextIcon, page: "account/request" }),
     enableSorting: false,
   },
 

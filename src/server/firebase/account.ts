@@ -8,6 +8,7 @@ import { type FirebaseError } from "firebase/app";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 
 export const createUserAccount = async (user: NewUserPayload) => {
+  const usersPath = String(process.env.NEXT_PUBLIC_LIVE_USERS);
   const Err = (err: FirebaseError) => {
     return [0, err.code];
   };
@@ -48,16 +49,18 @@ export const createUserAccount = async (user: NewUserPayload) => {
       createdAt: new Date(datestring).toISOString(),
       updatedAt: new Date(datestring).toISOString(),
     };
-    await setDoc(doc(db, "users", userId), data).then(Ok, Err);
+    await setDoc(doc(db, usersPath, userId), data).then(Ok, Err);
   } else {
     return "Unable to read payload.";
   }
 };
 
 export const updateUserProfile = async (params: UpdateUserProfileSchema) => {
+  const usersPath = String(process.env.NEXT_PUBLIC_LIVE_USERS);
+
   if (!params.userId) return;
 
-  const docRef = doc(db, `users/${params.userId}`);
+  const docRef = doc(db, `${usersPath}/${params.userId}`);
   const datestring = new Date().getTime();
   await updateDoc(docRef, {
     ...params.payload,

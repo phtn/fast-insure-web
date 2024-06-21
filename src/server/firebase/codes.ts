@@ -9,8 +9,10 @@ import type {
 import { doc, setDoc, collection, updateDoc } from "firebase/firestore";
 
 export const createAgentCode = async (params: AgentCodeSchema) => {
+  const codesPath = String(process.env.NEXT_PUBLIC_LIVE_CODES);
+  const usersPath = String(process.env.NEXT_PUBLIC_LIVE_USERS);
   const { code, branchCode, userId } = params;
-  const docRef = collection(db, `users/${userId}/codes`);
+  const docRef = collection(db, `${usersPath}/${userId}/${codesPath}`);
   const datestring = new Date().getTime();
   const createdAt = new Date(datestring).toISOString();
 
@@ -28,7 +30,7 @@ export const createAgentCode = async (params: AgentCodeSchema) => {
   };
   await setDoc(doc(docRef, code.substring(0, 28)), data);
 
-  const codeRef = collection(db, `codes`);
+  const codeRef = collection(db, codesPath);
   const code_list_item: CodeListSchema = {
     activated: false,
     code: code.substring(0, 6),
@@ -40,10 +42,11 @@ export const createAgentCode = async (params: AgentCodeSchema) => {
 };
 
 export const updateCodeList = async (params: UpdateCodeListSchema) => {
+  const codesPath = String(process.env.NEXT_PUBLIC_LIVE_CODES);
   const { id, userId } = params;
   if (!userId || !id) return;
 
-  const docRef = doc(db, `codes/${id}`);
+  const docRef = doc(db, `${codesPath}/${id}`);
   const datestring = new Date().getTime();
   await updateDoc(docRef, {
     ...params.payload,
@@ -54,10 +57,12 @@ export const updateCodeList = async (params: UpdateCodeListSchema) => {
 export const updateManagerCodeList = async (
   params: UpdateManagerCodeListSchema,
 ) => {
+  const codesPath = String(process.env.NEXT_PUBLIC_LIVE_CODES);
+  const usersPath = String(process.env.NEXT_PUBLIC_LIVE_USERS);
   const { id, managerId } = params;
   if (!managerId || !id) return;
 
-  const docRef = doc(db, `users/${managerId}/codes/${id}`);
+  const docRef = doc(db, `${usersPath}/${managerId}/${codesPath}/${id}`);
   const datestring = new Date().getTime();
   await updateDoc(docRef, {
     ...params.payload,

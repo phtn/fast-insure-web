@@ -184,11 +184,11 @@ const ActivationCard = (props: {
                   "Welcome to your dashboard.",
                 );
               })
-              .catch((e: Error) => errHandler(e, setLoading));
+              .catch(errHandler(setLoading));
           })
-          .catch((e: Error) => errHandler(e, setLoading));
+          .catch(errHandler(setLoading));
       })
-      .catch((e: Error) => errHandler(e, setLoading));
+      .catch(errHandler(setLoading));
   };
 
   return (

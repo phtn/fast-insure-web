@@ -31,10 +31,11 @@ export type AgentCtxType = {
 
 export const AgentContext = createContext<AgentCtxType | null>(null);
 export const AgentContextProvider = ({ children }: { children: ReactNode }) => {
+  const reqsPath = String(process.env.NEXT_PUBLIC_LIVE_REQS);
   const [user] = useAuthState(auth);
   const agentId = user?.uid;
 
-  const reqRef = collection(db, `requests`);
+  const reqRef = collection(db, reqsPath);
   const queryRef = query(reqRef, orderBy("updatedAt", "desc"));
   const [values, loading, error] = useCollection(queryRef, options);
 
@@ -81,10 +82,14 @@ export type ManagerCtxType = {
 export const ManagerContext = createContext<ManagerCtxType | null>(null);
 
 export const ManagerContextProvider = (props: { children: ReactNode }) => {
+  const codesPath = String(process.env.NEXT_PUBLIC_LIVE_CODES);
+  const reqsPath = String(process.env.NEXT_PUBLIC_LIVE_REQS);
+  const usersPath = String(process.env.NEXT_PUBLIC_LIVE_USERS);
   const profile = useContext(AuthContext)?.profile;
+  const path = `${usersPath}/${profile?.userId}/${codesPath}`;
 
   //_ CODES
-  const codesRef = collection(db, `users/${profile?.userId}/codes`);
+  const codesRef = collection(db, path);
   const queryCodesRef = query(codesRef, orderBy(`createdAt`, "desc"));
   const [codesCollection, loading, error] = useCollection(
     queryCodesRef,
@@ -96,20 +101,23 @@ export const ManagerContextProvider = (props: { children: ReactNode }) => {
   });
 
   //_  REQUESTS
-  const reqRef = collection(db, `requests`);
+  const reqRef = collection(db, reqsPath);
   const queryReqRef = query(reqRef, orderBy("updatedAt", "desc"));
   const [reqsCollection, fetchingReqs, reqError] = useCollection(
     queryReqRef,
     options,
   );
-  const requests = reqsCollection?.docs
-    .map((doc) => doc.data() as IDMRequestSchema)
-    .filter(
-      (doc) => doc.branchCode === profile?.branchCode && doc.status !== "draft",
-    );
+  const requests = reqsCollection?.docs.map(
+    (doc) => doc.data() as IDMRequestSchema,
+  );
+  // .filter((doc) => {
+  //   if (doc.agentId !== profile?.userId) {
+  //     return doc.branchCode === profile?.branchCode && doc.status !== "draft";
+  //   }
+  // });
 
   //_  AGENTS
-  const agentsRef = collection(db, `users`);
+  const agentsRef = collection(db, usersPath);
   const agentsQueryRef = query(
     agentsRef,
     where("accountType", "in", ["AGENT1", "AGENT2"]),
@@ -122,8 +130,6 @@ export const ManagerContextProvider = (props: { children: ReactNode }) => {
   const allAgents = agentsCollection?.docs
     .map((doc) => doc.data() as UserProfileSchema)
     .filter((agent) => agent.branchCode === profile?.branchCode);
-
-  console.log(profile?.branchCode);
 
   return (
     <ManagerContext.Provider

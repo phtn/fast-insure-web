@@ -13,11 +13,10 @@ import {
   CommandSeparator,
 } from "@@ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@@ui/popover";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 import { type User } from "firebase/auth";
 import {
   ArrowUpRightSquareIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
   DotIcon,
   GiftIcon,
   LogInIcon,
@@ -176,24 +175,21 @@ export const UserMenu = () => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant={"ghost"} size={"icon"}>
+        <Button variant={"ghost"} size={"icon"} className="text-cyan-500">
           <div className="flex size-[46px] items-center justify-center overflow-clip">
             <SquircleIcon
-              strokeWidth={0}
               className={cn(
-                `absolute size-[46px] fill-ash/20 transition-colors duration-200 ease-in hover:fill-ash/40`,
+                `absolute size-[46px] fill-ash/20 stroke-[0px] transition-colors duration-200 ease-in hover:fill-ash/40`,
                 open ? `fill-ash/50` : ``,
               )}
             />
             <ChevronUpIcon
-              strokeWidth={2}
               className={cn(
                 `pointer-events-none absolute size-[18px] scale-0 transition-transform duration-300 ease-out`,
                 open ? `scale-[100%]` : ``,
               )}
             />
             <ChevronDownIcon
-              strokeWidth={2}
               className={cn(
                 `pointer-events-none absolute size-[18px] scale-0 transition-transform duration-300 ease-out`,
                 !open ? `scale-[100%]` : ``,

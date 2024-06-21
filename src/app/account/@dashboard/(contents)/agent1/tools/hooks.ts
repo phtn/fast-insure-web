@@ -45,11 +45,8 @@ export const useAgentTools = ({ userId }: AgentToolProps) => {
     setLoading(true);
 
     createDraftRequest(payload)
-      .then(() => {
-        console.log("draft created");
-      })
-      .catch((e: Error) => errHandler(e, setLoading))
-      .finally(() => route.push(`/account/request/${id}`));
+      .then(() => route.push(`/account/request/${id}`))
+      .catch(errHandler(setLoading));
   };
 
   /*

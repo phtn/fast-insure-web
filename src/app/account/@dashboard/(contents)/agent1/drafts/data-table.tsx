@@ -25,6 +25,7 @@ import {
 import { CogIcon } from "lucide-react";
 import { DataTablePagination } from "../../../(components)/table/pagination";
 import { EmptyTable } from "../../../(components)/table/empty-table";
+import { rowStyle } from "../../../(components)/table/rows";
 // import {
 //   useCustomerController,
 //   useFetchCustomer,
@@ -111,9 +112,9 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row, i) => (
                 <TableRow
-                  className="border-b-[0.33px] border-fast/15 hover:bg-ash/30 "
+                  className={rowStyle(i)}
                   key={row.getValue("id")}
                   data-state={row.getIsSelected() && "selected"}
                 >

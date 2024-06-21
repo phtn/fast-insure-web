@@ -8,20 +8,20 @@ import { type UserProfileSchema } from "@/server/resource/account";
 import { ManagerContextProvider } from "../../(context)/context";
 
 const ManagerContent = (props: { profile: UserProfileSchema | undefined }) => {
-  const { profile } = props;
-  const displayName = profile?.displayName;
-  const userName = profile?.email?.substring(0, profile?.email.indexOf(`@`));
+  if (!props.profile) return;
+  const { accountType, displayName, userId, branchCode, email } = props.profile;
+  const userName = email?.substring(0, email.indexOf(`@`));
   return (
     <ManagerContextProvider>
       <Tabs defaultValue="activity" className="m-0 w-full">
         <Header
           title={displayName ?? userName ?? `Partner!`}
-          extra={profile?.accountType}
+          extra={accountType}
         >
           <Triggers />
         </Header>
         <Activity />
-        <Tools userId={profile?.userId} branchCode={profile?.branchCode} />
+        <Tools userId={userId} branchCode={branchCode} />
         <Codes />
       </Tabs>
     </ManagerContextProvider>

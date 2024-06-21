@@ -18,7 +18,7 @@ export const useLocator = (params: LocatorHookParams) => {
         post_code: +postalField,
         limit: 10,
       });
-      console.log(results?.data);
+      // console.log(results?.data);
       // if (results?.count === 1) {
       //   const locationValues = assignLocationValues(results?.data[0]);
       //   reset(assignLocationValues(results?.data[0]));

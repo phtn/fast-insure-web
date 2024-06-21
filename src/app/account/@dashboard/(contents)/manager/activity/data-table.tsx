@@ -22,13 +22,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/app/(ui)/table";
-import { CogIcon } from "lucide-react";
 import { DataTablePagination } from "../../../(components)/table/pagination";
-import { EmptyTable } from "../../../(components)/table/empty-table";
-// import {
-//   useCustomerController,
-//   useFetchCustomer,
-// } from "../../(hooks)/customer";
+import {
+  EmptyTable,
+  LoadingTable,
+} from "../../../(components)/table/empty-table";
+import { rowStyle } from "../../../(components)/table/rows";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -82,7 +81,7 @@ export function DataTable<TData, TValue>({
       {/* <div className="flex h-[56px] w-screen items-start space-x-4 overflow-x-scroll pt-1 md:w-full portrait:hidden">
         <DataTableToolbar table={table} />
       </div> */}
-      <div className="h-[calc(100vh-280px)] overflow-scroll rounded-[4px] border bg-white font-mono text-xs font-light text-clay shadow-md portrait:h-[calc(100vh-300px)]">
+      <div className="h-[calc(100vh-244px)] overflow-scroll rounded-[4px] border bg-white font-mono text-xs font-light text-clay shadow-md portrait:h-[calc(100vh-300px)] portrait:border-0">
         <Table>
           <TableHeader className="sticky bg-neutral-800 font-medium tracking-tight">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -111,17 +110,16 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row, i) => (
                 <TableRow
-                  // onClick={handleDelete(row.getValue("id"))}
-                  className="border-b-[0.33px] border-fast/15 hover:bg-ash/30 "
+                  className={rowStyle(i)}
                   key={row.getValue("id")}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className="bg-gradient-to-r from-zinc-900/80 to-sky-950/80 bg-clip-text font-light text-transparent "
+                      className="border-x-[0.33px] border-dashed border-gray-300 bg-gradient-to-r from-zinc-900/80 to-sky-950/80 bg-clip-text font-light text-transparent "
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -137,12 +135,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 py-4 text-center font-mono"
                 >
-                  <div className="flex items-center justify-center space-x-4 portrait:justify-start portrait:px-4">
-                    <span className="animate-pulse font-semibold text-cyan-700">
-                      Updating table
-                    </span>
-                    <CogIcon className="h-6 w-6 animate-spin stroke-[1px] text-cyan-800" />
-                  </div>
+                  <LoadingTable />
                 </TableCell>
               </TableRow>
             ) : (

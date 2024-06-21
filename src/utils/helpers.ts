@@ -367,17 +367,15 @@ export const getMonthAndYear = (
   return { month, year };
 };
 
-export const errHandler = (
-  e: Error,
-  setLoading: Dispatch<SetStateAction<boolean>>,
-  ...args: string[]
-) => {
-  setLoading(false);
-  onError(args[0] ?? "Error", e.name);
-  if (args[1] && args[1].toLowerCase() === "log") {
-    console.log(args[0] ?? "Error", e.name, args[2] ?? "");
-  }
-};
+export const errHandler =
+  (setLoading: Dispatch<SetStateAction<boolean>>, ...args: string[]) =>
+  (e: Error) => {
+    setLoading(false);
+    onError(args[0] ?? "Error", e.name);
+    if (args[1] && args[1].toLowerCase() === "log") {
+      console.log(args[0] ?? "Error", e.name, args[2] ?? "");
+    }
+  };
 
 export const sanitizeText = (value: string) => {
   const spaces = value.replaceAll(" ", "_");

@@ -2,94 +2,47 @@
 
 import { type ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "./header";
-import { charlimit, copyFn } from "@/utils/helpers";
-import Link from "next/link";
 import { FilePenLine, FileTextIcon, SettingsIcon } from "lucide-react";
-import { cn } from "@/utils/cn";
+
 import { type IDMRequestSchema } from "@/server/resource/idm";
-import { PageLink } from "../../../(components)/table/page-link";
-import { DateTimeCell, dateHeader } from "../../../(components)/table/datetime";
+import {
+  pagelinkCell,
+  pagelinkHeader,
+} from "../../../(components)/table/page-link";
+import { dateCell, dateHeader } from "../../../(components)/table/datetime";
 import { MoreOptions } from "../../../(components)/table/more-options";
 import { statuses } from "../../../(components)/table/request-schemas";
+import {
+  nameCell,
+  nameCellHeaderWide,
+  nameCellWithCopy,
+  nameHeader,
+  statusCell,
+} from "../../../(components)/table/name-cells";
 
 export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
   {
-    id: "pagelink",
-    accessorKey: "pagelink",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        className="flex w-full justify-center"
-        element={<FilePenLine className="size-4 text-white/70" />}
-      />
-    ),
-    cell: ({ row }) => {
-      const id: string = row.getValue("id");
-      return (
-        <Link href={`/account/ctpl/${id}`} className="group">
-          <PageLink page="ctpl" id={id}>
-            <FileTextIcon className={"size-4 stroke-1 text-sky-600"} />
-          </PageLink>
-        </Link>
-      );
-    },
-    enableSorting: false,
-  },
-
-  {
     id: "id",
     accessorKey: "id",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Request Id"
-        className="flex w-fit justify-end whitespace-nowrap"
-      />
-    ),
-    cell: ({ row }) => {
-      const id: string | undefined = row.getValue("id");
-
-      const handleCopy = async () => {
-        await copyFn({ name: "Request ID", text: id! });
-      };
-      return (
-        <div
-          onClick={handleCopy}
-          className="group flex w-fit items-center justify-center text-xs"
-        >
-          <span className="cursor-pointer tracking-wide decoration-dashed underline-offset-4 group-hover:underline">
-            {id?.substring(0, 8)}
-          </span>
-        </div>
-      );
-    },
+    header: pagelinkHeader({ icon: FilePenLine }),
+    cell: pagelinkCell({
+      icon: FileTextIcon,
+      page: "account/request",
+    }),
+    enableSorting: false,
+  },
+  {
+    id: "ref",
+    accessorKey: "ref",
+    header: nameHeader("Request Id"),
+    cell: nameCellWithCopy({ name: "Request Id", text: "id" }),
     enableSorting: false,
   },
   {
     id: "assuredName",
     accessorKey: "assuredName",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Assured"
-        className="flex justify-start"
-      />
-    ),
-    cell: ({ row }) => {
-      const assuredName: string = row.getValue("assuredName");
-
-      return (
-        <div className="flex w-fit items-center justify-start">
-          <p
-            className={
-              "whitespace-nowrap font-sans text-xs font-medium uppercase"
-            }
-          >
-            {charlimit(assuredName)}
-          </p>
-        </div>
-      );
-    },
+    header: nameHeader("assuredName"),
+    cell: nameCell("assuredName"),
     filterFn: (row, value, selectedValues: string[]) => {
       return selectedValues.includes(String(row.getValue(value)));
     },
@@ -99,19 +52,8 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
   {
     id: "agent",
     accessorKey: "agentName",
-    header: ({ column }) => (
-      <DataTableColumnHeader className="w-fit" column={column} title="Agent" />
-    ),
-    cell: ({ row }) => {
-      const agentName: string = row.getValue("agent");
-      return (
-        <div className="flex items-center justify-start">
-          <p className={"font-sans text-xs font-normal tracking-tight"}>
-            {charlimit(agentName)}
-          </p>
-        </div>
-      );
-    },
+    header: nameHeader("Agent"),
+    cell: nameCell("agent"),
     enableSorting: false,
     enableHiding: true,
   },
@@ -119,71 +61,23 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
     id: "updatedAt",
     accessorKey: "updatedAt",
     header: dateHeader("Submitted on"),
-    cell: ({ row }) => {
-      const submitted: string = row.getValue("updatedAt");
-
-      return <DateTimeCell date={submitted} />;
-    },
+    cell: dateCell("updatedAt"),
     enableSorting: true,
     enableHiding: true,
   },
   {
     id: "underwriter",
     accessorKey: "underwriterName",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        className="flex justify-center"
-        column={column}
-        title="Underwriter"
-      />
-    ),
-    cell: (info) => {
-      const underwriter = info.getValue() as string;
-      return (
-        <div className="flex items-center justify-center">
-          <p className={"font-sans text-xs font-normal tracking-tight"}>
-            {underwriter}
-          </p>
-        </div>
-      );
-    },
+    header: nameHeader("Underwriter"),
+    cell: nameCell("underwriter"),
     enableSorting: false,
     enableHiding: true,
   },
   {
     id: "status",
     accessorKey: "status",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        className="flex w-full justify-center"
-        column={column}
-        title="Status"
-      />
-    ),
-    cell: ({ row }) => {
-      const status = statuses.find(
-        (item) => item.value === String(row.getValue("status")),
-      );
-
-      const id: string = row.getValue("id");
-
-      return (
-        <Link
-          href={`/account/activity/customers/${id}`}
-          className="group flex justify-center"
-        >
-          <div
-            className={cn(
-              status?.cell,
-              "flex h-8 w-fit items-center justify-center space-x-2 rounded-[8px] px-2 font-sans text-xs font-medium tracking-tight",
-            )}
-          >
-            {status?.icon && <status.icon className="size-4" />}
-            <p className={cn(status?.color)}>{status?.label}</p>
-          </div>
-        </Link>
-      );
-    },
+    header: nameCellHeaderWide("Status"),
+    cell: statusCell({ statuses, url: "requests" }),
     filterFn: (row, value, selectedValues: string[]) => {
       return selectedValues.includes(String(row.getValue(value)));
     },
@@ -196,7 +90,7 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        className="flex justify-center"
+        className="flex w-8 justify-center"
         element={<SettingsIcon className="size-4 text-white/70" />}
       />
     ),
