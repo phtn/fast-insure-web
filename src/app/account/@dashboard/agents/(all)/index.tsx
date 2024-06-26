@@ -7,6 +7,7 @@ import { ManagerContext } from "../../(context)/context";
 export const AllAgents = () => {
   const ctx = useContext(ManagerContext);
   const data = ctx?.allAgents;
+
   return (
     <TabContent value="all">
       <DataTable

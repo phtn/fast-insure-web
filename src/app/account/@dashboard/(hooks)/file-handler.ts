@@ -135,7 +135,10 @@ export interface ImageList {
   url: string;
 }
 
-export const useDownloadURLs = (id: string | undefined) => {
+export const useDownloadURLs = (
+  id: string | undefined,
+  viewDropzone: boolean,
+) => {
   const [loading, setLoading] = useState(false);
   const [imagelist, setImagelist] = useState<ImageList[]>([]);
 
@@ -155,7 +158,7 @@ export const useDownloadURLs = (id: string | undefined) => {
         console.error("Error fetching images: ", e);
         setLoading(false);
       });
-  }, [id, setImagelist]);
+  }, [id, setImagelist, viewDropzone]);
 
   return { loading, imagelist };
 };

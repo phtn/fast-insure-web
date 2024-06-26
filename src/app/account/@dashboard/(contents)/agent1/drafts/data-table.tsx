@@ -1,9 +1,4 @@
-import * as React from "react";
 import {
-  type ColumnDef,
-  type ColumnFiltersState,
-  type SortingState,
-  type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -12,24 +7,33 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  type ColumnDef,
+  type ColumnFiltersState,
+  type SortingState,
+  type VisibilityState,
 } from "@tanstack/react-table";
+import * as React from "react";
 
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TableHeader,
   TableRow,
 } from "@/app/(ui)/table";
-import { CogIcon } from "lucide-react";
+import {
+  PhCell,
+  PhHeader,
+  TableContainer,
+  TableInner,
+} from "../../../(components)/styles";
+import {
+  EmptyTable,
+  LoadingTable,
+} from "../../../(components)/table/empty-table";
 import { DataTablePagination } from "../../../(components)/table/pagination";
-import { EmptyTable } from "../../../(components)/table/empty-table";
-import { rowStyle } from "../../../(components)/table/rows";
-// import {
-//   useCustomerController,
-//   useFetchCustomer,
-// } from "../../(hooks)/customer";
+import { RowMotion, rowStyles } from "../../../(components)/table/rows";
+import { DataTableToolbar } from "./toolbar";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -72,31 +76,23 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  // const { handleDeleteCustomer } = useCustomerController();
-  // const { handleFindAllCustomers } = useFetchCustomer();
-  //   await handleDeleteCustomer(id);
-  //   return handleFindAllCustomers();
-  // };
-
   return (
-    <div>
-      {/* <div className="flex h-[56px] w-screen items-start space-x-4 overflow-x-scroll pt-1 md:w-full portrait:hidden">
-        <DataTableToolbar table={table} />
-      </div> */}
-      <div className="h-[calc(100vh-280px)] overflow-scroll rounded-[4px] border bg-white font-mono text-xs font-light text-clay shadow-md">
+    <TableContainer>
+      <DataTableToolbar table={table} />
+      <TableInner>
         <Table>
-          <TableHeader className="sticky bg-neutral-800 font-medium tracking-tight">
+          <PhHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
                 key={headerGroup.id}
-                className="border-b-[0.33px] border-ash"
+                className="border-b-[0.33px] border-dyan/40"
               >
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
                       key={header.id}
                       colSpan={header.colSpan}
-                      className=""
+                      className="border-r-[0.33px] border-dashed border-dyan/40"
                     >
                       {header.isPlaceholder
                         ? null
@@ -109,27 +105,27 @@ export function DataTable<TData, TValue>({
                 })}
               </TableRow>
             ))}
-          </TableHeader>
+          </PhHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row, i) => (
-                <TableRow
-                  className={rowStyle(i)}
+              table.getRowModel().rows.map((row) => (
+                <RowMotion
+                  {...rowStyles}
+                  transition={{
+                    delay: Math.random() / 8,
+                  }}
                   key={row.getValue("id")}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className="bg-gradient-to-r from-zinc-900/80 to-sky-950/80 bg-clip-text font-light text-transparent "
-                    >
-                      {flexRender(cell.column.columnDef.cell, {
-                        ...cell.getContext(),
-                        editDraftRoute: "yoyo",
-                      })}
-                    </TableCell>
+                    <PhCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </PhCell>
                   ))}
-                </TableRow>
+                </RowMotion>
               ))
             ) : loading ? (
               <TableRow>
@@ -137,19 +133,14 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 py-4 text-center font-mono"
                 >
-                  <div className="flex items-center justify-center space-x-4 portrait:justify-start portrait:px-4">
-                    <span className="animate-pulse font-semibold text-cyan-700">
-                      Updating table
-                    </span>
-                    <CogIcon className="h-6 w-6 animate-spin stroke-[1px] text-cyan-800" />
-                  </div>
+                  <LoadingTable />
                 </TableCell>
               </TableRow>
             ) : (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="font-jet h-24 text-center"
+                  className="h-24 text-center font-mono"
                 >
                   <EmptyTable loading={loading} />
                 </TableCell>
@@ -157,8 +148,8 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>
+      </TableInner>
       <DataTablePagination table={table} />
-    </div>
+    </TableContainer>
   );
 }

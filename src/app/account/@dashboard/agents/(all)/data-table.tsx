@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  type ColumnDef,
   type ColumnFiltersState,
   type SortingState,
   type VisibilityState,
@@ -19,23 +18,20 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableHeader,
   TableRow,
 } from "@/app/(ui)/table";
 import { CogIcon } from "lucide-react";
 import { DataTablePagination } from "../../(components)/table/pagination";
 import { EmptyAgentTable } from "../../(components)/table/empty-table";
-import { rowStyle } from "../../(components)/table/rows";
-// import {
-//   useCustomerController,
-//   useFetchCustomer,
-// } from "../../(hooks)/customer";
-
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  loading: boolean;
-}
+import { RowMotion, rowStyles } from "../../(components)/table/rows";
+import {
+  PhCell,
+  PhHeader,
+  TableContainer,
+  TableInner,
+} from "../../(components)/styles";
+import { DataTableToolbar } from "./toolbar";
+import type { DataTableProps } from "../../(components)/table/types";
 
 export function DataTable<TData, TValue>({
   columns,
@@ -72,31 +68,23 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  // const { handleDeleteCustomer } = useCustomerController();
-  // const { handleFindAllCustomers } = useFetchCustomer();
-  //   await handleDeleteCustomer(id);
-  //   return handleFindAllCustomers();
-  // };
-
   return (
-    <div>
-      {/* <div className="flex h-[56px] w-screen items-start space-x-4 overflow-x-scroll pt-1 md:w-full portrait:hidden">
-        <DataTableToolbar table={table} />
-      </div> */}
-      <div className="h-[calc(100vh-280px)] overflow-scroll rounded-[4px] border bg-white font-mono text-xs font-light text-clay shadow-md portrait:h-[calc(100vh-300px)]">
+    <TableContainer>
+      <DataTableToolbar table={table} />
+      <TableInner>
         <Table>
-          <TableHeader className="sticky bg-neutral-800 font-medium tracking-tight">
+          <PhHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
                 key={headerGroup.id}
-                className="border-b-[0.33px] border-ash"
+                className="border-b-[0.33px] border-dyan/40"
               >
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
                       key={header.id}
                       colSpan={header.colSpan}
-                      className=""
+                      className="border-r-[0.33px] border-dashed border-dyan/40"
                     >
                       {header.isPlaceholder
                         ? null
@@ -109,28 +97,27 @@ export function DataTable<TData, TValue>({
                 })}
               </TableRow>
             ))}
-          </TableHeader>
+          </PhHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row, i) => (
-                <TableRow
-                  className={rowStyle(i)}
+              table.getRowModel().rows.map((row) => (
+                <RowMotion
+                  {...rowStyles}
+                  transition={{
+                    delay: Math.random() / 8,
+                  }}
                   key={row.getValue("userId")}
                   data-state={row.getIsSelected() && "selected"}
-                  // onClick={handleDelete(row.getValue("id"))}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className="bg-gradient-to-r from-zinc-900/80 to-sky-950/80 bg-clip-text font-light text-transparent "
-                    >
+                    <PhCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
                       )}
-                    </TableCell>
+                    </PhCell>
                   ))}
-                </TableRow>
+                </RowMotion>
               ))
             ) : loading ? (
               <TableRow>
@@ -158,8 +145,8 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>
+      </TableInner>
       <DataTablePagination table={table} />
-    </div>
+    </TableContainer>
   );
 }

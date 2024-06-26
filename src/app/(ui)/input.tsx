@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { InputLabel } from "../account/@dashboard/(components)/input-label";
 import tw from "tailwind-styled-components";
+import type { DualIcon } from "../types.index";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
@@ -55,7 +56,7 @@ export type IconName =
 
 interface IconPrefix {
   name: IconName;
-  icon: LucideIcon;
+  icon: DualIcon;
 }
 
 export const IconPrefixes: IconPrefix[] = [
@@ -88,12 +89,44 @@ export const InputField = React.forwardRef<
         {...props}
         type={type}
         ref={ref}
-        className="h-[44px] w-full rounded-xl bg-transparent px-2 text-[14px] placeholder:font-sans placeholder:font-medium placeholder:tracking-tighter placeholder:text-clay/50 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="h-[44px] w-full rounded-lg bg-transparent px-2 font-sans text-[14px] font-medium tracking-tight placeholder:font-sans placeholder:font-medium placeholder:tracking-tighter placeholder:text-clay/50 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       />
     </div>
   );
 });
 InputField.displayName = "InputField";
+
+export const InputFieldX = React.forwardRef<
+  HTMLInputElement,
+  InputProps & { icon?: DualIcon; label?: string }
+>(({ className, type, label, ...props }, ref) => {
+  const fieldLabel = label?.split("@");
+  return (
+    <div>
+      <div className="py-1 text-[11px]">{fieldLabel?.[0]}</div>
+      <div
+        className={cn(
+          "focus-within:ring-ring flex h-[50px] items-center rounded-lg border-[0.33px] border-neutral-400/80 bg-white pl-3 pr-[3px] ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1",
+          className,
+        )}
+      >
+        {props?.icon ? (
+          <props.icon className="mr-[10px] size-5 stroke-1 text-clay dark:text-orange-200/80" />
+        ) : null}
+
+        <div className="relative w-full">
+          <input
+            {...props}
+            type={type}
+            ref={ref}
+            className="h-[44px] w-full rounded-lg px-2 font-sans text-[14px] tracking-tight placeholder:font-sans placeholder:tracking-tighter placeholder:text-neutral-500/60 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+          />
+        </div>
+      </div>
+    </div>
+  );
+});
+InputFieldX.displayName = "InputFieldX";
 
 export const InputFieldName = React.forwardRef<
   HTMLInputElement,
@@ -175,7 +208,7 @@ const InputLight = React.forwardRef<HTMLInputElement, InputProps>(
       <input
         type={type}
         className={cn(
-          "flex h-12 w-full rounded-md border-[0.0px] border-ash bg-paper/80 px-3 py-2 text-xs ring-sky-400 ring-offset-sky-300 transition-all duration-300 ease-in-out placeholder:text-clay focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:focus-visible:ring-1 md:focus-visible:ring-offset-1",
+          "flex h-12 w-full rounded-md border-[0.0px] border-ash bg-paper/80 px-3 py-2 text-xs ring-cyan-700/40 ring-offset-cyan-700 transition-all duration-300 ease-in-out placeholder:text-clay focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:focus-visible:ring-1 md:focus-visible:ring-offset-1",
           className,
         )}
         ref={ref}
@@ -194,7 +227,7 @@ export const InputCode = React.forwardRef<HTMLInputElement, InputProps>(
 
 const CodeInput = tw.input`
   flex h-14 w-full px-3 py-2 bg-[#EFEFEF]/50
-  border-[0.33px] border-clay/60 rounded-full
+  border-[0.33px] border-clay/60 rounded-xl
   placeholder:text-neutral-400 placeholder:tracking-tight placeholder:lowercase placeholder:font-normal
   text-[16px] tracking-widest text-center font-medium font-mono
   transition-all duration-300 ease-in-out uppercase
@@ -271,7 +304,7 @@ export const InputFieldPayments = React.forwardRef<
             strokeWidth={1.5}
           />
         ) : (
-          <div className="text-dyan size-5 w-14" />
+          <div className="size-5 w-14 text-dyan" />
         )}
       </div>
       <div className="flex h-full w-full flex-col space-y-0 bg-white">
@@ -306,7 +339,7 @@ export const InputFieldMain = React.forwardRef<
             strokeWidth={1.5}
           />
         ) : (
-          <div className="text-dyan size-5 w-14" />
+          <div className="size-5 w-14 text-dyan" />
         )}
       </div>
       <div className="flex h-full w-full flex-col space-y-0 bg-white">
@@ -337,13 +370,13 @@ export const InputFieldAmount = React.forwardRef<
       )}
     >
       {props.icon ? (
-        <props.icon className="text-dyan size-5 w-14" strokeWidth={1.5} />
+        <props.icon className="size-5 w-14 text-dyan" strokeWidth={1.5} />
       ) : (
-        <div className="text-dyan size-5 w-14" />
+        <div className="size-5 w-14 text-dyan" />
       )}
 
       <div className="flex h-full w-full flex-col space-y-0 bg-white/90">
-        <p className="text-dyan/70 flex w-full items-start justify-end whitespace-nowrap border-l-[0.33px] border-ash/50 pl-3 pt-1 font-mono text-[10px] font-normal uppercase tracking-widest">
+        <p className="flex w-full items-start justify-end whitespace-nowrap border-l-[0.33px] border-ash/50 pl-3 pt-1 font-mono text-[10px] font-normal uppercase tracking-widest text-dyan/70">
           {withReq[0] ?? label}
           {withReq[1] ? (
             <span
@@ -363,7 +396,7 @@ export const InputFieldAmount = React.forwardRef<
           placeholder="0.00"
           onChange={onChange}
           // className="flex h-full w-full items-center border-l-[0.33px] border-ash/50 bg-white/90 px-3 pb-1.5 pt-0.5 font-sans text-[16px] font-medium tracking-tighter text-dyan placeholder:text-slate-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-          className="text-dyan flex h-full w-full border-l-[0.33px] border-ash/50 px-3 text-right font-sans text-[20px] font-semibold tracking-tight placeholder:text-slate-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex h-full w-full border-l-[0.33px] border-ash/50 px-3 text-right font-sans text-[20px] font-semibold tracking-tight text-dyan placeholder:text-slate-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
         />
       </div>
     </div>

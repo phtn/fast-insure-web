@@ -28,6 +28,7 @@ import {
   UserPlusIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useContext, useState, type HTMLProps } from "react";
 import { useSignOut } from "react-firebase-hooks/auth";
 import tw from "tailwind-styled-components";
@@ -55,8 +56,8 @@ const notAuthedGroup: GroupItem[] = [
         desc: "Sign with email",
         value: "0",
         icon: LogInIcon,
-        href: "/account",
-        style: "group-hover:fill-sky-400/20",
+        href: "/account/sign-in",
+        style: "fill-sky-400/20",
       },
     ],
   },
@@ -68,8 +69,8 @@ const notAuthedGroup: GroupItem[] = [
         desc: "Register for free!",
         value: "1",
         icon: UserPlusIcon,
-        href: "/account",
-        style: "group-hover:fill-teal-400/30",
+        href: "/account/sign-up",
+        style: "fill-teal-400/30",
       },
     ],
   },
@@ -82,7 +83,7 @@ const notAuthedGroup: GroupItem[] = [
         value: "2",
         icon: ArrowUpRightSquareIcon,
         href: "/products",
-        style: "group-hover:fill-indigo-400/30",
+        style: "fill-indigo-400/30",
       },
     ],
   },
@@ -98,7 +99,7 @@ const groups: GroupItem[] = [
         value: "2",
         icon: GiftIcon,
         href: "/#",
-        style: "group-hover:fill-yellow-300/50 group-hover:stroke-fuchsia-800",
+        style: "fill-yellow-300/50 stroke-fuchsia-800",
       },
     ],
   },
@@ -110,14 +111,15 @@ const groups: GroupItem[] = [
         desc: "Need help?",
         value: "3",
         icon: LifeBuoyIcon,
-        href: "#",
-        style: "group-hover:fill-emerald-300/40 group-hover:stroke-emerald-900",
+        href: "/#",
+        style: "fill-emerald-300/40 stroke-emerald-900",
       },
     ],
   },
 ];
 
 export const LogoutOption = () => {
+  const router = useRouter();
   const [signOut, loading, error] = useSignOut(auth);
   const logout = () => {
     onPromise(
@@ -127,6 +129,7 @@ export const LogoutOption = () => {
       "You're logged out.",
       error,
     );
+    router.push("/account/sign-in");
   };
   return (
     <LogoutItem onSelect={logout}>
@@ -175,23 +178,23 @@ export const UserMenu = () => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant={"ghost"} size={"icon"} className="text-cyan-500">
-          <div className="flex size-[46px] items-center justify-center overflow-clip">
+        <Button variant={"ghost"} size={"icon"} className="text-dyan/80">
+          <div className="flex size-[40px] items-center justify-center overflow-clip">
             <SquircleIcon
               className={cn(
-                `absolute size-[46px] fill-ash/20 stroke-[0px] transition-colors duration-200 ease-in hover:fill-ash/40`,
-                open ? `fill-ash/50` : ``,
+                `absolute size-[40px] fill-dyan/5 stroke-[0px] transition-colors duration-200 ease-in hover:fill-dyan/10`,
+                open ? `fill-dyan/15` : ``,
               )}
             />
             <ChevronUpIcon
               className={cn(
-                `pointer-events-none absolute size-[18px] scale-0 transition-transform duration-300 ease-out`,
+                `pointer-events-none absolute size-[16px] scale-0 transition-transform duration-300 ease-out`,
                 open ? `scale-[100%]` : ``,
               )}
             />
             <ChevronDownIcon
               className={cn(
-                `pointer-events-none absolute size-[18px] scale-0 transition-transform duration-300 ease-out`,
+                `pointer-events-none absolute size-[16px] scale-0 transition-transform duration-300 ease-out`,
                 !open ? `scale-[100%]` : ``,
               )}
             />
@@ -199,21 +202,20 @@ export const UserMenu = () => {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="my-2 w-[250px] p-0">
+      <PopoverContent className="my-0 w-[250px] p-0">
         <Hoverdrop
           parentStyle="h-[272px]"
-          pillStyle="lg:h-[56px] lg:group-hover:bg-ash/30 mx-2 rounded-2xl"
+          pillStyle="lg:h-[56px] w-[232px] mx-2 lg:group-hover:bg-neutral-200 rounded-xl"
           snapPoints={[
-            0,
-            80,
+            70,
             147.5,
             isAuthed ? 214 : 213,
             isAuthed ? 280 : 279.5,
-            348,
+            344,
             387,
             396,
           ]}
-          offset={30}
+          offset={25}
         >
           <Command className="absolute lg:-mt-[54px]">
             <MenuOptions />
@@ -289,10 +291,7 @@ export const AuthedContent = ({
               <Sqc strokeWidth={0} />
               <UserCircle
                 strokeWidth={1}
-                className={cn(
-                  iconClass,
-                  `fill-zap/20 stroke-blue-600 group-hover:fill-sky-400/30 group-hover:stroke-indigo-800`,
-                )}
+                className={cn(iconClass, `fill-sky-400/30 stroke-indigo-800`)}
               />
             </IconContainer>
             <ItemContent label={`Account`} desc={`${user?.email}`} />

@@ -28,6 +28,19 @@ const config = {
     config.resolve.alias.canvas = false;
     return config;
   },
+  async headers() {
+    return [
+      {
+        source: "/account/sign-in",
+        headers: [
+          {
+            key: "Cross-Origin-Embedder-Policy",
+            value: "unsafe-none",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 const { withNextDevtools } = dev;

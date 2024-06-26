@@ -1,5 +1,20 @@
 import { z } from "zod";
 
+export const LoginResource = z.object({
+  email: z.string().email(),
+  password: z.string().min(4, {
+    message: "Password must be atleast 4 chars",
+  }),
+});
+
+export type LoginSchema = z.infer<typeof LoginResource>;
+
+export const LoginTypeResource = z.union([
+  z.literal("SIGNIN"),
+  z.literal("SIGNUP"),
+]);
+export type LoginTypeSchema = z.infer<typeof LoginTypeResource>;
+
 export const AccountType = z.union([
   z.literal("AFFILIATE"),
   z.literal("PERSONAL"),
@@ -34,25 +49,39 @@ export const UserDataResource = z.object({
 
 export type UserDataSchema = z.infer<typeof UserDataResource>;
 
+export const TokenManager = z.object({
+  accessToken: z.string(),
+  expirationTime: z.number(),
+  refreshToken: z.string(),
+});
+
 export const UserProfileResource = z.object({
   accountType: AccountType,
   active: z.boolean().or(z.undefined()),
   agentCode: z.string().or(z.null()),
   branchCode: z.string().or(z.undefined()),
   createdAt: z.string().datetime(),
-  displayName: z.string().or(z.undefined()),
-  email: z.string().email().or(z.undefined()),
+  displayName: z.string().or(z.null()),
+  email: z.string().email().or(z.null()),
+  existing: z.boolean().or(z.undefined()),
   isVerified: z.boolean(),
+  phoneNumber: z.string().or(z.null()),
+  photoURL: z.string().or(z.null()),
   setupComplete: z.boolean(),
   setupProgress: z.number(),
   updatedAt: z.string().datetime(),
+  lastLogin: z.string().datetime(),
   userId: z.string().or(z.undefined()),
   userData: UserDataResource.or(z.undefined()),
+  draftCount: z.number().or(z.undefined()),
+  submittedCount: z.number().or(z.undefined()),
+  completedCount: z.number().or(z.undefined()),
+  fastPoints: z.number().or(z.undefined()),
 });
 
 export type UserProfileSchema = z.infer<typeof UserProfileResource>;
 
-const profileKeySchema = UserProfileResource.keyof();
+export const profileKeySchema = UserProfileResource.keyof();
 
 export const UpdateUserProfileResource = z.object({
   userId: z.string().or(z.undefined()),
@@ -68,6 +97,19 @@ export const CreateAccountResource = z.object({
 });
 
 export type NewUserPayload = z.infer<typeof CreateAccountResource>;
+
+export const CreateAccountFromGoogleResource = z.object({
+  userId: z.string().min(1),
+  email: z.string().email().or(z.null()),
+  accountType: AccountType,
+  displayName: z.string().or(z.null()),
+  phoneNumber: z.string().or(z.null()),
+  photoURL: z.string().or(z.null()),
+});
+
+export type NewUserPayloadFromGoogle = z.infer<
+  typeof CreateAccountFromGoogleResource
+>;
 
 export const BranchDataResource = z.object({
   branchCode: z.string(),
@@ -85,3 +127,16 @@ export const BranchDataResource = z.object({
 });
 
 export type BranchDataSchema = z.infer<typeof BranchDataResource>;
+
+export const CountUpdateResource = z.object({
+  userId: z.string().or(z.undefined()),
+  fieldName: z.union([
+    z.literal("draftCount"),
+    z.literal("submittedCount"),
+    z.literal("completedCount"),
+    z.literal("fastPoints"),
+  ]),
+  incrementBy: z.number(),
+});
+
+export type CountUpdateSchema = z.infer<typeof CountUpdateResource>;

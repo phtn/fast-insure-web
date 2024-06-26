@@ -2,24 +2,22 @@ import { type FieldProps } from "../../(components)/form-types";
 import {
   Building2Icon,
   GlobeIcon,
-  MailIcon,
   MapIcon,
   MapPinnedIcon,
   MilestoneIcon,
   PencilLineIcon,
-  PhoneIcon,
   SignpostIcon,
-  SquareUserRoundIcon,
   StickerIcon,
 } from "lucide-react";
 import { type IDMRequestFormSchema } from "@/server/resource/request";
 import { type SelectOptionType } from "../../(components)/select-option";
+import { EnvelopeIcon, PhoneIcon, UserIcon } from "@heroicons/react/24/outline";
 
 export const requestFields: FieldProps<IDMRequestFormSchema>[] = [
   {
     name: "firstName",
     alt: "name",
-    icon: SquareUserRoundIcon,
+    icon: UserIcon,
     label: "First name@required",
     placeholder: "First name",
     type: "text",
@@ -27,7 +25,7 @@ export const requestFields: FieldProps<IDMRequestFormSchema>[] = [
   {
     name: "lastName",
     alt: "name",
-    icon: SquareUserRoundIcon,
+    // icon: UserIcon,
     label: "Last name@required",
     placeholder: "Last name",
     type: "text",
@@ -35,7 +33,7 @@ export const requestFields: FieldProps<IDMRequestFormSchema>[] = [
   {
     name: "middleName",
     alt: "middle name",
-    icon: SquareUserRoundIcon,
+    // icon: UserIcon,
     label: "Middle Name",
     placeholder: "Middle name",
     type: "text",
@@ -43,7 +41,7 @@ export const requestFields: FieldProps<IDMRequestFormSchema>[] = [
   {
     name: "email",
     alt: "email",
-    icon: MailIcon,
+    icon: EnvelopeIcon,
     label: "Email@required",
     placeholder: "Email",
     type: "email",
@@ -68,7 +66,7 @@ export const requestFields: FieldProps<IDMRequestFormSchema>[] = [
   {
     name: "line2",
     alt: "line2",
-    icon: MapPinnedIcon,
+    icon: MapIcon,
     label: "Subdivision | Area",
     placeholder: "Subdivision",
     type: "text",
@@ -84,7 +82,7 @@ export const requestFields: FieldProps<IDMRequestFormSchema>[] = [
   {
     name: "state",
     alt: "state",
-    icon: MapIcon,
+    icon: MapPinnedIcon,
     label: "Region",
     placeholder: "Region",
     type: "text",
@@ -110,8 +108,16 @@ export const requestFields: FieldProps<IDMRequestFormSchema>[] = [
     name: "plateNumber",
     alt: "plate number",
     icon: StickerIcon,
-    label: "Plate / Induction Number",
-    placeholder: "Plate / Induction",
+    label: "",
+    placeholder: "Plate Number",
+    type: "text",
+  },
+  {
+    name: "conductionNumber",
+    alt: "conduction number",
+    icon: StickerIcon,
+    label: "",
+    placeholder: "Conduction Number",
     type: "text",
   },
   {
@@ -133,21 +139,21 @@ export const requestFields: FieldProps<IDMRequestFormSchema>[] = [
   // },
 ];
 
-// export const requestDefaults: IDMRequestFormSchema = {
-//   firstName: "",
-//   lastName: "",
-//   middleName: "",
-//   email: "",
-//   phone: "",
-//   line1: "",
-//   line2: "",
-//   city: "",
-//   state: "",
-//   postalCode: "",
-//   plateNumber: "",
-//   remarks: "",
-//   country: "PH",
-// };
+export const requestDefaults: IDMRequestFormSchema = {
+  firstName: "",
+  lastName: "",
+  middleName: "",
+  email: "",
+  phone: "",
+  line1: "",
+  line2: "",
+  city: "",
+  state: "",
+  postalCode: "",
+  plateNumber: "",
+  remarks: "",
+  country: "PH",
+};
 
 export const policyTypes: SelectOptionType[] = [
   {
@@ -178,9 +184,9 @@ export const plateTypes: SelectOptionType[] = [
     disabled: false,
   },
   {
-    label: "Induction Number",
-    complete: "Induction Number",
-    value: "induction",
+    label: "Conduction Number",
+    complete: "Conduction Number",
+    value: "conduction",
     disabled: false,
   },
 ];

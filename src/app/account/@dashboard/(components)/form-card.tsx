@@ -20,8 +20,9 @@ type CardProps = {
 // const skyCardStyle = `from-sky-100/90 via-sky-50/95 to-sky-50 h-full w-full`;
 const blueCardStyle = `from-teal-200 via-pink-100 to-sky-50 h-full w-full`;
 // const pinkCardStyle = `from-indigo-100/90 via-rose-50 to-sky-50 h-full w-full`;
-const defaultCardStyle = `from-cyan-50/90 via-slate-100 to-sky-50 h-full w-full`;
+const defaultCardStyle = `from-cyan-50/90 via-white to-white h-full w-full`;
 const greyCardStyle = `from-slate-100/90 via-gray-100 to-sky-50 h-full w-full`;
+const neutralCardStyle = `from-neutral-300/0 via-slate-200/0 to-sky-50 h-full w-full`;
 const emeraldCardStyle = `from-teal-100 via-blue-100/90 to-sky-50 h-full w-full`;
 const lightCardStyle = `from-pink-300 via-yellow-100/90 to-green-100 h-full w-full`;
 
@@ -37,6 +38,8 @@ export const FormCard = (props: CardProps) => {
       return blueCardStyle;
     } else if (route === "upload") {
       return greyCardStyle;
+    } else if (route === "default") {
+      return neutralCardStyle;
     } else {
       return defaultCardStyle;
     }
@@ -89,6 +92,16 @@ export const GreyCard = ({ children }: { children: ReactNode }) => (
   </Cape>
 );
 
+export const NeutralCard = ({ children }: { children: ReactNode }) => (
+  <NeutralContainer className={neutralCardStyle}>{children}</NeutralContainer>
+);
+
+const NeutralContainer = tw.div`
+  portrait:h-fit bg-sky-950/[5%] backdrop-blur-lg rounded-lg p-5
+  border-[0.33px] border-neutral-400/50
+  overflow-x-scroll
+  `;
+
 const Cape = tw.div`
     bg-void/80 overflow-scroll
     shadow-sm shadow-slate-300
@@ -101,5 +114,4 @@ const CardContainer = tw.div`
   portrait:h-fit
   border-clay/50 border-[0.33px]
   bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))]
-
   `;

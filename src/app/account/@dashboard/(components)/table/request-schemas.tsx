@@ -1,5 +1,10 @@
-import { ClockIcon } from "@heroicons/react/24/solid";
-import { CircleSlash2Icon, CircleSlashIcon, FileTextIcon } from "lucide-react";
+import { ClockIcon } from "@heroicons/react/24/outline";
+import {
+  CheckCheckIcon,
+  CircleSlash2Icon,
+  FileTextIcon,
+  ImportIcon,
+} from "lucide-react";
 import { type Option } from "./types";
 
 export const statuses: Option[] = [
@@ -7,36 +12,36 @@ export const statuses: Option[] = [
     value: "draft",
     label: "draft",
     icon: FileTextIcon,
-    color: "text-gray-500",
-    cell: "bg-gray-100 text-gray-500",
+    color: "text-amber-100",
+    cell: "bg-amber-100/50",
   },
   {
     value: "submitted",
     label: "submitted",
     icon: ClockIcon,
-    color: "text-sky-700",
-    cell: "shadow-sm shadow-gray-300  bg-sky-100 text-sky-600",
+    color: "text-sky-300",
+    cell: "bg-sky-100 text-sky-600",
   },
   {
     value: "received",
     label: "received",
-    icon: CircleSlashIcon,
-    color: "text-indigo-500",
-    cell: "border-[0.33px] border-indigo-500 bg-indigo-100/30 text-indigo-500",
+    icon: ImportIcon,
+    color: "text-indigo-300",
+    cell: "bg-indigo-100/50 text-indigo-700/50",
   },
   {
     value: "voided",
     label: "voided",
-    icon: CircleSlashIcon,
-    color: "text-rose-100",
-    cell: "border-[0.33px] border-rose-500 bg-rose-100/30 text-rose-500",
+    icon: CircleSlash2Icon,
+    color: "text-rose-200",
+    cell: "bg-rose-100/30 text-rose-500",
   },
   {
     value: "completed",
     label: "completed",
-    icon: CircleSlash2Icon,
+    icon: CheckCheckIcon,
     color: "text-teal-500",
-    cell: "border-[0.33px] border-teal-500 bg-teal-100/30 text-teal-500",
+    cell: "bg-teal-100/50 text-teal-700",
   },
 ];
 

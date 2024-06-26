@@ -4,11 +4,11 @@ import { type Table } from "@tanstack/react-table";
 
 import { Button } from "@@ui/button";
 
-import { DataTableViewOptions } from "./views";
 import { InputLight } from "@/app/(ui)/input";
 import { DataTableFacetedFilter } from "../../../(components)/table/filter-facets";
-import { statuses } from "./schema";
 import { SpaceX } from "../../../(components)/table/styles";
+import { DataTableViewOptions } from "../../../(components)/table/views";
+import { activeStates } from "../../../(components)/table/status-schemas";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -20,23 +20,23 @@ export function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
-    <div className="flex w-full items-center justify-between pr-4">
-      <div className="flex flex-1 items-center space-x-2 px-2 text-opus md:space-x-4 md:pr-0">
+    <div className="flex h-[64px] w-full items-center justify-between px-4 portrait:hidden">
+      <div className="flex flex-1 items-center space-x-2 text-opus md:space-x-4 md:pr-0">
         <InputLight
-          placeholder="filter customer"
+          placeholder="filter by agent"
           value={
-            (table.getColumn("customer")?.getFilterValue() as string) ?? ""
+            (table.getColumn("assignedName")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
-            table.getColumn("customer")?.setFilterValue(event.target.value)
+            table.getColumn("assignedName")?.setFilterValue(event.target.value)
           }
-          className="bg-ghost font-jet h-10 w-[200px] font-light"
+          className="h-10 w-[230px] font-mono font-light"
         />
-        {table.getColumn("currency") && (
+        {table.getColumn("active") && (
           <DataTableFacetedFilter
-            column={table.getColumn("status")}
+            column={table.getColumn("active")}
             title="Status"
-            options={statuses}
+            options={activeStates}
           />
         )}
         {/* {table.getColumn("currency") && (
@@ -48,13 +48,11 @@ export function DataTableToolbar<TData>({
         )} */}
         {isFiltered && (
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={() => table.resetColumnFilters()}
-            className="group flex h-[40px] items-center justify-center rounded-[4px] border border-sky-400 px-2 text-sky-400 hover:border-sky-400 hover:bg-sky-400 lg:px-3"
+            className="group flex h-[35px] items-center justify-center rounded-md bg-red-400/80 px-2 text-dyan/80"
           >
-            <p className="font-jet text-xs uppercase group-hover:text-white">
-              Reset
-            </p>
+            <p className="text-xs text-white">Reset</p>
             <SpaceX />
           </Button>
         )}

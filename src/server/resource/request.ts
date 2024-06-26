@@ -15,7 +15,7 @@ export const IDMRequestPayload = z.object({
   assuredData: IDMAssuredResource.or(z.undefined()),
   agentId: z.string().or(z.undefined()),
   agentCode: z.string().or(z.undefined()),
-  agentName: z.string().or(z.undefined()),
+  agentName: z.string().or(z.null()).or(z.undefined()),
   branchCode: z.string().or(z.undefined()),
   underwriterId: z.string().or(z.undefined()),
   underwriterName: z.string().or(z.undefined()),
@@ -44,8 +44,8 @@ export const IDMRequestForm = z.object({
   city: z.string().or(z.undefined()),
   state: z.string().or(z.undefined()),
   country: z.string().or(z.undefined()),
-  // plateType: PlateTypeResource.or(z.undefined()),
   plateNumber: z.string().or(z.undefined()),
+  conductionNumber: z.string().or(z.undefined()),
   remarks: z.string().or(z.undefined()),
 });
 

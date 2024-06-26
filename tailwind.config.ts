@@ -68,6 +68,7 @@ export default {
         copper: "#F6F9FC",
         copperx: "F1F5F9",
         ghost: "#F7FAFD",
+        dyan: "#083344",
       },
       backgroundSize: {
         "size-200": "200% 200%",
@@ -83,6 +84,8 @@ export default {
       },
       animation: {
         shimmer: "shimmer 5s linear infinite",
+        skate:
+          "skate var(--tw-animate-duration, 1s) var(--tw-animate-easing, ease) var(--tw-animate-delay, 0s)",
       },
       keyframes: {
         shimmer: {
@@ -91,6 +94,14 @@ export default {
           },
           to: {
             backgroundPosition: "-200% 0",
+          },
+        },
+        skate: {
+          from: {
+            transform: "translateX(-2rem)",
+          },
+          to: {
+            transform: "translateX(0)",
           },
         },
       },
@@ -123,6 +134,7 @@ export default {
 
   plugins: [
     tailwindcssAnimate,
+    twa,
     plugin(() => addVariablesForColors),
     plugin(function ({ matchUtilities, theme }) {
       matchUtilities(
@@ -149,6 +161,5 @@ export default {
         },
       );
     }),
-    require("tailwindcss-animated"),
   ],
 } satisfies Config;

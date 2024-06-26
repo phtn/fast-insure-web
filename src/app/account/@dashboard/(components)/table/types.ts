@@ -1,11 +1,17 @@
-import { type AcademicCapIcon } from "@heroicons/react/24/solid";
-import { type Column } from "@tanstack/react-table";
-import { type LucideIcon } from "lucide-react";
+import type { AcademicCapIcon } from "@heroicons/react/24/solid";
+import type { Column, ColumnDef } from "@tanstack/react-table";
+import type { LucideIcon } from "lucide-react";
+
+export interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  loading: boolean;
+}
 
 export type HeroIcon = typeof AcademicCapIcon;
 
 export type Option = {
-  value: string | boolean;
+  value: string;
   label: string;
   icon: LucideIcon | HeroIcon;
   color: string;

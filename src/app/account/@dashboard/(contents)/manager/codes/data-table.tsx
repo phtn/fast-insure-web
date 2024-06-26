@@ -1,9 +1,4 @@
-import * as React from "react";
 import {
-  type ColumnDef,
-  type ColumnFiltersState,
-  type SortingState,
-  type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -12,26 +7,31 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  type ColumnFiltersState,
+  type SortingState,
+  type VisibilityState,
 } from "@tanstack/react-table";
+import * as React from "react";
 
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TableHeader,
   TableRow,
 } from "@/app/(ui)/table";
 import { CogIcon } from "lucide-react";
-import { DataTablePagination } from "../../../(components)/table/pagination";
+import {
+  PhCell,
+  PhHeader,
+  TableContainer,
+  TableInner,
+} from "../../../(components)/styles";
 import { EmptyTable } from "../../../(components)/table/empty-table";
-import { rowStyle } from "../../../(components)/table/rows";
-
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  loading: boolean;
-}
+import { DataTablePagination } from "../../../(components)/table/pagination";
+import { RowMotion, rowStyles } from "../../../(components)/table/rows";
+import { DataTableToolbar } from "./toolbar";
+import type { DataTableProps } from "../../../(components)/table/types";
 
 export function DataTable<TData, TValue>({
   columns,
@@ -69,26 +69,24 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div>
-      {/* <div className="flex h-[56px] w-screen items-start space-x-4 overflow-x-scroll pt-1 md:w-full portrait:hidden">
-        <DataTableToolbar table={table} />
-      </div> */}
-      <div className="h-[calc(100vh-280px)] overflow-scroll rounded-[4px] border bg-white font-mono text-xs font-light text-clay shadow-md">
+    <TableContainer>
+      <DataTableToolbar table={table} />
+      <TableInner>
         <Table>
-          <TableHeader className="sticky bg-neutral-800 font-medium tracking-tight">
+          <PhHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
                 key={headerGroup.id}
-                className="border-b-[0.33px] border-ash"
+                className="border-b-[0.33px] border-dyan/40"
               >
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
                       key={header.id}
                       colSpan={header.colSpan}
-                      className=""
+                      className="border-r-[0.33px] border-dashed border-dyan/40"
                     >
-                      <div className="flex items-center">
+                      <div className="flex items-center justify-between">
                         {header.isPlaceholder
                           ? null
                           : flexRender(
@@ -96,7 +94,7 @@ export function DataTable<TData, TValue>({
                               header.getContext(),
                             )}
                         {header.id === "code" ? (
-                          <div className="mx-2 flex size-5 items-center justify-center rounded-full bg-stone-500/60 text-[10px] text-zap/80">
+                          <div className="flex size-5 items-center justify-center rounded-md bg-dyan/10 text-[10px] text-dyan/80">
                             {data.length}
                           </div>
                         ) : null}
@@ -106,27 +104,27 @@ export function DataTable<TData, TValue>({
                 })}
               </TableRow>
             ))}
-          </TableHeader>
+          </PhHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row, i) => (
-                <TableRow
-                  className={rowStyle(i)}
+              table.getRowModel().rows.map((row) => (
+                <RowMotion
+                  {...rowStyles}
+                  transition={{
+                    delay: Math.random() / 8,
+                  }}
                   key={row.getValue("id")}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className="bg-gradient-to-r from-zinc-900/80 to-sky-950/80 bg-clip-text font-light text-transparent "
-                    >
+                    <PhCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
                       )}
-                    </TableCell>
+                    </PhCell>
                   ))}
-                </TableRow>
+                </RowMotion>
               ))
             ) : loading ? (
               <TableRow>
@@ -154,8 +152,8 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>
+      </TableInner>
       <DataTablePagination table={table} />
-    </div>
+    </TableContainer>
   );
 }

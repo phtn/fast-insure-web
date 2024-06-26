@@ -10,7 +10,6 @@ export type AgentCodeSchema = z.infer<typeof AgentCodeResource>;
 
 export const ActivationFormResource = z.object({
   agentCode: z.string(),
-  branchCode: z.string(),
 });
 
 export type ActivationFormSchema = z.infer<typeof ActivationFormResource>;

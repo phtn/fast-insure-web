@@ -23,7 +23,7 @@ export const Address = z.object({
 
 export const PlateTypeResource = z.union([
   z.literal("plate"),
-  z.literal("induction"),
+  z.literal("conduction"),
 ]);
 
 export type PlateTypeSchema = z.infer<typeof PlateTypeResource>;
@@ -50,14 +50,15 @@ export const VehicleInfo = z.object({
   body: VehicleBodyType.or(z.undefined()),
   plateType: PlateTypeResource.or(z.undefined()),
   plateNumber: z.string().or(z.undefined()),
+  conductionNumber: z.string().or(z.undefined()),
 });
 
 export type VehicleInfoSchema = z.infer<typeof VehicleInfo>;
 
 export const PolicyType = z.union([
   z.literal("CTPL"),
-  z.literal("CCI"),
-  z.literal("PA"),
+  z.literal("COMP"),
+  z.literal("PAIN"),
 ]);
 export type PolicyTypeSchema = z.infer<typeof PolicyType>;
 

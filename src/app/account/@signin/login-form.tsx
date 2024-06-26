@@ -1,18 +1,18 @@
-import { FormControl, FormField, FormItem } from "@@ui/form";
-import { InputField } from "@@ui/input";
-import { DarkTouch } from "@@ui/touch";
-import { type Control, type ControllerRenderProps } from "react-hook-form";
-import {
-  loginFields,
-  type LoginField,
-  type LoginFormProps,
-  type LoginSchema,
-} from "./schema";
-import { ArrowUpRightIcon, Disc3Icon, PenLine } from "lucide-react";
-import { useCallback } from "react";
 import { cn } from "@/utils/cn";
 import { opts } from "@/utils/helpers";
-import { type UserSigninType } from "./hooks";
+import { Form, FormControl, FormField, FormItem } from "@@ui/form";
+import { InputField } from "@@ui/input";
+import { DarkTouch } from "@@ui/touch";
+import { ArrowUpRightIcon, Disc3Icon, PenLine } from "lucide-react";
+import { useCallback } from "react";
+import { loginFields } from "./schema";
+import type {
+  FormFieldProps,
+  LoginField,
+  LoginFormProps,
+  SubmitButtonProps,
+  TField,
+} from "./types";
 
 export const ActiveForm = ({
   form,
@@ -24,22 +24,19 @@ export const ActiveForm = ({
   const { isValid } = formState;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Fields control={control} fields={loginFields} />
-      <SubmitButton
-        isValid={isValid}
-        loading={loading}
-        signinType={signinType}
-      />
-    </form>
+    <Form {...form}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Fields control={control} fields={loginFields} />
+        <SubmitButton
+          isValid={isValid}
+          loading={loading}
+          signinType={signinType}
+        />
+      </form>
+    </Form>
   );
 };
 
-type SubmitButtonProps = {
-  signinType: UserSigninType;
-  isValid: boolean;
-  loading: boolean;
-};
 const SubmitButton = (props: SubmitButtonProps) => {
   const { isValid, loading, signinType } = props;
 
@@ -67,7 +64,7 @@ const SubmitButton = (props: SubmitButtonProps) => {
         loading
           ? ` text-blue-200`
           : !isValid
-            ? `text-orange-300`
+            ? `size-4 text-orange-300`
             : `text-emerald-400`,
       )}
     >
@@ -76,38 +73,31 @@ const SubmitButton = (props: SubmitButtonProps) => {
   );
 };
 
-type RenderProps = {
-  field: ControllerRenderProps<LoginSchema>;
-  item: LoginField;
-};
+/* eslint-disable react/display-name */
+const render =
+  (item: LoginField) =>
+  ({ field }: TField) => (
+    <FormItem className="my-5">
+      <FormControl>
+        <InputField
+          alt={item.alt}
+          className="w-[300px]"
+          icon={item.icon}
+          placeholder={item.placeholder}
+          type={item.type}
+          {...field}
+        />
+      </FormControl>
+    </FormItem>
+  );
 
-const render = ({ field, item }: RenderProps) => (
-  <FormItem className="my-5">
-    <FormControl>
-      <InputField
-        className="w-[300px]"
-        icon={item.icon}
-        alt={item.alt}
-        placeholder={item.placeholder}
-        type={item.type}
-        {...field}
-      />
-    </FormControl>
-  </FormItem>
-);
-
-type FieldProps = {
-  fields: LoginField[];
-  control: Control<LoginSchema>;
-};
-
-const Fields = ({ control, fields }: FieldProps) => {
+const Fields = ({ control, fields }: FormFieldProps) => {
   return fields.map((item) => (
     <FormField
       key={item.name}
       control={control}
       name={item.name}
-      render={({ field }) => render({ field, item })}
+      render={render(item)}
     />
   ));
 };

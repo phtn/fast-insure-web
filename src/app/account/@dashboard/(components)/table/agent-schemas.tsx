@@ -3,7 +3,7 @@ import { type Option } from "./types";
 
 export const statuses: Option[] = [
   {
-    value: false,
+    value: String(false),
     label: "inactive",
     icon: MinusCircleIcon,
     color: "text-gray-500",

@@ -3,11 +3,21 @@ import { opts } from "@/utils/helpers";
 import { Hoverboard } from "@/app/(ui)/hoverboard";
 import { SidebarNav } from "./navs";
 import { managerItems, agentItems } from "./data";
-import type { GroupItem, NavProps, SidebarProps } from "./types";
+import type {
+  GroupItem,
+  NavProps,
+  ProfileCardProps,
+  SidebarProps,
+} from "./types";
 import { Aside, BodyWrap, Container, ContentWrap, Inner } from "./styles";
 import Image from "next/image";
+import { MoreHorizontalIcon } from "lucide-react";
 
-export default function Sidebar({ children, accountType }: SidebarProps) {
+export default function Sidebar({
+  children,
+  accountType,
+  profile,
+}: SidebarProps) {
   const AgentOptions = useCallback(() => {
     const isAgentOne = !!accountType && accountType === "AGENT1";
     const options = opts(
@@ -20,11 +30,11 @@ export default function Sidebar({ children, accountType }: SidebarProps) {
   const NavOptions = useCallback(() => {
     const isManager = !!accountType && accountType === "MANAGER";
     const options = opts(
-      <ManagerNav groupItems={managerItems} />,
+      <ManagerNav groupitems={managerItems} />,
       <AgentOptions />,
     );
-    return <Nav>{options.get(isManager)}</Nav>;
-  }, [accountType, AgentOptions]);
+    return <Nav profile={profile}>{options.get(isManager)}</Nav>;
+  }, [accountType, AgentOptions, profile]);
 
   return (
     <AccountPage>
@@ -40,7 +50,7 @@ const AccountPage = (props: { children: ReactNode }) => {
   return (
     <Container>
       <Inner>
-        <div className="h-full w-screen bg-zap/10 backdrop-blur-lg">
+        <div className="h-full w-screen">
           <div className="h-full items-center md:block">{props.children}</div>
         </div>
         <Footer />
@@ -49,22 +59,85 @@ const AccountPage = (props: { children: ReactNode }) => {
   );
 };
 
-const ManagerNav = (props: { groupItems: GroupItem[] }) => {
+const ManagerNav = (props: { groupitems: GroupItem[] }) => {
   return (
-    <div className="space-y-4">
-      <SidebarNav groupitems={props.groupItems} />
+    <div>
+      <SidebarNav groupitems={props.groupitems} />
     </div>
   );
 };
 
-const Nav = ({ children }: NavProps) => {
+const ProfileCard = ({ profile }: ProfileCardProps) => {
+  const userName =
+    profile?.displayName ??
+    profile?.email?.substring(0, profile?.email.indexOf("@"));
+  const UsernameOptions = useCallback(() => {
+    const options = opts(
+      <div>{userName}</div>,
+      <MoreHorizontalIcon className="size-4 animate-pulse text-cyan-950" />,
+    );
+    return <>{options.get(!!userName)}</>;
+  }, [userName]);
+  const TitleOptions = useCallback(() => {
+    const options = opts(
+      <div>{profile?.accountType}</div>,
+      <MoreHorizontalIcon className="size-3 animate-pulse text-cyan-950" />,
+    );
+    return <>{options.get(!!profile?.accountType)}</>;
+  }, [profile?.accountType]);
+
+  // const numberOfRequests =
+
+  return (
+    <div className="relative z-[100] mx-3.5 h-[100px] rounded-lg border-l border-neutral-300 bg-gradient-to-r from-white to-neutral-200/80 p-[8px] shadow-md shadow-neutral-300/40">
+      <div className="flex h-[46px] w-full items-start px-1">
+        <div className="flex items-center space-x-3">
+          <div className="h-[32px] w-[32px] rounded-full bg-gradient-to-r from-blue-100 to-cyan-700/20"></div>
+          <div className="space-y-[0.5px]">
+            <div className="font-k2d text-sm font-semibold leading-none tracking-tight text-cyan-950">
+              <UsernameOptions />
+            </div>
+            <div className="font-jet text-[8px] font-light leading-none text-cyan-950/70">
+              <TitleOptions />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="grid h-[46px] w-full grid-cols-2 space-x-2 px-1">
+        <Stat label="requests" value={profile?.draftCount ?? 0} />
+        <Stat label="points" value={profile?.fastPoints ?? 0} />
+      </div>
+    </div>
+  );
+};
+
+const Stat = (props: { label: string; value: number }) => {
+  return (
+    <div className="flex w-full flex-col items-start justify-center">
+      <div className="flex flex-col items-start justify-center">
+        <div className="font-sans text-sm font-semibold leading-none tracking-tight text-cyan-950">
+          {props.value}
+        </div>
+        <div className="font-jet text-[10px] font-light tracking-tight text-cyan-950/70">
+          {props.label}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Nav = ({ children, profile }: NavProps) => {
   return (
     <Aside>
-      <div className="m-3.5 h-[100px] rounded-lg bg-white shadow-md"></div>
+      <ProfileCard profile={profile} />
+
+      <div className="absolute z-50 flex h-[47px] items-end px-6 py-2 text-[10px] font-medium uppercase tracking-[0.25px] text-neutral-500">
+        workspace
+      </div>
       <Hoverboard
-        snapPoints={[37, 86.5, 140, 194, 286]}
-        parentStyle={`lg:h-[248px] border lg:mx-4`}
-        offset={200}
+        snapPoints={[86.5, 140, 193, 286]}
+        parentStyle={`lg:h-[248px] lg:mx-5`}
+        offset={0}
       >
         {children}
       </Hoverboard>

@@ -6,11 +6,12 @@ import { ImageFile } from "@/app/(ui)/input";
 import Image from "next/image";
 
 import { Button } from "@/app/(ui)/button";
-import { onCount, opts } from "@/utils/helpers";
+import { errHandler, onCount, opts } from "@/utils/helpers";
 import { cn } from "@/utils/cn";
 import { useFileHandler } from "../(hooks)/file-handler";
 import { storage } from "@/libs/db";
 import tw from "tailwind-styled-components";
+import { onSuccess } from "@/utils/toast";
 
 type UploaderProps = {
   dir: string;
@@ -35,7 +36,14 @@ export const ImageUploader = (props: UploaderProps) => {
   const ImageOptions = useCallback(() => {
     const upload = async () => {
       if (file) {
-        return await uploadFile(storageRef, file);
+        return uploadFile(storageRef, file)
+          .then(() => {
+            onSuccess("file uploaded.");
+          })
+          .catch(errHandler)
+          .finally(() => {
+            handleFileRemove();
+          });
       }
       handleFileRemove();
     };
@@ -52,7 +60,7 @@ export const ImageUploader = (props: UploaderProps) => {
       />,
       <Dropzone fileChange={handleFileChange} />,
     );
-    return <>{options.get(withImage)}</>;
+    return <div className="h-[360px] w-[400px]">{options.get(withImage)}</div>;
   }, [
     imageData,
     bytes,
@@ -81,7 +89,7 @@ export const Dropzone = ({ fileChange }: DropzoneProps) => {
     fileChange(e.target.files);
   };
   return (
-    <div className="h-[360px] w-[400px] rounded-3xl bg-white shadow-xl">
+    <div className="h-[360px] w-[400px] overflow-auto rounded-3xl bg-white shadow-xl">
       <ImageFile
         type="file"
         name="upload"
@@ -128,7 +136,7 @@ export const ImageViewer = ({
 
   const BytesUploaded = useCallback(() => {
     const options = opts(
-      <p className="flex h-[36px] w-[64px] items-center justify-center rounded bg-void/20 px-2 text-center font-mono text-[10px] text-white backdrop-blur-lg">
+      <p className="flex h-[36px] w-[64px] items-center justify-center rounded bg-zap px-2 text-center font-mono text-[10px] text-coal backdrop-blur-lg">
         {bytes?.toFixed(0) ?? 0}
         <span className="-mb-0.5 pl-[1px] text-[7px] opacity-50">%</span>
       </p>,
@@ -155,7 +163,7 @@ export const ImageViewer = ({
 
         <div
           className={cn(
-            "left-[176px]",
+            "left-[364px]",
             "absolute top-1 flex items-center space-x-1",
           )}
         >
@@ -175,7 +183,7 @@ export const ImageViewer = ({
         <Button
           onClick={upload}
           className={cn(
-            "flex h-[36px] w-[120px] items-center justify-between bg-blue-500 px-4 text-xs hover:bg-emerald-500",
+            "flex h-[36px] w-[120px] items-center justify-between bg-sky-500 px-4 text-xs hover:bg-emerald-500",
             !file ? `bg-gray-100` : ``,
           )}
         >

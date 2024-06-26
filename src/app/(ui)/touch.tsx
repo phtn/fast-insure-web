@@ -16,7 +16,7 @@ const touchDefaultClass = `
 const defaultClass = `
   bg-white text-clay border-ash/[30%]
   hover:shadow-i-br-li-hv shadow-i-tl-li
-  hover:text-prime disabled:hover:text-clay/60
+  hover:text-cyan-500 disabled:hover:text-clay/60
 
 `;
 const primaryClass = `

@@ -29,7 +29,7 @@ export const SidebarNav = ({
       {...props}
     >
       {props.groupitems.map((group) => (
-        <GroupContainer key={group.label} className="">
+        <GroupContainer key={group.label}>
           {group.values.map((item) => (
             <Link key={item.value} href={item.href}>
               <GroupItem

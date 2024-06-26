@@ -3,41 +3,55 @@
 import { Button } from "@@ui/button";
 import { cn } from "@@utils/cn";
 import Link from "next/link";
-import { MenuList } from "./menubar";
 import { usePathname } from "next/navigation";
 import { useCallback } from "react";
 import { opts } from "@/utils/helpers";
+import Image from "next/image";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/libs/db";
 
-export default function BrandNav() {
+export const Brand = () => {
   const pathname = usePathname();
   const accountPath = pathname.split("/")[1];
+  const [user] = useAuthState(auth);
 
   const NavContent = useCallback(() => {
-    const accountRoute = accountPath === "account";
+    const authedAccount = accountPath === "account" && !!user?.uid;
     const options = opts(<AccountNav />, <FastLanding />);
-    return <>{options.get(accountRoute)}</>;
-  }, [accountPath]);
+    return <>{options.get(authedAccount)}</>;
+  }, [accountPath, user]);
 
   return <NavContent />;
-}
+};
 
 const AccountNav = () => {
   return (
-    <div className="flex h-[42px] w-full">
-      <div className="flex w-[246.5px] items-end justify-center border-r border-gray-300 bg-[#e6e6e6]">
+    <div className="flex h-[56px]">
+      <div className="flex w-[250.5px] items-center justify-start border-r-[1.5px] border-neutral-300 bg-[#e6e6e6]">
         <Logo />
       </div>
     </div>
   );
 };
 
-// accountPath === "account" ? "hidden h-[0px]" : "h-[72px]",
-
 function Logo() {
   return (
     <Link role="button" aria-label="Home" href={"/"}>
-      <Button variant="ghost" className={cn("flex items-center portrait:px-0")}>
-        <div className="h-[32px] w-[72px] bg-[url('/logo/fast_light_bg.svg')] bg-cover bg-center" />
+      <Button
+        variant="ghost"
+        className={cn(
+          "flex items-center ring-0 focus-visible:ring-offset-0 portrait:px-0",
+        )}
+      >
+        <Image
+          alt="fast-logo"
+          src="/logo/fast_light_grey.svg"
+          width={0}
+          height={0}
+          className="h-[32px] w-[72px] fill-neutral-700"
+          unoptimized
+          priority
+        />
       </Button>
     </Link>
   );
@@ -46,7 +60,7 @@ const FastLanding = () => {
   return (
     <section className={"flex items-center justify-between space-x-12"}>
       <Logo />
-      <MenuList className="mx-6 hidden md:flex" />
+      {/* <MenuList className="mx-6 hidden md:flex" /> */}
     </section>
   );
 };

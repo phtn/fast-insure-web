@@ -17,7 +17,7 @@ type HoverboardProps = {
   parentStyle: HTMLProps<HTMLElement>["className"];
   pillStyle?: HTMLProps<HTMLElement>["className"];
   snapPoints: number[];
-  offset: number;
+  offset?: number;
 };
 
 /**
@@ -31,7 +31,6 @@ export const Hoverboard = ({
   children,
   parentStyle,
   snapPoints,
-  offset,
 }: HoverboardProps) => {
   const [y, setY] = useState(0);
   const vRef = useRef<HTMLDivElement>(null);
@@ -41,9 +40,9 @@ export const Hoverboard = ({
       const vRect = vRef.current?.getBoundingClientRect();
       const height = vRect?.bottom ?? 0 - (vRect?.top ?? 0);
       const top = snapPoints[findIndex(snapPoints, height - e.clientY)]! * -1;
-      setY(top + height - offset);
+      setY(top + height - 165);
     },
-    [vRef, snapPoints, offset],
+    [vRef, snapPoints],
   );
 
   return (
@@ -129,7 +128,7 @@ export const Hoverdrop = ({
       const vRect = vRef.current?.getBoundingClientRect();
       const height = vRect?.bottom ?? 0 - (vRect?.top ?? 0);
       const top = snapPoints[findIndex(snapPoints, e.clientY) ?? 0]!;
-      setY(top - height / 2 + offset);
+      setY(top - height / 2 + (offset ?? 0));
     },
     [snapPoints, offset],
   );
@@ -159,12 +158,12 @@ function findIndex(arr: number[], n: number) {
 }
 
 const Container = tw.div`
-  group
+  group relative
   `;
 
 const Pill = tw(motion.div)`
   relative lg:h-[46px] rounded-lg
-  lg:group-hover:bg-ash/30
+  lg:group-hover:bg-[#dadada]
   transition-colors duration-300 delay-200 ease-in
   pointer-events-none z-40
   `;

@@ -16,7 +16,7 @@ export const EmptyTable = (props: { loading: boolean }) => (
       <span>{props.loading}</span>
       <InboxIcon className="size-5 stroke-[1.5px] text-opus portrait:size-4" />
       <p className="font-medium text-clay/60 portrait:tracking-tight">
-        No recent activity.
+        No record found.
       </p>
     </div>
     <Button

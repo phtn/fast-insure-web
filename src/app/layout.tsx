@@ -9,7 +9,7 @@ import { Toaster } from "sonner";
 import { AuthProvider } from "./(context)/context";
 import type { Metadata, Viewport } from "next";
 import { TooltipProvider } from "./(ui)/tooltip";
-import BrandNav from "./(components)/navbar/brandnav";
+import Navbar from "./(components)/navbar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -89,8 +89,7 @@ export default function RootLayout({
         <TooltipProvider delayDuration={100}>
           <AuthProvider>
             <TRPCProvider cookies={cookies().toString()}>
-              <BrandNav />
-              {/* <NotificationBar /> */}
+              <Navbar />
               <div className={``}>{children}</div>
             </TRPCProvider>
           </AuthProvider>

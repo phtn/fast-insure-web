@@ -32,7 +32,7 @@ export const Card = (props: CardProps) => {
               className={cn(
                 "",
                 props.iconStyle,
-                `stroke-1 text-white opacity-80`,
+                `size-6 stroke-[1.5px] text-white opacity-90`,
               )}
             />
             {props.children}

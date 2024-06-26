@@ -9,7 +9,6 @@ import {
 } from "@@ui/command";
 import { Popover, PopoverTrigger } from "@@ui/popover";
 import { Checkbox } from "@/app/(ui)/checkbox";
-import { Touch } from "@/app/(ui)/touch";
 import { cn } from "@/utils/cn";
 import { type Column } from "@tanstack/react-table";
 import { CheckIcon, MessageCirclePlusIcon, PlusCircleIcon } from "lucide-react";
@@ -32,16 +31,16 @@ export function DataTableFacetedFilter<TData, TValue>({
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
-          className="flex h-[36px] items-center space-x-1.5 rounded-md px-2 text-xs"
+          className="group flex h-[36px] items-center space-x-1.5 rounded-md px-2 text-xs hover:border-cyan-600 hover:bg-cyan-600 hover:text-white"
         >
-          <PlusCircleIcon className="size-4 stroke-1 text-gray-500" />
+          <PlusCircleIcon className="size-4 stroke-1 text-gray-500 group-hover:text-white/80" />
           <p>{title}</p>
         </Button>
       </PopoverTrigger>
       <Beach
         className={cn(
           "-mr-[3px] mt-[10.33px]",
-          title === "customer" ? "w-[100px]" : "w-[200px]",
+          title === "customer" ? "w-[100px]" : "w-[240px]",
         )}
         align="end"
       >
@@ -69,9 +68,9 @@ export function DataTableFacetedFilter<TData, TValue>({
                     key={option.value.toString()}
                     onSelect={() => {
                       if (isSelected) {
-                        // selectedValues.delete(option.value);
+                        selectedValues.delete(option.value);
                       } else {
-                        // selectedValues.add(option.value);
+                        selectedValues.add(option.value);
                       }
 
                       const filterValues = Array.from(selectedValues);
@@ -99,7 +98,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     <div
                       className={cn(
                         option.color,
-                        "flex items-center rounded px-1.5 py-1",
+                        "flex items-center rounded p-1",
                       )}
                     >
                       {option.icon && (
@@ -107,13 +106,15 @@ export function DataTableFacetedFilter<TData, TValue>({
                           className={cn("mr-2 size-3.5 stroke-[1.5px]")}
                         />
                       )}
-                      <span className={cn("")}>{option.label}</span>
+                      <span className={cn("text-xs font-normal capitalize")}>
+                        {option.label}
+                      </span>
                     </div>
                     {facets?.get(option.value) && (
                       <span
                         className={cn(
                           option.color,
-                          "ml-auto flex size-4 items-center justify-center",
+                          "ml-auto flex size-4 items-center justify-center font-normal",
                         )}
                       >
                         {facets.get(option.value)}
@@ -125,11 +126,11 @@ export function DataTableFacetedFilter<TData, TValue>({
             </CommandGroup>
             {selectedValues.size > 0 && (
               <>
-                <CommandSeparator className="h-[1px] bg-ash/20" />
+                <CommandSeparator className="h-[1px] bg-neutral-300/20" />
                 <CommandGroup>
                   <CommandItem
                     onSelect={() => column?.setFilterValue(undefined)}
-                    className="group flex h-[36px] items-center justify-center rounded-none bg-void "
+                    className="group flex h-[36px] items-center justify-center rounded-md bg-void "
                   >
                     <p className="font-jet text-xs font-light uppercase text-paper group-hover:text-orange-50">
                       Clear filters
@@ -163,14 +164,13 @@ export function DataTableImageFilter<TData, TValue>({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Touch
-          icon={MessageCirclePlusIcon}
-          size="sm"
-          variant={"primary"}
-          className="hover:text-sky-600"
+        <Button
+          variant={"outline"}
+          className="group flex h-[36px] items-center space-x-1.5 rounded-md px-2 text-xs hover:border-cyan-600 hover:bg-cyan-600 hover:text-white"
         >
-          {title}
-        </Touch>
+          <PlusCircleIcon className="size-4 stroke-1 text-gray-500 group-hover:text-white/80" />
+          <p>{title}</p>
+        </Button>
       </PopoverTrigger>
       <Beach
         className={cn(
@@ -266,11 +266,11 @@ export function DataTableImageFilter<TData, TValue>({
             </CommandGroup>
             {selectedValues.size > 0 && (
               <>
-                <CommandSeparator className="h-[1px] bg-ash/20" />
+                <CommandSeparator className="h-[1px] bg-neutral-300/20" />
                 <CommandGroup>
                   <CommandItem
                     onSelect={() => column?.setFilterValue(undefined)}
-                    className="group flex h-[36px] items-center justify-center rounded-none bg-void "
+                    className="group flex h-[36px] items-center justify-center rounded-md bg-void "
                   >
                     <p className="font-jet text-xs font-light uppercase text-paper group-hover:text-orange-50">
                       Clear filters

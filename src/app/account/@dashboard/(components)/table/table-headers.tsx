@@ -33,7 +33,7 @@ export function DataTableColumnHeader<TData, TValue>({
     return (
       <div
         className={cn(
-          "font-jet text-xs font-semibold tracking-tight text-slate-950",
+          "font-mono text-xs font-medium tracking-tight text-neutral-600/90",
           className,
         )}
       >
@@ -43,15 +43,15 @@ export function DataTableColumnHeader<TData, TValue>({
   }
 
   return (
-    <div className={cn("text-dyan items-start space-x-2", className)}>
+    <div className={cn("items-start space-x-2 text-dyan", className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
             size="sm"
-            className="my-1.5 -mr-2.5 h-8 px-2 text-xs hover:bg-neutral-400/20"
+            className="my-1.5 -mr-2.5 h-8 px-2 hover:bg-cyan-950/10"
           >
-            <span className="font-sans text-xs font-semibold tracking-tight text-slate-950">
+            <span className="font-mono text-xs font-medium tracking-tight text-neutral-600/90">
               {title}
             </span>
             {column.getIsSorted() === "desc" ? (
@@ -59,7 +59,7 @@ export function DataTableColumnHeader<TData, TValue>({
             ) : column.getIsSorted() === "asc" ? (
               <ArrowUp10Icon className="ml-2 size-4 text-indigo-500" />
             ) : (
-              <ListFilterIcon className="ml-2 size-3.5 text-sky-500" />
+              <ListFilterIcon className="ml-2 size-3.5 text-cyan-700" />
             )}{" "}
           </Button>
         </DropdownMenuTrigger>

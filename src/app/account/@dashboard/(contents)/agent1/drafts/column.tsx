@@ -1,69 +1,43 @@
 "use client";
 
 import { type ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "./header";
-import { FilePenLineIcon, PencilLineIcon, SettingsIcon } from "lucide-react";
-import { cn } from "@/utils/cn";
-import { pagelinkCell } from "../../../(components)/table/page-link";
-import { DateTimeCell } from "../../../(components)/table/datetime";
+import { FilePenLineIcon, PencilLineIcon } from "lucide-react";
+import {
+  pagelinkCell,
+  pagelinkHeader,
+} from "../../../(components)/table/page-link";
+import { dateCell, dateHeader } from "../../../(components)/table/datetime";
 import { MoreOptions } from "../../../(components)/table/more-options";
 import { type IDMRequestSchema } from "@/server/resource/idm";
 import { statuses } from "../../../(components)/table/request-schemas";
+import {
+  nameCell,
+  nameCellWithCopy,
+  nameHeader,
+  statusCell,
+} from "../../../(components)/table/name-cells";
+import { Cog8ToothIcon } from "@heroicons/react/24/outline";
 
 export const columns: ColumnDef<IDMRequestSchema>[] = [
   {
     id: "id",
     accessorKey: "id",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        className="flex w-full justify-center"
-        element={<PencilLineIcon className="size-4 text-ghost/70" />}
-      />
-    ),
+    header: pagelinkHeader({ icon: PencilLineIcon }),
     cell: pagelinkCell({ icon: FilePenLineIcon, page: "requests" }),
     enableSorting: false,
   },
   {
     id: "requestId",
     accessorKey: "id",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        className="w-full whitespace-nowrap"
-        title="Request Id"
-      />
-    ),
-    cell: ({ row }) => {
-      const id: string = row.getValue("id");
-      return <p className="text-xs">{id.substring(0, 8)}</p>;
-    },
+    header: nameHeader("Request Id"),
+    cell: nameCellWithCopy({ name: "Request Id", text: "id" }),
     enableSorting: false,
   },
   {
     id: "assuredName",
     accessorKey: "assuredName",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Assured Name"
-        className="flex justify-start"
-      />
-    ),
-    cell: ({ row }) => {
-      const assuredName: string = row.getValue("assuredName");
-
-      return (
-        <div className="flex items-center justify-start">
-          <p className={"font-sans text-xs font-medium uppercase"}>
-            {assuredName}
-          </p>
-        </div>
-      );
-    },
-    filterFn: (row, value, selectedValues: string[]) => {
-      return selectedValues.includes(String(row.getValue(value)));
-    },
+    header: nameHeader("Assured Name"),
+    cell: nameCell("assuredName"),
     enableHiding: true,
     enableSorting: false,
   },
@@ -71,45 +45,14 @@ export const columns: ColumnDef<IDMRequestSchema>[] = [
   {
     id: "createdAt",
     accessorKey: "createdAt",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Created"
-        className="m-0 flex justify-center"
-      />
-    ),
-    cell: ({ row }) => {
-      const createdAt: string | undefined = row.getValue("createdAt");
-      return <DateTimeCell date={createdAt} />;
-    },
+    header: dateHeader("Created at"),
+    cell: dateCell("createdAt"),
   },
   {
     id: "status",
     accessorKey: "status",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        className="flex w-[72px] justify-center"
-        column={column}
-        title="Status"
-      />
-    ),
-    cell: ({ row }) => {
-      const status = statuses.find(
-        (item) => item.value === String(row.getValue("status")),
-      );
-
-      return (
-        <div
-          className={cn(
-            status?.cell,
-            "flex w-[72px] items-center justify-center space-x-2 rounded-[8px] px-1 py-1.5 font-sans font-medium tracking-tight",
-          )}
-        >
-          {status?.icon && <status.icon className="size-3" />}
-          <p className={cn(status?.color)}>{status?.label}</p>
-        </div>
-      );
-    },
+    header: nameHeader("Status"),
+    cell: statusCell({ id: "status", schema: statuses }),
     filterFn: (row, value, selectedValues: string[]) => {
       return selectedValues.includes(String(row.getValue(value)));
     },
@@ -119,14 +62,7 @@ export const columns: ColumnDef<IDMRequestSchema>[] = [
   {
     id: "id",
     accessorKey: "id",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        className="flex justify-center"
-        element={<SettingsIcon className="size-4 text-ghost/70" />}
-      />
-    ),
-
+    header: pagelinkHeader({ icon: Cog8ToothIcon }),
     cell: () => {
       return (
         <MoreOptions

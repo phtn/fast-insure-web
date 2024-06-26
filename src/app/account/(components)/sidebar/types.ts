@@ -15,6 +15,11 @@ export type SidebarProps = {
 
 export type NavProps = {
   children: ReactNode;
+  profile: UserProfileSchema | undefined;
+};
+
+export type ProfileCardProps = {
+  profile: UserProfileSchema | undefined;
 };
 
 export interface GroupItemValue {

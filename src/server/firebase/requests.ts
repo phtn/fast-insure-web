@@ -41,6 +41,7 @@ export type UpdateRequestParams = {
     string | number | boolean | Record<string, string | number | boolean>
   >;
 };
+
 export const updateRequest = async (params: UpdateRequestSchema) => {
   if (!params.id) return;
   const reqsPath = String(process.env.NEXT_PUBLIC_LIVE_REQS);

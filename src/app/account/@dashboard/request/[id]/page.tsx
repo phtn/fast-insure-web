@@ -1,5 +1,5 @@
 import { AgentContextProvider } from "../../(context)/context";
-import { RequestPage } from "./content";
+import { RequestForm } from "./request-form";
 type RequestProps = {
   params: {
     id: string;
@@ -7,7 +7,8 @@ type RequestProps = {
 };
 const Request = ({ params }: RequestProps) => (
   <AgentContextProvider>
-    <RequestPage {...params} />
+    {/* <RequestPage {...params} /> */}
+    <RequestForm {...params} />
   </AgentContextProvider>
 );
 export default Request;

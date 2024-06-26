@@ -1,31 +1,20 @@
-"use client";
+import { TableRow } from "@/app/(ui)/table";
 import { cn } from "@/utils/cn";
+import { motion } from "framer-motion";
 
-export const defaultStyle =
-  "animate-fade-down duration-75 border-b-[0.33px] border-slate-400 border-dashed hover:bg-ash/30";
-
-export const rowStyle = (index: number) => {
-  return cn(
-    "animate-fade-down duration-75 border-b-[0.33px] border-slate-400 border-dashed hover:bg-ash/30",
-    delays[index],
-    "ease-linear",
-  );
+export const RowMotion = motion(TableRow);
+export const rowStyles = {
+  initial: { x: -20 },
+  animate: { x: 0 },
+  transition: {
+    type: "inertia",
+    duration: 0.2,
+    ease: "linear",
+    stiffness: 10,
+    damping: 10,
+  },
+  className: cn(
+    "transition-colors hover:bg-ghost hover:duration-200 hover:ease-in-out",
+    "border-dyan/40 border-b-[0.33px] border-dashed",
+  ),
 };
-
-export const delays = [
-  "animate-delay-75",
-  "animate-delay-100",
-  "animate-delay-[250ms]",
-  "animate-delay-150",
-  "animate-delay-200",
-  "animate-delay-[250ms]",
-  "animate-delay-300",
-  "animate-delay-[250ms]",
-  "animate-delay-500",
-  "animate-delay-[250ms]",
-  "animate-delay-700",
-  "animate-delay-[250ms]",
-  "animate-delay-1000",
-  "animate-delay-[250ms]",
-  "animate-delay-2000",
-];

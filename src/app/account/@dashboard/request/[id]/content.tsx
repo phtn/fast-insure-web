@@ -18,7 +18,6 @@ import {
   SaveIcon,
   ScrollTextIcon,
   SendIcon,
-  UploadCloudIcon,
   UserRoundIcon,
 } from "lucide-react";
 import {
@@ -26,27 +25,20 @@ import {
   type Dispatch,
   type FormEvent,
   type SetStateAction,
-  useCallback,
-  useState,
 } from "react";
 import { useForm, useWatch, type UseFormRegister } from "react-hook-form";
 import { FormCard } from "../../(components)/form-card";
 import { Header } from "../../(components)/header";
-import { ImageUploader } from "../../(components)/image-uploader";
 import { BotText, InputOption } from "../../(components)/input-option";
 import {
   SelectOption,
   type SelectOptionType,
 } from "../../(components)/select-option";
 import { AgentContext } from "../../(context)/context";
-import { useDownloadURLs } from "../../(hooks)/file-handler";
-import { useLocator } from "../../(hooks)/locator";
+import { useLocator } from "../../(hooks)/useLocator";
 import { useSubmitRequest } from "../../(hooks)/useRequestService";
 import { useDraftValues } from "../../(hooks)/useDraft";
 import { plateTypes, policyTypes, requestFields, transformer } from "./schema";
-import { opts, toggleState } from "@/utils/helpers";
-import ImageList from "./image-list";
-import { ArrowUpOnSquareStackIcon, PhotoIcon } from "@heroicons/react/24/solid";
 
 export const RequestPage = ({ id }: { id: string }) => {
   const agentCtx = useContext(AgentContext);
@@ -58,7 +50,7 @@ export const RequestPage = ({ id }: { id: string }) => {
   });
 
   const { reset, watch, control, register, handleSubmit, formState } = form;
-  const { watchAll, savedValues } = useDraftValues({
+  const { savedValues } = useDraftValues({
     drafts,
     id,
     reset,
@@ -68,16 +60,10 @@ export const RequestPage = ({ id }: { id: string }) => {
   const postalField = useWatch({ control, name: "postalCode" });
   useLocator({ reset, postalField });
 
-  const {
-    policyType,
-    submit,
-    submitLoading,
-    setPolicyType,
-    setPlateType,
-    saveDraft,
-  } = useSubmitRequest({
-    id,
-  });
+  const { policyType, submit, submitLoading, setPolicyType, setPlateType } =
+    useSubmitRequest({
+      id,
+    });
 
   const onSubmit = (data: IDMRequestFormSchema) => {
     submit(data);
@@ -85,8 +71,11 @@ export const RequestPage = ({ id }: { id: string }) => {
 
   const handleSave = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    saveDraft(watchAll);
-    reset(savedValues);
+    console.log(`watch`, watch());
+    console.log(`saved`, savedValues);
+    // saveDraft(watchAll);
+
+    // reset(savedValues);
   };
 
   const assuredInfo = requestFields.slice(0, 5);
@@ -116,21 +105,23 @@ export const RequestPage = ({ id }: { id: string }) => {
               <div className="grid grid-cols-2 gap-x-4 portrait:grid-cols-1 portrait:gap-y-4">
                 <div>
                   {assuredInfo.map((item, i) => (
-                    <FormField
-                      control={control}
-                      name={item.name}
+                    // <FormField
+                    //   control={control}
+                    //   name={item.name}
+                    //   key={item.name}
+                    //   render={({ field }) => (
+                    //     <FormItem>
+                    <InputOption
                       key={item.name}
-                      render={({ field }) => (
-                        <FormItem>
-                          <InputOption
-                            item={item}
-                            index={i}
-                            length={assuredInfo.length}
-                            field={field}
-                          />
-                        </FormItem>
-                      )}
+                      item={item}
+                      index={i}
+                      length={assuredInfo.length}
+
+                      // field={field}
                     />
+                    //     </FormItem>
+                    //   )}
+                    // />
                   ))}
                 </div>
                 <div>
@@ -179,7 +170,7 @@ export const RequestPage = ({ id }: { id: string }) => {
               />
             </FormCard>
 
-            {policyType === "CTPL" || policyType === "CCI" ? (
+            {policyType === "CTPL" || policyType === "COMP" ? (
               <PlateTypeSelector
                 register={form.register}
                 plateTypes={plateTypes}
@@ -187,7 +178,7 @@ export const RequestPage = ({ id }: { id: string }) => {
               />
             ) : null}
 
-            <DocumentUploader id={id} />
+            {/* <DocumentUploader id={id} /> */}
 
             <FormCard icon={BlocksIcon} route={`upload`} title="Extras">
               <div className="flex w-[218px] items-center space-x-2 p-2"></div>
@@ -254,89 +245,5 @@ const PlateTypeSelector = (props: PlateTypeSelectorProps) => {
         </div>
       </div>
     </FormCard>
-  );
-};
-
-export const DocumentUploader = (props: { id: string | undefined }) => {
-  const { id } = props;
-  const { imagelist, loading } = useDownloadURLs(id);
-  const [viewDropzone, setViewDropzone] = useState(false);
-
-  const ViewOptions = useCallback(() => {
-    const options = opts(
-      <ImageUploader
-        dir={`requests/${id}`}
-        filename={`${id}` + `${imagelist?.length}`}
-      />,
-      <ImageList id={id} imagelist={imagelist} loading={loading} />,
-    );
-    return (
-      <div className="flex h-[400px] w-full items-center justify-center">
-        {options.get(viewDropzone)}
-      </div>
-    );
-  }, [viewDropzone, id, imagelist, loading]);
-
-  const handleViewDropzone = (e: FormEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    toggleState(setViewDropzone);
-  };
-
-  return (
-    <FormCard
-      title="File Uploader"
-      iconStyle="text-black size-5"
-      extra={
-        <UploaderExtra
-          filecount={imagelist.length}
-          loading={loading}
-          viewDropzone={handleViewDropzone}
-        />
-      }
-      route="upload"
-      icon={ArrowUpOnSquareStackIcon}
-    >
-      <ViewOptions />
-    </FormCard>
-  );
-};
-
-const UploaderExtra = (props: {
-  filecount: number;
-  loading: boolean;
-  viewDropzone: (e: FormEvent<HTMLButtonElement>) => void;
-}) => {
-  const { filecount, loading, viewDropzone } = props;
-  const FilesLoadingOptions = useCallback(() => {
-    const options = opts(
-      <LoaderIcon className="size-4 animate-spin stroke-[1px]" />,
-      <PhotoIcon className="size-4" />,
-    );
-    return <>{options.get(loading)}</>;
-  }, [loading]);
-
-  return (
-    <div className="flex items-center space-x-2 font-light">
-      <Button
-        size={`sm`}
-        variant={"ghost"}
-        className="flex items-center space-x-2 bg-cyan-600 text-xs tracking-tight text-zap transition-all duration-300 ease-out hover:text-white active:scale-[95%]"
-        onClick={(e: FormEvent<HTMLButtonElement>) => e.preventDefault()}
-      >
-        <FilesLoadingOptions />
-        <p>{filecount ?? 0}</p>
-        <p>files</p>
-      </Button>
-
-      <Button
-        size={`sm`}
-        variant={"ghost"}
-        className="flex items-center space-x-2 bg-white font-sans text-xs tracking-tight text-cyan-600 shadow-sm transition-all duration-300 ease-out hover:text-cyan-900 active:scale-[95%]"
-        onClick={viewDropzone}
-      >
-        <p>upload file</p>
-        <UploadCloudIcon className="size-4 stroke-[1.5px]" />
-      </Button>
-    </div>
   );
 };

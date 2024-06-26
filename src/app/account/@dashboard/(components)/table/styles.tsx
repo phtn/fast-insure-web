@@ -20,10 +20,10 @@ export const content = `
   `;
 
 const item = `
-  h-[36px] rounded-none cursor-pointer
+  h-[36px] rounded-md cursor-pointer
   font-jet text-xs text-void/80 font-medium
   transition-colors duration-200 ease-in-out
-  hover:bg-slate-900/50
+  hover:bg-slate-900/50 px-2
   `;
 
 type SelectedItem = {
@@ -49,6 +49,7 @@ export const BeachDropItem = tw(DropdownMenuItem)<SelectedItem>`
 
 export const BeachCheckItem = tw(DropdownMenuCheckboxItem)<SelectedItem>`
   ${({ selected }) => item + (selected ? " bg-cyan-700/5" : "")}
+  mx-2
   `;
 
 export const BeachSelect = tw(SelectContent)`
@@ -60,7 +61,7 @@ export const BeachSelectItem = tw(SelectItem)<SelectedItem>`
   `;
 
 export const SpaceX = tw(Cross2Icon)`
-  size-0 -rotate-45 text-white hidden animate-in
+  size-0 text-white hidden animate-in
   transition-all duration-300 ease-in-out
   group-hover:ml-2 group-hover:size-4
   group-hover:rotate-90 group-hover:flex

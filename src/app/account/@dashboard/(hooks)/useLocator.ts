@@ -23,7 +23,7 @@ export const useLocator = (params: LocatorHookParams) => {
       //   const locationValues = assignLocationValues(results?.data[0]);
       //   reset(assignLocationValues(results?.data[0]));
       // }
-      reset(assignLocationValues(results?.data[0]));
+      reset({ ...assignLocationValues(results?.data[0]) });
     }
   }, [ph, postalField, reset]);
 };

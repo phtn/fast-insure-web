@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 
 type HeaderProps = {
-  title: string;
+  title?: string;
   description?: string;
   children?: ReactNode;
   extra?: string | undefined;
@@ -14,7 +14,7 @@ type HeaderProps = {
 export const Header = (props: HeaderProps) => {
   const { description, children } = props;
   return (
-    <div className="flex items-end justify-center px-3">
+    <div className="flex items-end justify-center border-l-[0.33px] border-neutral-300 bg-white px-3">
       <div className="flex h-full w-full items-end justify-between portrait:px-2">
         {children}
       </div>

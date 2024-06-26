@@ -1,8 +1,6 @@
 "use client";
 
 import { type ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "./header";
-import { SettingsIcon } from "lucide-react";
 
 import { type IDMRequestSchema } from "@/server/resource/idm";
 import {
@@ -10,7 +8,7 @@ import {
   pagelinkHeader,
 } from "../../../(components)/table/page-link";
 import { dateCell, dateHeader } from "../../../(components)/table/datetime";
-import { MoreOptions } from "../../../(components)/table/more-options";
+import { activityOptions } from "../../../(components)/table/more-options";
 import { statuses } from "../../../(components)/table/request-schemas";
 import {
   nameCell,
@@ -20,13 +18,13 @@ import {
   statusCell,
 } from "../../../(components)/table/name-cells";
 import { PencilIcon } from "@heroicons/react/24/solid";
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { Cog8ToothIcon, DocumentTextIcon } from "@heroicons/react/24/outline";
 
 export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
   {
-    id: "id",
+    id: "Edit",
     accessorKey: "id",
-    header: pagelinkHeader({ icon: PencilSquareIcon }),
+    header: pagelinkHeader({ icon: DocumentTextIcon }),
     cell: pagelinkCell({
       icon: PencilIcon,
       page: "account/request",
@@ -34,10 +32,10 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
     enableSorting: false,
   },
   {
-    id: "ref",
-    accessorKey: "ref",
-    header: nameHeader("Request Id"),
-    cell: nameCellWithCopy({ name: "Request Id", text: "id" }),
+    id: "id",
+    accessorKey: "id",
+    header: nameHeader("Request Id", true),
+    cell: nameCellWithCopy({ name: "Request Id", text: "id", limit: 9 }),
     enableSorting: false,
   },
   {
@@ -45,33 +43,30 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
     accessorKey: "assuredName",
     header: nameHeader("Assured Name"),
     cell: nameCell("assuredName"),
-    filterFn: (row, value, selectedValues: string[]) => {
-      return selectedValues.includes(String(row.getValue(value)));
-    },
     enableHiding: true,
     enableSorting: false,
   },
   {
-    id: "agent",
+    id: "agentName",
     accessorKey: "agentName",
     header: nameHeader("Agent"),
-    cell: nameCell("agent"),
+    cell: nameCell("agentName"),
     enableSorting: false,
     enableHiding: true,
   },
   {
-    id: "underwriter",
+    id: "Underwriter",
     accessorKey: "underwriterName",
     header: nameHeader("Underwriter"),
-    cell: nameCell("underwriter"),
+    cell: nameCell("Underwriter"),
     enableSorting: false,
     enableHiding: true,
   },
   {
-    id: "updatedAt",
+    id: "Updated",
     accessorKey: "updatedAt",
     header: dateHeader("Submitted on"),
-    cell: dateCell("updatedAt"),
+    cell: dateCell("Updated"),
     enableSorting: true,
     enableHiding: true,
   },
@@ -80,7 +75,11 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
     id: "status",
     accessorKey: "status",
     header: nameCellHeaderWide("Status"),
-    cell: statusCell({ statuses, url: "requests" }),
+    cell: statusCell({
+      id: "status",
+      schema: statuses,
+      url: "account/requests",
+    }),
     filterFn: (row, value, selectedValues: string[]) => {
       return selectedValues.includes(String(row.getValue(value)));
     },
@@ -90,16 +89,8 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
   {
     id: "more",
     accessorKey: "more",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        className="flex w-8 justify-center"
-        element={<SettingsIcon className="size-4 text-white/70" />}
-      />
-    ),
-    cell: () => {
-      return <MoreOptions options={[]} />;
-    },
+    header: pagelinkHeader({ icon: Cog8ToothIcon }),
+    cell: activityOptions("id"),
     enableSorting: false,
   },
 ];

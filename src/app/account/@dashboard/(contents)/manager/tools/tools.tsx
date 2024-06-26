@@ -1,7 +1,7 @@
 import { cn } from "@/utils/cn";
-import { FileDigitIcon, LoaderIcon, PlusIcon } from "lucide-react";
+import { LoaderIcon, PlusIcon } from "lucide-react";
 import { Card } from "../../../(components)/card";
-import { DocumentIcon } from "@heroicons/react/24/solid";
+import { DocumentIcon, QrCodeIcon } from "@heroicons/react/24/solid";
 
 type AgentCodeProps = {
   onClick: () => void;
@@ -14,7 +14,7 @@ export const AgentCodes = (props: AgentCodeProps) => {
       title="Generate Agent Codes"
       description="Generate & activate codes for agents."
       onClick={props.onClick}
-      icon={props.storingCode ? LoaderIcon : FileDigitIcon}
+      icon={props.storingCode ? LoaderIcon : QrCodeIcon}
       iconStyle={cn(props.storingCode ? `animate-spin stroke-1` : ``)}
       actionIcon={PlusIcon}
       actionLabel="Generate"

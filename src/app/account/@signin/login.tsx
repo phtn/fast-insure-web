@@ -1,6 +1,7 @@
 "use client";
 
-import { type AccountType } from "@/server/resource/account";
+import type { LoginSchema } from "@/server/resource/account";
+import { LoginResource } from "@/server/resource/account";
 import { onError, onInfo, onPromise, onSuccess } from "@/utils/toast";
 import { Form } from "@@ui/form";
 import { auth } from "@@libs/db";
@@ -12,20 +13,16 @@ import {
   useSignInWithEmailAndPassword,
 } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
-import { type z } from "zod";
-import { useProfile, type UserSigninType } from "./hooks";
+import { useProfile } from "./hooks";
 import { ActiveForm } from "./login-form";
-import { loginDefaults, loginSchema, type LoginSchema } from "./schema";
-
-export type UserAccountType = z.infer<typeof AccountType>;
-
-export type LoginProps = {
-  signinType: UserSigninType;
-};
+import { loginDefaults } from "./schema";
+import { type LoginProps } from "./types";
+import { useRouter } from "next/navigation";
 
 export const Login = ({ signinType }: LoginProps) => {
+  const router = useRouter();
   const form = useForm<LoginSchema>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(LoginResource),
     defaultValues: loginDefaults,
   });
 
@@ -35,6 +32,7 @@ export const Login = ({ signinType }: LoginProps) => {
     createUserLoading,
     createUserError,
   ] = useCreateUserWithEmailAndPassword(auth);
+
   const [signInWithEmailAndPassword, user, signInLoading, error] =
     useSignInWithEmailAndPassword(auth);
 
@@ -55,6 +53,7 @@ export const Login = ({ signinType }: LoginProps) => {
         signInWithEmailAndPassword(email, password)
           .then((creds) => {
             if (creds) {
+              router.push("/account/overview");
               return creds;
             } else {
               onError("Error", "Unable to sign in.");

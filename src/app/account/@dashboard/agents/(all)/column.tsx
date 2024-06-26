@@ -1,22 +1,22 @@
 "use client";
 
 import { type ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "./header";
-import { SettingsIcon, UserCircleIcon } from "lucide-react";
-import { cn } from "@/utils/cn";
+import { UserCircleIcon } from "lucide-react";
 import {
   pagelinkCell,
   pagelinkHeader,
 } from "../../(components)/table/page-link";
 import { DateTimeCell, dateHeader } from "../../(components)/table/datetime";
 import { MoreOptions } from "../../(components)/table/more-options";
-import { statuses } from "../../(components)/table/agent-schemas";
 import { type UserProfileSchema } from "@/server/resource/account";
 import {
   nameCell,
   nameCellWithCopy,
   nameHeader,
+  statusCell,
 } from "../../(components)/table/name-cells";
+import { Cog8ToothIcon } from "@heroicons/react/24/outline";
+import { activeStates } from "../../(components)/table/status-schemas";
 
 export const columns: ColumnDef<UserProfileSchema>[] = [
   {
@@ -33,9 +33,6 @@ export const columns: ColumnDef<UserProfileSchema>[] = [
     cell: nameCell("displayName"),
     enableHiding: true,
     enableSorting: false,
-    filterFn: (row, value, selectedValues: string[]) => {
-      return selectedValues.includes(String(row.getValue(value)));
-    },
   },
   {
     id: "email",
@@ -56,29 +53,8 @@ export const columns: ColumnDef<UserProfileSchema>[] = [
   {
     id: "active",
     accessorKey: "active",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        className="flex w-[80px] justify-center"
-        column={column}
-        title="Status"
-      />
-    ),
-    cell: ({ row }) => {
-      const status = statuses.find(
-        (item) => item.value === String(row.getValue("active")),
-      );
-      return (
-        <div
-          className={cn(
-            status?.cell,
-            "flex h-6 items-center justify-center space-x-2 rounded-[8px] font-sans text-xs tracking-tight",
-          )}
-        >
-          {status?.icon && <status.icon className={cn(status.color)} />}
-          <p className={cn()}>{status?.label}</p>
-        </div>
-      );
-    },
+    header: nameHeader("Status"),
+    cell: statusCell({ id: "active", schema: activeStates }),
     filterFn: (row, value, selectedValues: string[]) => {
       return selectedValues.includes(String(row.getValue(value)));
     },
@@ -99,13 +75,7 @@ export const columns: ColumnDef<UserProfileSchema>[] = [
   {
     id: "more",
     accessorKey: "more",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        className="flex justify-center"
-        element={<SettingsIcon className="size-4 text-white/70" />}
-      />
-    ),
+    header: pagelinkHeader({ icon: Cog8ToothIcon }),
     cell: () => {
       return <MoreOptions options={[]} />;
     },

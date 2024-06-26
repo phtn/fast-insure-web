@@ -29,7 +29,7 @@ export const pagelinkHeader =
   <T,>({ column }: HeaderContext<T, unknown>) => (
     <DataTableColumnHeader
       column={column}
-      element={<props.icon className="size-4 text-white/70" />}
+      element={<props.icon className="size-4 text-neutral-600/90" />}
       className="flex w-full justify-center"
     />
   );
@@ -40,9 +40,12 @@ export const pagelinkCell =
   <T,>(info: CellContext<T, unknown>) => {
     return (
       <TheTip tip={props?.tip ?? "edit"}>
-        <Link href={`/${props.page}/${String(info.getValue())}`}>
-          <div className="flex w-8 justify-center md:active:scale-[95%]">
-            <div className="h-fit w-fit border-b border-dashed border-slate-300 bg-gradient-to-t from-gray-100/50 to-transparent shadow-neutral-200 group-hover:shadow-md">
+        <Link
+          href={`/${props.page}/${String(info.getValue())}`}
+          className="group"
+        >
+          <div className="flex w-6 justify-center group-hover:scale-[110%]">
+            <div className="h-fit w-fit rounded-br-md border-b-[0.33px] border-dotted border-slate-400/80 bg-gradient-to-tl from-slate-100/60 to-transparent transition-all duration-300 ease-out group-hover:border-slate-500/80">
               {<props.icon className="size-4 stroke-1 text-cyan-700" />}
             </div>
           </div>

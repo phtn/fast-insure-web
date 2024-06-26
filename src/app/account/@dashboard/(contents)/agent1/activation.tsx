@@ -3,7 +3,6 @@ import { type FieldProps } from "../../(components)/form-types";
 
 export const activationDefaults: ActivationFormSchema = {
   agentCode: "",
-  branchCode: "",
 };
 
 export const activationFields: Omit<
@@ -15,13 +14,6 @@ export const activationFields: Omit<
     alt: "name",
     label: "Agent Code",
     placeholder: "agent code",
-    type: "text",
-  },
-  {
-    name: "branchCode",
-    alt: "name",
-    label: "Branch Code",
-    placeholder: "branch code",
     type: "text",
   },
 ];

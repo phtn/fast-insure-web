@@ -1,4 +1,5 @@
 import { type IDMDraftRequestSchema } from "@/server/resource/request";
+import { countUpdate } from "@/trpc/account/user-profile";
 import { createDraftRequest } from "@/trpc/request/request";
 import { errHandler } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
@@ -19,22 +20,26 @@ export const useAgentTools = ({ userId }: AgentToolProps) => {
     id,
     agentId: userId,
     assuredData: {
-      id: undefined,
-      firstName: undefined,
-      lastName: undefined,
-      middleName: undefined,
-      email: undefined,
-      phone: undefined,
+      id: "",
+      firstName: "",
+      lastName: "",
+      middleName: "",
+      // email: "",
+      phone: "",
       address: {
-        line1: undefined,
-        line2: undefined,
-        city: undefined,
-        state: undefined,
+        line1: "",
+        line2: "",
+        city: "",
+        state: "",
         country: "PH",
-        postalCode: undefined,
+        postalCode: "",
       },
     },
     policyType: "CTPL",
+    vehicleInfo: {
+      plateNumber: "",
+      conductionNumber: "",
+    },
     files: [],
     status: "draft",
     remarks: "",
@@ -45,7 +50,12 @@ export const useAgentTools = ({ userId }: AgentToolProps) => {
     setLoading(true);
 
     createDraftRequest(payload)
-      .then(() => route.push(`/account/request/${id}`))
+      .then(() => {
+        countUpdate({ fieldName: "draftCount", incrementBy: 1, userId }).catch(
+          errHandler,
+        );
+        route.push(`/account/request/${id}`);
+      })
       .catch(errHandler(setLoading));
   };
 

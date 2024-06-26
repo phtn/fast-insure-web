@@ -24,8 +24,9 @@ export const useManagerTools = ({ userId, branchCode }: ManagerToolParams) => {
     setStoringCode(true);
     await createRefNo(new Date().getTime().toString(36))
       .then((code) => {
-        setCode(code);
-        storeCode(code);
+        const fusedCode = branchCode?.substring(0, 3) + code;
+        setCode(fusedCode);
+        storeCode(fusedCode);
       })
       .catch(errHandler(setStoringCode));
   };

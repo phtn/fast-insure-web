@@ -10,6 +10,7 @@ import {
   MinusCircleIcon,
 } from "lucide-react";
 import { ActiveOptions, BeachDrop, BeachDropItem } from "./styles";
+import { type CellContext } from "@tanstack/react-table";
 
 type OptionName = "create" | "read" | "update" | "delete" | "disable";
 type MoreOption = {
@@ -43,7 +44,7 @@ export const MoreOptions = (props: MoreOptionProps) => {
               onClick={option.action}
               className="group"
             >
-              <div className="flex items-center space-x-4 font-medium tracking-tight">
+              <div className="flex items-center space-x-4 font-medium capitalize tracking-tight">
                 <Icon name={option.name} />
                 <p className={cn(`text-xs`, textColors[option.name])}>
                   {option.label}
@@ -61,13 +62,13 @@ const textColors = {
   create: "text-cyan-100",
   read: "text-cyan-100",
   update: "text-amber-100",
-  delete: "text-rose-300",
+  delete: "text-rose-400",
   disable: "text-indigo-300",
 };
 
 const iconSelector = (option: OptionName) => {
   const iconStyle =
-    "size-3.5 stroke-[1.5px] text-ghost scale-[85%] group-hover:scale-100 transition-transform duration-200 ease-out";
+    "size-3.5 stroke-[1.5px] text-neutral-300 scale-[85%] group-hover:scale-100 transition-transform duration-200 ease-out";
   switch (option) {
     case "create":
       return <PlusIcon className={cn(iconStyle)} />;
@@ -87,4 +88,23 @@ const iconSelector = (option: OptionName) => {
 const dropContentStyle = `
    portrait:mt-0.5 px-0 portrait:ml-0 portrait:mr-[17px] py-1 w-fit rounded-md shadow-md
   `;
-//-mt-[22px] ml-[35.20px]
+
+/* eslint-disable react/display-name */
+export const activityOptions =
+  (prop: string) =>
+  <T,>({ row }: CellContext<T, unknown>) => (
+    <MoreOptions
+      options={[
+        {
+          action: () => console.log(row.getValue(prop)),
+          label: "suspend",
+          name: "disable",
+        },
+        {
+          action: () => console.log(row.getValue(prop)),
+          label: "delete",
+          name: "delete",
+        },
+      ]}
+    />
+  );

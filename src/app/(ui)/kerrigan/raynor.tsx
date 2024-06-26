@@ -68,7 +68,7 @@ export const Raynor = ({
                 easings: ["easeInOut"],
               }}
             >
-              <Link href={href ?? `/account`}>
+              <Link href={href ?? `/account/overview`}>
                 <button className="group inline-flex h-[50px] animate-shimmer items-center justify-center rounded-lg border border-fast bg-[linear-gradient(110deg,#000103,45%,#93c5fd,55%,#000103)] bg-[length:200%_100%] px-6 text-[14px] font-bold text-white transition-all duration-4000 hover:text-zap focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 md:w-[250px]">
                   <span>{actionLabel}</span>
                   {uid ? (

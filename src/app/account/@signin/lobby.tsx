@@ -1,134 +1,55 @@
 "use client";
 
-import { DotIcon } from "lucide-react";
-import tw from "tailwind-styled-components";
-import { Login } from "./login";
-import { Touch } from "@@ui/touch";
-import { type UserSigninType, useAccountTypes } from "./hooks";
 import { Button } from "@@ui/button";
+import { DotIcon } from "lucide-react";
+// import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import tw from "tailwind-styled-components";
+import { useAccountTypes } from "./hooks";
+import { Login } from "./login";
 import { Welcome } from "./welcome";
-import { useSignInWithGoogle } from "react-firebase-hooks/auth";
-import { auth } from "@@libs/db";
-import { onError, onPromise } from "@/utils/toast";
-import { type FormEvent } from "react";
+import type { FormProps } from "./types";
+import { GoogleSignin } from "./google";
 
 const Lobby = () => {
-  const { signinType, setSigninType } = useAccountTypes();
-  const [signInWithGoogle, googleCreds, loading, googleError] =
-    useSignInWithGoogle(auth);
-
-  const handleSigninWithGoogle = (e: FormEvent<HTMLButtonElement>) => {
-    console.log(typeof loading);
-    e.preventDefault();
-    const signinPromise = new Promise((resolve) => {
-      return resolve(
-        signInWithGoogle()
-          .then((response) => {
-            console.log(`response`, response);
-            console.log(`creds`, googleCreds);
-          })
-          .catch((e: Error) =>
-            onError(
-              "Unable to continue with Google.",
-              `${e.name}`,
-              "Try again.",
-            ),
-          ),
-      );
-    });
-    onPromise(
-      signinPromise,
-      "Signing in...",
-      "signin",
-      "Sign in successful!",
-      googleError,
-    );
-  };
-
-  // const sign = (e: FormEvent<HTMLButtonElement>) => {
-  //   e.preventDefault();
-  //   signInWithGoogle()
-  //     .then((response) => {
-  //       console.log(`response`, response);
-  //       console.log(`creds`, googleCreds);
-  //     })
-  //     .catch((e: Error) =>
-  //       onError("Unable to continue with Google.", `${e.name}`, "Try again."),
-  //     );
-  // };
+  const { loginType, set } = useAccountTypes();
 
   return (
-    <div className="border-b-[0.0px] border-ash">
-      <LobbyContainer>
-        <Secondary
-          setType={setSigninType}
-          signinType={signinType}
-          sign={handleSigninWithGoogle}
-        />
-        <div className="bg-blue-300">
-          <Welcome />
-        </div>
-      </LobbyContainer>
+    <LobbyContainer>
+      <LobbyInner>
+        <LoginForm setLoginType={set} loginType={loginType} />
+        <Welcome />
+      </LobbyInner>
       <TermsFooter />
-    </div>
+    </LobbyContainer>
   );
 };
 
-type SecondaryProps = {
-  signinType: "SIGNIN" | "SIGNUP";
-  sign: (e: FormEvent<HTMLButtonElement>) => void;
-  setType: (type: UserSigninType) => void;
-};
-
-const Secondary = (props: SecondaryProps) => {
-  const { signinType, setType, sign } = props;
-  const userSignin = signinType === "SIGNIN";
+const LoginForm = (props: FormProps) => {
+  const { loginType, setLoginType } = props;
+  const signIn = loginType === "SIGNIN";
   return (
     <div className="flex h-[calc(100vh-144px)] w-full items-center justify-center px-[36px]">
       <div className="w-fit">
         <div className="w-full pt-[14px]">
-          <div className="flex h-fit flex-col">
-            <h1 className="font-sans text-xl font-semibold tracking-tighter text-fast">
-              {userSignin ? `Sign in to your account.` : `Create new account.`}
-            </h1>
-          </div>
-
-          <Login signinType={signinType} />
+          <Title signIn={signIn} />
+          <Login signinType={loginType} />
           <div className="flex justify-center py-4 text-xs text-heli">or</div>
-          <div className="flex w-full items-center">
-            <Touch
-              onClick={sign}
-              size={"lg"}
-              className="h-[56px] w-[300px]"
-              disabled
-            >
-              <div className="flex h-full w-full items-center space-x-3">
-                <p className="h-[18px] bg-gradient-to-r from-clay to-clay/70 bg-clip-text px-1 font-sans text-[16px] font-semibold tracking-tighter text-transparent">
-                  Sign in with Google
-                </p>
-                <div
-                  className={`h-[48px] w-[48px] bg-[url('/svg/g_logo.svg')] bg-center bg-no-repeat`}
-                />
-              </div>
-            </Touch>
-          </div>
+          <GoogleSignin />
         </div>
 
-        <div className="h-[0.33px] w-full bg-gradient-to-r from-ash to-zap" />
+        {/* <div className="h-[0.33px] w-full bg-gradient-to-r from-ash to-zap" /> */}
         <div className="flex h-[72px] w-full items-center justify-center">
           <div className="flex items-center justify-between space-x-2">
-            <p className="font-sans text-sm tracking-tight text-heli">
-              {userSignin
-                ? "Don't have an account?"
-                : "Already have an account?"}
+            <p className="font-sans text-xs tracking-tight text-heli/70">
+              {signIn ? "Don't have an account?" : "Already have an account?"}
             </p>
             <Button
-              className="font-sans text-sm tracking-tight"
+              className="font-sans text-xs tracking-normal text-cyan-500 underline underline-offset-[2px]"
               variant="ghost"
               size="sm"
-              onClick={() => setType(userSignin ? "SIGNUP" : "SIGNIN")}
+              onClick={() => setLoginType(signIn ? "SIGNUP" : "SIGNIN")}
             >
-              {userSignin ? "Sign up" : "Sign in"}
+              {signIn ? "Sign up" : "Sign in"}
             </Button>
           </div>
         </div>
@@ -136,6 +57,14 @@ const Secondary = (props: SecondaryProps) => {
     </div>
   );
 };
+
+const Title = (props: { signIn: boolean }) => (
+  <div className="flex h-fit flex-col">
+    <h1 className="font-sans text-xl font-semibold tracking-tighter text-dyan">
+      {props.signIn ? `Sign in to your account.` : `Create new account.`}
+    </h1>
+  </div>
+);
 
 const TermsFooter = () => {
   return (
@@ -147,7 +76,7 @@ const TermsFooter = () => {
               FastInsure Technologies, Inc.
             </span>{" "}
             <span className="portrait:hidden">
-              All rights reserved {new Date().getFullYear()}
+              All rights reserved. {new Date().getFullYear()}
             </span>
           </div>
         </div>
@@ -164,7 +93,22 @@ const TermsFooter = () => {
 };
 
 const LobbyContainer = tw.div`
+ border-b-[0.0px] border-ash
+  `;
+const LobbyInner = tw.div`
  grid grid-cols-1 md:grid-cols-2
 `;
 
 export default Lobby;
+
+// const sign = (e: FormEvent<HTMLButtonElement>) => {
+//   e.preventDefault();
+//   signInWithGoogle()
+//     .then((response) => {
+//       console.log(`response`, response);
+//       console.log(`creds`, googleCreds);
+//     })
+//     .catch((e: Error) =>
+//       onError("Unable to continue with Google.", `${e.name}`, "Try again."),
+//     );
+// };

@@ -6,6 +6,7 @@ import type {
   PolicyTypeSchema,
 } from "@/server/resource/idm";
 import type {
+  DraftResponseSchema,
   IDMRequestFormSchema,
   IDMRequestPayloadSchema,
   UpdateRequestSchema,
@@ -15,6 +16,105 @@ import { createRefNo, errHandler, formDisplayname } from "@/utils/helpers";
 import { onSuccess } from "@/utils/toast";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
+import { AgentContext } from "../(context)/context";
+
+type RequestServiceParams = {
+  id: string;
+};
+export const useRequestService = ({ id }: RequestServiceParams) => {
+  const profile = useContext(AuthContext)?.profile;
+  const drafts = useContext(AgentContext)?.drafts;
+  const draft = drafts?.find((draft) => draft.id === id);
+  const getSavedValues = (draft: DraftResponseSchema | undefined) => {
+    const assuredData = draft?.assuredData;
+    const values: IDMRequestFormSchema = {
+      firstName: assuredData?.firstName,
+      lastName: assuredData?.firstName,
+      middleName: assuredData?.firstName,
+      email: assuredData?.firstName,
+      phone: assuredData?.firstName,
+      line1: assuredData?.address?.line1,
+      line2: assuredData?.address?.line1,
+      city: assuredData?.address?.line1,
+      state: assuredData?.address?.line1,
+      postalCode: assuredData?.address?.line1,
+      plateNumber: draft?.vehicleInfo?.plateNumber,
+      policyType: draft?.policyType,
+      conductionNumber: draft?.vehicleInfo?.conductionNumber,
+      remarks: draft?.remarks,
+      country: "PH",
+    };
+    return values;
+  };
+
+  const [savedValues, setSavedValues] = useState<IDMRequestFormSchema>();
+  useEffect(() => {
+    if (draft) {
+      const values = getSavedValues(draft);
+      setSavedValues(values);
+    }
+  }, [draft]);
+
+  const displayName = profile?.displayName;
+
+  const [loading, setLoading] = useState(false);
+
+  const saveDraft = (data: IDMRequestFormSchema) => {
+    setLoading(true);
+    const draft: UpdateRequestSchema = {
+      id,
+      payload: {
+        agentName: displayName ?? profile?.email,
+        agentId: profile?.userId,
+        assuredName: data.firstName + " " + data.lastName,
+        assuredData: {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          middleName: data.middleName,
+          email: data.email,
+          phone: data.phone,
+          address: {
+            line1: data.line1,
+            line2: data.line2,
+            city: data.city,
+            state: data.state,
+            country: data.country,
+            postalCode: data.postalCode,
+          },
+        },
+        branchCode: profile?.branchCode,
+        vehicleInfo: {
+          plateNumber: data.plateNumber,
+          conductionNumber: data.conductionNumber,
+        },
+        policyType: data.policyType,
+        status: "draft",
+        files: [],
+        active: true,
+      },
+    };
+
+    updateDraftRequest(draft)
+      .then(() => {
+        setLoading(false);
+        onSuccess("Draft saved successfully.");
+      })
+      .catch(errHandler(setLoading));
+  };
+
+  // const genReqId = async () =>
+  //   await createRefNo().then((result) => setReqId(result.substring(0, 24)));
+
+  // useEffect(() => {
+  //   if (!id) {
+  //     genReqId()
+  //       .then((res) => res)
+  //       .catch((e: Error) => e);
+  //   }
+  // }, [id]);
+
+  return { saveDraft, savedValues, loading };
+};
 
 type SubmitRequestHookParams = {
   id: string | undefined;
@@ -142,11 +242,12 @@ export const useSubmitRequest = (params: SubmitRequestHookParams) => {
       },
     };
 
-    updateDraftRequest(draftPayload)
-      .then(() => {
-        onSuccess("Draft saved successfully.", "success");
-      })
-      .catch(errHandler(setLoading));
+    console.log(draftPayload);
+    // updateDraftRequest(draftPayload)
+    //   .then(() => {
+    //     onSuccess("Draft saved successfully.", "success");
+    //   })
+    //   .catch(errHandler(setLoading));
   };
 
   return {

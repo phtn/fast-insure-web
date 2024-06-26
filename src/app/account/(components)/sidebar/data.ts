@@ -22,7 +22,7 @@ export const affiliateItems: GroupItem[] = [
         desc: "Account overview",
         value: "0",
         icon: LayoutDashboardIcon,
-        href: "/account",
+        href: "/account/overview",
       },
       {
         label: "Agents",
@@ -104,7 +104,7 @@ export const managerItems: GroupItem[] = [
         desc: "Managers Dashboard",
         value: "0",
         icon: Squares2X2Icon,
-        href: `/account`,
+        href: `/account/overview`,
       },
       {
         label: "Agents",
