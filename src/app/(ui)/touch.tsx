@@ -111,7 +111,11 @@ export const Touch = forwardRef<
           variant === "secondary"
             ? `rounded-[9.77px] border-blue-400 bg-blue-300/30`
             : "",
-          size === "icon" ? `m-[0px] h-[56px] w-[56px] ` : ``,
+          size === "icon"
+            ? `m-[0px] h-[56px] w-[56px] `
+            : size === "lg"
+              ? `rounded-xl`
+              : ``,
         )}
       >
         <Comp

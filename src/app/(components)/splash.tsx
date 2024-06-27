@@ -36,14 +36,6 @@ export const Splash = () => {
 
 const SplashScreen = () => (
   <Container>
-    {/* <Car
-      initial={{ x: -1400, scale: 0.6, skewX: `${85}deg`, opacity: 0.5 }}
-      animate={{ x: x, scale: 1, skewX: `${0}deg`, opacity: 1 }}
-      transition={{
-        damping: 1,
-        duration: 0.7,
-      }}
-    /> */}
     <Logo />
     <Loading />
     <Footer />
@@ -97,7 +89,7 @@ export const ShortBody = tw.div`
   `;
 
 const Container = tw(motion.div)`
-  flex h-screen w-screen flex-col items-center justify-center transform-gpu
+  flex h-[calc(100vh-50px)] w-screen flex-col items-center justify-center transform-gpu
   relative z-50
 `;
 

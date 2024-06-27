@@ -47,25 +47,25 @@ export const metadata: Metadata = {
   icons: [
     {
       rel: "icon",
-      url: "/icons/fast_easy_16.png",
+      url: "/icons/fast_grey_16.png",
       type: "image/png",
       sizes: "16x16",
     },
     {
       rel: "icon",
-      url: "/icons/fast_easy_32.png",
+      url: "/icons/fast_grey_32.png",
       type: "image/png",
       sizes: "32x32",
     },
     {
       rel: "apple-icon",
-      url: "/icons/fast_easy_180.png",
+      url: "/icons/fast_grey_180.png",
       type: "image/png",
       sizes: "180x180",
     },
     {
       rel: "apple-touch-icon",
-      url: "/icons/fast_easy_180.png",
+      url: "/icons/fast_grey_180.png",
       type: "image/png",
       sizes: "180x180",
     },

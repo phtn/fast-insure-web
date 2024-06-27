@@ -147,7 +147,6 @@ const Nav = ({ children, profile }: NavProps) => {
 
 const Footer = () => (
   <div className="flex h-[36px] w-screen items-center justify-between border-t-[0.33px] border-ash px-4 text-xs text-clay">
-    {/* <div>Fast Insure Technologies, Inc. &copy; {new Date().getFullYear()}</div> */}
     <div className="flex items-center space-x-2 text-[10px]">
       <Image
         alt={`fast tech logo`}

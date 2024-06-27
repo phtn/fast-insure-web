@@ -36,7 +36,7 @@ const AccountNav = () => {
 
 function Logo() {
   return (
-    <Link role="button" aria-label="Home" href={"/"}>
+    <Link role="button" aria-label="Home" href={"/"} className="portrait:px-4">
       <Button
         variant="ghost"
         className={cn(

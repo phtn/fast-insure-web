@@ -60,7 +60,7 @@ const SubmitButton = (props: SubmitButtonProps) => {
             : "hidden"
       }
       className={cn(
-        `h-[60px] w-full text-[16px] text-gray-400`,
+        `h-[60px] w-full rounded-xl text-[16px] text-gray-400`,
         loading
           ? ` text-blue-200`
           : !isValid
@@ -81,7 +81,7 @@ const render =
       <FormControl>
         <InputField
           alt={item.alt}
-          className="w-[300px]"
+          className="w-[320px]"
           icon={item.icon}
           placeholder={item.placeholder}
           type={item.type}

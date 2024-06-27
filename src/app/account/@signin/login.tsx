@@ -53,7 +53,6 @@ export const Login = ({ signinType }: LoginProps) => {
         signInWithEmailAndPassword(email, password)
           .then((creds) => {
             if (creds) {
-              router.push("/account/overview");
               return creds;
             } else {
               onError("Error", "Unable to sign in.");
@@ -71,6 +70,8 @@ export const Login = ({ signinType }: LoginProps) => {
       "Sign in successful!",
       error,
     );
+
+    router.push("/account/overview");
   };
 
   const handleCreateUser = (email: string, password: string) => {

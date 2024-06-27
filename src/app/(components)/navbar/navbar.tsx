@@ -18,6 +18,7 @@ export const Navbar = () => {
       initial={{ height: 56, opacity: 0 }}
       animate={{ height: 56, opacity: 1 }}
       transition={{ duration: 0.3, delay: 0.5 }}
+      className="z-40"
     >
       <Inner>
         <Brand />

@@ -19,6 +19,15 @@ import {
 import { InputLabel } from "../account/@dashboard/(components)/input-label";
 import tw from "tailwind-styled-components";
 import type { DualIcon } from "../types.index";
+import {
+  EyeIcon,
+  EyeSlashIcon,
+  LockClosedIcon,
+  LockOpenIcon,
+} from "@heroicons/react/24/outline";
+import { opts, toggleState } from "@/utils/helpers";
+import { Button } from "./button";
+import { useState, useCallback } from "react";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
@@ -76,21 +85,61 @@ export const InputField = React.forwardRef<
   HTMLInputElement,
   InputProps & IconPrefix
 >(({ className, type, ...props }, ref) => {
+  const [visible, setVisible] = useState(false);
+  const toggleVisible = () => toggleState(setVisible);
+
+  const IconOptions = useCallback(() => {
+    const options = opts(
+      <EyeIcon className=" size-[16px] text-cyan-600" />,
+      <EyeSlashIcon className=" size-[16px]" />,
+    );
+    return (
+      <Button
+        variant={`ghost`}
+        className="text-neutral-500 hover:text-cyan-600"
+        onClick={toggleVisible}
+      >
+        {options.get(visible)}
+      </Button>
+    );
+  }, [visible]);
+
+  const LockOptions = useCallback(() => {
+    const options = opts(
+      <LockOpenIcon className=" size-[16px] text-cyan-600" />,
+      <LockClosedIcon className=" size-[16px]" />,
+    );
+    return (
+      <Button
+        variant={`ghost`}
+        className="mr-[10px] p-0 text-neutral-500 hover:text-cyan-600"
+        onClick={toggleVisible}
+      >
+        {options.get(visible)}
+      </Button>
+    );
+  }, [visible]);
+
   return (
     <div
       className={cn(
-        "focus-within:ring-ring flex h-[56px] items-center rounded-xl border-[0.33px] border-ash bg-paper pl-3 pr-[3px] ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1",
+        "flex h-[56px] w-full items-center rounded-xl border-[0.33px] border-neutral-300 bg-neutral-100 pl-3 focus-within:border focus-within:border-cyan-500 focus-within:ring-offset-0 active:border-neutral-300",
         className,
       )}
     >
-      <props.icon className="mr-[10px] h-[16px] w-[16px] text-clay dark:text-orange-200/80" />
+      {type === "password" ? (
+        <LockOptions />
+      ) : (
+        <props.icon className="mr-[10px] h-[16px] w-[16px] text-clay" />
+      )}
 
       <input
         {...props}
-        type={type}
+        type={visible ? "text" : type}
         ref={ref}
-        className="h-[44px] w-full rounded-lg bg-transparent px-2 font-sans text-[14px] font-medium tracking-tight placeholder:font-sans placeholder:font-medium placeholder:tracking-tighter placeholder:text-clay/50 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="h-[44px] w-full rounded-lg bg-transparent px-2 font-sans text-[14px] font-normal tracking-normal placeholder:text-clay/50 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       />
+      {type === "password" ? <IconOptions /> : null}
     </div>
   );
 });

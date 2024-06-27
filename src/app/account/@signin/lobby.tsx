@@ -9,6 +9,8 @@ import { Login } from "./login";
 import { Welcome } from "./welcome";
 import type { FormProps } from "./types";
 import { GoogleSignin } from "./google";
+import Image from "next/image";
+import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 
 const Lobby = () => {
   const { loginType, set } = useAccountTypes();
@@ -28,28 +30,31 @@ const LoginForm = (props: FormProps) => {
   const { loginType, setLoginType } = props;
   const signIn = loginType === "SIGNIN";
   return (
-    <div className="flex h-[calc(100vh-144px)] w-full items-center justify-center px-[36px]">
-      <div className="w-fit">
+    <div className="flex h-[calc(100vh-110px)] w-full items-center justify-center border-t-[0.33px] border-neutral-300 px-[36px]">
+      <div className="mb-12 w-fit">
         <div className="w-full pt-[14px]">
           <Title signIn={signIn} />
           <Login signinType={loginType} />
-          <div className="flex justify-center py-4 text-xs text-heli">or</div>
+          <div className="flex justify-center py-4 text-xs text-neutral-500">
+            or
+          </div>
           <GoogleSignin />
         </div>
 
         {/* <div className="h-[0.33px] w-full bg-gradient-to-r from-ash to-zap" /> */}
         <div className="flex h-[72px] w-full items-center justify-center">
-          <div className="flex items-center justify-between space-x-2">
-            <p className="font-sans text-xs tracking-tight text-heli/70">
+          <div className="flex items-center space-x-3">
+            <p className="font-sans text-xs tracking-tight text-neutral-500">
               {signIn ? "Don't have an account?" : "Already have an account?"}
             </p>
             <Button
-              className="font-sans text-xs tracking-normal text-cyan-500 underline underline-offset-[2px]"
+              className="flex h-8 items-center space-x-2 font-sans text-xs font-medium tracking-normal"
               variant="ghost"
               size="sm"
               onClick={() => setLoginType(signIn ? "SIGNUP" : "SIGNIN")}
             >
-              {signIn ? "Sign up" : "Sign in"}
+              <div>{signIn ? "Sign up" : "Sign in"}</div>
+              <ArrowUpRightIcon className="stroke-1.5 size-3" />
             </Button>
           </div>
         </div>
@@ -68,19 +73,23 @@ const Title = (props: { signIn: boolean }) => (
 
 const TermsFooter = () => {
   return (
-    <div className="flex w-full justify-center border-t-[0.33px] border-ash bg-zap">
-      <div className="flex h-[72px] w-full items-center justify-center text-[12px] font-light text-heli md:w-[1080px]">
-        <div className="flex w-full items-center justify-start border-r-[1px] border-ash/30">
-          <div className="flex w-fit items-center justify-end tracking-tighter">
-            <span className="pr-2 font-medium portrait:px-2 portrait:text-[10px]">
-              FastInsure Technologies, Inc.
-            </span>{" "}
-            <span className="portrait:hidden">
-              All rights reserved. {new Date().getFullYear()}
-            </span>
+    <div className="flex w-full justify-center border-t-[0.33px] border-neutral-300 bg-zap">
+      <div className="flex h-[50px] w-full items-center justify-start text-[12px] font-light text-heli">
+        <div className="flex w-full items-center justify-start">
+          <div className="flex h-[50px] items-center justify-between px-4 text-xs text-neutral-400">
+            <div className="flex items-center space-x-2 text-[10px]">
+              <Image
+                alt={`fast tech logo`}
+                src={`/logo/fast_tech_v4.svg`}
+                width={0}
+                height={0}
+                className="h-[8.5px] w-auto"
+              />
+              <p>&copy; &nbsp; {new Date().getFullYear()}</p>
+            </div>
           </div>
         </div>
-        <div className="flex w-full items-center justify-end tracking-tight portrait:text-[10px]">
+        <div className="flex w-full items-center justify-end text-xs tracking-tight text-neutral-400 portrait:text-[10px]">
           <div className="flex w-[150px] items-center justify-start space-x-2">
             <div>Privacy</div>
             <DotIcon className="text-ash" />

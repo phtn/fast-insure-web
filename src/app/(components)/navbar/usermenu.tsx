@@ -15,6 +15,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@@ui/popover";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 import { type User } from "firebase/auth";
+import { motion } from "framer-motion";
 import {
   ArrowUpRightSquareIcon,
   DotIcon,
@@ -166,14 +167,16 @@ export const UserMenu = () => {
         onSelect={handleSelect}
         selectedValue={selectedValue}
         user={creds?.user}
+        open={open}
       />,
       <NotAuthedContent
         selectedValue={selectedValue}
         onSelect={handleSelect}
+        open={open}
       />,
     );
     return <>{options.get(isAuthed)}</>;
-  }, [creds, selectedValue, isAuthed]);
+  }, [creds, selectedValue, isAuthed, open]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -202,9 +205,9 @@ export const UserMenu = () => {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="my-0 w-[250px] p-0">
+      <PopoverContent className="my-0 mr-2 w-[250px] p-0">
         <Hoverdrop
-          parentStyle="h-[272px]"
+          parentStyle="h-[272px] bg-transparent"
           pillStyle="lg:h-[56px] w-[232px] mx-2 lg:group-hover:bg-neutral-200 rounded-xl"
           snapPoints={[
             70,
@@ -217,7 +220,7 @@ export const UserMenu = () => {
           ]}
           offset={25}
         >
-          <Command className="absolute lg:-mt-[54px]">
+          <Command className="absolute bg-transparent lg:-mt-[54px]">
             <MenuOptions />
             <CommandSeparator />
             <CommandList>
@@ -233,18 +236,30 @@ export const UserMenu = () => {
 type NotAuthedContentProps = {
   onSelect: (item: ItemVal) => () => void;
   selectedValue: Group | undefined;
+  open: boolean;
 };
 
 const NotAuthedContent = ({
   onSelect,
   selectedValue,
+  open,
 }: NotAuthedContentProps) => {
   return (
-    <CommandList>
+    <CommandList className="bg-transparent">
       {notAuthedGroup.map((group) => (
         <CommandGroup key={group.label}>
           {group.values.map((item) => (
-            <Link key={item.value} href={item.href ?? `#`}>
+            <ItemMotion
+              key={item.value}
+              initial={{ opacity: 0, x: 500 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 0.3,
+                type: "spring",
+                delay: open ? (+item.value + 1) * 0.08 : 0,
+              }}
+              href={item.href ?? `#`}
+            >
               <Item key={item.value} onSelect={onSelect(item)}>
                 <IconContainer>
                   <Sqc strokeWidth={0} />
@@ -263,7 +278,7 @@ const NotAuthedContent = ({
                   )}
                 />
               </Item>
-            </Link>
+            </ItemMotion>
           ))}
         </CommandGroup>
       ))}
@@ -275,6 +290,7 @@ type AuthedContentProps = {
   user: User | null | undefined;
   onSelect: (item: ItemVal) => () => void;
   selectedValue: Group | undefined;
+  open: boolean;
 };
 
 export const AuthedContent = ({
@@ -382,3 +398,5 @@ const LogoutItem = tw(CommandItem)`
   text-coal hover:text-rose-700
   transition-colors duration-200 delay-200 ease-out
   `;
+
+const ItemMotion = motion(Link);
