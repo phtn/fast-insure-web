@@ -1,8 +1,4 @@
-import * as React from "react";
 import {
-  type ColumnFiltersState,
-  type SortingState,
-  type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -11,20 +7,32 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  type ColumnDef,
+  type ColumnFiltersState,
+  type SortingState,
 } from "@tanstack/react-table";
+import * as React from "react";
 
 import { Table, TableBody, TableHead, TableRow } from "@/app/(ui)/table";
-import { DataTablePagination } from "../../(components)/table/pagination";
-import { EmptyTable, LoadingTable } from "../../(components)/table/empty-table";
-import { RowMotion, rowStyles } from "../../(components)/table/rows";
 import {
   PhCell,
   PhHeader,
   TableContainer,
   TableInner,
-} from "../../(components)/styles";
+} from "../../../(components)/styles";
+import {
+  EmptyRequestTable,
+  LoadingTable,
+} from "../../../(components)/table/empty-table";
+import { DataTablePagination } from "../../../(components)/table/pagination";
+import { RowMotion, rowStyles } from "../../../(components)/table/rows";
 import { DataTableToolbar } from "./toolbar";
-import type { DataTableProps } from "../../(components)/table/types";
+
+interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  loading: boolean;
+}
 
 export function DataTable<TData, TValue>({
   columns,
@@ -32,8 +40,7 @@ export function DataTable<TData, TValue>({
   loading,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
@@ -44,7 +51,9 @@ export function DataTable<TData, TValue>({
     columns,
     state: {
       sorting,
-      columnVisibility,
+      columnVisibility: {
+        agentId: false,
+      },
       rowSelection,
       columnFilters,
     },
@@ -52,7 +61,6 @@ export function DataTable<TData, TValue>({
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -97,7 +105,7 @@ export function DataTable<TData, TValue>({
                   transition={{
                     delay: Math.random() / 8,
                   }}
-                  key={row.getValue("userId")}
+                  key={row.getValue("id")}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -113,11 +121,7 @@ export function DataTable<TData, TValue>({
             ) : loading ? (
               <LoadingTable colSpan={columns.length} />
             ) : (
-              <EmptyTable
-                record="agents"
-                colSpan={columns.length}
-                loading={loading}
-              />
+              <EmptyRequestTable colSpan={columns.length} loading={loading} />
             )}
           </TableBody>
         </Table>

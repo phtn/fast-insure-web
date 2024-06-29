@@ -3,10 +3,10 @@ import LoaderMX from "@/app/(components)/loader-mx";
 import { useConnect } from "../hooks";
 import dynamic from "next/dynamic";
 
-const DynamicManager = dynamic(() => import("../(contents)/manager"), {
+const DynamicManager = dynamic(() => import("../(users)/manager"), {
   loading: LoaderMX,
 });
-const DynamicAgent = dynamic(() => import("../(contents)/agent1"), {
+const DynamicAgent = dynamic(() => import("../(users)/agent1"), {
   loading: LoaderMX,
 });
 

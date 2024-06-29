@@ -23,6 +23,9 @@ interface DataTableColumnHeaderProps<TData, TValue>
   element?: ReactElement;
 }
 
+const defaultStyle =
+  "flex h-full w-full items-center p-0 m-0 font-mono text-xs font-medium tracking-tight text-neutral-600/90";
+
 export function DataTableColumnHeader<TData, TValue>({
   className,
   column,
@@ -31,19 +34,14 @@ export function DataTableColumnHeader<TData, TValue>({
 }: DataTableColumnHeaderProps<TData, TValue>) {
   if (!column.getCanSort()) {
     return (
-      <div
-        className={cn(
-          "font-mono text-xs font-medium tracking-tight text-neutral-600/90",
-          className,
-        )}
-      >
+      <div className={cn(defaultStyle, className)}>
         {title ? title : element}
       </div>
     );
   }
 
   return (
-    <div className={cn("items-start space-x-2 text-dyan", className)}>
+    <div className={cn(defaultStyle, className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button

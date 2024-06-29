@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { ActiveOptions, BeachDrop, BeachDropItem } from "./styles";
 import { type CellContext } from "@tanstack/react-table";
+import { useUpdateService } from "../../(hooks)/useUpdateService";
 
 type OptionName = "create" | "read" | "update" | "delete" | "disable";
 type MoreOption = {
@@ -92,19 +93,66 @@ const dropContentStyle = `
 /* eslint-disable react/display-name */
 export const activityOptions =
   (prop: string) =>
-  <T,>({ row }: CellContext<T, unknown>) => (
-    <MoreOptions
-      options={[
-        {
-          action: () => console.log(row.getValue(prop)),
-          label: "suspend",
+  <T,>({ row }: CellContext<T, unknown>) => {
+    const id: string | undefined = row.getValue(prop);
+    const { handleUpdateRequest } = useUpdateService();
+    return (
+      <MoreOptions
+        options={[
+          {
+            action: handleUpdateRequest({
+              id,
+              payload: { active: false },
+              message: "Item deleted.",
+            }),
+            label: "delete",
+            name: "delete",
+          },
+        ]}
+      />
+    );
+  };
+
+/* eslint-disable react/display-name */
+export const codesOptions =
+  (prop: string) =>
+  <T,>({ row }: CellContext<T, unknown>) => {
+    const { handleUpdateCode } = useUpdateService();
+    const id: string | undefined = row.getValue(prop);
+    const status: string | undefined = row.getValue("active");
+    const disableOption: MoreOption = !!status
+      ? {
+          action: handleUpdateCode({
+            id,
+            payload: { active: false },
+            message: `Code: ${id?.substring(0, 9).toUpperCase()} deactivated.`,
+          }),
+          label: "Deactivate",
           name: "disable",
-        },
-        {
-          action: () => console.log(row.getValue(prop)),
-          label: "delete",
-          name: "delete",
-        },
-      ]}
-    />
-  );
+        }
+      : {
+          action: handleUpdateCode({
+            id,
+            payload: { active: true },
+            message: `Code: ${id?.substring(0, 9).toUpperCase()} activated.`,
+          }),
+          label: "Activate",
+          name: "read",
+        };
+    return (
+      <MoreOptions
+        options={[
+          disableOption,
+          {
+            action: handleUpdateCode({
+              id,
+              payload: { active: false },
+              message: `Code: ${id?.substring(0, 9).toUpperCase()} deleted.`,
+            }),
+            label: "delete",
+            name: "delete",
+          },
+        ]}
+      />
+    );
+  };

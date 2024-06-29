@@ -52,7 +52,7 @@ export type UpdateCodeListSchema = z.infer<typeof UpdateCodeListResource>;
 
 const codedataKey = CodeDataResource.keyof();
 export const UpdateManagerCodeListResource = z.object({
-  managerId: z.string().or(z.undefined()),
+  userId: z.string().or(z.undefined()),
   id: z.string().or(z.undefined()),
   payload: z.record(codedataKey, z.any()),
 });

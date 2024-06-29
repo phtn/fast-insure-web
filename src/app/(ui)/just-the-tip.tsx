@@ -2,11 +2,13 @@ import { cn } from "@/utils/cn";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/app/(ui)/tooltip";
 import { MousePointerClickIcon } from "lucide-react";
 import tw from "tailwind-styled-components";
+import { type DualIcon } from "../types.index";
 
 type JustTheTipProps = {
   tip?: string;
   children: React.ReactNode;
   extra?: string;
+  icon?: DualIcon;
 };
 
 /**
@@ -15,11 +17,15 @@ type JustTheTipProps = {
  */
 export const TheTip = (props: JustTheTipProps) => (
   <Tooltip>
-    <TooltipTrigger>{props.children}</TooltipTrigger>
+    <TooltipTrigger className="w-full">{props.children}</TooltipTrigger>
     <TipContent className={props.extra ? `space-x-3` : ``}>
       <Extra className={cn(props.extra ? `flex` : ``)}>{props.extra}</Extra>{" "}
       <Tip className="text-[10px] text-ghost">
-        <MousePointerClickIcon size={14} />
+        {props?.icon ? (
+          <props.icon className="size-3" />
+        ) : (
+          <MousePointerClickIcon size={14} />
+        )}
         <p>{props.tip ?? `click to copy`}</p>
       </Tip>
     </TipContent>

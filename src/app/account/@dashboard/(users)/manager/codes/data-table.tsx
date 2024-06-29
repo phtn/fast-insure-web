@@ -1,8 +1,4 @@
-import * as React from "react";
 import {
-  type ColumnFiltersState,
-  type SortingState,
-  type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -11,20 +7,27 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  type ColumnFiltersState,
+  type SortingState,
+  type VisibilityState,
 } from "@tanstack/react-table";
+import * as React from "react";
 
 import { Table, TableBody, TableHead, TableRow } from "@/app/(ui)/table";
-import { DataTablePagination } from "../../(components)/table/pagination";
-import { EmptyTable, LoadingTable } from "../../(components)/table/empty-table";
-import { RowMotion, rowStyles } from "../../(components)/table/rows";
 import {
   PhCell,
   PhHeader,
   TableContainer,
   TableInner,
-} from "../../(components)/styles";
+} from "../../../(components)/styles";
+import {
+  EmptyTable,
+  LoadingTable,
+} from "../../../(components)/table/empty-table";
+import { DataTablePagination } from "../../../(components)/table/pagination";
+import { RowMotion, rowStyles } from "../../../(components)/table/rows";
 import { DataTableToolbar } from "./toolbar";
-import type { DataTableProps } from "../../(components)/table/types";
+import type { DataTableProps } from "../../../(components)/table/types";
 
 export function DataTable<TData, TValue>({
   columns,
@@ -72,20 +75,29 @@ export function DataTable<TData, TValue>({
                 key={headerGroup.id}
                 className="border-b-[0.33px] border-dyan/40"
               >
-                {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    colSpan={header.colSpan}
-                    className="border-r-[0.33px] border-dashed border-dyan/40"
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                ))}
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      className="border-r-[0.33px] border-dashed border-dyan/40"
+                    >
+                      <div className="flex items-center justify-between">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                        {header.id === "code" ? (
+                          <div className="flex size-5 items-center justify-center rounded-md bg-dyan/10 text-[10px] text-dyan/80">
+                            {data.length}
+                          </div>
+                        ) : null}
+                      </div>
+                    </TableHead>
+                  );
+                })}
               </TableRow>
             ))}
           </PhHeader>
@@ -97,7 +109,7 @@ export function DataTable<TData, TValue>({
                   transition={{
                     delay: Math.random() / 8,
                   }}
-                  key={row.getValue("userId")}
+                  key={row.getValue("id")}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -114,7 +126,7 @@ export function DataTable<TData, TValue>({
               <LoadingTable colSpan={columns.length} />
             ) : (
               <EmptyTable
-                record="agents"
+                record="codes"
                 colSpan={columns.length}
                 loading={loading}
               />

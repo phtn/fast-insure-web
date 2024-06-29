@@ -81,7 +81,7 @@ const render =
       <FormControl>
         <InputField
           alt={item.alt}
-          className="w-[320px]"
+          className="w-[340px]"
           icon={item.icon}
           placeholder={item.placeholder}
           type={item.type}

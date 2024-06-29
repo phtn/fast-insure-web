@@ -1,17 +1,20 @@
 import {
-  CogIcon,
-  LayoutDashboardIcon,
-  Users2Icon,
-  FileSpreadsheetIcon,
   CarIcon,
-  SproutIcon,
-  PlaneTakeoffIcon,
+  CogIcon,
   FileBarChart2Icon,
-  MonitorCheckIcon,
+  FileSpreadsheetIcon,
+  LayoutDashboardIcon,
+  PlaneTakeoffIcon,
+  SproutIcon,
+  Users2Icon,
 } from "lucide-react";
 import { type GroupItem } from "./types";
 
-import { Squares2X2Icon, UsersIcon } from "@heroicons/react/24/solid";
+import {
+  ShieldCheckIcon,
+  Squares2X2Icon,
+  UsersIcon,
+} from "@heroicons/react/24/solid";
 
 export const affiliateItems: GroupItem[] = [
   {
@@ -136,15 +139,15 @@ export const managerItems: GroupItem[] = [
   // },
 ];
 
-export const agentItems: GroupItem[] = [
+export const activationItems: GroupItem[] = [
   {
     label: "Account",
     values: [
       {
-        label: "Overview",
-        desc: "Agent Dashboard Overview",
+        label: "Activation",
+        desc: "Activation",
         value: "0",
-        icon: MonitorCheckIcon,
+        icon: ShieldCheckIcon,
         href: "/account",
       },
       {
@@ -177,29 +180,29 @@ export const agentItems: GroupItem[] = [
   // },
 ];
 
-export const agentTwoNav: GroupItem[] = [
+export const agentItems: GroupItem[] = [
   {
     label: "Account",
     values: [
       {
-        label: "Autos",
-        desc: "Auto Insurance Overview",
+        label: "Overview",
+        desc: "Agent Dashboard Overview",
         value: "0",
-        icon: CarIcon,
+        icon: Squares2X2Icon,
         href: "/account",
       },
       {
-        label: "Life",
-        desc: "Life Insurance Management",
+        label: "",
+        desc: "",
         value: "1",
-        icon: SproutIcon,
+        // icon: SproutIcon,
         href: "/account/life",
       },
       {
-        label: "Travel",
+        label: "",
         desc: "Travel Insurance Management",
         value: "2",
-        icon: PlaneTakeoffIcon,
+        // icon: PlaneTakeoffIcon,
         href: "/account/travel",
       },
     ],

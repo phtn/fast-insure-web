@@ -2,7 +2,7 @@ import { type ReactNode, useCallback } from "react";
 import { opts } from "@/utils/helpers";
 import { Hoverboard } from "@/app/(ui)/hoverboard";
 import { SidebarNav } from "./navs";
-import { managerItems, agentItems } from "./data";
+import { managerItems, agentItems, activationItems } from "./data";
 import type {
   GroupItem,
   NavProps,
@@ -19,13 +19,13 @@ export default function Sidebar({
   profile,
 }: SidebarProps) {
   const AgentOptions = useCallback(() => {
-    const isAgentOne = !!accountType && accountType === "AGENT1";
+    const isSetupComplete = !!profile && profile.setupComplete;
     const options = opts(
       <SidebarNav groupitems={agentItems} />,
-      <SidebarNav groupitems={agentItems} />,
+      <SidebarNav groupitems={activationItems} />,
     );
-    return <>{options.get(isAgentOne)}</>;
-  }, [accountType]);
+    return <>{options.get(isSetupComplete)}</>;
+  }, [profile]);
 
   const NavOptions = useCallback(() => {
     const isManager = !!accountType && accountType === "MANAGER";
@@ -68,9 +68,8 @@ const ManagerNav = (props: { groupitems: GroupItem[] }) => {
 };
 
 const ProfileCard = ({ profile }: ProfileCardProps) => {
-  const userName =
-    profile?.displayName ??
-    profile?.email?.substring(0, profile?.email.indexOf("@"));
+  const userName = // profile?.displayName ??
+  profile?.email?.substring(0, profile?.email.indexOf("@"));
   const UsernameOptions = useCallback(() => {
     const options = opts(
       <div>{userName}</div>,

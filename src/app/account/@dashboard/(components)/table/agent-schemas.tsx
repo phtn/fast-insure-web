@@ -16,6 +16,7 @@ export const statuses: Option[] = [
     color: "text-cyan-500 stroke-0 size-4 fill-white",
     cell: "border-[0.33px] border-cyan-500 bg-cyan-600 text-white",
   },
+
   // {
   //   value: "received",
   //   label: "received",
@@ -45,3 +46,49 @@ export const statuses: Option[] = [
 //     label: "payment.confirmation",
 //   },
 // ];
+type ColorOption = {
+  value: string;
+  color: string;
+};
+export const colorcodes: ColorOption[] = [
+  {
+    value: "0",
+    color: "text-emerald-400",
+  },
+  {
+    value: "1",
+    color: "text-cyan-400",
+  },
+  {
+    value: "2",
+    color: "text-zinc-400",
+  },
+  {
+    value: "3",
+    color: "text-yellow-400",
+  },
+  {
+    value: "4",
+    color: "text-yellow-400",
+  },
+  {
+    value: "5",
+    color: "text-rose-400",
+  },
+  {
+    value: "6",
+    color: "text-indigo-200",
+  },
+  {
+    value: "7",
+    color: "text-pink-200",
+  },
+  {
+    value: "8",
+    color: "text-amber-200",
+  },
+  {
+    value: "9",
+    color: "text-violet-200",
+  },
+];

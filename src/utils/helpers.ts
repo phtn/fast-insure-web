@@ -129,10 +129,11 @@ export const getToday = () => {
 type CopyFnParams = {
   name: string;
   text: string;
+  limit?: number;
 };
 type CopyFn = (params: CopyFnParams) => Promise<boolean>; // Return success
 
-export const copyFn: CopyFn = async ({ name, text }) => {
+export const copyFn: CopyFn = async ({ name, text, limit }) => {
   if (!navigator?.clipboard) {
     onWarn("Clipboard not supported");
     return false;
@@ -141,7 +142,10 @@ export const copyFn: CopyFn = async ({ name, text }) => {
 
   try {
     await navigator.clipboard.writeText(text);
-    onSuccess(`${name ? "Copied: " + name : "Copied."}`, charlimit(text, 35)!);
+    onSuccess(
+      `${name ? "Copied: " + name : "Copied."}`,
+      charlimit(text, limit ?? 35)!,
+    );
     return true;
   } catch (error) {
     onError("Copy failed.");

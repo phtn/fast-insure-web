@@ -46,7 +46,7 @@ export const Card = (props: CardProps) => {
           </div>
         </div>
 
-        <div className="flex h-[40px] items-center space-x-4 p-4">
+        <div className="flex h-[40px] w-[200px]  items-center space-x-4 p-4">
           <Touch
             iconClass={cn(props.actionIconStyle, `text-cyan-600`)}
             className="h-[40px] tracking-normal text-cyan-600"
@@ -56,7 +56,7 @@ export const Card = (props: CardProps) => {
           >
             {props.actionLabel}
           </Touch>
-          <p className="px-4 font-mono font-medium uppercase tracking-widest">
+          <p className="whitespace-nowrap px-4 font-mono font-medium uppercase tracking-widest">
             {props.extra}
           </p>
         </div>
@@ -66,7 +66,7 @@ export const Card = (props: CardProps) => {
 };
 
 const CardContainer = tw.div`
-  rounded-xl border-4 border-zap/50
+  h-fit rounded-xl border-4 border-zap/50
   shadow-lg hover:scale-[101%] transition-transform duration-300 ease-out
   `;
 

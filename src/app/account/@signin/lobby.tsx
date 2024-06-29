@@ -11,9 +11,22 @@ import type { FormProps } from "./types";
 import { GoogleSignin } from "./google";
 import Image from "next/image";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/libs/db";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import Link from "next/link";
 
 const Lobby = () => {
   const { loginType, set } = useAccountTypes();
+  const [user] = useAuthState(auth);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!!user) {
+      router.push("account/overview");
+    }
+  }, [user, router]);
 
   return (
     <LobbyContainer>
@@ -48,7 +61,7 @@ const LoginForm = (props: FormProps) => {
               {signIn ? "Don't have an account?" : "Already have an account?"}
             </p>
             <Button
-              className="flex h-8 items-center space-x-2 font-sans text-xs font-medium tracking-normal"
+              className="flex h-9 items-center space-x-2 font-sans text-xs font-medium tracking-normal hover:bg-cyan-300/15"
               variant="ghost"
               size="sm"
               onClick={() => setLoginType(signIn ? "SIGNUP" : "SIGNIN")}
@@ -89,17 +102,28 @@ const TermsFooter = () => {
             </div>
           </div>
         </div>
-        <div className="flex w-full items-center justify-end text-xs tracking-tight text-neutral-400 portrait:text-[10px]">
-          <div className="flex w-[150px] items-center justify-start space-x-2">
-            <div>Privacy</div>
+
+        <div className="flex w-full items-center text-[12px] tracking-tight portrait:text-[10px]">
+          <div className="flex w-full items-center justify-end space-x-2 px-4">
+            <LinkItem url="privacy" label="privacy" />
             <DotIcon className="text-ash" />
-            <div>Terms</div>
+            <LinkItem url="terms" label="terms" />
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+const LinkItem = (props: { url: string; label: string }) => (
+  <div className="group text-neutral-500">
+    <Link href={`/${props.url}`}>
+      <p className="capitalize group-hover:text-dyan group-hover:underline group-hover:decoration-cyan-600 group-hover:decoration-dotted">
+        {props.label}
+      </p>
+    </Link>
+  </div>
+);
 
 const LobbyContainer = tw.div`
  border-b-[0.0px] border-ash
@@ -109,15 +133,3 @@ const LobbyInner = tw.div`
 `;
 
 export default Lobby;
-
-// const sign = (e: FormEvent<HTMLButtonElement>) => {
-//   e.preventDefault();
-//   signInWithGoogle()
-//     .then((response) => {
-//       console.log(`response`, response);
-//       console.log(`creds`, googleCreds);
-//     })
-//     .catch((e: Error) =>
-//       onError("Unable to continue with Google.", `${e.name}`, "Try again."),
-//     );
-// };

@@ -22,7 +22,7 @@ export const createAgentCode = async (params: AgentCodeSchema) => {
     assignedId: "",
     assignedName: "",
     branchCode,
-    code: code.substring(0, 6),
+    code: code.substring(0, 9),
     createdAt,
     createdBy: params.userId,
     dateAssigned: "",
@@ -33,7 +33,7 @@ export const createAgentCode = async (params: AgentCodeSchema) => {
   const codeRef = collection(db, codesPath);
   const code_list_item: CodeListSchema = {
     activated: false,
-    code: code.substring(0, 6),
+    code: code.substring(0, 9),
     branchCode,
     createdAt,
     updatedAt: createdAt,
@@ -59,10 +59,10 @@ export const updateManagerCodeList = async (
 ) => {
   const codesPath = String(process.env.NEXT_PUBLIC_LIVE_CODES);
   const usersPath = String(process.env.NEXT_PUBLIC_LIVE_USERS);
-  const { id, managerId } = params;
-  if (!managerId || !id) return;
+  const { id, userId } = params;
+  if (!userId || !id) return;
 
-  const docRef = doc(db, `${usersPath}/${managerId}/${codesPath}/${id}`);
+  const docRef = doc(db, `${usersPath}/${userId}/${codesPath}/${id}`);
   const datestring = new Date().getTime();
   await updateDoc(docRef, {
     ...params.payload,

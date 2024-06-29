@@ -17,7 +17,7 @@ const defaultClass = `
   bg-white text-clay border-ash/[30%]
   hover:shadow-i-br-li-hv shadow-i-tl-li
   hover:text-cyan-500 disabled:hover:text-clay/60
-
+  w-full
 `;
 const primaryClass = `
   bg-white text-blue-500 border-ash/[30%]
@@ -59,7 +59,7 @@ const tv = cva(touchDefaultClass, {
     size: {
       sm: "h-[32px] px-[16px]",
       md: "h-[48px] px-[18px]",
-      lg: "h-[50px] px-[22px]",
+      lg: "h-[50px] w-full px-[22px]",
       icon: "h-[52px] w-[52px]",
       default: "h-[42px] px-[16px]",
     },
@@ -115,13 +115,17 @@ export const Touch = forwardRef<
             ? `m-[0px] h-[56px] w-[56px] `
             : size === "lg"
               ? `rounded-xl`
-              : ``,
+              : `rounded-[9.77px]`,
         )}
       >
         <Comp
           className={cn(
             tv({ variant, size, className }),
-            variant === "secondary" ? (size === "lg" ? "h-[50px]" : "") : "",
+            variant === "secondary"
+              ? size === "lg"
+                ? "h-[50px] w-full"
+                : ""
+              : "",
           )}
           ref={ref}
           {...props}
@@ -165,12 +169,15 @@ export const Touch = forwardRef<
 Touch.displayName = "Touch";
 
 const Case = tw.div`
-  flex items-center justify-center bg-white p-[2px]
-  rounded-[9.77px] border-[0.33px] border-ash
+  flex items-center justify-center w-full
+  bg-white p-[2px]
+  border-[0.33px] border-ash
+
   shadow-i-br-li
-  transition-all duration-300
-  hover:shadow-i-tl-li-hv
   drop-shadow-sm
+  hover:shadow-i-tl-li-hv
+
+  transition-all duration-300
   active:scale-[95%] active:border-ash
 `;
 

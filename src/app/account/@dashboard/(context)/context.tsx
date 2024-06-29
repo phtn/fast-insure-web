@@ -107,9 +107,10 @@ export const ManagerContextProvider = (props: { children: ReactNode }) => {
     queryReqRef,
     options,
   );
-  const requests = reqsCollection?.docs.map(
+  const allRequests = reqsCollection?.docs.map(
     (doc) => doc.data() as IDMRequestSchema,
   );
+  const requests = allRequests?.filter((request) => request.active);
   // .filter((doc) => {
   //   if (doc.agentId !== profile?.userId) {
   //     return doc.branchCode === profile?.branchCode && doc.status !== "draft";

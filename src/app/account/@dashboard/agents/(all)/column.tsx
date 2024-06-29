@@ -11,6 +11,7 @@ import { MoreOptions } from "../../(components)/table/more-options";
 import { type UserProfileSchema } from "@/server/resource/account";
 import {
   nameCell,
+  nameCellHeaderWide,
   nameCellWithCopy,
   nameHeader,
   statusCell,
@@ -23,7 +24,11 @@ export const columns: ColumnDef<UserProfileSchema>[] = [
     id: "userId",
     accessorKey: "userId",
     header: pagelinkHeader({ icon: UserCircleIcon }),
-    cell: pagelinkCell({ icon: UserCircleIcon, page: `agent` }),
+    cell: pagelinkCell({
+      icon: UserCircleIcon,
+      primaryRoute: "account/agent",
+      id: "userId",
+    }),
     enableSorting: false,
   },
   {
@@ -53,7 +58,7 @@ export const columns: ColumnDef<UserProfileSchema>[] = [
   {
     id: "active",
     accessorKey: "active",
-    header: nameHeader("Status"),
+    header: nameCellHeaderWide("Status"),
     cell: statusCell({ id: "active", schema: activeStates }),
     filterFn: (row, value, selectedValues: string[]) => {
       return selectedValues.includes(String(row.getValue(value)));
