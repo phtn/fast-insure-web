@@ -22,7 +22,7 @@ import {
   TableInner,
 } from "../../../(components)/styles";
 import {
-  EmptyTable,
+  EmptyRequestTable,
   LoadingTable,
 } from "../../../(components)/table/empty-table";
 import { DataTablePagination } from "../../../(components)/table/pagination";
@@ -53,7 +53,10 @@ export function DataTable<TData, TValue>({
     columns,
     state: {
       sorting,
-      columnVisibility,
+      columnVisibility: {
+        ...columnVisibility,
+        agentId: false,
+      },
       rowSelection,
       columnFilters,
     },
@@ -122,7 +125,7 @@ export function DataTable<TData, TValue>({
             ) : loading ? (
               <LoadingTable colSpan={columns.length} />
             ) : (
-              <EmptyTable colSpan={columns.length} loading={loading} />
+              <EmptyRequestTable colSpan={columns.length} loading={loading} />
             )}
           </TableBody>
         </Table>

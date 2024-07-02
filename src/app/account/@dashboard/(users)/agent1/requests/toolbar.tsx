@@ -25,14 +25,14 @@ export function DataTableToolbar<TData>({
         <InputLight
           placeholder="filter customer"
           value={
-            (table.getColumn("customer")?.getFilterValue() as string) ?? ""
+            (table.getColumn("assuredName")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
-            table.getColumn("customer")?.setFilterValue(event.target.value)
+            table.getColumn("assuredName")?.setFilterValue(event.target.value)
           }
           className="h-10 w-[230px] font-mono font-light"
         />
-        {table.getColumn("currency") && (
+        {table.getColumn("status") && (
           <DataTableFacetedFilter
             column={table.getColumn("status")}
             title="Status"

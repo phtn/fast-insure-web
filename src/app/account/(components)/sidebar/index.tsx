@@ -69,7 +69,7 @@ const ManagerNav = (props: { groupitems: GroupItem[] }) => {
 
 const ProfileCard = ({ profile }: ProfileCardProps) => {
   const userName = // profile?.displayName ??
-  profile?.email?.substring(0, profile?.email.indexOf("@"));
+    profile?.email?.substring(0, profile?.email.indexOf("@"));
   const UsernameOptions = useCallback(() => {
     const options = opts(
       <div>{userName}</div>,
@@ -104,7 +104,7 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
       </div>
       <div className="grid h-[46px] w-full grid-cols-2 space-x-2 px-1">
         <Stat label="requests" value={profile?.draftCount ?? 0} />
-        <Stat label="points" value={profile?.fastPoints ?? 0} />
+        <Stat label="pts" value={profile?.fastPoints ?? 0} />
       </div>
     </div>
   );

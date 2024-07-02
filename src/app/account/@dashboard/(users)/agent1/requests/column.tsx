@@ -1,7 +1,7 @@
 "use client";
 
 import { type ColumnDef } from "@tanstack/react-table";
-import { FilePenLineIcon, PencilLineIcon } from "lucide-react";
+import { PencilLineIcon } from "lucide-react";
 import { type IDMRequestSchema } from "@/server/resource/idm";
 import {
   pagelinkCell,
@@ -20,12 +20,13 @@ import { Cog8ToothIcon } from "@heroicons/react/24/outline";
 
 export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
   {
-    id: "id",
-    accessorKey: "id",
+    id: "edit",
+    accessorKey: "edit",
     header: pagelinkHeader({ icon: PencilLineIcon }),
     cell: pagelinkCell({
-      icon: FilePenLineIcon,
-      primaryRoute: "requests",
+      icon: PencilLineIcon,
+      primaryRoute: "account/request",
+      extraKey: "agentId",
       id: "id",
     }),
     enableSorting: false,
@@ -45,7 +46,14 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
     enableHiding: true,
     enableSorting: false,
   },
-
+  {
+    id: "agentId",
+    accessorKey: "agentId",
+    header: nameHeader("Agent Id"),
+    cell: nameCell("agentId"),
+    enableHiding: true,
+    enableSorting: false,
+  },
   {
     id: "createdAt",
     accessorKey: "createdAt",

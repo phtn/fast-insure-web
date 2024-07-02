@@ -53,7 +53,10 @@ export function DataTable<TData, TValue>({
     columns,
     state: {
       sorting,
-      columnVisibility,
+      columnVisibility: {
+        ...columnVisibility,
+        agentId: false,
+      },
       rowSelection,
       columnFilters,
     },

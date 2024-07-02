@@ -189,7 +189,7 @@ export const agentItems: GroupItem[] = [
         desc: "Agent Dashboard Overview",
         value: "0",
         icon: Squares2X2Icon,
-        href: "/account",
+        href: "/account/overview",
       },
       {
         label: "",

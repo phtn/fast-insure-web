@@ -27,6 +27,7 @@ import { useProfile } from "@/app/account/@signin/hooks";
 import { AgentContextProvider } from "../../(context)/context";
 import { useUpdateService } from "../../(hooks)/useUpdateService";
 import { ShieldCheckIcon } from "@heroicons/react/24/solid";
+import { ArrowDownRightIcon } from "@heroicons/react/24/outline";
 
 const AgentContent = (props: { profile: UserProfileSchema | undefined }) => {
   const { profile } = props;
@@ -67,8 +68,8 @@ const SetupInit = (props: {
   return (
     <div className="flex h-fit w-full justify-center">
       <div className="m-4 h-[500px] space-y-10 overflow-hidden rounded-xl border-[0.33px] border-neutral-200 bg-white p-6 shadow-sm backdrop-blur-lg">
-        <div className="flex w-full items-center space-x-2">
-          <div className="flex items-center rounded-full bg-void/80 px-3.5 py-0.5 text-sm font-semibold tracking-tight">
+        <div className="flex w-full items-center justify-between">
+          <div className="relative z-40 flex items-center rounded-full bg-void/80 px-3.5 py-0.5 text-sm font-semibold tracking-tight">
             <p className="bg-gradient-to-r from-cyan-100 via-sky-50 to-indigo-50 bg-clip-text text-transparent">
               FastInsure Tech
             </p>
@@ -205,11 +206,9 @@ const ActivationCard = (props: {
                 </p>
               </div>
 
-              <div className="flex items-center px-4 py-2">
-                <p className="text-xs">
-                  <span className="mr-2 rounded-full bg-neutral-300 px-1.5 py-0.5 font-bold text-white">
-                    1
-                  </span>
+              <div className="flex items-center space-x-4 px-4 py-2">
+                <ArrowDownRightIcon className="size-3" />
+                <p className="font-mono text-xs opacity-80">
                   Enter your agent code.
                 </p>
               </div>
@@ -239,23 +238,40 @@ const ActivationCard = (props: {
   );
 };
 
-const WithCode = (props: { profile: UserProfileSchema | undefined }) => (
-  <Tabs defaultValue="requests" className="w-full">
-    <Header>
-      <Triggers />
-    </Header>
-    <Requests />
-    <Drafts />
-    <Tools userId={props.profile?.userId} />
-  </Tabs>
-);
+const WithCode = (props: { profile: UserProfileSchema | undefined }) => {
+  if (!props?.profile) return;
+  const { draftCount, submittedCount } = props.profile;
+  return (
+    <Tabs defaultValue="requests" className="w-full">
+      <Header>
+        <Triggers draftCount={draftCount} submittedCount={submittedCount} />
+      </Header>
+      <Requests />
+      <Drafts />
+      <Tools userId={props.profile?.userId} />
+    </Tabs>
+  );
+};
 
-export const Triggers = () => {
+export const Triggers = (props: {
+  draftCount: number | undefined;
+  submittedCount: number | undefined;
+}) => {
   return (
     <TablistContainer>
       <TabList>
-        <Trigger value="requests">Requests</Trigger>
-        <Trigger value="drafts">Drafts</Trigger>
+        <Trigger value="requests">
+          Requests
+          <span className="ml-4 rounded-lg bg-dyan/5 px-1.5 font-mono font-thin">
+            {props.submittedCount ?? 0}
+          </span>
+        </Trigger>
+        <Trigger value="drafts">
+          Drafts
+          <span className="ml-4 rounded-lg bg-dyan/5 px-1.5 font-mono font-thin">
+            {props.draftCount ?? 0}
+          </span>
+        </Trigger>
         <Trigger value="tools">Tools</Trigger>
       </TabList>
     </TablistContainer>

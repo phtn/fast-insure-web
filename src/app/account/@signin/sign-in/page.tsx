@@ -1,14 +1,4 @@
-import tw from "tailwind-styled-components";
-import Lobby from "../lobby";
-
+import { SignInContent } from "./content";
 export default async function SignIn() {
-  return (
-    <Container>
-      <Lobby />
-    </Container>
-  );
+  return <SignInContent />;
 }
-
-const Container = tw.div`
-  bg-zap h-[calc(100vh-72px)]
-`;

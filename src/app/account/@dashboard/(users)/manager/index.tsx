@@ -10,6 +10,7 @@ import { ManagerContextProvider } from "../../(context)/context";
 const ManagerContent = (props: { profile: UserProfileSchema | undefined }) => {
   if (!props.profile) return;
   const { userId, branchCode } = props.profile;
+
   return (
     <ManagerContextProvider>
       <Tabs defaultValue="activity" className="m-0 w-full p-0">

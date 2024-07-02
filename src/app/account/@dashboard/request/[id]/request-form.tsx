@@ -3,7 +3,7 @@
 import { CheckIcon } from "@heroicons/react/24/outline";
 import { NeutralCard } from "../../(components)/form-card";
 import { useRequestService } from "../../(hooks)/useRequestService";
-import { requestFields } from "./schema";
+import { requestDefaults, requestFields } from "./schema";
 import { Form, FormControl, FormField, FormItem } from "@/app/(ui)/form";
 import {
   IDMRequestForm,
@@ -32,13 +32,24 @@ import { type PolicyTypeSchema } from "@/server/resource/idm";
 export const RequestForm = (props: { id: string }) => {
   const { saveDraft, savedValues } = useRequestService({ id: props.id });
 
+  const [values, setValues] = useState<IDMRequestFormSchema | undefined>(
+    savedValues,
+  );
+
   const [selectedPolicyType, setSelected] = useState<PolicyTypeSchema>(
     savedValues?.policyType ?? "CTPL",
   );
 
+  useEffect(() => {
+    if (savedValues) {
+      console.log(savedValues);
+      setValues(savedValues);
+    } else setValues(requestDefaults);
+  }, [savedValues]);
+
   const form = useForm<IDMRequestFormSchema>({
     resolver: zodResolver(IDMRequestForm),
-    values: savedValues,
+    values,
   });
 
   useEffect(() => {
@@ -77,12 +88,10 @@ export const RequestForm = (props: { id: string }) => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="">
           <div className="p-5">
             <NeutralCard>
-              <div className="p-4 font-semibold tracking-tight">
-                Assured Info
-              </div>
-              <div className="mx-4 mb-6 h-[0.33px] bg-gradient-to-r from-indigo-800/40 via-neutral-400/60 to-transparent" />
+              <FormCardTitle>Assured Info</FormCardTitle>
+              <FormSeparator />
               <AssuredFieldContainer>
-                <FieldRow title="Name">
+                <FieldRow title="Assured Name">
                   <Fields control={form.control} fields={assuredInfo} />
                 </FieldRow>
                 <FieldRow title="Contact Details">
@@ -106,9 +115,8 @@ export const RequestForm = (props: { id: string }) => {
 
           <div className="p-5">
             <NeutralCard>
-              <div className="p-4 font-bold">Select Policy Type</div>
-
-              <div className="mx-4 mb-6 h-[0.33px] bg-gradient-to-r from-indigo-800/40 via-neutral-400/60 to-transparent" />
+              <FormCardTitle>Select Policy Type</FormCardTitle>
+              <FormSeparator />
               <AssuredFieldContainer>
                 <RadioGroup defaultValue="CTPL">
                   <div className="grid w-full grid-cols-3 gap-x-6">
@@ -117,20 +125,24 @@ export const RequestForm = (props: { id: string }) => {
                         onClick={() => setSelected("CTPL")}
                         checked={selectedPolicyType === "CTPL"}
                         value="CTPL"
+                        description="Compulsory Third-Party Liability Insurance Policy"
                       />
                     </FormItem>
                     <FormItem>
                       <RadioButton
                         checked={selectedPolicyType === "COMP"}
                         onClick={() => setSelected("COMP")}
-                        value="COMP"
+                        value="COMPREHENSIVE"
+                        description="Comprehensive Insurance Policy"
                       />
                     </FormItem>
                     <FormItem>
                       <RadioButton
                         checked={selectedPolicyType === "PAIN"}
                         onClick={() => setSelected("PAIN")}
-                        value="PAIN"
+                        value="PERSONAL ACCIDENT"
+                        description="Personal Accidents Insurance Policy"
+                        disabled
                       />
                     </FormItem>
                   </div>
@@ -141,9 +153,8 @@ export const RequestForm = (props: { id: string }) => {
 
           <div className="p-5">
             <NeutralCard>
-              <div className="p-4 font-bold">Vehicle Info</div>
-
-              <div className="mx-4 mb-6 h-[0.33px] bg-gradient-to-r from-indigo-800/40 via-neutral-400/60 to-transparent" />
+              <FormCardTitle>Vehicle Info</FormCardTitle>
+              <FormSeparator />
               <AssuredFieldContainer>
                 <FieldRow title="">
                   <div>
@@ -154,14 +165,20 @@ export const RequestForm = (props: { id: string }) => {
                       >
                         <CheckIcon
                           className={cn(
-                            "size-4 stroke-[0.33px] text-white transition-all duration-300",
+                            "size-4 rotate-6 stroke-[0.33px] text-white transition-all duration-300",
                             plateChecked
                               ? `scale-100 stroke-[3px]`
                               : `scale-0 stroke-1`,
                           )}
                         />
                       </CheckBx>
-                      <Label htmlFor="plate" className="font-normal">
+                      <Label
+                        htmlFor="plate"
+                        className={cn(
+                          "font-mono text-xs tracking-[0.5px]",
+                          plateChecked ? "opacity-100" : "opacity-50",
+                        )}
+                      >
                         with Plate Number
                       </Label>
                     </div>
@@ -182,14 +199,20 @@ export const RequestForm = (props: { id: string }) => {
                       >
                         <CheckIcon
                           className={cn(
-                            "size-4 stroke-[0.33px] text-white transition-all duration-300",
+                            "size-4 rotate-6 stroke-[0.33px] text-white transition-all duration-300",
                             conductionChecked
                               ? `scale-100 stroke-[3px]`
                               : `scale-0 stroke-1`,
                           )}
                         />
                       </CheckBx>
-                      <Label htmlFor="conduction" className="font-normal">
+                      <Label
+                        htmlFor="conduction"
+                        className={cn(
+                          "font-mono text-xs tracking-[0.5px]",
+                          conductionChecked ? "opacity-100" : "opacity-50",
+                        )}
+                      >
                         with Conduction Number
                       </Label>
                     </div>
@@ -205,7 +228,10 @@ export const RequestForm = (props: { id: string }) => {
           </div>
 
           <div className="p-5">
-            <DocumentUploader id={props.id} />
+            <DocumentUploader id={props.id}>
+              <FormCardTitle>File uploader</FormCardTitle>
+              <FormSeparator />
+            </DocumentUploader>
           </div>
           <div className="flex h-[100px] items-center justify-end space-x-4 px-4">
             <Button
@@ -232,8 +258,10 @@ export const RequestForm = (props: { id: string }) => {
 };
 
 const FieldRow = (props: { title: string; children: ReactNode }) => (
-  <div>
-    <p className="text-sm font-semibold tracking-tight">{props.title}</p>
+  <div className="space-y-1.5">
+    <p className="px-1 text-sm font-medium tracking-tighter opacity-80">
+      {props.title}
+    </p>
     <div className="flex items-center space-x-4">{props.children}</div>
   </div>
 );
@@ -272,4 +300,12 @@ const Fields = ({ control, fields }: FormFieldProps) => {
 
 const AssuredFieldContainer = tw.div`
   px-4 portrait:gap-y-4 space-y-8
+  `;
+
+const FormCardTitle = tw.div`
+  p-4 text-lg font-semibold tracking-tight text-dyan
+  `;
+
+const FormSeparator = tw.div`
+  mx-4 rounded-full mb-6 h-[0.75px] bg-gradient-to-r from-indigo-800/40 via-neutral-400/60 to-transparent
   `;

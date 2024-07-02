@@ -1,6 +1,7 @@
 import { AuthContext } from "@/app/(context)/context";
 import { Hoverdrop } from "@/app/(ui)/hoverboard";
 import { auth } from "@/libs/db";
+import { type UserProfileSchema } from "@/server/resource/account";
 import { cn } from "@/utils/cn";
 import { opts } from "@/utils/helpers";
 import { onPromise } from "@/utils/toast";
@@ -14,7 +15,6 @@ import {
 } from "@@ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@@ui/popover";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
-import { type User } from "firebase/auth";
 import { motion } from "framer-motion";
 import {
   ArrowUpRightSquareIcon,
@@ -95,7 +95,7 @@ const groups: GroupItem[] = [
     label: "Menu",
     values: [
       {
-        label: "Fast Coins (570pts)",
+        label: "Fast Coins",
         desc: ".",
         value: "2",
         icon: GiftIcon,
@@ -148,10 +148,10 @@ export const UserMenu = () => {
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<Group | undefined>();
 
-  const creds = useContext(AuthContext);
+  const profile = useContext(AuthContext)?.profile;
   const closePopover = () => setOpen(false);
 
-  const isAuthed = creds?.user !== null;
+  const isAuthed = !!profile && profile.userId !== undefined;
   const SignOptions = useCallback(() => {
     const options = opts(<LogoutOption />, <div />);
     return <>{options.get(isAuthed)}</>;
@@ -166,7 +166,7 @@ export const UserMenu = () => {
       <AuthedContent
         onSelect={handleSelect}
         selectedValue={selectedValue}
-        user={creds?.user}
+        profile={profile}
         open={open}
       />,
       <NotAuthedContent
@@ -176,7 +176,7 @@ export const UserMenu = () => {
       />,
     );
     return <>{options.get(isAuthed)}</>;
-  }, [creds, selectedValue, isAuthed, open]);
+  }, [selectedValue, isAuthed, open, profile]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -287,7 +287,7 @@ const NotAuthedContent = ({
 };
 
 type AuthedContentProps = {
-  user: User | null | undefined;
+  profile: UserProfileSchema | undefined;
   onSelect: (item: ItemVal) => () => void;
   selectedValue: Group | undefined;
   open: boolean;
@@ -296,7 +296,7 @@ type AuthedContentProps = {
 export const AuthedContent = ({
   onSelect,
   selectedValue,
-  user,
+  profile,
 }: AuthedContentProps) => {
   return (
     <CommandList>
@@ -310,7 +310,7 @@ export const AuthedContent = ({
                 className={cn(iconClass, `fill-sky-400/30 stroke-indigo-800`)}
               />
             </IconContainer>
-            <ItemContent label={`Account`} desc={`${user?.email}`} />
+            <ItemContent label={`Account`} desc={`${profile?.email}`} />
           </Item>
         </Link>
       </CommandGroup>
@@ -334,7 +334,14 @@ export const AuthedContent = ({
                     )}
                   />
                 </IconContainer>
-                <ItemContent label={item.label} desc={item.desc} />
+                <ItemContent
+                  label={item.label}
+                  desc={
+                    item.value === "2"
+                      ? `${profile?.fastPoints ?? 0} pts`
+                      : "0 pts"
+                  }
+                />
                 <DotIcon
                   className={cn(
                     "h-10 w-10",

@@ -1,18 +1,20 @@
-import { auth } from "@/libs/db";
+import { AuthContext } from "@/app/(context)/context";
 import type {
   UpdateCodeListSchema,
   UpdateManagerCodeListSchema,
 } from "@/server/resource/code";
 import { type UpdateRequestSchema } from "@/server/resource/request";
-import { updateManagerCodeList } from "@/trpc/account/codes/update";
+import {
+  updateCodeList,
+  updateManagerCodeList,
+} from "@/trpc/account/codes/update";
 import { updateDraftRequest } from "@/trpc/request/request";
 import { errHandler } from "@/utils/helpers";
 import { onError, onSuccess } from "@/utils/toast";
-import { useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useContext, useState } from "react";
 
 export const useUpdateService = () => {
-  const [user] = useAuthState(auth);
+  const profile = useContext(AuthContext)?.profile;
   const [loading, setLoading] = useState(false);
 
   const handleUpdateCode =
@@ -23,24 +25,27 @@ export const useUpdateService = () => {
     ) =>
     () => {
       setLoading(true);
-      params.userId = user?.uid;
-      if (!params.id || !user?.uid) {
+      params.userId = profile?.userId;
+      params.payload.activated = true;
+      if (!params.id || !profile?.userId) {
         onError("Unable to find code");
         return;
       }
-      // updateCodeList(params)
-      //   .then(() => {
-      //     onSuccess(params.message);
-      //     setLoading(false);
-      //   })
-      //   .catch(errHandler(setLoading));
-
-      updateManagerCodeList(params)
+      updateCodeList(params)
         .then(() => {
           onSuccess(params.message);
           setLoading(false);
         })
         .catch(errHandler(setLoading));
+
+      if (profile?.accountType === "MANAGER") {
+        updateManagerCodeList(params)
+          .then(() => {
+            onSuccess(params.message);
+            setLoading(false);
+          })
+          .catch(errHandler(setLoading));
+      }
     };
 
   const handleUpdateRequest =

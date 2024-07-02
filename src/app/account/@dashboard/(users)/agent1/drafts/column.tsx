@@ -1,7 +1,7 @@
 "use client";
 
 import { type ColumnDef } from "@tanstack/react-table";
-import { FilePenLineIcon, PencilLineIcon } from "lucide-react";
+import { PencilLineIcon } from "lucide-react";
 import {
   pagelinkCell,
   pagelinkHeader,
@@ -24,15 +24,16 @@ export const columns: ColumnDef<IDMRequestSchema>[] = [
     accessorKey: "id",
     header: pagelinkHeader({ icon: PencilLineIcon }),
     cell: pagelinkCell({
-      icon: FilePenLineIcon,
-      primaryRoute: "requests",
+      icon: PencilLineIcon,
+      primaryRoute: "account/request",
+      extraKey: "agentId",
       id: "id",
     }),
     enableSorting: false,
   },
   {
     id: "requestId",
-    accessorKey: "id",
+    accessorKey: "requestId",
     header: nameHeader("Request Id"),
     cell: nameCellWithCopy({ name: "Request Id", text: "id" }),
     enableSorting: false,
@@ -45,7 +46,22 @@ export const columns: ColumnDef<IDMRequestSchema>[] = [
     enableHiding: true,
     enableSorting: false,
   },
-
+  {
+    id: "policyType",
+    accessorKey: "policyType",
+    header: nameHeader("Policy Type"),
+    cell: nameCell("policyType"),
+    enableHiding: true,
+    enableSorting: false,
+  },
+  {
+    id: "agentId",
+    accessorKey: "agentId",
+    header: nameHeader("Agent Id"),
+    cell: nameCell("agentId"),
+    enableHiding: true,
+    enableSorting: false,
+  },
   {
     id: "createdAt",
     accessorKey: "createdAt",
@@ -64,8 +80,8 @@ export const columns: ColumnDef<IDMRequestSchema>[] = [
     enableHiding: true,
   },
   {
-    id: "id",
-    accessorKey: "id",
+    id: "more",
+    accessorKey: "more",
     header: pagelinkHeader({ icon: Cog8ToothIcon }),
     cell: () => {
       return (

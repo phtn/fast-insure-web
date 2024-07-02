@@ -21,16 +21,16 @@ export function DataTableToolbar<TData>({
     <div className="flex h-[64px] w-full items-center justify-between px-4 portrait:hidden">
       <div className="flex flex-1 items-center space-x-2 text-opus md:space-x-4 md:pr-0">
         <InputLight
-          placeholder="filter customer"
+          placeholder="filter assured name"
           value={
-            (table.getColumn("customer")?.getFilterValue() as string) ?? ""
+            (table.getColumn("assuredName")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
-            table.getColumn("customer")?.setFilterValue(event.target.value)
+            table.getColumn("assuredName")?.setFilterValue(event.target.value)
           }
           className="h-10 w-[230px] font-mono font-light"
         />
-        {table.getColumn("currency") && (
+        {table.getColumn("status") && (
           <DataTableFacetedFilter
             column={table.getColumn("status")}
             title="Status"

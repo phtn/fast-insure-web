@@ -13,21 +13,23 @@ import {
   SquareUserIcon,
   UploadCloudIcon,
   UserCircle2Icon,
-  ArrowDownLeftIcon,
   FolderIcon,
 } from "lucide-react";
 import { InputLabel } from "../account/@dashboard/(components)/input-label";
 import tw from "tailwind-styled-components";
 import type { DualIcon } from "../types.index";
 import {
+  ArrowDownLeftIcon,
   EyeIcon,
   EyeSlashIcon,
+  InformationCircleIcon,
   LockClosedIcon,
   LockOpenIcon,
 } from "@heroicons/react/24/outline";
 import { opts, toggleState } from "@/utils/helpers";
 import { Button } from "./button";
 import { useState, useCallback } from "react";
+import { TheTip } from "./just-the-tip";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
@@ -152,7 +154,16 @@ export const InputFieldX = React.forwardRef<
   const fieldLabel = label?.split("@");
   return (
     <div>
-      <div className="py-1 text-[11px]">{fieldLabel?.[0]}</div>
+      <div className="flex items-center space-x-4 p-1 font-mono text-[11px] tracking-[0.6px]">
+        <p className="whitespace-nowrap opacity-50">{fieldLabel?.[0]}</p>
+        <div>
+          {fieldLabel?.[1] ? (
+            <TheTip tip="required" icon={InformationCircleIcon}>
+              <ArrowDownLeftIcon className="size-3 text-red-500" />
+            </TheTip>
+          ) : null}
+        </div>
+      </div>
       <div
         className={cn(
           "focus-within:ring-ring flex h-[50px] items-center rounded-lg border-[0.33px] border-neutral-400/80 bg-white pl-3 pr-[3px] ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1",
@@ -434,7 +445,7 @@ export const InputFieldAmount = React.forwardRef<
                 "flex h-fit items-end whitespace-nowrap rounded-full bg-amber-700/10 font-mono font-normal lowercase tracking-wider text-orange-600/80",
               )}
             >
-              <ArrowDownLeftIcon size={14} />
+              <ArrowDownLeftIcon className="size-3" />
             </span>
           ) : null}
         </p>

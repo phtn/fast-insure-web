@@ -1,4 +1,4 @@
-import { type FormEvent, useCallback, useState } from "react";
+import { type FormEvent, type ReactNode, useCallback, useState } from "react";
 import { useDownloadURLs } from "../../(hooks)/file-handler";
 import { opts, toggleState } from "@/utils/helpers";
 import { ImageUploader } from "../../(components)/image-uploader";
@@ -8,8 +8,11 @@ import { PhotoIcon } from "@heroicons/react/24/solid";
 import { LoaderIcon, UploadCloudIcon } from "lucide-react";
 import { Button } from "@/app/(ui)/button";
 
-export const DocumentUploader = (props: { id: string | undefined }) => {
-  const { id } = props;
+export const DocumentUploader = (props: {
+  id: string | undefined;
+  children: ReactNode;
+}) => {
+  const { id, children } = props;
 
   const [viewDropzone, setViewDropzone] = useState(false);
   const { imagelist, loading } = useDownloadURLs(id, viewDropzone);
@@ -30,7 +33,7 @@ export const DocumentUploader = (props: { id: string | undefined }) => {
     );
     return (
       <div className="flex h-[400px] w-full items-center justify-center">
-        {options.get(viewDropzone)}
+        {options.get(viewDropzone || imagelist?.length < 1)}
       </div>
     );
   }, [viewDropzone, id, imagelist, ImageListReload]);
@@ -42,8 +45,8 @@ export const DocumentUploader = (props: { id: string | undefined }) => {
 
   return (
     <NeutralCard>
-      <div className="mb-6 flex justify-between border-b-[0.33px] border-neutral-500 p-4 font-bold">
-        <div>File upload</div>
+      <div className="mb-6 flex justify-between p-4 font-bold">
+        {children}
         <UploaderExtra
           filecount={imagelist.length}
           loading={loading}

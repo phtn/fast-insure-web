@@ -40,9 +40,12 @@ const RadioGroupItem = React.forwardRef<
   );
 });
 RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
+
 export const RadioButton = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>
+  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> & {
+    description?: string;
+  }
 >(({ className, ...props }, ref) => {
   return (
     <RadioGroupPrimitive.Item
@@ -57,12 +60,14 @@ export const RadioButton = React.forwardRef<
       <div
         className={cn(
           "w-full rounded-xl border bg-white text-coal shadow-md",
-          props.checked ? "border-sky-500 bg-sky-500" : "border-neutral-200 ",
+          props.checked
+            ? "border-sky-600 bg-gradient-to-b from-sky-600 to-sky-400"
+            : "border-neutral-200 ",
         )}
       >
         <div
           className={cn(
-            "m-[6px] flex h-[150px] justify-between rounded-md p-4",
+            "m-[6px] flex h-[50px] justify-between rounded-md p-4",
             props.checked
               ? ""
               : "border-0 border-sky-500/50 bg-gradient-to-br from-sky-500/20 to-white",
@@ -70,15 +75,25 @@ export const RadioButton = React.forwardRef<
         >
           <p
             className={cn(
-              "text-xl font-semibold uppercase tracking-tight",
-              props.checked ? "text-white" : "",
+              "text-xl font-bold uppercase tracking-tight",
+              props.checked ? "text-white" : "text-dyan/80",
             )}
           >
             {props.value}
           </p>
           <RadioGroupPrimitive.Indicator className="">
-            <CheckCircleIcon className="size-8 fill-white" />
+            <CheckCircleIcon className="size-6 rotate-6 fill-white" />
           </RadioGroupPrimitive.Indicator>
+        </div>
+        <div className="h-[100px] w-full px-4">
+          <p
+            className={cn(
+              "text-left text-sm",
+              props.checked ? " text-white" : " text-dyan/80",
+            )}
+          >
+            {props.description}
+          </p>
         </div>
       </div>
     </RadioGroupPrimitive.Item>

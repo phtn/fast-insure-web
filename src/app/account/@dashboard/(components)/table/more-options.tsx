@@ -156,3 +156,26 @@ export const codesOptions =
       />
     );
   };
+
+export const draftOptions =
+  (prop: string) =>
+  <T,>({ row }: CellContext<T, unknown>) => {
+    const id: string | undefined = row.getValue(prop);
+    // const assuredName: string | undefined = row.getValue("assuredName");
+    const { handleUpdateRequest } = useUpdateService();
+    return (
+      <MoreOptions
+        options={[
+          {
+            action: handleUpdateRequest({
+              id,
+              payload: { active: false },
+              message: "Item deleted.",
+            }),
+            label: "delete",
+            name: "delete",
+          },
+        ]}
+      />
+    );
+  };
