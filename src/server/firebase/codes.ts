@@ -16,6 +16,16 @@ export const createAgentCode = async (params: AgentCodeSchema) => {
   const datestring = new Date().getTime();
   const createdAt = new Date(datestring).toISOString();
 
+  const codeRef = collection(db, codesPath);
+  const code_list_item: CodeListSchema = {
+    activated: false,
+    code: code.substring(0, 9),
+    branchCode,
+    createdAt,
+    updatedAt: createdAt,
+  };
+  await setDoc(doc(codeRef, code.substring(0, 28)), code_list_item);
+
   const data: CodeDataSchema = {
     active: true,
     activated: false,
@@ -29,16 +39,6 @@ export const createAgentCode = async (params: AgentCodeSchema) => {
     updatedAt: createdAt,
   };
   await setDoc(doc(docRef, code.substring(0, 28)), data);
-
-  const codeRef = collection(db, codesPath);
-  const code_list_item: CodeListSchema = {
-    activated: false,
-    code: code.substring(0, 9),
-    branchCode,
-    createdAt,
-    updatedAt: createdAt,
-  };
-  await setDoc(doc(codeRef, code.substring(0, 28)), code_list_item);
 };
 
 export const updateCodeList = async (params: UpdateCodeListSchema) => {

@@ -20,6 +20,7 @@ const AccountLayout = ({ dashboard, signin }: AccountLayoutProps) => {
   const [user, loading] = useAuthState(auth);
   const { accountType, profile } = useConnect();
 
+  console.log(process.env.NEXT_PUBLIC_LIVE_CODES);
   if (loading) return <Loader />;
 
   if (user) {
