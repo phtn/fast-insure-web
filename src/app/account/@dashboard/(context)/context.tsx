@@ -86,19 +86,23 @@ export const ManagerContextProvider = (props: { children: ReactNode }) => {
   const reqsPath = String(process.env.NEXT_PUBLIC_LIVE_REQS);
   const usersPath = String(process.env.NEXT_PUBLIC_LIVE_USERS);
   const profile = useContext(AuthContext)?.profile;
-  const path = `${usersPath}/${profile?.userId}/${codesPath}`;
+  // const path = `${usersPath}/${profile?.userId}/${codesPath}`;
 
   //_ CODES
-  const codesRef = collection(db, path);
+  const codesRef = collection(db, codesPath);
   const queryCodesRef = query(codesRef, orderBy(`createdAt`, "desc"));
   const [codesCollection, loading, error] = useCollection(
     queryCodesRef,
     options,
   );
-  const codes = codesCollection?.docs.map((doc) => {
+  const allCodes = codesCollection?.docs.map((doc) => {
     const data = doc.data() as CodeDataSchema;
     return { ...data, id: doc.id };
   });
+
+  const codes = allCodes?.filter(
+    (code) => code.branchCode === profile?.branchCode,
+  );
 
   //_  REQUESTS
   const reqRef = collection(db, reqsPath);
