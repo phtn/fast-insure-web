@@ -1,14 +1,11 @@
 "use client";
 
+import { type UserProfileSchema } from "@/server/resource/account";
+import { Cog8ToothIcon } from "@heroicons/react/24/outline";
 import { type ColumnDef } from "@tanstack/react-table";
 import { UserCircleIcon } from "lucide-react";
-import {
-  pagelinkCell,
-  pagelinkHeader,
-} from "../../(components)/table/page-link";
-import { DateTimeCell, dateHeader } from "../../(components)/table/datetime";
+import { dateCell, dateHeader } from "../../(components)/table/datetime";
 import { MoreOptions } from "../../(components)/table/more-options";
-import { type UserProfileSchema } from "@/server/resource/account";
 import {
   nameCell,
   nameCellHeaderWide,
@@ -16,7 +13,10 @@ import {
   nameHeader,
   statusCell,
 } from "../../(components)/table/name-cells";
-import { Cog8ToothIcon } from "@heroicons/react/24/outline";
+import {
+  pagelinkCell,
+  pagelinkHeader,
+} from "../../(components)/table/page-link";
 import { activeStates } from "../../(components)/table/status-schemas";
 
 export const columns: ColumnDef<UserProfileSchema>[] = [
@@ -70,10 +70,7 @@ export const columns: ColumnDef<UserProfileSchema>[] = [
     id: "createdAt",
     accessorKey: "createdAt",
     header: dateHeader("Joined"),
-    cell: ({ row }) => {
-      const joined: string = row.getValue("createdAt");
-      return <DateTimeCell date={joined} />;
-    },
+    cell: dateCell("createdAt"),
     enableSorting: true,
     enableHiding: true,
   },

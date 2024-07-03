@@ -2,7 +2,12 @@ import type { OCR_DE_FieldSchema } from "@/server/resource/ocr";
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { onError, onSuccess, onWarn } from "./toast";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
+
 import pkg from "../../package.json";
+import { type IImageList } from "@/app/account/@dashboard/(hooks)/file-handler";
+
 export const getVersion = () => {
   return pkg.version;
 };
@@ -463,4 +468,21 @@ export const charlimit = (
 ): string | undefined => {
   if (!text) return;
   return text.substring(0, chars ?? 12);
+};
+
+export const downloadFiles = async <T extends IImageList>(
+  files: T[],
+  folder: string,
+) => {
+  const zip = new JSZip();
+
+  for (const file of files) {
+    const response = await fetch(file.url, { method: "GET", mode: "no-cors" });
+    const arrayBuffer = await response.arrayBuffer();
+    zip.file(file.name, new Uint8Array(arrayBuffer));
+  }
+
+  await zip.generateAsync({ type: "blob" }).then((content) => {
+    saveAs(content, folder);
+  });
 };

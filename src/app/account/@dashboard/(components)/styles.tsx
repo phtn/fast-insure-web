@@ -7,10 +7,10 @@ import tw from "tailwind-styled-components";
  @namespace re-up.ph Styled Table Components
  */
 export const TableContainer = tw.div`
-  border-dyan/20 border-[0.33px] bg-white portrait:h-[calc(100vh-186px)] portrait:border-0
+  border-t-[0.33px] w-full border-dyan/20 border-[0.33px] bg-white portrait:h-[calc(100vh-186px)] portrait:border-0
   `;
 export const TableInner = tw.div`
-  border-dyan/40 h-[calc(100vh-232px)] overflow-y-scroll border-t-[0.33px]
+  border-dyan/30 h-[calc(100vh-232px)] overflow-y-scroll border-t-[0.33px]
   `;
 export const PhHeader = tw(TableHeader)`a
    sticky bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-cyan-200/40  via-orange-50 font-medium tracking-tight shadow-sm shadow-stone-100
@@ -32,7 +32,7 @@ const Trigger = tw(TabsTrigger)`
   `;
 
 const TabContent = tw(TabsContent)`
-  h-full
+  h-full flex w-full
   `;
 
 const TabCard = tw(Card)`

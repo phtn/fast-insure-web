@@ -69,7 +69,7 @@ export const SpaceX = tw(Cross2Icon)`
 
 export const ActiveOptions = tw(Button)`
   hover:bg-neutral-300/20
-  h-[12px] border-[0.33px] border-transparent px-2 text-xs text-coal/50
+  h-[12px] border-[0.33px] border-transparent mx-0 px-1 text-xs text-coal/50
   data-[state=open]:backdrop-blur-lg
 
   data-[state=open]:bg-ash

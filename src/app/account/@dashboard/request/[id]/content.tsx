@@ -105,23 +105,12 @@ export const RequestPage = ({ id }: { id: string }) => {
               <div className="grid grid-cols-2 gap-x-4 portrait:grid-cols-1 portrait:gap-y-4">
                 <div>
                   {assuredInfo.map((item, i) => (
-                    // <FormField
-                    //   control={control}
-                    //   name={item.name}
-                    //   key={item.name}
-                    //   render={({ field }) => (
-                    //     <FormItem>
                     <InputOption
                       key={item.name}
                       item={item}
                       index={i}
                       length={assuredInfo.length}
-
-                      // field={field}
                     />
-                    //     </FormItem>
-                    //   )}
-                    // />
                   ))}
                 </div>
                 <div>

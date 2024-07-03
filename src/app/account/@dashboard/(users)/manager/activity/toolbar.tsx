@@ -13,10 +13,12 @@ import { type ChangeEvent } from "react";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  toolbarActions: [boolean, VoidFunction];
 }
 
 export function DataTableToolbar<TData>({
   table,
+  toolbarActions,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const filterValues =
@@ -58,7 +60,7 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <DataTableViewOptions table={table} />
+      <DataTableViewOptions table={table} toolbarActions={toolbarActions} />
     </div>
   );
 }

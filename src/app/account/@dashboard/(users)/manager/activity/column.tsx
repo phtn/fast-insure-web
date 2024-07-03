@@ -18,16 +18,16 @@ import {
   nameHeader,
   statusCell,
 } from "../../../(components)/table/name-cells";
-import { PencilIcon } from "@heroicons/react/24/solid";
 import { Cog8ToothIcon, DocumentTextIcon } from "@heroicons/react/24/outline";
+import { FilePenIcon, PencilLineIcon } from "lucide-react";
 
 export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
   {
     id: "editAndView",
     accessorKey: "id",
-    header: pagelinkHeader({ icon: DocumentTextIcon }),
+    header: pagelinkHeader({ icon: FilePenIcon }),
     cell: pagelinkCell({
-      icon: PencilIcon,
+      icon: PencilLineIcon,
       secondaryIcon: DocumentTextIcon,
       primaryRoute: "account/request",
       secondaryRoute: "account/request-viewer",

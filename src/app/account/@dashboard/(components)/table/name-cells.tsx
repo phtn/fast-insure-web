@@ -12,7 +12,10 @@ export const nameHeader =
     <DataTableColumnHeader
       column={column}
       title={title}
-      className={cn("flex justify-start", narrow ? " w-[80px]" : " w-[140px]")}
+      className={cn(
+        "flex justify-start whitespace-nowrap",
+        narrow ? " w-[65px]" : " w-[140px]",
+      )}
     />
   );
 
@@ -32,7 +35,7 @@ export const nameCellHeaderWide =
     <DataTableColumnHeader
       column={column}
       title={title}
-      className="flex w-full items-center justify-center"
+      className="flex w-full min-w-[110px] items-center justify-center"
     />
   );
 
@@ -46,7 +49,7 @@ export const nameCell =
           row.getValue(prop) ? "text-coal" : "text-ash",
         )}
       >
-        {charlimit(row.getValue(prop) ?? "------", 16)}
+        {charlimit(row.getValue(prop) ?? "------", 25)}
       </p>
     </div>
   );
@@ -113,7 +116,7 @@ export const nameCellWithInitials =
         ) : (
           <p className="font-mono font-light text-neutral-400">-unassigned-</p>
         )}
-        <div>{row.getValue(prop) ?? "unassigned"}</div>
+        <div>{row.getValue(prop)}</div>
       </div>
     </div>
   );
@@ -128,12 +131,11 @@ export const statusCell =
     return (
       <div
         className={cn(
-          "group flex w-full justify-start rounded-[8px] px-3",
+          "group flex w-full justify-start rounded-[8px] px-2",
           status?.cell,
         )}
       >
-        {/* <Link href={`/${url}/${String(row.getValue(id))}`}> */}
-        <div className={cn("grid h-9 w-full grid-cols-4 gap-x-2")}>
+        <div className={cn("grid h-9 w-full grid-cols-4 gap-x-1")}>
           <div className="col-span-1 flex items-center">
             {status?.icon && (
               <status.icon className="size-4 stroke-[1.5px] text-dyan/50" />
@@ -141,13 +143,12 @@ export const statusCell =
           </div>
           <div
             className={cn(
-              `col-span-3 flex w-full items-center justify-start font-sans text-[11px] font-normal uppercase text-dyan/80`,
+              `col-span-3 flex w-fit items-center justify-start font-sans text-[11px] font-normal uppercase text-dyan/80`,
             )}
           >
             {status?.label}
           </div>
         </div>
-        {/* </Link> */}
       </div>
     );
   };

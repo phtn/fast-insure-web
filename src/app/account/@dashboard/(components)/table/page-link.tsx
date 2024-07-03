@@ -25,7 +25,7 @@ export const pagelinkHeader =
   <T,>({ column }: HeaderContext<T, unknown>) => (
     <DataTableColumnHeader
       column={column}
-      element={<props.icon className="size-4 text-neutral-600/90" />}
+      element={<props.icon className="size-4 stroke-1 text-neutral-600/90" />}
       className="flex w-full justify-center"
     />
   );
@@ -62,7 +62,11 @@ export const pagelinkCell =
               href={`/${props.secondaryRoute}/${id}`}
               className="flex w-full justify-center"
             >
-              {<props.icon className="size-4 stroke-1 text-cyan-700" />}
+              {props.secondaryIcon ? (
+                <props.secondaryIcon className="size-4 stroke-1 text-cyan-700" />
+              ) : (
+                <props.icon className="size-4 stroke-1 text-cyan-700" />
+              )}
             </Link>
           </div>
         </TheTip>,

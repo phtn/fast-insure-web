@@ -9,7 +9,7 @@ export const Codes = () => {
   const data = ctx?.codes;
 
   return (
-    <TabContent value="codes">
+    <TabContent value="codes" className="w-full">
       <DataTable
         data={data ?? []}
         columns={columns}

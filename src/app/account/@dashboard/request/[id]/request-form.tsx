@@ -1,7 +1,11 @@
 "use client";
 
 import { CheckIcon } from "@heroicons/react/24/outline";
-import { NeutralCard } from "../../(components)/form-card";
+import {
+  FormCardTitle,
+  FormSeparator,
+  NeutralCard,
+} from "../../(components)/form-card";
 import { useRequestService } from "../../(hooks)/useRequestService";
 import { requestDefaults, requestFields } from "./schema";
 import { Form, FormControl, FormField, FormItem } from "@/app/(ui)/form";
@@ -82,8 +86,7 @@ export const RequestForm = (props: { id: string }) => {
     saveDraft({ ...watchAll, policyType: selectedPolicyType });
   };
   return (
-    <div className="h-[calc(100vh-91px)] overflow-y-scroll border">
-      <div className=""></div>
+    <div className="h-[calc(100vh-90px)] overflow-y-scroll border-y-[0.33px] border-neutral-300">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="">
           <div className="p-5">
@@ -300,12 +303,4 @@ const Fields = ({ control, fields }: FormFieldProps) => {
 
 const AssuredFieldContainer = tw.div`
   px-4 portrait:gap-y-4 space-y-8
-  `;
-
-const FormCardTitle = tw.div`
-  p-4 text-lg font-semibold tracking-tight text-dyan
-  `;
-
-const FormSeparator = tw.div`
-  mx-4 rounded-full mb-6 h-[0.75px] bg-gradient-to-r from-indigo-800/40 via-neutral-400/60 to-transparent
   `;

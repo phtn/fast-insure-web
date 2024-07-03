@@ -65,7 +65,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <TableContainer>
+    <TableContainer className="w-full">
       <DataTableToolbar table={table} />
       <TableInner>
         <Table>

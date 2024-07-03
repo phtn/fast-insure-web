@@ -18,7 +18,7 @@ export const useFileHandler = () => {
   const [imageData, setImageData] = useState<string | null>(null);
 
   useEffect(() => {
-    const supportedFormats = ["jpg", "jpeg", "png", "pdf"];
+    const supportedFormats = ["jpg", "jpeg", "png", "svg", "pdf", "mp4"];
     if (file) {
       const format = fileType(file.type);
       const fileSize = file.size / 1000000;
@@ -130,9 +130,10 @@ export type UploadStatus =
 //   };
 // };
 
-export interface ImageList {
+export interface IImageList {
   name: string;
   url: string;
+  type: string;
 }
 
 export const useDownloadURLs = (
@@ -140,7 +141,7 @@ export const useDownloadURLs = (
   viewDropzone: boolean,
 ) => {
   const [loading, setLoading] = useState(false);
-  const [imagelist, setImagelist] = useState<ImageList[]>([]);
+  const [imagelist, setImagelist] = useState<IImageList[]>([]);
 
   useEffect(() => {
     const listRef = storageRef(storage, `requests/${id}`);
@@ -166,6 +167,7 @@ export const useDownloadURLs = (
 async function downloadURL(itemRef: StorageReference) {
   return await getDownloadURL(itemRef).then((url) => ({
     name: itemRef.name,
+    type: fileType(itemRef.name),
     url,
   }));
 }

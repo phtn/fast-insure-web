@@ -75,7 +75,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <TableContainer>
-      <DataTableToolbar table={table} />
+      <DataTableToolbar table={table} hiddenColumns={["agentId"]} />
       <TableInner>
         <Table>
           <PhHeader>

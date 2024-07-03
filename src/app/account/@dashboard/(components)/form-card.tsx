@@ -92,6 +92,18 @@ export const GreyCard = ({ children }: { children: ReactNode }) => (
   </Cape>
 );
 
+export const DarkCard = ({ children }: { children: ReactNode }) => (
+  <div className="rounded-lg bg-void/80">
+    <CardContainer
+      className={
+        "h-full w-full overflow-clip from-neutral-800 via-slate-600 to-sky-50"
+      }
+    >
+      {children}
+    </CardContainer>
+  </div>
+);
+
 export const NeutralCard = ({ children }: { children: ReactNode }) => (
   <NeutralContainer className={neutralCardStyle}>{children}</NeutralContainer>
 );
@@ -114,4 +126,12 @@ const CardContainer = tw.div`
   portrait:h-fit
   border-clay/50 border-[0.33px]
   bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))]
+  `;
+
+export const FormCardTitle = tw.div`
+  p-4 text-lg font-semibold tracking-tight text-dyan
+  `;
+
+export const FormSeparator = tw.div`
+  mx-4 rounded-full mb-6 h-[0.75px] bg-gradient-to-r from-indigo-800/40 via-neutral-400/60 to-transparent
   `;

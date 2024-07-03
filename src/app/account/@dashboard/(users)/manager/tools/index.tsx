@@ -3,8 +3,8 @@ import { TabContent } from "../../../(components)/styles";
 import { useManagerTools } from "./hooks";
 import { useAgentTools } from "../../agent1/tools/hooks";
 import { useEffect, useState } from "react";
-import { HistoryIcon } from "lucide-react";
 import { QrViewer } from "../../../(components)/qr/viewer";
+import { Recents } from "./recents";
 
 type ToolContentProps = {
   userId: string | undefined;
@@ -40,14 +40,7 @@ export const Tools = (props: ToolContentProps) => {
           <Request onClick={handleCreateRequest} loading={loading} />
         </div>
 
-        <div className="h-full w-full rounded-3xl border bg-white p-6">
-          <div className="h-[calc(100vh-230px)]">
-            <div className="flex items-center space-x-4">
-              <HistoryIcon className="size-4.5 stroke-1 text-neutral-500" />
-              <p>Recents</p>
-            </div>
-          </div>
-        </div>
+        <Recents />
         <QrViewer
           code={agentCode?.substring(0, 9)}
           open={qrView}

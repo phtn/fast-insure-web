@@ -12,10 +12,12 @@ import { DataTableViewOptions } from "../../../(components)/table/views";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  hiddenColumns?: string[];
 }
 
 export function DataTableToolbar<TData>({
   table,
+  hiddenColumns,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
@@ -52,7 +54,7 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <DataTableViewOptions table={table} />
+      <DataTableViewOptions table={table} hiddenColumns={hiddenColumns} />
     </div>
   );
 }

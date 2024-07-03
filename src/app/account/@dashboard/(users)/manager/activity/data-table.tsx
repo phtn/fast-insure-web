@@ -32,12 +32,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   loading: boolean;
+  toolbarActions: [boolean, VoidFunction];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   loading,
+  toolbarActions,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
 
@@ -71,7 +73,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <TableContainer>
-      <DataTableToolbar table={table} />
+      <DataTableToolbar table={table} toolbarActions={toolbarActions} />
       <TableInner>
         <Table>
           <PhHeader>

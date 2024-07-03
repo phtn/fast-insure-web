@@ -77,6 +77,7 @@ export const UserProfileResource = z.object({
   submittedCount: z.number().or(z.undefined()),
   completedCount: z.number().or(z.undefined()),
   fastPoints: z.number().or(z.undefined()),
+  recentActivities: z.array(z.record(z.string(), z.any())).or(z.undefined()),
 });
 
 export type UserProfileSchema = z.infer<typeof UserProfileResource>;

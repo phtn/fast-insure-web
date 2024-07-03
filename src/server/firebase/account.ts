@@ -57,6 +57,7 @@ export const createUserAccount = async (user: NewUserPayload) => {
       createdAt: new Date(datestring).toISOString(),
       updatedAt: new Date(datestring).toISOString(),
       lastLogin: new Date(datestring).toISOString(),
+      recentActivities: [{}],
     };
     await setDoc(doc(db, usersPath, userId), data).then(Ok, Err);
   } else {
