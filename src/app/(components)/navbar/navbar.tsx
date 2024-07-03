@@ -24,7 +24,7 @@ export const Navbar = () => {
         <Brand />
         <div className="flex w-full items-center justify-between px-4">
           <div className="flex items-start text-xl font-medium capitalize tracking-tighter text-coal">
-            {!!accountPath && titlePath}
+            <p className="portrait:hidden">{!!accountPath && titlePath}</p>
           </div>
           <UserMenu />
         </div>

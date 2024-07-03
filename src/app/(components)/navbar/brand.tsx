@@ -27,7 +27,7 @@ export const Brand = () => {
 const AccountNav = () => {
   return (
     <div className="flex h-[56px]">
-      <div className="flex w-[250.5px] items-center justify-start border-r-[1.5px] border-neutral-300 bg-[#e6e6e6]">
+      <div className="flex w-[250.5px] items-center justify-start border-r-[1.5px] border-neutral-300 bg-[#e6e6e6] portrait:w-[100px] portrait:border-0 portrait:bg-white">
         <Logo />
       </div>
     </div>

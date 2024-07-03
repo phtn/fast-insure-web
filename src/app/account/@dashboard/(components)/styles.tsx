@@ -19,7 +19,7 @@ export const PhCell = tw(TableCell)`
   border-dyan/40 border-r-[0.33px] border-dashed bg-gradient-to-r from-zinc-900/80 to-sky-950/80 bg-clip-text font-light text-transparent
   `;
 export const TablistContainer = tw.div`
-  flex w-[calc(100vw/4)] items-end space-x-2 portrait:h-[36px] portrait:space-x-0
+  flex w-[calc(100vw/4)] portrait:w-[calc(100vw/2)] items-end space-x-2 portrait:h-[36px] portrait:space-x-0
   `;
 const TabList = tw(TabsList)`
   portrait:h-[36px] w-full grid-cols-3 portrait:p-1.5 -m-[1.62px]

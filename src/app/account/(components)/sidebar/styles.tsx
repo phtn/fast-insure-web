@@ -25,9 +25,10 @@ export const ContentWrap = tw.div`
 
 export const BodyWrap = tw.div`
   space-y-3 py-[0px] md:px-0
-  portrait:p-0 portrait:space-y-0
   w-[calc(100vw-230px)] overflow-clip
   h-full
+  portrait:p-0 portrait:space-y-0
+  portrait:w-full
   `;
 
 export const GreetWrap = tw.div`
@@ -43,10 +44,11 @@ export const GroupContainer = tw.div`
   `;
 
 export const GroupItem = tw.div`
-  flex w-full space-x-2 portrait:space-x-0
+  flex w-full space-x-2
   font-sans font-medium tracking-tighter text-sm text-cyan-800
   transition-colors duration-200 delay-200 ease-in
   w-[210px] pl-2 rounded-lg
+  portrait:space-x-0 portrait:w-fit
   relative z-50
   `;
 
@@ -65,5 +67,6 @@ export const iconClass = `
   `;
 export const activeStyle = `
   text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-cyan-600
+
   `;
 //from-cyan-600 to-blue-500

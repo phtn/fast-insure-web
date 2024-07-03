@@ -4,7 +4,6 @@ import { useManagerTools } from "./hooks";
 import { useAgentTools } from "../../agent1/tools/hooks";
 import { useEffect, useState } from "react";
 import { QrViewer } from "../../../(components)/qr/viewer";
-import { Recents } from "./recents";
 
 type ToolContentProps = {
   userId: string | undefined;
@@ -40,7 +39,6 @@ export const Tools = (props: ToolContentProps) => {
           <Request onClick={handleCreateRequest} loading={loading} />
         </div>
 
-        <Recents />
         <QrViewer
           code={agentCode?.substring(0, 9)}
           open={qrView}

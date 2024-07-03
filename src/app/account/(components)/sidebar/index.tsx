@@ -88,7 +88,7 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
   // const numberOfRequests =
 
   return (
-    <div className="relative z-[100] mx-3.5 h-[100px] rounded-lg border-l border-neutral-300 bg-gradient-to-r from-white to-neutral-200/80 p-[8px] shadow-md shadow-neutral-300/40">
+    <div className="relative z-[100] mx-3.5 h-[100px] rounded-lg border-l border-neutral-300 bg-gradient-to-r from-white to-neutral-200/80 p-[8px] shadow-md shadow-neutral-300/40 portrait:hidden">
       <div className="flex h-[46px] w-full items-start px-1">
         <div className="flex items-center space-x-3">
           <div className="h-[32px] w-[32px] rounded-full bg-gradient-to-r from-blue-100 to-cyan-700/20"></div>
@@ -130,7 +130,7 @@ const Nav = ({ children, profile }: NavProps) => {
     <Aside>
       <ProfileCard profile={profile} />
 
-      <div className="absolute z-50 flex h-[47px] items-end px-6 py-2 text-[10px] font-medium uppercase tracking-[0.25px] text-neutral-500">
+      <div className="absolute z-50 flex h-[47px] items-end px-6 py-2 text-[10px] font-medium uppercase tracking-[0.25px] text-neutral-500 portrait:hidden">
         workspace
       </div>
       <Hoverboard
