@@ -6,7 +6,14 @@ import type {
   UpdateCodeListSchema,
   UpdateManagerCodeListSchema,
 } from "@resource/code";
-import { doc, setDoc, collection, updateDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  collection,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
+import { type TimelineSchema } from "../resource/account";
 
 export const createAgentCode = async (params: AgentCodeSchema) => {
   const codesPath = String(process.env.NEXT_PUBLIC_LIVE_CODES);
@@ -17,8 +24,10 @@ export const createAgentCode = async (params: AgentCodeSchema) => {
   const createdAt = new Date(datestring).toISOString();
 
   const codeRef = collection(db, codesPath);
+
   const code_list_item: CodeListSchema = {
-    activated: false,
+    active: true,
+    assigned: false,
     code: code.substring(0, 9),
     branchCode,
     createdAt,
@@ -28,7 +37,7 @@ export const createAgentCode = async (params: AgentCodeSchema) => {
 
   const data: CodeDataSchema = {
     active: true,
-    activated: false,
+    assigned: false,
     assignedId: "",
     assignedName: "",
     branchCode,
@@ -39,6 +48,19 @@ export const createAgentCode = async (params: AgentCodeSchema) => {
     updatedAt: createdAt,
   };
   await setDoc(doc(docRef, code.substring(0, 28)), data);
+
+  const userRef = doc(db, `${usersPath}/${userId}`);
+  const timeline: TimelineSchema = {
+    active: true,
+    type: "create",
+    name: "code",
+    title: "Code created",
+    description: code.substring(0, 9),
+    createdAt,
+  };
+  await updateDoc(userRef, {
+    timeline: arrayUnion(timeline),
+  });
 };
 
 export const updateCodeList = async (params: UpdateCodeListSchema) => {

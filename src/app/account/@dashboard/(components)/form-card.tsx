@@ -93,10 +93,10 @@ export const GreyCard = ({ children }: { children: ReactNode }) => (
 );
 
 export const DarkCard = ({ children }: { children: ReactNode }) => (
-  <div className="rounded-lg bg-void/80">
+  <div className="bg-void">
     <CardContainer
       className={
-        "h-full w-full overflow-clip from-neutral-800 via-slate-600 to-sky-50"
+        "h-full w-full overflow-clip border-0 from-slate-700 via-neutral-900 to-sky-50"
       }
     >
       {children}

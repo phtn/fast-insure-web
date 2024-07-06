@@ -147,7 +147,7 @@ const ActivationCard = (props: {
     const branchCodes = allCodes?.filter(
       (branch) =>
         branch.branchCode?.substring(0, 3) ===
-          agentCode.toLowerCase().substring(0, 3) && !branch.activated,
+          agentCode.toLowerCase().substring(0, 3) && !branch.assigned,
     );
 
     const codeFound = branchCodes?.find(
@@ -182,7 +182,7 @@ const ActivationCard = (props: {
           handleUpdateCode({
             id: codeFound.id,
             userId: props.userId,
-            payload: { activated: true },
+            payload: { assigned: true },
             message: "Activation Successful!",
           }),
         )
@@ -248,7 +248,7 @@ const WithCode = (props: { profile: UserProfileSchema | undefined }) => {
       </Header>
       <Requests />
       <Drafts />
-      <Tools userId={props.profile?.userId} />
+      <Tools />
     </Tabs>
   );
 };

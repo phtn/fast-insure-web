@@ -15,9 +15,7 @@ export const Tools = (props: ToolContentProps) => {
     userId,
     branchCode,
   });
-  const { handleCreateRequest, loading } = useAgentTools({
-    userId,
-  });
+  const { handleCreateRequest, loading } = useAgentTools();
 
   const [qrView, setQrView] = useState(false);
 

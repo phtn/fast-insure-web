@@ -55,6 +55,37 @@ export const TokenManager = z.object({
   refreshToken: z.string(),
 });
 
+const TimelineName = z.union([
+  z.literal("code"),
+  z.literal("request"),
+  z.literal("accomplished"),
+  z.literal("draft"),
+  z.literal("submitted"),
+  z.literal("received"),
+  z.literal("processing"),
+  z.literal("complete"),
+  z.literal("voided"),
+]);
+
+export type TimelineNameSchema = z.infer<typeof TimelineName>;
+
+export const TimelineResource = z.object({
+  type: z.union([
+    z.literal("create"),
+    z.literal("delete"),
+    z.literal("update"),
+    z.literal("void"),
+    z.literal("milestone"),
+    z.literal("misc"),
+  ]),
+  name: TimelineName,
+  createdAt: z.string().datetime(),
+  title: z.string(),
+  description: z.string(),
+  active: z.boolean(),
+});
+export type TimelineSchema = z.infer<typeof TimelineResource>;
+
 export const UserProfileResource = z.object({
   accountType: AccountType,
   active: z.boolean().or(z.undefined()),
@@ -78,6 +109,7 @@ export const UserProfileResource = z.object({
   completedCount: z.number().or(z.undefined()),
   fastPoints: z.number().or(z.undefined()),
   recentActivities: z.array(z.record(z.string(), z.any())).or(z.undefined()),
+  timeline: z.array(TimelineResource).or(z.undefined()),
 });
 
 export type UserProfileSchema = z.infer<typeof UserProfileResource>;

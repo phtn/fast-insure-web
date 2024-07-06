@@ -3,8 +3,6 @@ import { Button } from "@/app/(ui)/button";
 import { TableCell, TableRow } from "@/app/(ui)/table";
 import { InboxIcon } from "lucide-react";
 import { useAgentTools } from "../../(users)/agent1/tools/hooks";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/libs/db";
 
 export const LoadingTable = (props: { colSpan: number }) => (
   <TableRow>
@@ -26,8 +24,7 @@ export const EmptyRequestTable = (props: {
   colSpan: number;
   loading: boolean;
 }) => {
-  const [user] = useAuthState(auth);
-  const { handleCreateRequest } = useAgentTools({ userId: user?.uid });
+  const { handleCreateRequest } = useAgentTools();
   return (
     <TableRow>
       <TableCell colSpan={props.colSpan} className="h-24 text-center">

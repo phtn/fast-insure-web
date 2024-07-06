@@ -1,25 +1,26 @@
+import { AuthContext } from "@/app/(context)/context";
 import { type CountUpdateSchema } from "@/server/resource/account";
 import { type IDMDraftRequestSchema } from "@/server/resource/request";
 import { countUpdate } from "@/trpc/account/user-profile";
 import { createDraftRequest } from "@/trpc/request/request";
 import { errHandler } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
-type AgentToolProps = {
-  userId: string | undefined;
-};
-export const useAgentTools = ({ userId }: AgentToolProps) => {
+export const useAgentTools = () => {
+  const profile = useContext(AuthContext)?.profile;
   const [loading, setLoading] = useState(false);
 
   const [id] = useState(
-    new Date().getTime().toString(32) + userId?.substring(0, 16),
+    new Date().getTime().toString(32) + profile?.userId?.substring(0, 16),
   );
   const route = useRouter();
 
   const payload: IDMDraftRequestSchema = {
     id,
-    agentId: userId,
+    agentId: profile?.userId,
+    agentName: profile?.displayName ?? "",
+    agentEmail: profile?.email ?? "",
     assuredData: {
       id: "",
       firstName: "",
@@ -49,12 +50,12 @@ export const useAgentTools = ({ userId }: AgentToolProps) => {
   const incDraft: CountUpdateSchema = {
     fieldName: "draftCount",
     incrementBy: 1,
-    userId,
+    userId: profile?.userId,
   };
   const addPoints: CountUpdateSchema = {
     fieldName: "fastPoints",
     incrementBy: 5,
-    userId,
+    userId: profile?.userId,
   };
 
   const handleCreateRequest = () => {
@@ -80,7 +81,7 @@ export const useAgentTools = ({ userId }: AgentToolProps) => {
   */
 
   const handleRequestItemRoute = () => {
-    route.push(`/account/request/${userId}`);
+    route.push(`/account/request/${profile?.userId}`);
   };
 
   return { handleCreateRequest, loading, handleRequestItemRoute };

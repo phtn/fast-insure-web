@@ -35,19 +35,13 @@ export const SidebarNav = ({
               <GroupItem
                 className={cn(
                   pathname === item.href
-                    ? `bg-[#dadada] portrait:bg-transparent`
+                    ? `bg-ghost/80 portrait:bg-transparent`
                     : ``,
                 )}
               >
                 <IconContainer>
                   {item?.icon ? (
-                    <item.icon
-                      strokeWidth={1}
-                      className={cn(
-                        iconClass,
-                        pathname === item.href ? `text-cyan-600` : ``,
-                      )}
-                    />
+                    <item.icon strokeWidth={1} className={cn(iconClass)} />
                   ) : null}
                 </IconContainer>
                 <ItemContent

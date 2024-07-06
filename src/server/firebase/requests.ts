@@ -1,13 +1,16 @@
 import { db } from "@/libs/db";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
 import type {
   IDMDraftRequestSchema,
   IDMRequestPayloadSchema,
   UpdateRequestSchema,
 } from "../resource/request";
+import { type TimelineSchema } from "../resource/account";
+import { errHandler } from "@/utils/helpers";
 
 export const createRequest = async (params: IDMRequestPayloadSchema) => {
   const reqsPath = String(process.env.NEXT_PUBLIC_LIVE_REQS);
+
   if (params.id) {
     const datestring = new Date().getTime();
     await setDoc(doc(db, reqsPath, params.id), {
@@ -22,27 +25,63 @@ export const createRequest = async (params: IDMRequestPayloadSchema) => {
 
 export const createDraftRequest = async (params: IDMDraftRequestSchema) => {
   const reqsPath = String(process.env.NEXT_PUBLIC_LIVE_REQS);
+  const usersPath = String(process.env.NEXT_PUBLIC_LIVE_USERS);
+
+  const datestring = new Date().getTime();
+
   if (params.id) {
-    const datestring = new Date().getTime();
     await setDoc(doc(db, reqsPath, params.id), {
       ...params,
       createdAt: new Date(datestring).toISOString(),
       updatedAt: new Date(datestring).toISOString(),
       email: "",
-    }).catch((e: Error) => e);
+    }).catch(errHandler);
   } else {
     return "Unable to read payload.";
   }
+
+  const userRef = doc(db, `${usersPath}/${params.agentId}`);
+  const timeline: TimelineSchema = {
+    active: true,
+    type: "create",
+    name: "draft",
+    title: "Draft created",
+    description: params.id,
+    createdAt: new Date(datestring).toISOString(),
+  };
+  await updateDoc(userRef, {
+    timeline: arrayUnion(timeline),
+  });
 };
 
 export const updateRequest = async (params: UpdateRequestSchema) => {
-  if (!params.id) return;
-  const reqsPath = String(process.env.NEXT_PUBLIC_LIVE_REQS);
+  const { id, payload } = params;
+  if (!id) return;
 
-  const docRef = doc(db, `${reqsPath}/${params.id}`);
   const datestring = new Date().getTime();
+
+  const reqsPath = String(process.env.NEXT_PUBLIC_LIVE_REQS);
+  const docRef = doc(db, `${reqsPath}/${params.id}`);
+
   await updateDoc(docRef, {
     ...params.payload,
     updatedAt: new Date(datestring).toISOString(),
+  });
+
+  const usersPath = String(process.env.NEXT_PUBLIC_LIVE_USERS);
+  const userRef = doc(db, `${usersPath}/${payload.agentId}`);
+
+  const isDraft = payload.status === "draft";
+
+  const timeline: TimelineSchema = {
+    active: true,
+    type: isDraft ? "update" : "create",
+    name: payload.status as TimelineSchema["name"],
+    title: isDraft ? `Draft updated` : `Request ${payload.status}`,
+    description: `${params.payload.assuredName ?? params.id}`,
+    createdAt: new Date(datestring).toISOString(),
+  };
+  await updateDoc(userRef, {
+    timeline: arrayUnion(timeline),
   });
 };

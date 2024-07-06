@@ -13,6 +13,6 @@ const DefaultPage = () => {
       router.push(`/account/overview`);
     }
   }, [router, user]);
-  return <div className="text-xs text-indigo-500">Welcome!</div>;
+  return <div className="p-6"></div>;
 };
 export default DefaultPage;

@@ -18,7 +18,7 @@ export const CodeDataResource = z.object({
   id: z.string().or(z.undefined()),
   // userId: z.string().or(z.undefined()),
   active: z.boolean(),
-  activated: z.boolean(),
+  assigned: z.boolean(),
   assignedId: z.string().or(z.undefined()),
   assignedName: z.string().or(z.undefined()),
   branchCode: z.string().or(z.undefined()),
@@ -32,7 +32,8 @@ export const CodeDataResource = z.object({
 export type CodeDataSchema = z.infer<typeof CodeDataResource>;
 
 export const CodeListResource = z.object({
-  activated: z.boolean(),
+  active: z.boolean(),
+  assigned: z.boolean(),
   branchCode: z.string().or(z.undefined()),
   code: z.string(),
   createdAt: z.string().datetime(),

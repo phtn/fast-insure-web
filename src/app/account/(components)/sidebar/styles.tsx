@@ -10,10 +10,7 @@ export const Inner = tw.div`
   `;
 
 export const Aside = tw.aside`
-  lg:h-full lg:w-[250px] lg:bg-neutral-200
-
-  lg:border-r-[1.0px] z-50 border-neutral-300
-  border-b-[0.33px]
+  lg:h-full lg:w-[250px] lg:bg-neutral-900
 
   portrait:bg-white
   portrait:to-stone-400/50 portrait:w-screen
@@ -24,9 +21,9 @@ export const ContentWrap = tw.div`
   `;
 
 export const BodyWrap = tw.div`
+  h-full
   space-y-3 py-[0px] md:px-0
   w-[calc(100vw-230px)] overflow-clip
-  h-full
   portrait:p-0 portrait:space-y-0
   portrait:w-full
   `;
@@ -44,29 +41,30 @@ export const GroupContainer = tw.div`
   `;
 
 export const GroupItem = tw.div`
-  flex w-full space-x-2
-  font-sans font-medium tracking-tighter text-sm text-cyan-800
-  transition-colors duration-200 delay-200 ease-in
-  w-[210px] pl-2 rounded-lg
+  flex w-full space-x-2 w-[210px] pl-2 rounded-lg
+  relative z-50 group/item
+
+  font-sans font-medium tracking-tighter text-sm text-sky-400/90
+
   portrait:space-x-0 portrait:w-fit portrait:text-xs portrait:text-dyan
-  relative z-50
   `;
 
 export const ItemContent = tw.div`
-  flex h-[46px] portrait:h-[36px] w-full items-center
+  h-[46px] w-full flex items-center
+  transition-colors duration-200 ease-in-out
+  portrait:h-[36px]
   `;
 
 export const IconContainer = tw.div`
-  flex items-center justify-center h-[44px] w-[44px]  portrait:h-[36px]
+  flex items-center justify-center h-[44px] w-[44px] portrait:h-[36px]
   `;
 
 export const iconClass = `
   md:size-[18px] size-[18px]
-  group-hover:scale-[120%]
-  transition-transform duration-200 ease-out
+  group/item-hover:text-sky-950
+  text-sky-600
   `;
 export const activeStyle = `
-  text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-cyan-600
-
+  text-sky-950
   `;
 //from-cyan-600 to-blue-500

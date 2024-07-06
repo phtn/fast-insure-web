@@ -1,6 +1,6 @@
 "use client";
 
-import { UserIcon } from "@heroicons/react/24/solid";
+import { HashtagIcon, UserIcon } from "@heroicons/react/24/solid";
 import {
   DarkCard,
   FormCardTitle,
@@ -19,8 +19,20 @@ import { Button } from "@/app/(ui)/button";
 import { ArrowDownTrayIcon, InboxIcon } from "@heroicons/react/24/outline";
 import { onSuccess } from "@/utils/toast";
 import moment from "moment";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "@/app/(context)/context";
 
 export const RequestViewerContent = (props: { id: string | undefined }) => {
+  const profile = useContext(AuthContext)?.profile;
+
+  useEffect(() => {
+    if (profile?.accountType === "UNDERWRITER") {
+      onSuccess("underwriter");
+    } else {
+      onSuccess("not underwriter");
+    }
+  }, [profile]);
+
   const docRef = doc(db, `${process.env.NEXT_PUBLIC_LIVE_REQS}/${props.id}`);
   const [snapshot] = useDocument(docRef);
 
@@ -43,23 +55,23 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
   return (
     <div className="h-[calc(100vh-90px)] overflow-y-scroll border-y-[0.33px] border-neutral-300">
       <DarkCard>
-        <div className="flex h-[100px] flex-col justify-center space-y-4 px-4">
+        <div className="flex h-[99px] flex-col justify-center space-y-4 px-4">
           <div className="flex w-full justify-between">
             <div className="text-sm font-semibold text-paper/80">
               Created by
             </div>
-            <div className="flex items-center space-x-4 rounded-md bg-void px-3 py-1 font-mono text-sm tracking-wider text-paper opacity-80">
-              <p className="font-mono text-xs font-medium opacity-50">
-                Agent ID:
+            <div className="flex items-center space-x-4 rounded-md bg-neutral-900 px-3 py-1 font-mono text-sm tracking-wider text-paper opacity-80">
+              <p className="font-mono text-xs opacity-80">Agent ID:</p>
+              <p className="font-mono text-xs">
+                {request?.agentId?.substring(0, 12)}
               </p>
-              <p>{request?.agentId?.substring(0, 12)}</p>
             </div>
           </div>
 
           <div className="w-full text-xs">
             <div className="flex w-full items-center justify-between">
               <div className="flex w-full items-center space-x-4">
-                <div className="w-[6ch] font-mono font-light tracking-wider text-paper/50">
+                <div className="w-[6ch] font-medium tracking-tight text-paper/50">
                   Name
                 </div>
                 <p className="font-sans font-semibold text-white">
@@ -67,11 +79,11 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
                 </p>
               </div>
 
-              <div className="flex w-full items-center justify-end space-x-4">
-                <div className="font-mono font-light tracking-wider text-paper/50">
+              <div className="flex w-full items-center justify-end space-x-4 space-y-1">
+                <div className="font-medium tracking-tight text-paper/70">
                   Created:
                 </div>
-                <p className="font-mono text-white opacity-80">
+                <p className="font-mono text-xs text-white opacity-80">
                   {moment(request?.createdAt).fromNow()}
                 </p>
               </div>
@@ -81,7 +93,7 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
 
             <div className="flex w-full items-center justify-between">
               <div className="flex w-full items-center space-x-4">
-                <div className="w-[6ch] font-mono tracking-wider text-paper/50">
+                <div className="w-[6ch] font-medium tracking-tight text-paper/50">
                   Email
                 </div>
                 <p className="font-mono tracking-wider text-white opacity-80">
@@ -90,7 +102,7 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
               </div>
 
               <div className="flex w-full items-center justify-end space-x-4">
-                <div className="font-mono font-light tracking-wider text-paper/50">
+                <div className="font-medium tracking-tight text-paper/60">
                   Last update:
                 </div>
                 <p className="font-mono text-white opacity-80">
@@ -122,8 +134,8 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
                     Assured Info
                   </div>
                   <div className="flex h-full items-center space-x-4 text-dyan">
-                    <div className="flex size-[48px] items-center justify-center rounded-full bg-neutral-300">
-                      <UserIcon className="scale-50 opacity-20" />
+                    <div className="flex size-[48px] items-center justify-center rounded-full bg-neutral-200">
+                      <UserIcon className="scale-50 text-white" />
                     </div>
                     <div className="">
                       <div className="font-medium leading-none tracking-tighter">
@@ -205,7 +217,7 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
                     <div className="flex h-full w-full justify-between">
                       <div className="font-mono opacity-60">Plate number</div>
                       <div>
-                        <ScrollTextIcon className="size-4" />
+                        <HashtagIcon className="size-4" />
                       </div>
                     </div>
 
@@ -222,7 +234,7 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
                         Conduction number
                       </div>
                       <div>
-                        <ScrollTextIcon className="size-4" />
+                        <HashtagIcon className="size-4" />
                       </div>
                     </div>
 

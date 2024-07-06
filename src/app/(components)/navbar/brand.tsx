@@ -27,7 +27,7 @@ export const Brand = () => {
 const AccountNav = () => {
   return (
     <div className="flex h-[56px]">
-      <div className="flex w-[250.5px] items-center justify-start border-r-[1.5px] border-neutral-300 bg-[#e6e6e6] portrait:w-[100px] portrait:border-0 portrait:bg-white">
+      <div className="flex w-[250px] items-center justify-start border-r-[1.5px] border-neutral-900 bg-neutral-900 portrait:w-[100px] portrait:border-0 portrait:bg-white">
         <Logo />
       </div>
     </div>
@@ -64,23 +64,3 @@ const FastLanding = () => {
     </section>
   );
 };
-
-{
-  /* <Link role="button" aria-label="Home" href={"/"}>
-        <Button
-          variant="ghost"
-          className={cn("flex items-center justify-start portrait:px-0")}
-        >
-          <motion.div
-            initial={{ x: -500, skewX: `${85}deg` }}
-            animate={{ x: 0, skewX: `${0}deg`, opacity: 1 }}
-            transition={{
-              damping: 1,
-              duration: 1,
-              delay: 3.5,
-            }}
-            className="h-[28px] w-[100px] bg-[url('/logo/fi_logo_v1.svg')] bg-cover bg-center"
-          />
-        </Button>
-      </Link> */
-}

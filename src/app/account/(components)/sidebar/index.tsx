@@ -12,6 +12,7 @@ import type {
 import { Aside, BodyWrap, Container, ContentWrap, Inner } from "./styles";
 import Image from "next/image";
 import { MoreHorizontalIcon } from "lucide-react";
+import { UserIcon } from "@heroicons/react/24/solid";
 
 export default function Sidebar({
   children,
@@ -88,21 +89,23 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
   // const numberOfRequests =
 
   return (
-    <div className="relative z-[100] mx-3.5 h-[100px] rounded-lg border-l border-neutral-300 bg-gradient-to-r from-white to-neutral-200/80 p-[8px] shadow-md shadow-neutral-300/40 portrait:hidden">
+    <div className="relative z-50 mx-3.5 h-[100px] rounded-lg border-0 border-neutral-300 bg-gradient-to-r from-paper via-paper to-neutral-900 p-[8px] shadow-md portrait:hidden">
       <div className="flex h-[46px] w-full items-start px-1">
         <div className="flex items-center space-x-3">
-          <div className="h-[32px] w-[32px] rounded-full bg-gradient-to-r from-blue-100 to-cyan-700/20"></div>
+          <div className="flex size-[28px] items-center justify-center rounded-full bg-gradient-to-r from-blue-50 to-sky-700">
+            <UserIcon className="size-[16px] text-white/70" />
+          </div>
           <div className="space-y-[0.5px]">
             <div className="font-k2d text-sm font-semibold leading-none tracking-tight text-cyan-950">
               <UsernameOptions />
             </div>
-            <div className="font-jet text-[8px] font-light leading-none text-cyan-950/70">
+            <div className="font-jet text-[8px] font-light leading-none text-sky-950/80">
               <TitleOptions />
             </div>
           </div>
         </div>
       </div>
-      <div className="grid h-[46px] w-full grid-cols-2 space-x-2 px-1">
+      <div className="grid h-[46px] w-full grid-cols-3 space-x-2 px-1">
         <Stat label="requests" value={profile?.draftCount ?? 0} />
         <Stat label="pts" value={profile?.fastPoints ?? 0} />
       </div>
@@ -117,7 +120,7 @@ const Stat = (props: { label: string; value: number }) => {
         <div className="animate-jump-in font-sans text-sm font-semibold leading-none tracking-tight text-cyan-950">
           {props.value}
         </div>
-        <div className="font-jet text-[10px] font-light tracking-tight text-cyan-950/70">
+        <div className="font-jet text-[10px] font-light tracking-tight text-sky-950/80">
           {props.label}
         </div>
       </div>

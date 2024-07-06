@@ -28,7 +28,7 @@ export const useUpdateService = () => {
     () => {
       setLoading(true);
       params.userId = profile?.userId;
-      params.payload.activated = true;
+      params.payload.active = true;
       if (!params.id || !profile?.userId) {
         onError("Unable to find code");
         return;
