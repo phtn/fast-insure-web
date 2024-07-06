@@ -2,7 +2,12 @@ import { Header } from "../../(components)/header";
 import { Tabs } from "@/app/(ui)/tabs";
 import { Requests } from "./requests";
 import { Tools } from "./tools";
-import { TabList, TablistContainer, Trigger } from "../../(components)/styles";
+import {
+  TabList,
+  TablistContainer,
+  TabValue,
+  Trigger,
+} from "../../(components)/styles";
 import { Drafts } from "./drafts";
 import { type UserProfileSchema } from "@/server/resource/account";
 import {
@@ -26,8 +31,16 @@ import { onError } from "@/utils/toast";
 import { useProfile } from "@/app/account/@signin/hooks";
 import { AgentContextProvider } from "../../(context)/context";
 import { useUpdateService } from "../../(hooks)/useUpdateService";
-import { ShieldCheckIcon } from "@heroicons/react/24/solid";
-import { ArrowDownRightIcon } from "@heroicons/react/24/outline";
+import {
+  DocumentTextIcon,
+  ShieldCheckIcon,
+  TableCellsIcon,
+  WrenchIcon,
+} from "@heroicons/react/24/solid";
+import {
+  ArrowDownRightIcon,
+  ChatBubbleLeftEllipsisIcon,
+} from "@heroicons/react/24/outline";
 
 const AgentContent = (props: { profile: UserProfileSchema | undefined }) => {
   const { profile } = props;
@@ -261,19 +274,20 @@ export const Triggers = (props: {
     <TablistContainer>
       <TabList>
         <Trigger value="requests">
-          Requests
-          <span className="ml-4 rounded-md bg-dyan/5 px-1.5 font-mono font-thin portrait:ml-2">
-            {props.submittedCount ?? 0}
-          </span>
+          <TableCellsIcon className="size-4" />
+          <TabValue>{props.submittedCount ?? 0}</TabValue>
         </Trigger>
         <Trigger value="drafts">
-          Drafts
-          <span className="ml-4 rounded-md bg-dyan/5 px-1.5 font-mono font-thin portrait:ml-2">
-            {props.draftCount ?? 0}
-          </span>
+          <DocumentTextIcon className="size-4" />
+          <TabValue>{props.draftCount ?? 0}</TabValue>
         </Trigger>
-        <Trigger value="tools">Tools</Trigger>
+        <Trigger value="tools">
+          <WrenchIcon className="size-4" />
+        </Trigger>
       </TabList>
+      <div>
+        <ChatBubbleLeftEllipsisIcon className="size-5" />
+      </div>
     </TablistContainer>
   );
 };

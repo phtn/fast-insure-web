@@ -12,7 +12,7 @@ export const Inner = tw.div`
 export const Aside = tw.aside`
   lg:h-full lg:w-[250px] lg:bg-neutral-900
 
-  portrait:bg-white
+  portrait:bg-white portrait:border-b-[0.33px] border-neutral-300
   portrait:to-stone-400/50 portrait:w-screen
   `;
 

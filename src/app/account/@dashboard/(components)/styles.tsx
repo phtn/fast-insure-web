@@ -19,16 +19,21 @@ export const PhCell = tw(TableCell)`
   border-dyan/40 border-r-[0.33px] border-dashed bg-gradient-to-r from-zinc-900/80 to-sky-950/80 bg-clip-text font-light text-transparent
   `;
 export const TablistContainer = tw.div`
-  flex w-[calc(100vw/4)] portrait:w-[calc(100vw)] items-end space-x-2 portrait:h-[36px] portrait:space-x-0
+  flex w-[calc(100vw/4)] portrait:w-full justify-between items-center portrait:h-[36px] portrait:space-x-0
   `;
 const TabList = tw(TabsList)`
-  portrait:h-[36px] w-full grid-cols-3 px-1.5 portrait:px-0 py-[1.35px] -m-[1.62px]
+  portrait:h-[36px] grid-cols-3 px-1.5 portrait:px-0 py-[1.35px] .-m-[1.62px]
   `;
 const Trigger = tw(TabsTrigger)`
   h-full text-sm portrait:text-xs
-  data-[state=inactive]:text-cyan-950/50 data-[state=active]:text-coal
-  data-[state=active]:border-b-[3px]
-  portrait:px-1.5 portrait:data-[state=active]:border-b-[1px] portrait:border-neutral-300 w-full data-[state=active]:border-clay
+  data-[state=inactive]:text-coal/50 data-[state=active]:text-coal
+  data-[state=active]:border-b-[3px] data-[state=active]:scale-[120%]
+  .portrait:px-1.5 portrait:data-[state=active]:border-b-0 w-[56px] portrait:border-neutral-300 data-[state=active]:border-clay
+  `;
+const TabValue = tw.p`
+  rounded-md bg-dyan/5 px-1
+  font-mono text-[10px] font-light md:ml-4
+  portrait:ml-1
   `;
 
 const TabContent = tw(TabsContent)`
@@ -47,4 +52,12 @@ const TabCardTitle = tw(CardTitle)`
   text-lg text-dyan
   `;
 
-export { TabCard, Trigger, TabContent, TabCardTitle, TabCardHeader, TabList };
+export {
+  TabCard,
+  Trigger,
+  TabContent,
+  TabCardTitle,
+  TabCardHeader,
+  TabList,
+  TabValue,
+};

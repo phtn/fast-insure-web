@@ -19,19 +19,19 @@ import { Button } from "@/app/(ui)/button";
 import { ArrowDownTrayIcon, InboxIcon } from "@heroicons/react/24/outline";
 import { onSuccess } from "@/utils/toast";
 import moment from "moment";
-import { useContext, useEffect } from "react";
-import { AuthContext } from "@/app/(context)/context";
+// import { useContext, useEffect } from "react";
+// import { AuthContext } from "@/app/(context)/context";
 
 export const RequestViewerContent = (props: { id: string | undefined }) => {
-  const profile = useContext(AuthContext)?.profile;
+  // const profile = useContext(AuthContext)?.profile;
 
-  useEffect(() => {
-    if (profile?.accountType === "UNDERWRITER") {
-      onSuccess("underwriter");
-    } else {
-      onSuccess("not underwriter");
-    }
-  }, [profile]);
+  // useEffect(() => {
+  //   if (profile?.accountType === "UNDERWRITER") {
+  //     onSuccess("underwriter");
+  //   } else {
+  //     onSuccess("not underwriter");
+  //   }
+  // }, [profile]);
 
   const docRef = doc(db, `${process.env.NEXT_PUBLIC_LIVE_REQS}/${props.id}`);
   const [snapshot] = useDocument(docRef);
@@ -53,24 +53,22 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
   };
 
   return (
-    <div className="h-[calc(100vh-90px)] overflow-y-scroll border-y-[0.33px] border-neutral-300">
+    <div className="h-[calc(100vh-150px)] overflow-y-scroll border-y-[0.0px] border-neutral-300">
       <DarkCard>
-        <div className="flex h-[99px] flex-col justify-center space-y-4 px-4">
+        <div className="flex h-[99px] flex-col justify-center px-4 md:space-y-4 portrait:space-y-2">
           <div className="flex w-full justify-between">
             <div className="text-sm font-semibold text-paper/80">
               Created by
             </div>
-            <div className="flex items-center space-x-4 rounded-md bg-neutral-900 px-3 py-1 font-mono text-sm tracking-wider text-paper opacity-80">
-              <p className="font-mono text-xs opacity-80">Agent ID:</p>
-              <p className="font-mono text-xs">
-                {request?.agentId?.substring(0, 12)}
-              </p>
+            <div className="flex items-center space-x-4 rounded-md px-3 py-1 font-mono text-xs tracking-wider text-sky-300 opacity-80 md:bg-neutral-500 portrait:py-0 portrait:text-[9px]">
+              <p className="font-mono opacity-80">Agent ID:</p>
+              <p className="font-mono">{request?.agentId?.substring(0, 12)}</p>
             </div>
           </div>
 
           <div className="w-full text-xs">
             <div className="flex w-full items-center justify-between">
-              <div className="flex w-full items-center space-x-4">
+              <div className="flex w-full items-center md:space-x-4">
                 <div className="w-[6ch] font-medium tracking-tight text-paper/50">
                   Name
                 </div>
@@ -83,7 +81,7 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
                 <div className="font-medium tracking-tight text-paper/70">
                   Created:
                 </div>
-                <p className="font-mono text-xs text-white opacity-80">
+                <p className="font-mono text-[10px] text-white opacity-80">
                   {moment(request?.createdAt).fromNow()}
                 </p>
               </div>
@@ -92,12 +90,12 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
             {/*  */}
 
             <div className="flex w-full items-center justify-between">
-              <div className="flex w-full items-center space-x-4">
+              <div className="flex w-full items-center md:space-x-4">
                 <div className="w-[6ch] font-medium tracking-tight text-paper/50">
                   Email
                 </div>
-                <p className="font-mono tracking-wider text-white opacity-80">
-                  {props.id}
+                <p className="font-mono text-white opacity-80">
+                  {props.id?.substring(0, 12)}
                 </p>
               </div>
 
@@ -105,7 +103,7 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
                 <div className="font-medium tracking-tight text-paper/60">
                   Last update:
                 </div>
-                <p className="font-mono text-white opacity-80">
+                <p className="font-mono text-[10px] text-white opacity-80">
                   {moment(request?.updatedAt).fromNow()}
                 </p>
               </div>
@@ -116,19 +114,22 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
 
       <div className="space-y-6">
         <NeutralCard0>
-          <div className="flex items-center justify-between">
+          <div className="flex w-full items-center justify-between">
             <FormCardTitle>Request Details</FormCardTitle>
             <p className="font-mono text-sm tracking-wider opacity-80">
-              <span className="px-4 text-xs font-medium uppercase opacity-50">
-                Request id:
+              <span className="px-4 text-xs font-medium uppercase opacity-50 portrait:px-1">
+                id:
               </span>
-              {props.id}
+
+              <span className="px-4 text-xs font-medium uppercase opacity-50 portrait:px-1">
+                {props.id?.substring(0, 12)}
+              </span>
             </p>
           </div>
           <FormSeparator />
           <div className="h-[calc(100vh-358px)]">
-            <div className="grid h-full w-full grid-cols-6">
-              <div className="col-span-2 h-full rounded-xl bg-gradient-to-b from-white via-zap to-transparent p-6">
+            <div className="grid h-full w-full grid-cols-6 portrait:grid-cols-1">
+              <div className="h-full rounded-xl bg-gradient-to-b from-white via-zap to-transparent p-6 md:col-span-2">
                 <div className="space-y-6">
                   <div className="h-[36px] text-sm font-semibold tracking-tight text-dyan/80">
                     Assured Info
@@ -193,12 +194,12 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
                 </div>
               </div>
 
-              <div className="col-span-4 rounded-l-xl border-0 border-dyan bg-gradient-to-b from-transparent via-paper to-transparent px-6">
+              <div className="w-full rounded-l-xl border-0 border-dyan bg-gradient-to-b from-transparent via-paper to-transparent px-6 md:col-span-4">
                 {/* <div className="h-[36px] text-sm font-semibold tracking-tight text-dyan">
                   Policy Details
                 </div> */}
-                <div className="grid h-fit w-full grid-cols-7 gap-4 text-xs text-paper">
-                  <div className="col-span-3 flex h-[100px] flex-col items-stretch rounded-xl border-[0.33px] border-dyan/50 bg-sky-500 p-4 shadow-md ">
+                <div className="grid h-fit w-full gap-4 text-xs text-paper md:grid-cols-7 portrait:grid-cols-1">
+                  <div className="flex h-[100px] flex-col items-stretch rounded-xl border-[0.33px] border-dyan/50 bg-sky-500 p-4 shadow-md md:col-span-3">
                     <div className="flex h-full w-full justify-between">
                       <div className="font-mono opacity-60">Policy Type</div>
                       <div>
@@ -213,7 +214,7 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
                     </div>
                   </div>
 
-                  <div className="col-span-2 flex h-[100px] flex-col items-stretch rounded-xl border-[0.33px] border-dyan/50 bg-void p-4 shadow-md ">
+                  <div className="col-span-1 flex h-[100px] flex-col items-stretch rounded-xl border-[0.33px] border-dyan/50 bg-void p-4 shadow-md md:col-span-2">
                     <div className="flex h-full w-full justify-between">
                       <div className="font-mono opacity-60">Plate number</div>
                       <div>
@@ -228,7 +229,7 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
                     </div>
                   </div>
 
-                  <div className="col-span-2 flex h-[100px] flex-col items-stretch rounded-xl border-[0.33px] border-dyan/50 bg-zap p-4 text-coal shadow-md ">
+                  <div className="flex h-[100px] flex-col items-stretch rounded-xl border-[0.33px] border-dyan/50 bg-zap p-4 text-coal shadow-md md:col-span-2 ">
                     <div className="flex h-full w-full justify-between">
                       <div className="font-mono opacity-60">
                         Conduction number

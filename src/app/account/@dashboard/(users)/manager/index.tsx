@@ -6,6 +6,11 @@ import { TabList, TablistContainer, Trigger } from "../../(components)/styles";
 import { Codes } from "./codes";
 import { type UserProfileSchema } from "@/server/resource/account";
 import { ManagerContextProvider } from "../../(context)/context";
+import {
+  QrCodeIcon,
+  TableCellsIcon,
+  WrenchIcon,
+} from "@heroicons/react/24/solid";
 
 const ManagerContent = (props: { profile: UserProfileSchema | undefined }) => {
   if (!props.profile) return;
@@ -29,9 +34,15 @@ const Triggers = () => {
   return (
     <TablistContainer>
       <TabList>
-        <Trigger value="activity">Activity</Trigger>
-        <Trigger value="codes">Codes</Trigger>
-        <Trigger value="tools">Tools</Trigger>
+        <Trigger value="activity">
+          <TableCellsIcon className="size-4" />
+        </Trigger>
+        <Trigger value="codes">
+          <QrCodeIcon className="size-4" />
+        </Trigger>
+        <Trigger value="tools">
+          <WrenchIcon className="size-4" />
+        </Trigger>
       </TabList>
     </TablistContainer>
   );
