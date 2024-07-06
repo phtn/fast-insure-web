@@ -4,6 +4,7 @@ import { charlimit, copyFn, getInitials } from "@/utils/helpers";
 import type { CellContext, HeaderContext } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "./table-headers";
 import type { Option } from "./types";
+import { IdentificationIcon } from "@heroicons/react/24/outline";
 
 /* eslint-disable react/display-name */
 export const nameHeader =
@@ -14,7 +15,7 @@ export const nameHeader =
       title={title}
       className={cn(
         "flex justify-start whitespace-nowrap",
-        narrow ? " w-[65px]" : " w-[140px]",
+        narrow ? " w-fit" : " w-[140px]",
       )}
     />
   );
@@ -92,6 +93,28 @@ export const nameCellWithCopy =
           className="flex w-fit cursor-pointer items-center justify-start border-dashed border-cyan-700 py-0.5 hover:border-b-[0.5px] hover:text-black"
         >
           <p className={"font-mono text-xs"}>{charlimit(copyText, limit)}</p>
+        </div>
+      </TheTip>
+    );
+  };
+
+export const nameCellID =
+  (props: { name: string }) =>
+  <T,>({ row }: CellContext<T, unknown>) => {
+    const { name } = props;
+    const text: string = row.getValue("id");
+    const handleCopy = async () => {
+      await copyFn({ name, text });
+    };
+    return (
+      <TheTip tip={charlimit(text)} icon={IdentificationIcon}>
+        <div
+          onClick={handleCopy}
+          className="flex w-fit cursor-pointer items-center justify-start border-dashed border-cyan-700 py-0.5 hover:border-b-[0.5px] hover:text-black"
+        >
+          <IdentificationIcon
+            className={"size-5 stroke-[0.75] text-cyan-800"}
+          />
         </div>
       </TheTip>
     );

@@ -1,8 +1,8 @@
-import { type FormEvent, type ReactNode, useCallback, useState } from "react";
+import { type FormEvent, type ReactNode, useCallback } from "react";
 import { useDownloadURLs } from "../../(hooks)/file-handler";
 import { opts, toggleState } from "@/utils/helpers";
 import { ImageUploader } from "../../(components)/image-uploader";
-import ImageList from "./image-list";
+import { ImageList } from "./image-list";
 import { NeutralCard } from "../../(components)/form-card";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { LoaderIcon, UploadCloudIcon } from "lucide-react";
@@ -14,29 +14,23 @@ export const DocumentUploader = (props: {
 }) => {
   const { id, children } = props;
 
-  const [viewDropzone, setViewDropzone] = useState(false);
-  const { imagelist, loading } = useDownloadURLs(id, viewDropzone);
-
-  const ImageListReload = useCallback(() => {
-    if (!viewDropzone) {
-      return <ImageList id={id} imagelist={imagelist} loading={loading} />;
-    }
-  }, [id, imagelist, loading, viewDropzone]);
+  const { fileCount, loading, viewDropzone, setViewDropzone } =
+    useDownloadURLs(id);
 
   const ViewOptions = useCallback(() => {
     const options = opts(
       <ImageUploader
         dir={`requests/${id}`}
-        filename={`${id}` + `${imagelist?.length}`}
+        filename={`${id}` + `${fileCount}`}
       />,
-      <ImageListReload />,
+      <ImageList id={id} />,
     );
     return (
-      <div className="flex h-[400px] w-full items-center justify-center">
-        {options.get(viewDropzone || imagelist?.length < 1)}
+      <div className="flex h-[340px] w-full items-center justify-center">
+        {options.get(viewDropzone)}
       </div>
     );
-  }, [viewDropzone, id, imagelist, ImageListReload]);
+  }, [viewDropzone, id, fileCount]);
 
   const handleViewDropzone = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -45,12 +39,13 @@ export const DocumentUploader = (props: {
 
   return (
     <NeutralCard>
-      <div className="mb-6 flex justify-between p-4 font-bold">
+      <div className="mb-6 flex justify-between p-2 font-bold md:p-4">
         {children}
         <UploaderExtra
-          filecount={imagelist.length}
+          fileCount={fileCount}
           loading={loading}
-          viewDropzone={handleViewDropzone}
+          onDropzone={handleViewDropzone}
+          dropzoneOpen={viewDropzone}
         />
       </div>
       <ViewOptions />
@@ -59,11 +54,12 @@ export const DocumentUploader = (props: {
 };
 
 const UploaderExtra = (props: {
-  filecount: number;
+  fileCount: number;
   loading: boolean;
-  viewDropzone: (e: FormEvent<HTMLButtonElement>) => void;
+  onDropzone: (e: FormEvent<HTMLButtonElement>) => void;
+  dropzoneOpen: boolean;
 }) => {
-  const { filecount, loading, viewDropzone } = props;
+  const { fileCount, loading, onDropzone, dropzoneOpen } = props;
   const FilesLoadingOptions = useCallback(() => {
     const options = opts(
       <LoaderIcon className="size-4 animate-spin stroke-[1px]" />,
@@ -73,26 +69,29 @@ const UploaderExtra = (props: {
   }, [loading]);
 
   return (
-    <div className="flex items-center space-x-4 font-light">
+    <div className="flex items-center space-x-2 font-light md:space-x-4">
       <Button
         size={`sm`}
         variant={"ghost"}
-        className="flex items-center space-x-2 bg-sky-500 text-xs font-medium tracking-tight text-zap transition-all duration-300 ease-out hover:text-white active:scale-[95%]"
+        className="flex items-center space-x-2 bg-sky-500 text-xs font-medium tracking-tight text-zap transition-all duration-300 ease-out hover:text-white active:scale-[95%] md:space-x-2"
         onClick={(e: FormEvent<HTMLButtonElement>) => e.preventDefault()}
       >
         <FilesLoadingOptions />
-        <p>{filecount ?? 0}</p>
-        <p>files</p>
+        <div className="flex items-center space-x-1">
+          <p className="animate-jump-in font-mono font-light">
+            {fileCount ?? 0}
+          </p>
+        </div>
       </Button>
 
       <Button
         size={`sm`}
         variant={"ghost"}
-        className="flex items-center space-x-2 bg-white font-sans text-xs font-medium tracking-tight text-sky-600 shadow-sm transition-all duration-300 ease-out hover:text-sky-500 active:scale-[95%]"
-        onClick={viewDropzone}
+        className="flex items-center space-x-2 bg-white font-sans text-xs font-medium tracking-tight text-sky-600 shadow-sm transition-all duration-300 ease-out hover:text-sky-500 active:scale-[95%] md:w-[150px]"
+        onClick={onDropzone}
       >
         <UploadCloudIcon className="size-4 stroke-[1.5px]" />
-        <p>Open uploader</p>
+        <p>{dropzoneOpen ? "View Files" : "Open uploader"}</p>
       </Button>
     </div>
   );

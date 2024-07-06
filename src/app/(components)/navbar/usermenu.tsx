@@ -95,7 +95,7 @@ const groups: GroupItem[] = [
     label: "Menu",
     values: [
       {
-        label: "Fast Coins",
+        label: "Fast Points",
         desc: ".",
         value: "2",
         icon: GiftIcon,
@@ -301,7 +301,7 @@ export const AuthedContent = ({
   return (
     <CommandList>
       <CommandGroup>
-        <Link href={`/account`} role="button" aria-label="Account">
+        <Link href={`/account/overview`} role="button" aria-label="Account">
           <Item>
             <IconContainer>
               <Sqc strokeWidth={0} />
@@ -337,9 +337,7 @@ export const AuthedContent = ({
                 <ItemContent
                   label={item.label}
                   desc={
-                    item.value === "2"
-                      ? `${profile?.fastPoints ?? 0} pts`
-                      : "0 pts"
+                    item.value === "2" ? `${profile?.fastPoints ?? 0} pts` : ""
                   }
                 />
                 <DotIcon

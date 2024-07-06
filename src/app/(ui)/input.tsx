@@ -226,13 +226,13 @@ export const InputFile = React.forwardRef<
   return (
     <div
       className={cn(
-        "focus-within:ring-ring flex h-[300px] flex-col items-center justify-end rounded-lg border border-dashed border-ash bg-white shadow-inner ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1",
+        "focus-within:ring-ring flex w-[calc(100vw-56px)] flex-col items-center justify-center rounded-lg border border-dashed border-ash bg-white shadow-inner ring-offset-blue-400 focus-within:ring-1 focus-within:ring-offset-1 md:h-[200px] md:justify-end",
         className,
       )}
     >
       <div className="absolute flex flex-col items-center justify-center">
         <div className="flex items-center justify-center">
-          <div className="mr-[16px] h-[48px] w-[48px] bg-[url('/svg/sky-upload.svg')] bg-cover " />
+          {/* <div className="size-[32px] bg-[url('/svg/sky-upload.svg')] bg-cover md:mr-[16px] md:size-[48px] portrait:size-[24px]" /> */}
           <div className="text-md">
             <p className="max-w-[20ch] text-coal">
               <span className="font-semibold text-coal">Click</span> here to
@@ -242,7 +242,7 @@ export const InputFile = React.forwardRef<
             </p>
           </div>
         </div>
-        <div className="flex items-center justify-center space-x-4 pb-2 pt-24">
+        <div className="flex items-center justify-center space-x-4 md:pb-2 md:pt-24">
           <span className="text-xs italic text-clay/80">
             Supported formats:
           </span>
@@ -255,7 +255,7 @@ export const InputFile = React.forwardRef<
         {...props}
         type={type}
         ref={ref}
-        className="h-[200px] w-full py-3 text-[15px] opacity-0 placeholder:text-slate-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full text-[15px] opacity-0 placeholder:text-slate-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:h-[200px] md:py-3"
       />
     </div>
   );
@@ -304,26 +304,25 @@ export const ImageFile = React.forwardRef<
   return (
     <div
       className={cn(
-        "relative flex cursor-pointer flex-col items-center justify-end border-0 portrait:justify-center",
+        "relative flex w-full cursor-pointer flex-col items-center justify-center border-0 p-3 portrait:justify-center",
         className,
       )}
     >
-      <div className="absolute top-[0px] flex h-[360px] w-[400px] flex-col items-center justify-center border-[0.33px] border-ash/30">
-        <div className="flex h-[335px] w-[375px] flex-col items-center justify-center rounded-xl border-[1.5px] border-dashed border-ash backdrop-blur-lg">
-          <div className="flex h-[72px] w-[72px] items-center justify-center bg-opacity-0">
+      <div className="flex h-[340px] w-full flex-col items-center border-[0.33px] border-ash/30 md:w-[400px] md:px-3">
+        <div className="flex size-full flex-col items-center justify-center space-y-16 rounded-xl border-[1.5px] border-dashed border-ash backdrop-blur-lg">
+          <div className="absolute flex size-[64px] items-center justify-center bg-opacity-0">
             <video autoPlay loop muted className="bg-transparent object-center">
               <source src={`/images/upload.mp4`} type="video/mp4" />
             </video>
-            <div className="size-[64px] bg-[url('/svg/sky-upload.svg')] bg-cover " />
           </div>
-          <div className="flex flex-col items-center justify-center space-x-2 pt-10 portrait:hidden portrait:pb-0">
-            <span className="py-1 font-k2d text-xl font-medium text-black portrait:hidden portrait:py-0 portrait:text-[12px]">
+          <div className="flex h-[200px] flex-col items-center justify-end space-x-2 portrait:pb-0">
+            <p className="py-1 font-k2d text-xl font-medium text-black portrait:py-0">
               Dropzone
-            </span>
-            <p className="flex items-center space-x-1 text-xs">
-              <span className="px-1">or</span>
+            </p>
+            <p className="flex items-center space-x-2 text-xs font-light">
+              <span className="">or</span>
               <span className="text-cyan-600">Browse files</span>
-              <FolderIcon className="size-3.5 fill-cyan-100 stroke-1 text-cyan-600/95" />
+              <FolderIcon className="size-3.5 stroke-1 text-cyan-600/95" />
             </p>
           </div>
         </div>
@@ -333,7 +332,7 @@ export const ImageFile = React.forwardRef<
         {...props}
         type={type}
         ref={ref}
-        className="flex h-[200px] w-full bg-ash py-2 text-[15px] opacity-0 placeholder:text-slate-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 portrait:h-[56px] portrait:py-0"
+        className="absolute z-50 flex h-[340px] w-full border bg-transparent text-[15px] opacity-0 placeholder:text-slate-400 focus-visible:outline-none "
       />
     </div>
   );

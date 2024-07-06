@@ -32,6 +32,7 @@ import { cn } from "@/utils/cn";
 import { DocumentUploader } from "./uploader";
 import { type FieldProps } from "../../(components)/form-types";
 import { type PolicyTypeSchema } from "@/server/resource/idm";
+import { onWarn } from "@/utils/toast";
 
 export const RequestForm = (props: { id: string }) => {
   const { saveDraft, savedValues } = useRequestService({ id: props.id });
@@ -46,7 +47,6 @@ export const RequestForm = (props: { id: string }) => {
 
   useEffect(() => {
     if (savedValues) {
-      console.log(savedValues);
       setValues(savedValues);
     } else setValues(requestDefaults);
   }, [savedValues]);
@@ -86,10 +86,10 @@ export const RequestForm = (props: { id: string }) => {
     saveDraft({ ...watchAll, policyType: selectedPolicyType });
   };
   return (
-    <div className="h-[calc(100vh-90px)] overflow-y-scroll border-y-[0.33px] border-neutral-300">
+    <div className="h-[calc(100vh-150px)] overflow-y-scroll border-y-[0.33px] border-neutral-300 md:h-[calc(100vh-90px)]">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="">
-          <div className="p-5">
+          <div className="p-5 portrait:p-2">
             <NeutralCard>
               <FormCardTitle>Assured Info</FormCardTitle>
               <FormSeparator />
@@ -100,29 +100,30 @@ export const RequestForm = (props: { id: string }) => {
                 <FieldRow title="Contact Details">
                   <Fields control={form.control} fields={assuredContact} />
                 </FieldRow>
-                <div className="my-4 h-[0.33px] bg-gradient-to-r from-neutral-400 to-transparent" />
                 <FieldRow title="Address">
                   <Fields control={form.control} fields={assuredAddress1} />
                 </FieldRow>
                 <FieldRow title="">
                   <Fields control={form.control} fields={assuredAddress2} />
-                  <InputFieldX
-                    {...assuredAddress3}
-                    {...form.register("postalCode")}
-                    className="w-[300px]"
-                  />
+                  <div className="py-2">
+                    <InputFieldX
+                      {...assuredAddress3}
+                      {...form.register("postalCode")}
+                      className="w-full md:w-[300px] portrait:flex"
+                    />
+                  </div>
                 </FieldRow>
               </AssuredFieldContainer>
             </NeutralCard>
           </div>
 
-          <div className="p-5">
+          <div className="p-5 portrait:p-2">
             <NeutralCard>
               <FormCardTitle>Select Policy Type</FormCardTitle>
               <FormSeparator />
               <AssuredFieldContainer>
                 <RadioGroup defaultValue="CTPL">
-                  <div className="grid w-full grid-cols-3 gap-x-6">
+                  <div className="grid w-full grid-cols-3 gap-x-6 portrait:grid-cols-1 portrait:gap-y-6 portrait:py-4">
                     <FormItem>
                       <RadioButton
                         onClick={() => setSelected("CTPL")}
@@ -154,13 +155,13 @@ export const RequestForm = (props: { id: string }) => {
             </NeutralCard>
           </div>
 
-          <div className="p-5">
+          <div className="p-5 portrait:p-2 ">
             <NeutralCard>
               <FormCardTitle>Vehicle Info</FormCardTitle>
               <FormSeparator />
               <AssuredFieldContainer>
                 <FieldRow title="">
-                  <div>
+                  <div className=" portrait:pb-8">
                     <div className="flex items-center space-x-4 px-0.5">
                       <CheckBx
                         id="plate"
@@ -230,15 +231,15 @@ export const RequestForm = (props: { id: string }) => {
             </NeutralCard>
           </div>
 
-          <div className="p-5">
+          <div className="p-5 portrait:p-2">
             <DocumentUploader id={props.id}>
-              <FormCardTitle>File uploader</FormCardTitle>
+              <FormCardTitle className="px-2">File uploader</FormCardTitle>
               <FormSeparator />
             </DocumentUploader>
           </div>
-          <div className="flex h-[100px] items-center justify-end space-x-4 px-4">
+          <div className="flex h-[100px] items-center justify-end space-x-4 px-4 ">
             <Button
-              className="border-sky-500 font-semibold  text-sky-500"
+              className="border-sky-500 font-semibold text-sky-500"
               size={"lg"}
               variant={"outline"}
               onClick={onSave}
@@ -247,9 +248,14 @@ export const RequestForm = (props: { id: string }) => {
             </Button>
             <Button
               size={"lg"}
-              disabled
+              disabled={!form.formState.isValid}
               className="bg-sky-500"
               onClick={onSave}
+              onMouseEnter={() => {
+                if (form.formState.isValid) {
+                  onWarn("missing field");
+                }
+              }}
             >
               Submit Request
             </Button>
@@ -261,11 +267,13 @@ export const RequestForm = (props: { id: string }) => {
 };
 
 const FieldRow = (props: { title: string; children: ReactNode }) => (
-  <div className="space-y-1.5">
+  <div className="space-y-1.5 portrait:w-full portrait:py-4">
     <p className="px-1 text-sm font-medium tracking-tighter opacity-80">
       {props.title}
     </p>
-    <div className="flex items-center space-x-4">{props.children}</div>
+    <div className="flex items-center space-x-4 portrait:flex-col portrait:items-start portrait:space-x-0">
+      {props.children}
+    </div>
   </div>
 );
 type TField = { field: ControllerRenderProps<IDMRequestFormSchema> };
@@ -273,11 +281,11 @@ type TField = { field: ControllerRenderProps<IDMRequestFormSchema> };
 const render =
   (item: FieldProps<IDMRequestFormSchema>) =>
   ({ field }: TField) => (
-    <FormItem className="">
+    <FormItem className="portrait:w-full portrait:py-2">
       <FormControl>
         <InputFieldX
           alt={item.alt}
-          className="w-[300px]"
+          className="w-full md:w-[300px] portrait:flex"
           label={item.label}
           icon={item.icon}
           type={item.type}
@@ -302,5 +310,5 @@ const Fields = ({ control, fields }: FormFieldProps) => {
 };
 
 const AssuredFieldContainer = tw.div`
-  px-4 portrait:gap-y-4 space-y-8
+  px-4 portrait:gap-y-4 portrait:px-2 space-y-8 portrait:py-3
   `;

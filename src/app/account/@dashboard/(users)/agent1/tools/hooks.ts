@@ -1,3 +1,4 @@
+import { type CountUpdateSchema } from "@/server/resource/account";
 import { type IDMDraftRequestSchema } from "@/server/resource/request";
 import { countUpdate } from "@/trpc/account/user-profile";
 import { createDraftRequest } from "@/trpc/request/request";
@@ -45,15 +46,24 @@ export const useAgentTools = ({ userId }: AgentToolProps) => {
     remarks: "",
     active: true,
   };
+  const incDraft: CountUpdateSchema = {
+    fieldName: "draftCount",
+    incrementBy: 1,
+    userId,
+  };
+  const addPoints: CountUpdateSchema = {
+    fieldName: "fastPoints",
+    incrementBy: 5,
+    userId,
+  };
 
   const handleCreateRequest = () => {
     setLoading(true);
 
     createDraftRequest(payload)
       .then(() => {
-        countUpdate({ fieldName: "draftCount", incrementBy: 1, userId }).catch(
-          errHandler,
-        );
+        countUpdate(incDraft).catch(errHandler);
+        countUpdate(addPoints).catch(errHandler);
         route.push(`/account/request/${id}`);
       })
       .catch(errHandler(setLoading));

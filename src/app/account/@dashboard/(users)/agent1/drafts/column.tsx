@@ -6,13 +6,16 @@ import {
   pagelinkCell,
   pagelinkHeader,
 } from "../../../(components)/table/page-link";
-import { dateCell, dateHeader } from "../../../(components)/table/datetime";
-import { MoreOptions } from "../../../(components)/table/more-options";
+import {
+  dateCellMoment,
+  dateHeader,
+} from "../../../(components)/table/datetime";
+import { draftOptions } from "../../../(components)/table/more-options";
 import { type IDMRequestSchema } from "@/server/resource/idm";
 import { statuses } from "../../../(components)/table/request-schemas";
 import {
   nameCell,
-  nameCellWithCopy,
+  nameCellID,
   nameHeader,
   statusCell,
 } from "../../../(components)/table/name-cells";
@@ -20,8 +23,8 @@ import { Cog8ToothIcon } from "@heroicons/react/24/outline";
 
 export const columns: ColumnDef<IDMRequestSchema>[] = [
   {
-    id: "id",
-    accessorKey: "id",
+    id: "edit",
+    accessorKey: "edit",
     header: pagelinkHeader({ icon: PencilLineIcon }),
     cell: pagelinkCell({
       icon: PencilLineIcon,
@@ -32,10 +35,10 @@ export const columns: ColumnDef<IDMRequestSchema>[] = [
     enableSorting: false,
   },
   {
-    id: "requestId",
-    accessorKey: "requestId",
-    header: nameHeader("Request Id"),
-    cell: nameCellWithCopy({ name: "Request Id", text: "id" }),
+    id: "id",
+    accessorKey: "id",
+    header: nameHeader("Ref", true),
+    cell: nameCellID({ name: "Request ref#" }),
     enableSorting: false,
   },
   {
@@ -65,8 +68,10 @@ export const columns: ColumnDef<IDMRequestSchema>[] = [
   {
     id: "createdAt",
     accessorKey: "createdAt",
-    header: dateHeader("Created at"),
-    cell: dateCell("createdAt"),
+    header: dateHeader("Created"),
+    cell: dateCellMoment("createdAt"),
+    enableSorting: true,
+    enableHiding: true,
   },
   {
     id: "status",
@@ -83,21 +88,7 @@ export const columns: ColumnDef<IDMRequestSchema>[] = [
     id: "more",
     accessorKey: "more",
     header: pagelinkHeader({ icon: Cog8ToothIcon }),
-    cell: () => {
-      return (
-        <MoreOptions
-          options={[
-            {
-              name: "update",
-              label: "Edit draft",
-              action: () => {
-                console.log("");
-              },
-            },
-          ]}
-        />
-      );
-    },
+    cell: draftOptions("id"),
     enableSorting: false,
     enableHiding: false,
   },

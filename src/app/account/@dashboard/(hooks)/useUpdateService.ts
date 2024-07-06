@@ -11,10 +11,12 @@ import {
 import { updateDraftRequest } from "@/trpc/request/request";
 import { errHandler } from "@/utils/helpers";
 import { onError, onSuccess } from "@/utils/toast";
+import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 
 export const useUpdateService = () => {
   const profile = useContext(AuthContext)?.profile;
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const handleUpdateCode =
@@ -62,9 +64,15 @@ export const useUpdateService = () => {
         })
         .catch(errHandler(setLoading));
     };
+
+  const handleEditDraft = (id: string) => () => {
+    router.push(`/account/request/${id}`);
+  };
+
   return {
     loading,
     handleUpdateCode,
     handleUpdateRequest,
+    handleEditDraft,
   };
 };

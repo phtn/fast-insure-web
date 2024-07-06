@@ -28,6 +28,7 @@ export const createDraftRequest = async (params: IDMDraftRequestSchema) => {
       ...params,
       createdAt: new Date(datestring).toISOString(),
       updatedAt: new Date(datestring).toISOString(),
+      email: "",
     }).catch((e: Error) => e);
   } else {
     return "Unable to read payload.";

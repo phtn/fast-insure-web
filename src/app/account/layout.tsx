@@ -2,14 +2,9 @@
 
 import { auth } from "@/libs/db";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Loader } from "./(components)/loader";
 import { useConnect } from "./@dashboard/hooks";
-import dynamic from "next/dynamic";
-import LoaderMX from "../(components)/loader-mx";
-
-const DynamicSidebar = dynamic(() => import("./(components)/sidebar"), {
-  loading: LoaderMX,
-});
+import Sidebar from "./(components)/sidebar";
+import { LoaderMX3 } from "../(components)/loader-mx";
 
 type AccountLayoutProps = {
   dashboard: React.ReactNode;
@@ -20,14 +15,13 @@ const AccountLayout = ({ dashboard, signin }: AccountLayoutProps) => {
   const [user, loading] = useAuthState(auth);
   const { accountType, profile } = useConnect();
 
-  console.log(process.env.NEXT_PUBLIC_LIVE_CODES);
-  if (loading) return <Loader />;
+  if (loading) return <LoaderMX3 />;
 
   if (user) {
     return (
-      <DynamicSidebar profile={profile} accountType={accountType}>
+      <Sidebar profile={profile} accountType={accountType}>
         {dashboard}
-      </DynamicSidebar>
+      </Sidebar>
     );
   } else {
     return signin;

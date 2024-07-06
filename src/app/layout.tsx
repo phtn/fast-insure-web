@@ -93,7 +93,7 @@ export default function RootLayout({
               <div className={``}>{children}</div>
             </TRPCProvider>
           </AuthProvider>
-          <Toaster />
+          <Toaster theme="dark" />
         </TooltipProvider>
       </body>
     </html>

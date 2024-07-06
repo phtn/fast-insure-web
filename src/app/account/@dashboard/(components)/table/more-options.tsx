@@ -160,12 +160,17 @@ export const codesOptions =
 export const draftOptions =
   (prop: string) =>
   <T,>({ row }: CellContext<T, unknown>) => {
-    const id: string | undefined = row.getValue(prop);
+    const id: string = row.getValue(prop);
     // const assuredName: string | undefined = row.getValue("assuredName");
-    const { handleUpdateRequest } = useUpdateService();
+    const { handleUpdateRequest, handleEditDraft } = useUpdateService();
     return (
       <MoreOptions
         options={[
+          {
+            action: handleEditDraft(id),
+            label: "Edit draft",
+            name: "update",
+          },
           {
             action: handleUpdateRequest({
               id,

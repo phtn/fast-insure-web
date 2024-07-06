@@ -1,5 +1,5 @@
 "use client";
-import { LoaderBX } from "@/app/(components)/loader-bx";
+
 import { auth } from "@/libs/db";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -13,6 +13,6 @@ const DefaultPage = () => {
       router.push(`/account/overview`);
     }
   }, [router, user]);
-  return <LoaderBX />;
+  return <div className="text-xs text-indigo-500">Welcome!</div>;
 };
 export default DefaultPage;

@@ -66,8 +66,8 @@ const SetupInit = (props: {
   }, [props.setupComplete, props.userId, props.displayName]);
   //  bg-gradient-to-br from-cyan-600/90 from-40% via-cyan-400 via-50% to-cyan-900
   return (
-    <div className="flex h-fit w-full justify-center">
-      <div className="m-4 h-[500px] space-y-10 overflow-hidden rounded-xl border-[0.33px] border-neutral-200 bg-white p-6 shadow-sm backdrop-blur-lg">
+    <div className="flex h-fit w-full justify-center py-10">
+      <div className="m-4 h-[550px] space-y-10 overflow-hidden rounded-xl border-[0.33px] border-neutral-200 bg-white p-6 shadow-sm backdrop-blur-lg">
         <div className="flex w-full items-center justify-between">
           <div className="relative z-40 flex items-center rounded-full bg-void/80 px-3.5 py-0.5 text-sm font-semibold tracking-tight">
             <p className="bg-gradient-to-r from-cyan-100 via-sky-50 to-indigo-50 bg-clip-text text-transparent">
@@ -262,13 +262,13 @@ export const Triggers = (props: {
       <TabList>
         <Trigger value="requests">
           Requests
-          <span className="ml-4 rounded-lg bg-dyan/5 px-1.5 font-mono font-thin">
+          <span className="ml-4 rounded-md bg-dyan/5 px-1.5 font-mono font-thin portrait:ml-2">
             {props.submittedCount ?? 0}
           </span>
         </Trigger>
         <Trigger value="drafts">
           Drafts
-          <span className="ml-4 rounded-lg bg-dyan/5 px-1.5 font-mono font-thin">
+          <span className="ml-4 rounded-md bg-dyan/5 px-1.5 font-mono font-thin portrait:ml-2">
             {props.draftCount ?? 0}
           </span>
         </Trigger>

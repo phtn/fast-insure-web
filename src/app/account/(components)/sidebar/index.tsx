@@ -114,7 +114,7 @@ const Stat = (props: { label: string; value: number }) => {
   return (
     <div className="flex w-full flex-col items-start justify-center">
       <div className="flex flex-col items-start justify-center">
-        <div className="font-sans text-sm font-semibold leading-none tracking-tight text-cyan-950">
+        <div className="animate-jump-in font-sans text-sm font-semibold leading-none tracking-tight text-cyan-950">
           {props.value}
         </div>
         <div className="font-jet text-[10px] font-light tracking-tight text-cyan-950/70">
@@ -145,7 +145,7 @@ const Nav = ({ children, profile }: NavProps) => {
 };
 
 const Footer = () => (
-  <div className="flex h-[36px] w-screen items-center justify-between border-t-[0.33px] border-ash px-4 text-xs text-clay">
+  <div className="flex h-[36px] w-screen items-center justify-between border-t-[0.33px] border-ash px-4 text-xs text-clay portrait:border-t-0">
     <div className="flex items-center space-x-2 text-[10px]">
       <Image
         alt={`fast tech logo`}

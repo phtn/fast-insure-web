@@ -1,14 +1,7 @@
-import { fileType } from "@/utils/helpers";
+import { errHandler, fileType } from "@/utils/helpers";
 import { onInfo } from "@/utils/toast";
 import { useEffect, useState } from "react";
-// import { collection, doc } from "firebase/firestore";
-import {
-  type StorageReference,
-  getDownloadURL,
-  listAll,
-  ref as storageRef,
-} from "firebase/storage";
-
+import { getDownloadURL, listAll, ref as storageRef } from "firebase/storage";
 import { storage } from "@/libs/db";
 
 export const useFileHandler = () => {
@@ -18,7 +11,15 @@ export const useFileHandler = () => {
   const [imageData, setImageData] = useState<string | null>(null);
 
   useEffect(() => {
-    const supportedFormats = ["jpg", "jpeg", "png", "svg", "pdf", "mp4"];
+    const supportedFormats = [
+      "jpg",
+      "jpeg",
+      "png",
+      "svg",
+      "pdf",
+      "mp4",
+      "webp",
+    ];
     if (file) {
       const format = fileType(file.type);
       const fileSize = file.size / 1000000;
@@ -32,7 +33,10 @@ export const useFileHandler = () => {
       const isValidFormat = supportedFormats.includes(format.toLowerCase());
       setValidFormat(isValidFormat);
       if (!isValidFormat) {
-        onInfo("Invalid File Format.", `Supported formats: JPG, PNG, or PDF`);
+        onInfo(
+          "Invalid File Format.",
+          `Supported formats: JPG, PNG, SVG, WEBP, MP4 or PDF`,
+        );
       }
     }
   }, [file]);
@@ -41,8 +45,12 @@ export const useFileHandler = () => {
 
   const getImageData = (file: File | undefined) => {
     const reader = new FileReader();
+
     reader.onloadend = () => {
       const imageDataUri = reader.result;
+
+      // const buf = Buffer.from(imageDataUri as ArrayBuffer).toString("base64");
+
       setImageData(imageDataUri as string);
     };
     reader.readAsDataURL(file!);
@@ -133,41 +141,39 @@ export type UploadStatus =
 export interface IImageList {
   name: string;
   url: string;
-  type: string;
+  type?: string;
 }
 
-export const useDownloadURLs = (
-  id: string | undefined,
-  viewDropzone: boolean,
-) => {
+export const useDownloadURLs = (id: string | undefined) => {
   const [loading, setLoading] = useState(false);
   const [imagelist, setImagelist] = useState<IImageList[]>([]);
+  const [viewDropzone, setViewDropzone] = useState(true);
+  const [fileCount, setFileCount] = useState(0);
 
   useEffect(() => {
     const listRef = storageRef(storage, `requests/${id}`);
 
     listAll(listRef)
       .then((listResult) => {
-        const urlPromises = listResult.items.map(downloadURL);
-        return Promise.all(urlPromises);
+        const files: IImageList[] = [];
+        listResult.items.forEach((itemRef) => {
+          getDownloadURL(itemRef)
+            .then((url) => {
+              files.push({ name: itemRef.name, url });
+              setFileCount(files.length);
+            })
+            .catch(errHandler(setLoading));
+        });
+        setImagelist(files);
       })
-      .then((urls) => {
-        setImagelist(urls);
-        setLoading(false);
-      })
-      .catch((e) => {
-        console.error("Error fetching images: ", e);
-        setLoading(false);
-      });
-  }, [id, setImagelist, viewDropzone]);
+      .catch(errHandler(setLoading));
+  }, [id]);
 
-  return { loading, imagelist };
+  useEffect(() => {
+    if (imagelist) {
+      setViewDropzone(imagelist.length <= 0);
+    }
+  }, [imagelist]);
+
+  return { loading, imagelist, viewDropzone, setViewDropzone, fileCount };
 };
-
-async function downloadURL(itemRef: StorageReference) {
-  return await getDownloadURL(itemRef).then((url) => ({
-    name: itemRef.name,
-    type: fileType(itemRef.name),
-    url,
-  }));
-}

@@ -105,13 +105,19 @@ export const DarkCard = ({ children }: { children: ReactNode }) => (
 );
 
 export const NeutralCard = ({ children }: { children: ReactNode }) => (
-  <NeutralContainer className={neutralCardStyle}>{children}</NeutralContainer>
+  <NeutralContainer className={cn(neutralCardStyle, "rounded-lg")}>
+    {children}
+  </NeutralContainer>
 );
 
+export const NeutralCard0 = ({ children }: { children: ReactNode }) => (
+  <NeutralContainer className={neutralCardStyle}>{children}</NeutralContainer>
+);
 const NeutralContainer = tw.div`
-  portrait:h-fit bg-sky-950/[5%] backdrop-blur-lg rounded-lg p-5
+  bg-sky-950/[5%] backdrop-blur-lg p-5
   border-[0.33px] border-neutral-400/50
   overflow-x-scroll
+  portrait:h-fit portrait:p-2
   `;
 
 const Cape = tw.div`
@@ -129,9 +135,9 @@ const CardContainer = tw.div`
   `;
 
 export const FormCardTitle = tw.div`
-  p-4 text-lg font-semibold tracking-tight text-dyan
+  pt-4 whitespace-nowrap px-4 pb-1 text-lg font-semibold tracking-tight text-dyan
   `;
 
 export const FormSeparator = tw.div`
-  mx-4 rounded-full mb-6 h-[0.75px] bg-gradient-to-r from-indigo-800/40 via-neutral-400/60 to-transparent
+  mx-4 rounded-full mb-8 h-[0.75px] bg-gradient-to-r from-indigo-800/40 via-neutral-400/60 to-transparent
   `;

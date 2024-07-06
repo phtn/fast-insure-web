@@ -7,12 +7,15 @@ import {
   pagelinkCell,
   pagelinkHeader,
 } from "../../../(components)/table/page-link";
-import { dateCell, dateHeader } from "../../../(components)/table/datetime";
+import {
+  dateCellMoment,
+  dateHeader,
+} from "../../../(components)/table/datetime";
 import { MoreOptions } from "../../../(components)/table/more-options";
 import { statuses } from "../../../(components)/table/request-schemas";
 import {
   nameCell,
-  nameCellWithCopy,
+  nameCellID,
   nameHeader,
   statusCell,
 } from "../../../(components)/table/name-cells";
@@ -32,10 +35,10 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
     enableSorting: false,
   },
   {
-    id: "requestId",
+    id: "id",
     accessorKey: "id",
-    header: nameHeader("Request Id"),
-    cell: nameCellWithCopy({ name: "Request Id", text: "id" }),
+    header: nameHeader("Ref", true),
+    cell: nameCellID({ name: "Request ref#" }),
     enableSorting: false,
   },
   {
@@ -57,8 +60,10 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
   {
     id: "createdAt",
     accessorKey: "createdAt",
-    header: dateHeader("Created at"),
-    cell: dateCell("createdAt"),
+    header: dateHeader("Created"),
+    cell: dateCellMoment("Created"),
+    enableSorting: true,
+    enableHiding: true,
   },
   {
     id: "status",
@@ -72,8 +77,8 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
     enableHiding: true,
   },
   {
-    id: "id",
-    accessorKey: "id",
+    id: "more",
+    accessorKey: "more",
     header: pagelinkHeader({ icon: Cog8ToothIcon }),
     cell: () => {
       return (

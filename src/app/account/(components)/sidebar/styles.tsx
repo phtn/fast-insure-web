@@ -13,9 +13,9 @@ export const Aside = tw.aside`
   lg:h-full lg:w-[250px] lg:bg-neutral-200
 
   lg:border-r-[1.0px] z-50 border-neutral-300
-  border-b
+  border-b-[0.33px]
 
-  portrait:bg-gradient-to-br portrait:from-paper
+  portrait:bg-white
   portrait:to-stone-400/50 portrait:w-screen
   `;
 
@@ -48,16 +48,16 @@ export const GroupItem = tw.div`
   font-sans font-medium tracking-tighter text-sm text-cyan-800
   transition-colors duration-200 delay-200 ease-in
   w-[210px] pl-2 rounded-lg
-  portrait:space-x-0 portrait:w-fit
+  portrait:space-x-0 portrait:w-fit portrait:text-xs portrait:text-dyan
   relative z-50
   `;
 
 export const ItemContent = tw.div`
-  flex h-[46px] w-full items-center
+  flex h-[46px] portrait:h-[36px] w-full items-center
   `;
 
 export const IconContainer = tw.div`
-  flex items-center justify-center h-[44px] w-[44px]
+  flex items-center justify-center h-[44px] w-[44px]  portrait:h-[36px]
   `;
 
 export const iconClass = `

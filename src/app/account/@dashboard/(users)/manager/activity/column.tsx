@@ -7,13 +7,16 @@ import {
   pagelinkCell,
   pagelinkHeader,
 } from "../../../(components)/table/page-link";
-import { dateCell, dateHeader } from "../../../(components)/table/datetime";
+import {
+  dateCellMoment,
+  dateHeader,
+} from "../../../(components)/table/datetime";
 import { activityOptions } from "../../../(components)/table/more-options";
 import { statuses } from "../../../(components)/table/request-schemas";
 import {
   nameCell,
   nameCellHeaderWide,
-  nameCellWithCopy,
+  nameCellID,
   nameCellWithSubtext,
   nameHeader,
   statusCell,
@@ -39,8 +42,8 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
   {
     id: "id",
     accessorKey: "id",
-    header: nameHeader("Request Id", true),
-    cell: nameCellWithCopy({ name: "Request Id", text: "id", limit: 9 }),
+    header: nameHeader("Ref", true),
+    cell: nameCellID({ name: "Request ref#" }),
     enableSorting: false,
   },
   {
@@ -81,12 +84,11 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
   {
     id: "Updated",
     accessorKey: "updatedAt",
-    header: dateHeader("Submitted on"),
-    cell: dateCell("Updated"),
+    header: dateHeader("Last update"),
+    cell: dateCellMoment("Updated"),
     enableSorting: true,
     enableHiding: true,
   },
-
   {
     id: "status",
     accessorKey: "status",

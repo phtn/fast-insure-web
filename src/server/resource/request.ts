@@ -55,6 +55,7 @@ export const IDMDraftRequestPayload = z.object({
   id: z.string(),
   policyType: PolicyType.or(z.undefined()),
   agentId: z.string().or(z.undefined()),
+  agentName: z.string().or(z.undefined()),
   assuredId: z.string().or(z.undefined()),
   assuredData: IDMAssuredResource.or(z.undefined()),
   vehicleInfo: VehicleInfo.or(z.undefined()),

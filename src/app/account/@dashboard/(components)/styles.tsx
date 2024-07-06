@@ -19,16 +19,16 @@ export const PhCell = tw(TableCell)`
   border-dyan/40 border-r-[0.33px] border-dashed bg-gradient-to-r from-zinc-900/80 to-sky-950/80 bg-clip-text font-light text-transparent
   `;
 export const TablistContainer = tw.div`
-  flex w-[calc(100vw/4)] portrait:w-[calc(100vw/2)] items-end space-x-2 portrait:h-[36px] portrait:space-x-0
+  flex w-[calc(100vw/4)] portrait:w-[calc(100vw)] items-end space-x-2 portrait:h-[36px] portrait:space-x-0
   `;
 const TabList = tw(TabsList)`
-  portrait:h-[36px] w-full grid-cols-3 portrait:p-1.5 -m-[1.62px]
+  portrait:h-[36px] w-full grid-cols-3 px-1.5 portrait:px-0 py-[1.35px] -m-[1.62px]
   `;
 const Trigger = tw(TabsTrigger)`
   h-full text-sm portrait:text-xs
   data-[state=inactive]:text-cyan-950/50 data-[state=active]:text-coal
   data-[state=active]:border-b-[3px]
-  portrait:px-1.5 w-full data-[state=active]:border-clay
+  portrait:px-1.5 portrait:data-[state=active]:border-b-[1px] portrait:border-neutral-300 w-full data-[state=active]:border-clay
   `;
 
 const TabContent = tw(TabsContent)`

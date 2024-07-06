@@ -5,19 +5,20 @@ import {
   DarkCard,
   FormCardTitle,
   FormSeparator,
-  NeutralCard,
+  NeutralCard0,
 } from "../../(components)/form-card";
-import { downloadFiles, errHandler, prettyDate } from "@/utils/helpers";
+import { downloadFiles, errHandler } from "@/utils/helpers";
 import { ScrollTextIcon } from "lucide-react";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { doc } from "firebase/firestore";
 import { db } from "@/libs/db";
 import { type IDMRequestSchema } from "@/server/resource/idm";
-import ImageList from "../../request/[id]/image-list";
+import { ImageList } from "../../request/[id]/image-list";
 import { useDownloadURLs } from "../../(hooks)/file-handler";
 import { Button } from "@/app/(ui)/button";
 import { ArrowDownTrayIcon, InboxIcon } from "@heroicons/react/24/outline";
 import { onSuccess } from "@/utils/toast";
+import moment from "moment";
 
 export const RequestViewerContent = (props: { id: string | undefined }) => {
   const docRef = doc(db, `${process.env.NEXT_PUBLIC_LIVE_REQS}/${props.id}`);
@@ -25,7 +26,7 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
 
   const request = snapshot?.data() as IDMRequestSchema;
 
-  const { imagelist, loading } = useDownloadURLs(props.id, true);
+  const { imagelist } = useDownloadURLs(props.id);
 
   const handleDownloadAll = () => {
     const folder = `${props.id?.substring(9)}_${request.assuredData?.lastName}`;
@@ -68,10 +69,10 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
 
               <div className="flex w-full items-center justify-end space-x-4">
                 <div className="font-mono font-light tracking-wider text-paper/50">
-                  Submitted on:
+                  Created:
                 </div>
                 <p className="font-mono text-white opacity-80">
-                  {prettyDate(request?.updatedAt)}
+                  {moment(request?.createdAt).fromNow()}
                 </p>
               </div>
             </div>
@@ -90,10 +91,10 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
 
               <div className="flex w-full items-center justify-end space-x-4">
                 <div className="font-mono font-light tracking-wider text-paper/50">
-                  Last updated:
+                  Last update:
                 </div>
                 <p className="font-mono text-white opacity-80">
-                  {prettyDate(request?.updatedAt)}
+                  {moment(request?.updatedAt).fromNow()}
                 </p>
               </div>
             </div>
@@ -101,8 +102,8 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
         </div>
       </DarkCard>
 
-      <div className="space-y-6 p-5">
-        <NeutralCard>
+      <div className="space-y-6">
+        <NeutralCard0>
           <div className="flex items-center justify-between">
             <FormCardTitle>Request Details</FormCardTitle>
             <p className="font-mono text-sm tracking-wider opacity-80">
@@ -115,7 +116,7 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
           <FormSeparator />
           <div className="h-[calc(100vh-358px)]">
             <div className="grid h-full w-full grid-cols-6">
-              <div className="col-span-2 h-full p-6">
+              <div className="col-span-2 h-full rounded-xl bg-gradient-to-b from-white via-zap to-transparent p-6">
                 <div className="space-y-6">
                   <div className="h-[36px] text-sm font-semibold tracking-tight text-dyan/80">
                     Assured Info
@@ -125,64 +126,65 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
                       <UserIcon className="scale-50 opacity-20" />
                     </div>
                     <div className="">
-                      <div className="font-medium leading-none tracking-tight">
+                      <div className="font-medium leading-none tracking-tighter">
                         {request?.assuredData?.firstName}
                       </div>
-                      <div className="font-bold leading-none">
+                      <div className="font-bold leading-none tracking-tight">
                         {request?.assuredData?.lastName}
                       </div>
                     </div>
                   </div>
 
-                  <div className="h-fit w-full space-y-0.5 rounded-xl border-[0.33px] border-dyan/50 bg-gradient-to-b from-neutral-200 via-neutral-100 to-paper  p-4 text-xs text-cyan-900 shadow-md">
+                  <div className=".bg-gradient-to-b h-fit w-full space-y-0.5 rounded-xl border-[0.0px] border-dyan/50 from-neutral-200 via-neutral-100 to-paper p-4 text-xs text-cyan-900 shadow-md">
                     <div className="h-[42px] text-sm font-semibold tracking-tight">
                       Contact Details
                     </div>
-                    <div className="flex w-full justify-between">
-                      <div className="font-mono opacity-60">Email</div>
-                      <div>{request?.assuredData?.email}</div>
-                    </div>
-                    <div className="flex w-full justify-between">
-                      <div className="font-mono opacity-60">Phone</div>
-                      <div>{request?.assuredData?.phone}</div>
-                    </div>
+
+                    <RowItem
+                      label="email"
+                      value={request?.assuredData?.email}
+                    />
+                    <RowItem
+                      label="phone"
+                      value={request?.assuredData?.phone}
+                    />
                   </div>
-                  <div className="h-full w-full space-y-0.5 rounded-xl border-[0.33px] border-dyan/50 bg-gradient-to-b from-neutral-200 via-neutral-100 to-paper p-4 text-xs text-cyan-900 shadow-md">
+                  <div className=".bg-gradient-to-b h-full w-full space-y-0.5 rounded-xl border-[0.0px] border-dyan/50 from-neutral-200 via-neutral-100 to-paper p-4 text-xs text-cyan-900 shadow-md">
                     <div className="h-[42px] text-sm font-semibold tracking-tight">
                       Address
                     </div>
-                    <div className="flex w-full justify-between">
-                      <div className="font-mono opacity-60">Line 1</div>
-                      <div>{request?.assuredData?.address?.line1}</div>
-                    </div>
-                    <div className="flex w-full justify-between">
-                      <div className="font-mono opacity-60">Line 2</div>
-                      <div>{request?.assuredData?.address?.line2}</div>
-                    </div>
-                    <div className="flex w-full justify-between">
-                      <div className="font-mono opacity-60">City</div>
-                      <div>{request?.assuredData?.address?.city}</div>
-                    </div>
-
-                    <div className="flex w-full justify-between">
-                      <div className="font-mono opacity-60">Province</div>
-                      <div>{request?.assuredData?.address?.state}</div>
-                    </div>
-                    <div className="flex w-full justify-between">
-                      <div className="font-mono opacity-60">Postal Code</div>
-                      <div>{request?.assuredData?.address?.postalCode}</div>
-                    </div>
-                    <div className="flex w-full justify-between">
-                      <div className="font-mono opacity-60">Country</div>
-                      <div>{request?.assuredData?.address?.country}</div>
-                    </div>
+                    <RowItem
+                      label="line 1"
+                      value={request?.assuredData?.address?.line1}
+                    />
+                    <RowItem
+                      label="line 2"
+                      value={request?.assuredData?.address?.line2}
+                    />
+                    <RowItem
+                      label="city"
+                      value={request?.assuredData?.address?.city}
+                    />
+                    <RowItem
+                      label="province"
+                      value={request?.assuredData?.address?.state}
+                    />
+                    <RowItem
+                      label="postal code"
+                      value={request?.assuredData?.address?.postalCode}
+                    />
+                    <RowItem
+                      label="country"
+                      value={request?.assuredData?.address?.country}
+                    />
                   </div>
                 </div>
               </div>
-              <div className="col-span-4 rounded-l-xl border-0 bg-gradient-to-r from-white via-paper to-transparent p-6">
-                <div className="h-[36px] text-sm font-semibold tracking-tight text-dyan">
+
+              <div className="col-span-4 rounded-l-xl border-0 border-dyan bg-gradient-to-b from-transparent via-paper to-transparent px-6">
+                {/* <div className="h-[36px] text-sm font-semibold tracking-tight text-dyan">
                   Policy Details
-                </div>
+                </div> */}
                 <div className="grid h-fit w-full grid-cols-7 gap-4 text-xs text-paper">
                   <div className="col-span-3 flex h-[100px] flex-col items-stretch rounded-xl border-[0.33px] border-dyan/50 bg-sky-500 p-4 shadow-md ">
                     <div className="flex h-full w-full justify-between">
@@ -239,11 +241,7 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
                   </div>
                   <div className="h-[230px]">
                     {imagelist && imagelist.length > 0 ? (
-                      <ImageList
-                        id={props.id}
-                        imagelist={imagelist}
-                        loading={loading}
-                      />
+                      <ImageList id={props.id} />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center space-x-4">
                         <InboxIcon className="size-4 opacity-50" />
@@ -253,8 +251,8 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
                       </div>
                     )}
                   </div>
-                  <div className="rounded-xl bg-gradient-to-l from-neutral-300 via-paper to-transparent pr-[1px] pt-[1px]">
-                    <div className="flex h-full items-end justify-end rounded-r-[11px] bg-gradient-to-br from-white to-white/20 py-2 pr-2">
+                  <div className=".bg-gradient-to-l h-[100px] rounded-xl border-0 border-dyan from-neutral-300 via-paper to-transparent pr-[1px] pt-[1px]">
+                    <div className=".bg-gradient-to-br flex h-full items-end justify-end rounded-r-[11px] from-white to-white/20 py-2 pr-2">
                       <Button
                         size={`sm`}
                         variant={`default`}
@@ -271,8 +269,15 @@ export const RequestViewerContent = (props: { id: string | undefined }) => {
               </div>
             </div>
           </div>
-        </NeutralCard>
+        </NeutralCard0>
       </div>
     </div>
   );
 };
+
+const RowItem = (props: { label: string; value: string | undefined }) => (
+  <div className="flex w-full justify-between">
+    <div className="font-mono capitalize opacity-60">{props.label}</div>
+    <div className="font-medium text-dyan">{props.value}</div>
+  </div>
+);

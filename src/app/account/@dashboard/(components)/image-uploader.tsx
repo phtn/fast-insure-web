@@ -1,3 +1,4 @@
+"use client";
 import { ref } from "firebase/storage";
 import { useCallback, type ChangeEvent } from "react";
 import { useUploadFile } from "react-firebase-hooks/storage";
@@ -6,12 +7,15 @@ import { ImageFile } from "@/app/(ui)/input";
 import Image from "next/image";
 
 import { Button } from "@/app/(ui)/button";
-import { errHandler, onCount, opts } from "@/utils/helpers";
+import { errHandler, fileType, opts } from "@/utils/helpers";
 import { cn } from "@/utils/cn";
 import { useFileHandler } from "../(hooks)/file-handler";
-import { storage } from "@/libs/db";
+import { auth, storage } from "@/libs/db";
 import tw from "tailwind-styled-components";
 import { onSuccess } from "@/utils/toast";
+import { countUpdate } from "@/trpc/account/user-profile";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { type CountUpdateSchema } from "@/server/resource/account";
 
 type UploaderProps = {
   dir: string;
@@ -20,11 +24,12 @@ type UploaderProps = {
 };
 export const ImageUploader = (props: UploaderProps) => {
   const { dir, filename, downloadUrl } = props;
+  const [user] = useAuthState(auth);
   const [uploadFile, uploading, snapshot] = useUploadFile();
   const storageRef = ref(storage, `${dir}/${filename}`);
 
   ///
-  console.log(onCount());
+  // console.log(onCount());
   ///
 
   const { file, handleFileChange, handleFileRemove, imageData } =
@@ -34,6 +39,11 @@ export const ImageUploader = (props: UploaderProps) => {
     (Number(snapshot?.bytesTransferred) / Number(snapshot?.totalBytes)) * 100;
 
   const ImageOptions = useCallback(() => {
+    const addPoints: CountUpdateSchema = {
+      fieldName: "fastPoints",
+      incrementBy: 5,
+      userId: user?.uid,
+    };
     const upload = async () => {
       if (file) {
         return uploadFile(storageRef, file)
@@ -43,6 +53,7 @@ export const ImageUploader = (props: UploaderProps) => {
           .catch(errHandler)
           .finally(() => {
             handleFileRemove();
+            countUpdate(addPoints).catch(errHandler);
           });
       }
       handleFileRemove();
@@ -71,10 +82,11 @@ export const ImageUploader = (props: UploaderProps) => {
     uploadFile,
     downloadUrl,
     handleFileRemove,
+    user,
   ]);
 
   return (
-    <div className="flex h-[280px] w-full cursor-pointer items-center justify-around space-x-4 rounded-xl bg-ghost bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-zinc-800 via-zinc-800/75 to-yellow-500 px-10 backdrop-blur-lg">
+    <div className="flex h-[280px] w-full cursor-pointer items-center justify-center space-x-4 rounded-xl bg-ghost bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-zinc-800 via-zinc-800/75 to-yellow-500 px-10 backdrop-blur-lg md:justify-around">
       <ImageOptions />
       <AcceptedFormats />
     </div>
@@ -89,7 +101,7 @@ export const Dropzone = ({ fileChange }: DropzoneProps) => {
     fileChange(e.target.files);
   };
   return (
-    <div className="h-[360px] w-[400px] overflow-auto rounded-3xl bg-white shadow-xl">
+    <div className="flex h-[340px] w-[calc(100vw-32px)] overflow-auto rounded-3xl bg-white shadow-xl md:h-[360px] md:w-[400px]">
       <ImageFile
         type="file"
         name="upload"
@@ -134,6 +146,18 @@ export const ImageViewer = ({
     return <>{options.get(withImage)}</>;
   }, [imageData, file?.name]);
 
+  const DocOptions = useCallback(() => {
+    const isPDF = fileType(file?.type) === "pdf";
+    console.log(file?.type, isPDF, file);
+    const options = opts(
+      <div className="flex size-[300px] items-center justify-center">
+        PDF file
+      </div>,
+      <ImageOptions />,
+    );
+    return <>{options.get(isPDF)}</>;
+  }, [ImageOptions, file]);
+
   const BytesUploaded = useCallback(() => {
     const options = opts(
       <p className="flex h-[36px] w-[64px] items-center justify-center rounded bg-zap px-2 text-center font-mono text-[10px] text-coal backdrop-blur-lg">
@@ -153,12 +177,12 @@ export const ImageViewer = ({
     return <>{options.get(uploading)}</>;
   }, [uploading]);
   return (
-    <div className="w-full space-y-4">
-      <div className="portait:w-[80px] relative flex h-[360px] w-full items-center justify-center overflow-clip rounded-lg border bg-gradient-to-r from-gray-800/80 to-gray-800/40 shadow-inner portrait:h-[64px]">
+    <div className="relative h-[340px] w-full space-y-4">
+      <div className="flex h-[340px] w-full items-center justify-center overflow-clip rounded-lg border bg-gradient-to-r from-gray-800/80 to-gray-800/40 shadow-inner">
         {downloadUrl ? (
           <ImageComp alt={downloadUrl} src={downloadUrl} width={0} height={0} />
         ) : (
-          <ImageOptions />
+          <DocOptions />
         )}
 
         <div
@@ -198,11 +222,11 @@ export const ImageViewer = ({
 };
 
 const ImageComp = tw(Image)`
-  absolute h-[200px] w-auto transition-all duration-500 ease-in-out hover:scale-[250%] portrait:h-[64px] portrait:w-[80px]
+  absolute h-[200px] w-auto transition-all duration-500 ease-in-out hover:scale-[250%]
   `;
 
 const AcceptedFormats = () => (
-  <div className="space-y-6">
+  <div className="space-y-6 portrait:hidden">
     <div className="grid w-[250px] grid-cols-3 place-items-center gap-1 align-middle">
       <div className="h-[48px] w-[44px] bg-[url('/images/jpg.png')] bg-cover" />
       <div className="h-[48px] w-[44px] bg-[url('/images/png.png')] bg-cover" />
