@@ -117,7 +117,7 @@ export const FastQR = (props: { code: string | undefined }) => {
           <Button
             variant={`ghost`}
             onClick={handleCopyLink}
-            className="flex h-[40px] w-full items-center justify-center space-x-2 rounded border-[0.33px] border-dyan/20 bg-white text-dyan"
+            className="flex h-[40px] w-full items-center justify-center space-x-2 rounded border-[0.33px] border-dyan/20 bg-white text-dyan hover:bg-void hover:text-white"
           >
             <div className="text-xs">Copy link</div>
             <LinkIcon className="size-4" />
@@ -125,14 +125,14 @@ export const FastQR = (props: { code: string | undefined }) => {
           <Button
             variant={`ghost`}
             onClick={handleDownload}
-            className="flex h-[40px] w-full items-center justify-center space-x-2 rounded border-[0.33px] border-dyan/20 bg-white text-dyan"
+            className="flex h-[40px] w-full items-center justify-center space-x-2 rounded border-[0.33px] border-dyan/20 bg-white text-dyan hover:bg-void hover:text-white"
           >
             <div className="text-xs">Download</div>
             <ArrowDownTrayIcon className="size-4" />
           </Button>
           <Button
             variant={`ghost`}
-            className="flex h-[40px] w-full items-center justify-center space-x-2 rounded border-[0.33px] border-dyan/20 bg-white text-dyan"
+            className="flex h-[40px] w-full items-center justify-center space-x-2 rounded border-[0.33px] border-dyan/20 bg-white text-dyan hover:bg-void hover:text-white"
           >
             <div className="text-xs">Share</div>
             <ShareIcon className="size-4" />

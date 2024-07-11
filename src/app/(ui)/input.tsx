@@ -268,7 +268,7 @@ const InputLight = React.forwardRef<HTMLInputElement, InputProps>(
       <input
         type={type}
         className={cn(
-          "flex h-12 w-full rounded-md border-[0.0px] border-ash bg-paper/80 px-3 py-2 text-xs ring-cyan-700/40 ring-offset-cyan-700 transition-all duration-300 ease-in-out placeholder:text-clay focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:focus-visible:ring-1 md:focus-visible:ring-offset-1",
+          "flex h-11 w-full rounded-md border-[0.33px] border-neutral-300 bg-paper/80 px-3 py-1.5 text-xs ring-cyan-700/40 ring-offset-cyan-700 transition-all duration-300 ease-in-out placeholder:text-clay focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:focus-visible:ring-1 md:focus-visible:ring-offset-1",
           className,
         )}
         ref={ref}

@@ -131,7 +131,7 @@ export const getToday = () => {
   return date[0];
 };
 
-type CopyFnParams = {
+export type CopyFnParams = {
   name: string;
   text: string;
   limit?: number;

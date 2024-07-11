@@ -22,6 +22,9 @@ export function DataTableToolbar<TData>({
   return (
     <div className="flex h-[64px] w-full items-center justify-between px-4 portrait:hidden">
       <div className="flex flex-1 items-center space-x-2 text-opus md:space-x-4 md:pr-0">
+        <div className="flex h-10 items-center justify-center rounded-lg bg-amber-300/40 px-4 text-xs font-medium tracking-tight text-void">
+          Codes
+        </div>
         <InputLight
           placeholder="filter by agent"
           value={

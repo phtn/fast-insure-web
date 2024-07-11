@@ -2,6 +2,8 @@ import { Dialog, DialogContent, DialogTitle } from "@/app/(ui)/dialog";
 import { Square2StackIcon } from "@heroicons/react/24/outline";
 import type { Dispatch, SetStateAction } from "react";
 import { FastQR } from "./generate";
+import { Button } from "@/app/(ui)/button";
+import { copyFn } from "@/utils/helpers";
 
 type QrViewerProps = {
   code: string | undefined;
@@ -10,6 +12,7 @@ type QrViewerProps = {
 };
 export const QrViewer = (props: QrViewerProps) => {
   const { code, open, setOpen } = props;
+  const handleCopyCode = () => copyFn({ name: "Code", text: code! });
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -20,7 +23,9 @@ export const QrViewer = (props: QrViewerProps) => {
                 Code:
               </p>
               <p>{code}</p>
-              <Square2StackIcon className="size-4" />
+              <Button onClick={handleCopyCode} size={`icon`} variant={`ghost`}>
+                <Square2StackIcon className="size-4" />
+              </Button>
             </div>
           </DialogTitle>
           <div className="">

@@ -43,7 +43,7 @@ const DocumentAIProcessor: React.FC = () => {
   > | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const endpoint =
+  const name =
     "https://us-documentai.googleapis.com/v1/projects/20013354165/locations/us/processors/bac05e2a9d46a902:process";
 
   const processDocument = useCallback(async (file: File) => {
@@ -53,7 +53,7 @@ const DocumentAIProcessor: React.FC = () => {
     formData.append("file", file);
 
     const processResult = await axios
-      .post<Either<ProcessError, ProcessResult>>(endpoint, formData, {
+      .post<Either<ProcessError, ProcessResult>>(name, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

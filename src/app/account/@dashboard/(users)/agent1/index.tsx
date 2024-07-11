@@ -1,46 +1,38 @@
-import { Header } from "../../(components)/header";
+import { Form } from "@/app/(ui)/form";
+import { InputCode } from "@/app/(ui)/input";
 import { Tabs } from "@/app/(ui)/tabs";
-import { Requests } from "./requests";
-import { Tools } from "./tools";
-import {
-  TabList,
-  TablistContainer,
-  TabValue,
-  Trigger,
-} from "../../(components)/styles";
-import { Drafts } from "./drafts";
+import { DarkTouch } from "@/app/(ui)/touch";
+import { useProfile } from "@/app/account/@signin/hooks";
+import { db } from "@/libs/db";
 import { type UserProfileSchema } from "@/server/resource/account";
 import {
   ActivationFormResource,
-  type CodeListSchema,
   type ActivationFormSchema,
+  type CodeListSchema,
 } from "@/server/resource/code";
-import { useCallback, useState } from "react";
 import { errHandler, getVersion, opts } from "@/utils/helpers";
-import { InputCode } from "@/app/(ui)/input";
-import { DarkTouch } from "@/app/(ui)/touch";
-import { LoaderIcon } from "lucide-react";
-import { useCollection } from "react-firebase-hooks/firestore";
-import { collection } from "firebase/firestore";
-import { db } from "@/libs/db";
-import { Form } from "@/app/(ui)/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { activationDefaults } from "./activation";
 import { onError } from "@/utils/toast";
-import { useProfile } from "@/app/account/@signin/hooks";
-import { AgentContextProvider } from "../../(context)/context";
-import { useUpdateService } from "../../(hooks)/useUpdateService";
+import { ArrowDownRightIcon } from "@heroicons/react/24/outline";
 import {
   DocumentTextIcon,
   ShieldCheckIcon,
   TableCellsIcon,
   WrenchIcon,
 } from "@heroicons/react/24/solid";
-import {
-  ArrowDownRightIcon,
-  ChatBubbleLeftEllipsisIcon,
-} from "@heroicons/react/24/outline";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { collection } from "firebase/firestore";
+import { LoaderIcon } from "lucide-react";
+import { useCallback, useState } from "react";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { useForm } from "react-hook-form";
+import { Header } from "../../(components)/header";
+import { TabList, TablistContainer, Trigger } from "../../(components)/styles";
+import { AgentContextProvider } from "../../(context)/context";
+import { useUpdateService } from "../../(hooks)/useUpdateService";
+import { activationDefaults } from "./activation";
+import { Drafts } from "./drafts";
+import { Requests } from "./requests";
+import { Tools } from "./tools";
 
 const AgentContent = (props: { profile: UserProfileSchema | undefined }) => {
   const { profile } = props;
@@ -253,11 +245,10 @@ const ActivationCard = (props: {
 
 const WithCode = (props: { profile: UserProfileSchema | undefined }) => {
   if (!props?.profile) return;
-  const { draftCount, submittedCount } = props.profile;
   return (
     <Tabs defaultValue="requests" className="w-full">
       <Header>
-        <Triggers draftCount={draftCount} submittedCount={submittedCount} />
+        <Triggers />
       </Header>
       <Requests />
       <Drafts />
@@ -266,28 +257,22 @@ const WithCode = (props: { profile: UserProfileSchema | undefined }) => {
   );
 };
 
-export const Triggers = (props: {
-  draftCount: number | undefined;
-  submittedCount: number | undefined;
-}) => {
+export const Triggers = () => {
   return (
     <TablistContainer>
       <TabList>
         <Trigger value="requests">
           <TableCellsIcon className="size-4" />
-          <TabValue>{props.submittedCount ?? 0}</TabValue>
+          {/* <TabValue>{props.submittedCount ?? 0}</TabValue> */}
         </Trigger>
         <Trigger value="drafts">
           <DocumentTextIcon className="size-4" />
-          <TabValue>{props.draftCount ?? 0}</TabValue>
+          {/* <TabValue>{props.draftCount ?? 0}</TabValue> */}
         </Trigger>
         <Trigger value="tools">
           <WrenchIcon className="size-4" />
         </Trigger>
       </TabList>
-      <div>
-        <ChatBubbleLeftEllipsisIcon className="size-5" />
-      </div>
     </TablistContainer>
   );
 };

@@ -13,17 +13,22 @@ import { DataTableViewOptions } from "../../../(components)/table/views";
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   hiddenColumns?: string[];
+  toolbarActions: [boolean, VoidFunction];
 }
 
 export function DataTableToolbar<TData>({
   table,
   hiddenColumns,
+  toolbarActions,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
     <div className="flex h-[64px] w-full items-center justify-between px-4 portrait:hidden">
       <div className="flex flex-1 items-center space-x-2 text-opus md:space-x-4 md:pr-0">
+        <div className="flex h-10 items-center justify-center rounded-lg bg-teal-300/40 px-4 text-xs font-medium tracking-tight text-void">
+          Requests
+        </div>
         <InputLight
           placeholder="filter customer"
           value={
@@ -54,7 +59,11 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <DataTableViewOptions table={table} hiddenColumns={hiddenColumns} />
+      <DataTableViewOptions
+        table={table}
+        hiddenColumns={hiddenColumns}
+        toolbarActions={toolbarActions}
+      />
     </div>
   );
 }
