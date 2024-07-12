@@ -50,11 +50,9 @@ export function DataTableToolbar<TData>({
           <Button
             variant="outline"
             onClick={() => table.resetColumnFilters()}
-            className="group flex h-[40px] items-center justify-center rounded-[4px] border border-sky-400 px-2 text-sky-400 hover:border-sky-400 hover:bg-sky-400 lg:px-3"
+            className="group flex h-[36px] items-center justify-center rounded-md border border-rose-400 px-2 text-rose-500 hover:border-rose-400 hover:bg-rose-400 lg:px-3"
           >
-            <p className="font-jet text-xs uppercase group-hover:text-white">
-              Reset
-            </p>
+            <p className="font-jet text-xs group-hover:text-white">Reset</p>
             <SpaceX />
           </Button>
         )}

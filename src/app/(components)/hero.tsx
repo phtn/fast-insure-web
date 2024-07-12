@@ -32,7 +32,7 @@ export const Hero = () => {
       <HeroContent>
         <div className="flex w-full justify-start md:w-[800px] lg:w-[1080px]">
           <Raynor
-            href={creds ? `/account/overview` : `account/sign-in`}
+            href={creds ? `/account/overview` : `account/sign-in/user`}
             title="Fast-track your"
             description="Technology-driven service provider for businesses and individuals."
             uid={creds?.uid}

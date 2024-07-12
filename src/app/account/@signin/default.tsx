@@ -6,10 +6,11 @@ const DynamicLobby = dynamic(() => import("./lobby"), {
   loading: LoaderMX,
 });
 
-export default async function SignIn() {
+export default async function SignIn(params: { agentCode: string }) {
+  const agentCode = params.agentCode ?? "user";
   return (
     <Container>
-      <DynamicLobby />
+      <DynamicLobby agentCode={agentCode} />
     </Container>
   );
 }

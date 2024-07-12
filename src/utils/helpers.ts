@@ -7,6 +7,7 @@ import { saveAs } from "file-saver";
 
 import pkg from "../../package.json";
 import { type IImageList } from "@/app/account/@dashboard/(hooks)/file-handler";
+import type { MonthName } from "@/app/types.index";
 
 export const getVersion = () => {
   return pkg.version;
@@ -486,3 +487,42 @@ export const downloadFiles = async <T extends IImageList>(
     saveAs(content, folder);
   });
 };
+
+export function getPreviousMonths(): (MonthName | undefined)[] {
+  const today: Date = new Date();
+  let currentMonth: number = today.getMonth(); // Get current month (0-11)
+  const previousMonths: number[] = [];
+
+  // Calculate and push the current month
+  previousMonths.push(currentMonth);
+
+  // Calculate and push the previous three months
+  for (let i = 1; i <= 3; i++) {
+    currentMonth--;
+    if (currentMonth < 0) {
+      // Handle wrap-around to previous year
+      currentMonth += 12;
+      today.setFullYear(today.getFullYear() - 1); // Adjust the year
+    }
+    previousMonths.unshift(currentMonth);
+  }
+
+  // Convert month numbers to month names
+  const monthNames: MonthName[] = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  return previousMonths.map((month) => monthNames[month]);
+}
+
+console.log(getPreviousMonths());

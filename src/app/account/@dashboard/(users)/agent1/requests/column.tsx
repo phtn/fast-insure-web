@@ -61,7 +61,7 @@ export const columns: ColumnDef<IDMRequestSchema & { updatedAt: string }>[] = [
     id: "createdAt",
     accessorKey: "createdAt",
     header: dateHeader("Created"),
-    cell: dateCellMoment("Created"),
+    cell: dateCellMoment("createdAt"),
     enableSorting: true,
     enableHiding: true,
   },

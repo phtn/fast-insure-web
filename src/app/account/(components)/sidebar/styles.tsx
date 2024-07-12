@@ -44,7 +44,7 @@ export const GroupItem = tw.div`
   flex w-full space-x-2 w-[210px] pl-2 rounded-lg
   relative z-50 group/item
 
-  font-sans font-medium tracking-tighter text-sm text-sky-400/90
+  font-sans font-medium tracking-tighter text-sm text-sky-50/70
 
   portrait:space-x-0 portrait:w-fit portrait:text-xs portrait:text-dyan
   `;
@@ -61,8 +61,8 @@ export const IconContainer = tw.div`
 
 export const iconClass = `
   md:size-[18px] size-[18px]
-  group/item-hover:text-sky-950
-  text-sky-600
+  text-sky-700 group-hover:text-sky-600
+  transition-colors duration-300
   `;
 export const activeStyle = `
   text-sky-950

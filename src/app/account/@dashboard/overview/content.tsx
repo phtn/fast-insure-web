@@ -16,6 +16,6 @@ export const DashboardContent = () => {
   return accountType === "MANAGER" ? (
     <DynamicManager profile={profile} />
   ) : (
-    <DynamicAgent profile={profile} />
+    <DynamicAgent />
   );
 };

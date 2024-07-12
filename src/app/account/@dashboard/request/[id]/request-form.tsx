@@ -6,7 +6,10 @@ import {
   FormSeparator,
   NeutralCard,
 } from "../../(components)/form-card";
-import { useRequestService } from "../../(hooks)/useRequestService";
+import {
+  useRequestService,
+  useSubmitRequest,
+} from "../../(hooks)/useRequestService";
 import { requestDefaults, requestFields } from "./schema";
 import { Form, FormControl, FormField, FormItem } from "@/app/(ui)/form";
 import {
@@ -36,6 +39,7 @@ import { onWarn } from "@/utils/toast";
 
 export const RequestForm = (props: { id: string }) => {
   const { saveDraft, savedValues } = useRequestService({ id: props.id });
+  const { submit } = useSubmitRequest({ id: props.id });
 
   const [values, setValues] = useState<IDMRequestFormSchema | undefined>(
     savedValues,
@@ -75,9 +79,10 @@ export const RequestForm = (props: { id: string }) => {
   const [plateChecked, setPlateChecked] = useState(false);
   const [conductionChecked, setConductionChecked] = useState(false);
 
-  const onSubmit = (data: IDMRequestFormSchema) => {
-    // submit(data);
-    console.log(data);
+  const onSubmit = () => {
+    const watchAll = form.watch();
+    submit({ ...watchAll, policyType: selectedPolicyType });
+    // console.log({ ...watchAll, policyType: selectedPolicyType });
   };
 
   const onSave = (e: FormEvent<HTMLButtonElement>) => {
@@ -250,9 +255,10 @@ export const RequestForm = (props: { id: string }) => {
               size={"lg"}
               disabled={!form.formState.isValid}
               className="bg-sky-500"
-              onClick={onSave}
+              // onClick={onSave}
+              type="submit"
               onMouseEnter={() => {
-                if (form.formState.isValid) {
+                if (!form.formState.isValid) {
                   onWarn("missing field");
                 }
               }}

@@ -1,5 +1,8 @@
 import { AuthContext } from "@/app/(context)/context";
-import type { UserProfileSchema } from "@/server/resource/account";
+import type {
+  CountUpdateSchema,
+  UserProfileSchema,
+} from "@/server/resource/account";
 import type {
   IDMAssuredSchema,
   PlateTypeSchema,
@@ -17,6 +20,7 @@ import { onSuccess } from "@/utils/toast";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { AgentContext } from "../(context)/context";
+import { countUpdate } from "@/trpc/account/user-profile";
 
 type RequestServiceParams = {
   id: string;
@@ -102,17 +106,6 @@ export const useRequestService = ({ id }: RequestServiceParams) => {
       .catch(errHandler(setLoading));
   };
 
-  // const genReqId = async () =>
-  //   await createRefNo().then((result) => setReqId(result.substring(0, 24)));
-
-  // useEffect(() => {
-  //   if (!id) {
-  //     genReqId()
-  //       .then((res) => res)
-  //       .catch((e: Error) => e);
-  //   }
-  // }, [id]);
-
   return { saveDraft, savedValues, loading };
 };
 
@@ -141,6 +134,17 @@ export const useSubmitRequest = (params: SubmitRequestHookParams) => {
   const checker = !!id || !!policyType || !!assuredId || !!profile;
 
   // console.log(id, policyType, assuredId, profile, !!checker);
+
+  const incSubmit: CountUpdateSchema = {
+    fieldName: "submittedCount",
+    incrementBy: 1,
+    userId: profile?.userId,
+  };
+  const addPoints: CountUpdateSchema = {
+    fieldName: "fastPoints",
+    incrementBy: 10,
+    userId: profile?.userId,
+  };
 
   const submit = (data: IDMRequestFormSchema) => {
     setLoading(true);
@@ -197,58 +201,60 @@ export const useSubmitRequest = (params: SubmitRequestHookParams) => {
       .then(() => {
         onSuccess("Request submitted successfully!", `Assured: ${assuredName}`);
         setLoading(false);
-        route.push(`/account`);
+        countUpdate(incSubmit).catch(errHandler);
+        countUpdate(addPoints).catch(errHandler);
+        route.push(`/account/overview`);
       })
       .catch(errHandler(setLoading));
   };
 
-  const saveDraft = (data: IDMRequestFormSchema | undefined) => {
-    if (!data) return;
+  // const saveDraft = (data: IDMRequestFormSchema | undefined) => {
+  //   if (!data) return;
 
-    const assuredData = {
-      firstName: data?.firstName,
-      lastName: data?.lastName,
-      middleName: data?.middleName,
-      email: data?.email,
-      phone: data?.phone,
-      address: {
-        line1: data?.line1,
-        line2: data?.line2,
-        city: data?.city,
-        state: data?.state,
-        country: data?.country ?? "PH",
-        postalCode: data?.postalCode,
-      },
-    };
-    const { plateNumber } = data;
-    const vehicleInfo = { plateNumber, plateType };
-    const { remarks } = data;
+  // const assuredData = {
+  //   firstName: data?.firstName,
+  //   lastName: data?.lastName,
+  //   middleName: data?.middleName,
+  //   email: data?.email,
+  //   phone: data?.phone,
+  //   address: {
+  //     line1: data?.line1,
+  //     line2: data?.line2,
+  //     city: data?.city,
+  //     state: data?.state,
+  //     country: data?.country ?? "PH",
+  //     postalCode: data?.postalCode,
+  //   },
+  // };
+  // const { plateNumber } = data;
+  // const vehicleInfo = { plateNumber, plateType };
+  // const { remarks } = data;
 
-    const draftPayload: UpdateRequestSchema = {
-      id,
-      payload: {
-        agentName: profile?.displayName ?? profile?.email,
-        assuredName: formDisplayname({
-          firstName: data.firstName,
-          middleName: data.middleName,
-          lastName: data.lastName,
-        }),
-        branchCode: profile?.branchCode,
-        assuredData,
-        vehicleInfo,
-        active: true,
-        policyType,
-        remarks,
-      },
-    };
+  // const draftPayload: UpdateRequestSchema = {
+  //   id,
+  //   payload: {
+  //     agentName: profile?.displayName ?? profile?.email,
+  //     assuredName: formDisplayname({
+  //       firstName: data.firstName,
+  //       middleName: data.middleName,
+  //       lastName: data.lastName,
+  //     }),
+  //     branchCode: profile?.branchCode,
+  //     assuredData,
+  //     vehicleInfo,
+  //     active: true,
+  //     policyType,
+  //     remarks,
+  //   },
+  // };
 
-    console.log(draftPayload);
-    // updateDraftRequest(draftPayload)
-    //   .then(() => {
-    //     onSuccess("Draft saved successfully.", "success");
-    //   })
-    //   .catch(errHandler(setLoading));
-  };
+  // console.log(draftPayload);
+  // updateDraftRequest(draftPayload)
+  //   .then(() => {
+  //     onSuccess("Draft saved successfully.", "success");
+  //   })
+  //   .catch(errHandler(setLoading));
+  // };
 
   return {
     setPolicyType,
@@ -256,6 +262,6 @@ export const useSubmitRequest = (params: SubmitRequestHookParams) => {
     policyType,
     submit,
     submitLoading,
-    saveDraft,
+    // saveDraft,
   };
 };

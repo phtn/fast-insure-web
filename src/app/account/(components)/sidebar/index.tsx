@@ -86,15 +86,21 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
     return <>{options.get(!!profile?.accountType)}</>;
   }, [profile?.accountType]);
 
-  // const numberOfRequests =
+  const PfpOptions = useCallback(() => {
+    const withPhoto = typeof profile?.photoURL === "string";
+    const options = opts(
+      <PfPhoto photoURL={profile?.photoURL ?? ""} />,
+      <PfPlaceholder />,
+    );
+
+    return <>{options.get(withPhoto)}</>;
+  }, [profile?.photoURL]);
 
   return (
     <div className="relative z-50 mx-3.5 h-[100px] rounded-lg border-0 border-neutral-300 bg-gradient-to-r from-paper via-paper to-neutral-900 p-[8px] shadow-md portrait:hidden">
       <div className="flex h-[46px] w-full items-start px-1">
         <div className="flex items-center space-x-3">
-          <div className="flex size-[28px] items-center justify-center rounded-full bg-gradient-to-r from-blue-50 to-sky-700">
-            <UserIcon className="size-[16px] text-white/70" />
-          </div>
+          <PfpOptions />
           <div className="space-y-[0.5px]">
             <div className="font-k2d text-sm font-semibold leading-none tracking-tight text-cyan-950">
               <UsernameOptions />
@@ -109,6 +115,27 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
         <Stat label="requests" value={profile?.draftCount ?? 0} />
         <Stat label="pts" value={profile?.fastPoints ?? 0} />
       </div>
+    </div>
+  );
+};
+
+const PfPhoto = (props: { photoURL: string }) => {
+  return (
+    <Image
+      className="size-[28px] rounded-full"
+      width={0}
+      height={0}
+      unoptimized
+      priority
+      alt="pfp"
+      src={props.photoURL}
+    />
+  );
+};
+const PfPlaceholder = () => {
+  return (
+    <div className="flex size-[28px] items-center justify-center rounded-full bg-gradient-to-r from-blue-50 to-sky-700">
+      <UserIcon className="size-[16px] text-white/70" />
     </div>
   );
 };
@@ -152,7 +179,7 @@ const Footer = () => (
     <div className="flex items-center space-x-2 text-[10px]">
       <Image
         alt={`fast tech logo`}
-        src={`/logo/fast_tech.svg`}
+        src={`/logo/fast_tech_v4.svg`}
         width={0}
         height={0}
         className="h-[8px] w-auto"

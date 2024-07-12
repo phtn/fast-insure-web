@@ -54,6 +54,7 @@ export type FormFieldProps = {
 export type FormProps = {
   loginType: LoginTypeSchema;
   setLoginType: (type: LoginTypeSchema) => void;
+  agentCode: string;
 };
 
 export type FormEventButtonClick = FormEvent<HTMLButtonElement>;

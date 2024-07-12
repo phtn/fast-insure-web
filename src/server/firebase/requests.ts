@@ -9,6 +9,7 @@ import { type TimelineSchema } from "../resource/account";
 import { errHandler } from "@/utils/helpers";
 
 export const createRequest = async (params: IDMRequestPayloadSchema) => {
+  const usersPath = String(process.env.NEXT_PUBLIC_LIVE_USERS);
   const reqsPath = String(process.env.NEXT_PUBLIC_LIVE_REQS);
 
   if (params.id) {
@@ -18,6 +19,19 @@ export const createRequest = async (params: IDMRequestPayloadSchema) => {
       createdAt: new Date(datestring).toISOString(),
       updatedAt: new Date(datestring).toISOString(),
     }).catch((e: Error) => e);
+
+    const userRef = doc(db, `${usersPath}/${params.agentId}`);
+    const timeline: TimelineSchema = {
+      active: true,
+      type: "create",
+      name: "submitted",
+      title: "Request submitted",
+      description: params.id,
+      createdAt: new Date(datestring).toISOString(),
+    };
+    await updateDoc(userRef, {
+      timeline: arrayUnion(timeline),
+    });
   } else {
     return "Unable to read payload.";
   }

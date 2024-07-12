@@ -208,10 +208,10 @@ const StepContent = tw.div`
   -ml-[2.5px] flex flex-col
   `;
 const MainContent = tw.div`
-  -mt-2 mb-6 ml-2 w-full space-y-2 rounded border-[0.33px] p-2 shadow-md
+  -mt-1.5 mb-6 ml-2 w-full space-y-2 rounded border-[0.33px] p-2 shadow-md
   `;
 const MinorContent = tw.div`
-  -mt-2 mb-6 ml-2 w-full p-2
+  -mt-3 mb-6 ml-2 w-full p-2
   `;
 const Title = tw.div`
   tracking-tighter opacity-70

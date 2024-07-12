@@ -2,7 +2,6 @@
 
 import { Button } from "@@ui/button";
 import { DotIcon } from "lucide-react";
-// import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import tw from "tailwind-styled-components";
 import { useAccountTypes } from "./hooks";
 import { Login } from "./login";
@@ -11,27 +10,37 @@ import type { FormProps } from "./types";
 import { GoogleSignin } from "./google";
 import Image from "next/image";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
+import { useContext, useEffect } from "react";
+import Link from "next/link";
+import { AuthContext } from "@/app/(context)/context";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/libs/db";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import Link from "next/link";
 
-const Lobby = () => {
+const Lobby = (props: { agentCode: string }) => {
   const { loginType, set } = useAccountTypes();
   const [user] = useAuthState(auth);
+  const profile = useContext(AuthContext)?.profile;
   const router = useRouter();
 
   useEffect(() => {
-    if (!!user) {
-      router.push("account/overview");
+    if (user) {
+      if (!!profile && !profile?.setupComplete) {
+        router.push("account/activation");
+      } else {
+        router.push("account/overview");
+      }
     }
-  }, [user, router]);
+  }, [user, profile, router, props.agentCode]);
 
   return (
     <LobbyContainer>
       <LobbyInner>
-        <LoginForm setLoginType={set} loginType={loginType} />
+        <LoginForm
+          setLoginType={set}
+          loginType={loginType}
+          agentCode={props.agentCode}
+        />
         <Welcome />
       </LobbyInner>
       <TermsFooter />
@@ -40,13 +49,19 @@ const Lobby = () => {
 };
 
 const LoginForm = (props: FormProps) => {
-  const { loginType, setLoginType } = props;
+  const { loginType, setLoginType, agentCode } = props;
   const signIn = loginType === "SIGNIN";
+  console.log(agentCode);
   return (
     <div className="flex h-[calc(100vh-110px)] w-full items-center justify-center border-t-[0.33px] border-neutral-300 px-[36px]">
       <div className="mb-12 w-fit">
         <div className="w-full pt-[14px]">
-          <Title signIn={signIn} />
+          {signIn ? (
+            <Title name={`Sign in to your account.`} />
+          ) : (
+            <Title name={`Create new account.`} />
+          )}
+
           <Login signinType={loginType} />
           <div className="flex justify-center py-4 text-xs text-neutral-500">
             or
@@ -76,11 +91,11 @@ const LoginForm = (props: FormProps) => {
   );
 };
 
-const Title = (props: { signIn: boolean }) => (
-  <div className="flex h-fit flex-col">
-    <h1 className="font-sans text-xl font-semibold tracking-tighter text-dyan">
-      {props.signIn ? `Sign in to your account.` : `Create new account.`}
-    </h1>
+const Title = (props: { name: string }) => (
+  <div className="flex h-fit animate-fade-left flex-col">
+    <div className="font-sans text-xl font-semibold tracking-tighter text-dyan">
+      {props.name}
+    </div>
   </div>
 );
 

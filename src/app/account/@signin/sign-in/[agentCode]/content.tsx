@@ -1,11 +1,12 @@
 "use client";
-import tw from "tailwind-styled-components";
-import Lobby from "../lobby";
 
-export const SignInContent = () => {
+import tw from "tailwind-styled-components";
+import Lobby from "../../lobby";
+
+export const SignInContent = (params: { agentCode: string }) => {
   return (
     <Container>
-      <Lobby />
+      <Lobby {...params} />
     </Container>
   );
 };

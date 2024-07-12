@@ -57,7 +57,7 @@ const notAuthedGroup: GroupItem[] = [
         desc: "Sign with email",
         value: "0",
         icon: LogInIcon,
-        href: "/account/sign-in",
+        href: "/account/sign-in/user",
         style: "fill-sky-400/20",
       },
     ],
@@ -70,7 +70,7 @@ const notAuthedGroup: GroupItem[] = [
         desc: "Register for free!",
         value: "1",
         icon: UserPlusIcon,
-        href: "/account/sign-up",
+        href: "/account/sign-in/user",
         style: "fill-teal-400/30",
       },
     ],
@@ -130,7 +130,7 @@ export const LogoutOption = () => {
       "You're logged out.",
       error,
     );
-    router.push("/account/sign-in");
+    router.push("account/sign-in/user");
   };
   return (
     <LogoutItem onSelect={logout}>

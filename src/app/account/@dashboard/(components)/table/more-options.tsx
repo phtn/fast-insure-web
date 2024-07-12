@@ -2,18 +2,20 @@ import { DropdownMenu, DropdownMenuTrigger } from "@/app/(ui)/dropdown";
 import { cn } from "@/utils/cn";
 import {
   MoreHorizontalIcon,
-  Trash2Icon,
   PlusIcon,
   MousePointerSquareIcon,
   ArrowUpLeftIcon,
   PencilLineIcon,
-  MinusCircleIcon,
 } from "lucide-react";
 import { ActiveOptions, BeachDrop, BeachDropItem } from "./styles";
 import { type CellContext } from "@tanstack/react-table";
 import { useUpdateService } from "../../(hooks)/useUpdateService";
+import { useRow } from "../../(hooks)/useRow";
+import { type ReactElement } from "react";
+import { QrViewer } from "../qr/viewer";
+import { EyeIcon, MinusCircleIcon, TrashIcon } from "@heroicons/react/24/solid";
 
-type OptionName = "create" | "read" | "update" | "delete" | "disable";
+type OptionName = "view" | "create" | "read" | "update" | "delete" | "disable";
 type MoreOption = {
   name: OptionName;
   label: string;
@@ -23,6 +25,7 @@ type MoreOption = {
 type MoreOptionProps = {
   options: MoreOption[];
   className?: string;
+  extra?: ReactElement;
 };
 export const MoreOptions = (props: MoreOptionProps) => {
   const { options } = props;
@@ -55,11 +58,13 @@ export const MoreOptions = (props: MoreOptionProps) => {
           ))}
         </BeachDrop>
       </DropdownMenu>
+      {props.extra}
     </div>
   );
 };
 
 const textColors = {
+  view: "text-cyan-100",
   create: "text-cyan-100",
   read: "text-cyan-100",
   update: "text-amber-100",
@@ -71,6 +76,8 @@ const iconSelector = (option: OptionName) => {
   const iconStyle =
     "size-3.5 stroke-[1.5px] text-neutral-300 scale-[85%] group-hover:scale-100 transition-transform duration-200 ease-out";
   switch (option) {
+    case "view":
+      return <EyeIcon className={cn(iconStyle)} />;
     case "create":
       return <PlusIcon className={cn(iconStyle)} />;
     case "read":
@@ -78,7 +85,7 @@ const iconSelector = (option: OptionName) => {
     case "update":
       return <PencilLineIcon className={cn(iconStyle, "")} />;
     case "delete":
-      return <Trash2Icon className={cn(iconStyle, "")} />;
+      return <TrashIcon className={cn(iconStyle, "")} />;
     case "disable":
       return <MinusCircleIcon className={cn(iconStyle, "")} />;
     default:
@@ -117,6 +124,8 @@ export const activityOptions =
 export const codesOptions =
   (prop: string) =>
   <T,>({ row }: CellContext<T, unknown>) => {
+    const { code, openQr, setOpenQr, handleQrView } = useRow();
+
     const { handleUpdateCode } = useUpdateService();
     const id: string | undefined = row.getValue(prop);
     const status: string | undefined = row.getValue("active");
@@ -142,6 +151,11 @@ export const codesOptions =
     return (
       <MoreOptions
         options={[
+          {
+            action: handleQrView(id),
+            label: "View QR",
+            name: "view",
+          },
           disableOption,
           {
             action: handleUpdateCode({
@@ -153,6 +167,13 @@ export const codesOptions =
             name: "delete",
           },
         ]}
+        extra={
+          <QrViewer
+            code={code?.substring(0, 9)}
+            open={openQr}
+            setOpen={setOpenQr}
+          />
+        }
       />
     );
   };

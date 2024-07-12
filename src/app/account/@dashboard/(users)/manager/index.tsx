@@ -1,6 +1,6 @@
 import { Header } from "../../(components)/header";
 import { Tabs } from "@/app/(ui)/tabs";
-import { Activity } from "./activity";
+import { Requests } from "./requests";
 import { Tools } from "./tools";
 import { TabList, TablistContainer, Trigger } from "../../(components)/styles";
 import { Codes } from "./codes";
@@ -11,6 +11,8 @@ import {
   TableCellsIcon,
   WrenchIcon,
 } from "@heroicons/react/24/solid";
+import { Activity } from "./activity";
+import { PresentationChartLineIcon } from "@heroicons/react/24/outline";
 
 const ManagerContent = (props: { profile: UserProfileSchema | undefined }) => {
   if (!props.profile) return;
@@ -23,6 +25,7 @@ const ManagerContent = (props: { profile: UserProfileSchema | undefined }) => {
           <Triggers />
         </Header>
         <Activity />
+        <Requests />
         <Tools userId={userId} branchCode={branchCode} />
         <Codes />
       </Tabs>
@@ -35,6 +38,9 @@ const Triggers = () => {
     <TablistContainer>
       <TabList>
         <Trigger value="activity">
+          <PresentationChartLineIcon className="size-4" />
+        </Trigger>
+        <Trigger value="requests">
           <TableCellsIcon className="size-4" />
         </Trigger>
         <Trigger value="codes">
