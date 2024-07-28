@@ -5,11 +5,12 @@ import {
 } from "@heroicons/react/24/outline";
 import { PanelCard, PanelContent } from "../../../(components)/panel-card";
 import { TabContent } from "../../../(components)/styles";
-import { FBar } from "./charts/fbar";
-import { HBar } from "./charts/hbar";
+// import { FBar } from "./charts/fbar";
+// import { HBar } from "./charts/hbar";
 import { VBar } from "./charts/vbar";
 import { useContext } from "react";
 import { ManagerContext } from "../../../(context)/context";
+import { TrendingUpIcon } from "lucide-react";
 
 export const Activity = () => {
   const managerCtx = useContext(ManagerContext);
@@ -42,7 +43,7 @@ export const Activity = () => {
               metricKey="up 5% from last month"
             />
           </PanelCard>
-          <PanelCard title="Overall Growth" tag="" icon={QrCodeIcon}>
+          <PanelCard title="Overall Growth" tag="" icon={TrendingUpIcon}>
             <PanelContent
               metricValue={"15%"}
               metricKey="up 1% from last month"
@@ -54,12 +55,12 @@ export const Activity = () => {
           <div className="flex items-center justify-center">
             <VBar requests={requests} />
           </div>
-          <div className="flex items-center justify-center">
-            <HBar />
-          </div>
-          <div className="flex items-center justify-center">
-            <FBar />
-          </div>
+          {/* <div className="flex items-center justify-center"> */}
+          {/*   <HBar /> */}
+          {/* </div> */}
+          {/* <div className="flex items-center justify-center"> */}
+          {/*   <FBar /> */}
+          {/* </div> */}
         </div>
       </div>
     </TabContent>
